@@ -5641,7 +5641,7 @@
 											"top": 198,
 											"width": 1199,
 											"height": 13,
-											"text": "Repositories"
+											"text": "Repository"
 										},
 										{
 											"_type": "LabelView",
@@ -5768,7 +5768,7 @@
 											"top": 112,
 											"width": 176.9853515625,
 											"height": 13,
-											"text": "(from Repositories)"
+											"text": "(from Repository)"
 										},
 										{
 											"_type": "LabelView",
@@ -5841,6 +5841,7 @@
 											"top": 296,
 											"width": 124.236328125,
 											"height": 13,
+											"underline": true,
 											"text": "+getQuestions()",
 											"horizontalAlignment": 0
 										},
@@ -5858,6 +5859,7 @@
 											"top": 311,
 											"width": 124.236328125,
 											"height": 13,
+											"underline": true,
 											"text": "+construire()",
 											"horizontalAlignment": 0
 										},
@@ -5875,6 +5877,7 @@
 											"top": 326,
 											"width": 124.236328125,
 											"height": 13,
+											"underline": true,
 											"text": "+getQuestionParID()",
 											"horizontalAlignment": 0
 										},
@@ -5892,6 +5895,7 @@
 											"top": 341,
 											"width": 124.236328125,
 											"height": 13,
+											"underline": true,
 											"text": "+sauvegarder()",
 											"horizontalAlignment": 0
 										}
@@ -6017,7 +6021,7 @@
 											"top": 144,
 											"width": 176.9853515625,
 											"height": 13,
-											"text": "(from Repositories)"
+											"text": "(from Repository)"
 										},
 										{
 											"_type": "LabelView",
@@ -6090,6 +6094,7 @@
 											"top": 296,
 											"width": 131.47265625,
 											"height": 13,
+											"underline": true,
 											"text": "+getUtilisateurs()",
 											"horizontalAlignment": 0
 										},
@@ -6107,6 +6112,7 @@
 											"top": 311,
 											"width": 131.47265625,
 											"height": 13,
+											"underline": true,
 											"text": "+construire()",
 											"horizontalAlignment": 0
 										},
@@ -6124,6 +6130,7 @@
 											"top": 326,
 											"width": 131.47265625,
 											"height": 13,
+											"underline": true,
 											"text": "+getUtlisateurParID()",
 											"horizontalAlignment": 0
 										},
@@ -6141,6 +6148,7 @@
 											"top": 341,
 											"width": 131.47265625,
 											"height": 13,
+											"underline": true,
 											"text": "+sauvegarder()",
 											"horizontalAlignment": 0
 										}
@@ -6252,7 +6260,7 @@
 											"top": 462,
 											"width": 1199,
 											"height": 13,
-											"text": "DataObjects"
+											"text": "DataObject"
 										},
 										{
 											"_type": "LabelView",
@@ -6752,7 +6760,7 @@
 											"top": 296,
 											"width": 176.9853515625,
 											"height": 13,
-											"text": "(from DataObjects)"
+											"text": "(from DataObject)"
 										},
 										{
 											"_type": "LabelView",
@@ -7003,7 +7011,7 @@
 											"top": 112,
 											"width": 176.9853515625,
 											"height": 13,
-											"text": "(from DataObjects)"
+											"text": "(from DataObject)"
 										},
 										{
 											"_type": "LabelView",
@@ -7403,9 +7411,9 @@
 										"$ref": "AAAAAAGD9eycUFL+Sd4="
 									},
 									"font": "Arial;13;0",
-									"left": 887,
+									"left": 886,
 									"top": 584,
-									"width": 5.05908203125,
+									"width": 6.5,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 25,
@@ -7545,7 +7553,7 @@
 											"top": 608,
 											"width": 176.9853515625,
 											"height": 13,
-											"text": "(from Repositories)"
+											"text": "(from Repository)"
 										},
 										{
 											"_type": "LabelView",
@@ -7804,7 +7812,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGD9as6oZjxEOg="
 					},
-					"name": "Repositories",
+					"name": "Repository",
 					"ownedElements": [
 						{
 							"_type": "UMLClass",
@@ -7887,7 +7895,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGD9buETKxDcmE="
 									},
-									"name": "getQuestions"
+									"name": "getQuestions",
+									"isStatic": true
 								},
 								{
 									"_type": "UMLOperation",
@@ -7895,7 +7904,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGD9buETKxDcmE="
 									},
-									"name": "construire"
+									"name": "construire",
+									"isStatic": true
 								},
 								{
 									"_type": "UMLOperation",
@@ -7903,7 +7913,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGD9buETKxDcmE="
 									},
-									"name": "getQuestionParID"
+									"name": "getQuestionParID",
+									"isStatic": true
 								},
 								{
 									"_type": "UMLOperation",
@@ -7911,7 +7922,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGD9buETKxDcmE="
 									},
-									"name": "sauvegarder"
+									"name": "sauvegarder",
+									"isStatic": true
 								}
 							]
 						},
@@ -7996,7 +8008,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGD9b2UOLBIsaw="
 									},
-									"name": "getUtilisateurs"
+									"name": "getUtilisateurs",
+									"isStatic": true
 								},
 								{
 									"_type": "UMLOperation",
@@ -8004,7 +8017,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGD9b2UOLBIsaw="
 									},
-									"name": "construire"
+									"name": "construire",
+									"isStatic": true
 								},
 								{
 									"_type": "UMLOperation",
@@ -8012,7 +8026,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGD9b2UOLBIsaw="
 									},
-									"name": "getUtlisateurParID"
+									"name": "getUtlisateurParID",
+									"isStatic": true
 								},
 								{
 									"_type": "UMLOperation",
@@ -8020,7 +8035,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGD9b2UOLBIsaw="
 									},
-									"name": "sauvegarder"
+									"name": "sauvegarder",
+									"isStatic": true
 								}
 							]
 						},
@@ -8091,7 +8107,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGD9as6oZjxEOg="
 					},
-					"name": "DataObjects",
+					"name": "DataObject",
 					"ownedElements": [
 						{
 							"_type": "UMLClass",
