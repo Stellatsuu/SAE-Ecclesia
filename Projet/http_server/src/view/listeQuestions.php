@@ -12,7 +12,7 @@ foreach ($questions as $q) {
     if($q->getEstValide()) {
         echo("Question validée par l'admin<br>");
     } else {
-        echo("Question refusée par l'admin<br>");
+        echo("Question pas encore validée par l'admin<br>");
     }
     echo("<br>");
 

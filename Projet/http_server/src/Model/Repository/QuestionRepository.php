@@ -4,9 +4,11 @@ namespace App\SAE\Model\Repository;
 
 use App\SAE\Model\DataObject\Question;
 
-class QuestionRepository {
+class QuestionRepository
+{
 
-    public static function construire(array $row): Question {
+    public static function construire(array $row): Question
+    {
         $question = new Question(
             $row['idquestion'],
             $row['question'],
@@ -17,7 +19,8 @@ class QuestionRepository {
         return $question;
     }
 
-    public static function getQuestions(): array {
+    public static function getQuestions(): array
+    {
         $pdo = DatabaseConnection::getPdo();
         $pdoStatement = $pdo->query("SELECT * FROM questions");
 
@@ -28,7 +31,19 @@ class QuestionRepository {
         return $questions;
     }
 
-    public static function getQuestionById(int $idQuestion): ?Question {
+    public static function getPremiereQuestionNonValide(): ?Question
+    {
+        $pdo = DatabaseConnection::getPdo();
+        $pdoStatement = $pdo->query("SELECT * FROM questions WHERE estvalide = false");
+
+        $row = $pdoStatement->fetch();
+        if ($row) {
+            return static::construire($row);
+        } else return null;
+    }
+
+    public static function getQuestionById(int $idQuestion): ?Question
+    {
         $pdo = DatabaseConnection::getPdo();
         $sql = "SELECT * FROM questions WHERE idquestion = :idQuestion";
 
@@ -49,7 +64,8 @@ class QuestionRepository {
         }
     }
 
-    public static function sauvegarder(Question $question): void {
+    public static function sauvegarder(Question $question): void
+    {
         $pdo = DatabaseConnection::getPdo();
         $sql = "INSERT INTO questions (question, intitule, estvalide, idutilisateur) VALUES (:question, :intitule, :estvalide, :idutilisateur)";
 
@@ -65,7 +81,31 @@ class QuestionRepository {
         $pdoStatement->execute($values);
     }
 
+    public static function valider($idQuestion): void
+    {
+        $pdo = DatabaseConnection::getPdo();
+        $sql = "UPDATE questions SET estvalide = true WHERE idquestion = :idquestion";
 
+        $pdoStatement = $pdo->prepare($sql);
 
+        $values = array(
+            "idquestion" => $idQuestion
+        );
 
+        $pdoStatement->execute($values);
+    }
+
+    public static function supprimerParID($idQuestion): void
+    {
+        $pdo = DatabaseConnection::getPdo();
+        $sql = "DELETE FROM questions WHERE idquestion = :idQuestion";
+
+        $pdoStatement = $pdo->prepare($sql);
+
+        $values = array(
+            "idQuestion" => $idQuestion
+        );
+
+        $pdoStatement->execute($values);
+    }
 }

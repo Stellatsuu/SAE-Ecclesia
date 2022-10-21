@@ -14,11 +14,13 @@ class Controller
     {
         static::afficheVue("view.php", [
             "titre" => "Attribuer une question",
-            "contenu" => "form_attribuerQuestion.php"
+            "contenu" => "form_attribuerQuestion.php",
+            "question" => QuestionRepository::getPremiereQuestionNonValide(),
         ]);
     }
 
-    public static function listerQuestions(): void {
+    public static function listerQuestions(): void
+    {
 
         $questions = QuestionRepository::getQuestions();
 
@@ -27,23 +29,21 @@ class Controller
             "contenu" => "listeQuestions.php",
             "questions" => $questions
         ]);
-
     }
 
-    public static function attribuerQuestion(): void {
-        $question = $_POST["question"];
-        $intitule = $_POST["intitule"];
-        $estValide = $_POST["estValide"];
-        $organisateur = UtilisateurRepository::getUtilisateurParID($_POST["organisateur"]);
+    public static function refuserQuestion(): void
+    {
+        $idQuestion = intval($_POST['idQuestion']);
+        QuestionRepository::supprimerParID($idQuestion);
+        static::listerQuestions();
+    }
 
-        $question = new Question(-1, $question, $intitule, $estValide, $organisateur);
+    public static function accepterQuestion(): void
+    {
+        $idQuestion = intval($_POST['idQuestion']);
 
-        QuestionRepository::sauvegarder($question);
-
-        static::afficheVue("view.php", [
-            "titre" => "Question attribuée",
-            "contenu" => "questionAttribuee.html"
-        ]);
+        QuestionRepository::valider($idQuestion);
+        static::listerQuestions();
     }
 
     private static function afficheVue(string $cheminVue, array $parametres = []): void
