@@ -36,9 +36,9 @@
 										"$ref": "AAAAAAGD9mbyw2DjZ6A="
 									},
 									"font": "Arial;13;0",
-									"left": 32.72998046875,
+									"left": 30.55908203125,
 									"top": 13,
-									"width": 131.79345703125,
+									"width": 116.501953125,
 									"height": 13,
 									"text": "Diagramme_séquence"
 								},
@@ -51,7 +51,7 @@
 									"font": "Arial;13;1",
 									"left": 13,
 									"top": 13,
-									"width": 14.72998046875,
+									"width": 12.55908203125,
 									"height": 13,
 									"text": "sd"
 								}
@@ -657,9 +657,9 @@
 										"$ref": "AAAAAAGD9mbyw2EFYF8="
 									},
 									"font": "Arial;13;0",
-									"left": 51.578125,
+									"left": 50.11181640625,
 									"top": 229,
-									"width": 126.74072265625,
+									"width": 112.17919921875,
 									"height": 13,
 									"text": "traitement_demandes"
 								},
@@ -672,7 +672,7 @@
 									"font": "Arial;13;1",
 									"left": 21,
 									"top": 229,
-									"width": 25.578125,
+									"width": 24.11181640625,
 									"height": 13,
 									"text": "loop"
 								},
@@ -705,7 +705,7 @@
 													"font": "Arial;13;0",
 													"left": 36,
 													"top": 262,
-													"width": 89.62255859375,
+													"width": 80.13916015625,
 													"height": 13,
 													"text": "[nb_demandes]"
 												}
@@ -759,9 +759,9 @@
 										"$ref": "AAAAAAGD9mbyw2ELt1s="
 									},
 									"font": "Arial;13;0",
-									"left": 56.72998046875,
+									"left": 55.99365234375,
 									"top": 285,
-									"width": 8.22998046875,
+									"width": 7.5,
 									"height": 13,
 									"text": "_"
 								},
@@ -774,7 +774,7 @@
 									"font": "Arial;13;1",
 									"left": 37,
 									"top": 285,
-									"width": 14.72998046875,
+									"width": 13.99365234375,
 									"height": 13,
 									"text": "alt"
 								},
@@ -807,7 +807,7 @@
 													"font": "Arial;13;0",
 													"left": 52,
 													"top": 318,
-													"width": 121.42431640625,
+													"width": 106.81201171875,
 													"height": 13,
 													"text": "[demande_acceptée]"
 												}
@@ -840,7 +840,7 @@
 													"font": "Arial;13;0",
 													"left": 52,
 													"top": 416,
-													"width": 112.0234375,
+													"width": 99.607421875,
 													"height": 13,
 													"text": "[demande_refusée]"
 												}
@@ -5300,9 +5300,9 @@
 														"$ref": "AAAAAAGD1WvbtWYJl6c="
 													},
 													"font": "Arial;13;0",
-													"left": 32.72998046875,
+													"left": 30.55908203125,
 													"top": 13,
-													"width": 105.7744140625,
+													"width": 98.8427734375,
 													"height": 13,
 													"text": "Attribuer Question"
 												},
@@ -5315,7 +5315,7 @@
 													"font": "Arial;13;1",
 													"left": 13,
 													"top": 13,
-													"width": 14.72998046875,
+													"width": 12.55908203125,
 													"height": 13,
 													"text": "sd"
 												}
@@ -5921,9 +5921,9 @@
 														"$ref": "AAAAAAGD1Xv75mcQQtY="
 													},
 													"font": "Arial;13;0",
-													"left": 51.578125,
+													"left": 50.11181640625,
 													"top": 229,
-													"width": 126.74072265625,
+													"width": 112.17919921875,
 													"height": 13,
 													"text": "traitement_demandes"
 												},
@@ -5936,7 +5936,7 @@
 													"font": "Arial;13;1",
 													"left": 21,
 													"top": 229,
-													"width": 25.578125,
+													"width": 24.11181640625,
 													"height": 13,
 													"text": "loop"
 												},
@@ -5969,7 +5969,7 @@
 																	"font": "Arial;13;0",
 																	"left": 36,
 																	"top": 262,
-																	"width": 89.62255859375,
+																	"width": 80.13916015625,
 																	"height": 13,
 																	"text": "[nb_demandes]"
 																}
@@ -6023,9 +6023,9 @@
 														"$ref": "AAAAAAGD1X53BGcxod8="
 													},
 													"font": "Arial;13;0",
-													"left": 56.72998046875,
+													"left": 55.99365234375,
 													"top": 285,
-													"width": 84.12255859375,
+													"width": 73.185546875,
 													"height": 13,
 													"text": "état_demande"
 												},
@@ -6038,7 +6038,7 @@
 													"font": "Arial;13;1",
 													"left": 37,
 													"top": 285,
-													"width": 14.72998046875,
+													"width": 13.99365234375,
 													"height": 13,
 													"text": "alt"
 												},
@@ -6071,7 +6071,7 @@
 																	"font": "Arial;13;0",
 																	"left": 52,
 																	"top": 318,
-																	"width": 121.42431640625,
+																	"width": 106.81201171875,
 																	"height": 13,
 																	"text": "[demande_acceptée]"
 																}
@@ -6104,7 +6104,7 @@
 																	"font": "Arial;13;0",
 																	"left": 52,
 																	"top": 416,
-																	"width": 112.0234375,
+																	"width": 99.607421875,
 																	"height": 13,
 																	"text": "[demande_refusée]"
 																}
@@ -7083,9 +7083,9 @@
 														"$ref": "AAAAAAGD54DhHmZTlgA="
 													},
 													"font": "Arial;13;0",
-													"left": 32.72998046875,
+													"left": 30.55908203125,
 													"top": 13,
-													"width": 164.31884765625,
+													"width": 147.5546875,
 													"height": 13,
 													"text": "Demander création question"
 												},
@@ -7098,7 +7098,7 @@
 													"font": "Arial;13;1",
 													"left": 13,
 													"top": 13,
-													"width": 14.72998046875,
+													"width": 12.55908203125,
 													"height": 13,
 													"text": "sd"
 												}
@@ -7704,9 +7704,9 @@
 														"$ref": "AAAAAAGD54mIwmm5XIs="
 													},
 													"font": "Arial;13;0",
-													"left": 497.1708984375,
+													"left": 496.42822265625,
 													"top": 197,
-													"width": 170.8291015625,
+													"width": 171.57177734375,
 													"height": 13,
 													"text": "Attribuer Question"
 												},
@@ -7719,7 +7719,7 @@
 													"font": "Arial;13;1",
 													"left": 461,
 													"top": 197,
-													"width": 16.1708984375,
+													"width": 15.42822265625,
 													"height": 13,
 													"text": "ref"
 												}
@@ -8268,7 +8268,7 @@
 											"width": 183.87890625,
 											"height": 13,
 											"underline": true,
-											"text": "+showForm_attribuerQuestion()",
+											"text": "+afficherFormulaire()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -8306,13 +8306,49 @@
 											"underline": true,
 											"text": "+afficheVue()",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGD/APaGFVOxNQ=",
+											"_parent": {
+												"$ref": "AAAAAAGD9mJK3wR0e4g="
+											},
+											"model": {
+												"$ref": "AAAAAAGD/APaC1VLiQE="
+											},
+											"font": "Arial;13;0",
+											"left": 613,
+											"top": 117,
+											"width": 183.87890625,
+											"height": 13,
+											"underline": true,
+											"text": "+poserQuestion()",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGD/AQO61Vq+AU=",
+											"_parent": {
+												"$ref": "AAAAAAGD9mJK3wR0e4g="
+											},
+											"model": {
+												"$ref": "AAAAAAGD/AQO41Vng7U="
+											},
+											"font": "Arial;13;0",
+											"left": 613,
+											"top": 132,
+											"width": 183.87890625,
+											"height": 13,
+											"underline": true,
+											"text": "+afficheDemandeQuestion()",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 608,
 									"top": 67,
 									"width": 193.87890625,
-									"height": 53
+									"height": 83
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -8352,7 +8388,7 @@
 							"left": 608,
 							"top": 32,
 							"width": 193.87890625,
-							"height": 88,
+							"height": 118,
 							"nameCompartment": {
 								"$ref": "AAAAAAGD9mJK3wRuZ6c="
 							},
@@ -10222,7 +10258,6 @@
 							"propertyLabel": {
 								"$ref": "AAAAAAGD9mJK3wTSn/I="
 							},
-							"showEndOrder": "hide",
 							"tailRoleNameLabel": {
 								"$ref": "AAAAAAGD9mJK3wTTXUI="
 							},
@@ -10535,7 +10570,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGD9mJK3wTq/SY="
 							},
-							"name": "showForm_attribuerQuestion",
+							"name": "afficherFormulaire",
 							"isStatic": true
 						},
 						{
@@ -10554,6 +10589,24 @@
 								"$ref": "AAAAAAGD9mJK3wTq/SY="
 							},
 							"name": "afficheVue",
+							"isStatic": true
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGD/APaC1VLiQE=",
+							"_parent": {
+								"$ref": "AAAAAAGD9mJK3wTq/SY="
+							},
+							"name": "poserQuestion",
+							"isStatic": true
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGD/AQO41Vng7U=",
+							"_parent": {
+								"$ref": "AAAAAAGD9mJK3wTq/SY="
+							},
+							"name": "afficheDemandeQuestion",
 							"isStatic": true
 						}
 					]
@@ -11006,6 +11059,14 @@
 							]
 						}
 					]
+				},
+				{
+					"_type": "UMLPackage",
+					"_id": "AAAAAAGD+/6kQ1Nkstc=",
+					"_parent": {
+						"$ref": "AAAAAAGD9mJK3wRrhnw="
+					},
+					"name": "View"
 				}
 			]
 		},
