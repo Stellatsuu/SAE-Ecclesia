@@ -10,19 +10,10 @@ use App\SAE\Model\Repository\UtilisateurRepository as UtilisateurRepository;
 class Controller
 {
 
-    public static function showForm_attribuerQuestion(): void
-    {
-        static::afficheVue("view.php", [
-            "titre" => "Attribuer une question",
-            "contenu" => "form_attribuerQuestion.php",
-            "question" => QuestionRepository::getPremiereQuestionNonValide(),
-        ]);
-    }
-
     public static function listerQuestions(): void
     {
 
-        $questions = QuestionRepository::getQuestions();
+        $questions = (new QuestionRepository)->selectAll();
 
         static::afficheVue("view.php", [
             "titre" => "Liste des questions",
@@ -33,16 +24,19 @@ class Controller
 
     public static function refuserQuestion(): void
     {
-        $idQuestion = intval($_POST['idQuestion']);
-        QuestionRepository::supprimerParID($idQuestion);
+        $idQuestion = intval($_GET['idQuestion']);
+        (new QuestionRepository)->delete($idQuestion);
         static::listerQuestions();
     }
 
     public static function accepterQuestion(): void
     {
-        $idQuestion = intval($_POST['idQuestion']);
+        $idQuestion = intval($_GET['idQuestion']);
 
-        QuestionRepository::valider($idQuestion);
+        $question = (new QuestionRepository)->select($idQuestion);
+        $question->setEstValide(true);
+
+        (new QuestionRepository)->update($question);
         static::listerQuestions();
     }
 

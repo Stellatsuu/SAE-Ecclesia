@@ -4,9 +4,28 @@ namespace App\SAE\Model\Repository;
 
 use App\SAE\Model\DataObject\Utilisateur;
 
-class UtilisateurRepository {
+class UtilisateurRepository extends AbstractRepository {
 
-    public static function construire(array $row): Utilisateur {
+    protected function getNomTable(): string
+    {
+        return 'utilisateur';
+    }
+
+    protected function getNomClePrimaire(): string
+    {
+        return 'idutilisateur';
+    }
+
+    protected function getNomsColonnes(): array
+    {
+        return [
+            'idutilisateur',
+            'nom',
+            'prenom'
+        ];
+    }
+
+    public function construire(array $row): Utilisateur {
         $utilisateur = new Utilisateur(
             $row['idutilisateur'],
             $row['nom'],
@@ -15,69 +34,22 @@ class UtilisateurRepository {
         return $utilisateur;
     }
 
-    public static function getUtilisateurs(): array {
-        $pdo = DatabaseConnection::getPdo();
-        $pdoStatement = $pdo->query("SELECT * FROM utilisateurs");
-
-        $utilisateurs = [];
-        foreach ($pdoStatement as $u) {
-            $utilisateurs[] = static::construire($u);
-        }
-        return $utilisateurs;
-    }
-
-    public static function getUtilisateurParID($idUtilisateur): ?Utilisateur {
-        $pdo = DatabaseConnection::getPdo();
-        $sql = "SELECT * FROM utilisateurs WHERE idutilisateur = :idUtilisateur";
-
-        $pdoStatement = $pdo->prepare($sql);
-
-        $values = array(
-            "idUtilisateur" => $idUtilisateur
-        );
-
-        $pdoStatement->execute($values);
-
-        $row = $pdoStatement->fetch();
-
-        if ($row) {
-            return static::construire($row);
-        } else {
-            return null;
-        }
-    }
-
     public static function getQuestionsPoseesParUtilisateur($idUtilisateur): array {
         $pdo = DatabaseConnection::getPdo();
-        $sql = "SELECT * FROM questions WHERE idutilisateur = :idUtilisateur";
+        $sql = "SELECT * FROM question WHERE idutilisateur = :idutilisateur";
 
         $pdoStatement = $pdo->prepare($sql);
 
         $values = array(
-            "idUtilisateur" => $idUtilisateur
+            "idutilisateur" => $idUtilisateur
         );
 
         $pdoStatement->execute($values);
 
         $questions = [];
         foreach ($pdoStatement as $q) {
-            $questions[] = QuestionRepository::construire($q);
+            $questions[] = (new QuestionRepository)->construire($q);
         }
         return $questions;
     }
-
-    public static function sauvegarder(Utilisateur $utilisateur): void {
-        $pdo = DatabaseConnection::getPdo();
-        $sql = "INSERT INTO utilisateurs (nom, prenom) VALUES (:nom, :prenom)";
-
-        $pdoStatement = $pdo->prepare($sql);
-
-        $values = array(
-            "nom" => $utilisateur->getNom(),
-            "prenom" => $utilisateur->getPrenom()
-        );
-
-        $pdoStatement->execute($values);
-    }
-
 }

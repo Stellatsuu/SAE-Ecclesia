@@ -2,7 +2,7 @@
 
 namespace App\SAE\Model\DataObject;
 
-class Question
+class Question extends AbstractDataObject
 {
 
     private int $idQuestion;
@@ -22,6 +22,17 @@ class Question
         $this->intitule = $intitule;
         $this->estValide = $estValide;
         $this->organisateur = $organisateur;
+    }
+
+    public function formatTableau(): array
+    {
+        return [
+            'idquestion' => $this->idQuestion,
+            'question' => $this->question,
+            'intitule' => $this->intitule,
+            'estvalide' => $this->estValide,
+            'idutilisateur' => $this->organisateur->getIdUtilisateur()
+        ];
     }
 
     // Getters
@@ -49,6 +60,13 @@ class Question
     public function getOrganisateur(): Utilisateur
     {
         return $this->organisateur;
+    }
+
+    // Setters
+
+    public function setEstValide(bool $estValide): void
+    {
+        $this->estValide = $estValide;
     }
     
 }

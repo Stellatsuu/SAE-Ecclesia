@@ -4,7 +4,7 @@ namespace App\SAE\Model\DataObject;
 
 use App\SAE\Model\Repository\UtilisateurRepository;
 
-class Utilisateur
+class Utilisateur extends AbstractDataObject
 {
 
     private int $idUtilisateur;
@@ -18,6 +18,15 @@ class Utilisateur
         $this->idUtilisateur = $idUtilisateur;
         $this->nom = $nom;
         $this->prenom = $prenom;
+    }
+
+    public function formatTableau(): array
+    {
+        return [
+            'idutilisateur' => $this->idUtilisateur,
+            'nom' => $this->nom,
+            'prenom' => $this->prenom
+        ];
     }
     
     // Getters
