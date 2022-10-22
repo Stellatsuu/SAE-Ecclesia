@@ -208,3 +208,9 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,linux,phpstorm,visualstudiocode
+Projet/.idea/modules.xml
+Projet/.idea/php.xml
+Projet/.idea/Projet.iml
+Projet/.idea/vcs.xml
+Projet/http_server/src/Config/Conf.php
+Projet/http_server/src/Config/Conf.php
