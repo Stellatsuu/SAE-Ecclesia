@@ -10,7 +10,10 @@
 <body>
     <header>
         <nav>
-            <p>Imaginez un nav ici</p>
+            <ul>
+                <li><a href="frontController.php?action=listerQuestions">Liste des questions</a></li>
+                <li><a href="frontController.php?action=afficherDemandeQuestion">Poser une question</a></li>
+            </ul>
         </nav>
     </header>
 
@@ -21,7 +24,7 @@
     </main>
 
     <footer>
-        <p>Imaginez un footer ici</p>
+        <p>Le css c'est cool</p>
     </footer>
 </body>
 

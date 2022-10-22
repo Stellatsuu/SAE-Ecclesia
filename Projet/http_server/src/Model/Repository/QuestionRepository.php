@@ -20,7 +20,6 @@ class QuestionRepository extends AbstractRepository
     protected function getNomsColonnes(): array
     {
         return [
-            'idquestion',
             'question',
             'intitule',
             'estvalide',

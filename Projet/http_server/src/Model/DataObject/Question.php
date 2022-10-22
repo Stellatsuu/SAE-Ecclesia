@@ -27,12 +27,16 @@ class Question extends AbstractDataObject
     public function formatTableau(): array
     {
         return [
-            'idquestion' => $this->idQuestion,
             'question' => $this->question,
             'intitule' => $this->intitule,
-            'estvalide' => $this->estValide,
+            'estvalide' => $this->estValide ? "true" : "false",
             'idutilisateur' => $this->organisateur->getIdUtilisateur()
         ];
+    }
+
+    public function getValeurClePrimaire(): int
+    {
+        return $this->getIdQuestion();
     }
 
     // Getters

@@ -19,7 +19,6 @@ class UtilisateurRepository extends AbstractRepository {
     protected function getNomsColonnes(): array
     {
         return [
-            'idutilisateur',
             'nom',
             'prenom'
         ];

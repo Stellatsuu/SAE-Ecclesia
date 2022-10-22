@@ -56,6 +56,7 @@ abstract class AbstractRepository
         $nomClePrimaire = $this->getNomClePrimaire();
         $nomsColonnes = $this->getNomsColonnes();
         $values = $object->formatTableau();
+        $values[$nomClePrimaire] = $object->getValeurClePrimaire();
 
         $sql = "UPDATE $nomTable SET ";
         foreach ($nomsColonnes as $colonne) {
@@ -73,12 +74,18 @@ abstract class AbstractRepository
         $nomsColonnes = $this->getNomsColonnes();
         $values = $object->formatTableau();
 
-        $sql = "INSERT INTO $nomTable VALUES (";
+        $sql = "INSERT INTO $nomTable (";
+        foreach ($nomsColonnes as $colonne) {
+            $sql .= "$colonne, ";
+        }
+        $sql = substr($sql, 0, -2);
+        $sql .= ") VALUES (";
         foreach ($nomsColonnes as $colonne) {
             $sql .= ":$colonne, ";
         }
         $sql = substr($sql, 0, -2);
         $sql .= ")";
+
         
         $pdoStatement = DatabaseConnection::getPdo()->prepare($sql);
         $pdoStatement->execute($values);

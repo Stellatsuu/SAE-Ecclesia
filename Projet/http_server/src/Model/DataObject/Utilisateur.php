@@ -23,10 +23,14 @@ class Utilisateur extends AbstractDataObject
     public function formatTableau(): array
     {
         return [
-            'idutilisateur' => $this->idUtilisateur,
             'nom' => $this->nom,
             'prenom' => $this->prenom
         ];
+    }
+
+    public function getValeurClePrimaire(): int
+    {
+        return $this->getIdUtilisateur();
     }
     
     // Getters
