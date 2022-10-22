@@ -8996,13 +8996,14 @@
 									"model": {
 										"$ref": "AAAAAAGD9mJK3wURlDk="
 									},
+									"visible": false,
 									"font": "Arial;13;0",
-									"left": 373,
-									"top": 1115,
+									"left": 360,
+									"top": 1119,
 									"width": 79.85986328125,
 									"height": 13,
-									"alpha": -0.5193841670438728,
-									"distance": 49.92995093127971,
+									"alpha": -0.7684504670201359,
+									"distance": 41.72529209005013,
 									"hostEdge": {
 										"$ref": "AAAAAAGD9mJK3wTP8Qo="
 									},
@@ -9050,7 +9051,7 @@
 										"$ref": "AAAAAAGD9mJK3wTP8Qo="
 									},
 									"edgePosition": 2,
-									"text": "1"
+									"text": "*"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -9061,18 +9062,17 @@
 									"model": {
 										"$ref": "AAAAAAGD9mJK3wUSTWc="
 									},
-									"visible": false,
 									"font": "Arial;13;0",
-									"left": 590,
-									"top": 1075,
+									"left": 607,
+									"top": 1074,
 									"width": 106.6025390625,
 									"height": 13,
-									"alpha": -0.2624699591371087,
-									"distance": 61.1310068623117,
+									"alpha": -0.356219731405667,
+									"distance": 45.880278987817846,
 									"hostEdge": {
 										"$ref": "AAAAAAGD9mJK3wTP8Qo="
 									},
-									"text": "+questionsPosees"
+									"text": "+organisateur"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -9106,14 +9106,14 @@
 									"font": "Arial;13;0",
 									"left": 678,
 									"top": 1103,
-									"width": 6.5,
+									"width": 7.22998046875,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 25,
 									"hostEdge": {
 										"$ref": "AAAAAAGD9mJK3wTP8Qo="
 									},
-									"text": "*"
+									"text": "1"
 								},
 								{
 									"_type": "UMLQualifierCompartmentView",
@@ -12522,11 +12522,10 @@
 										"_parent": {
 											"$ref": "AAAAAAGD9mJK3wUQGLM="
 										},
-										"name": "organisateur",
 										"reference": {
 											"$ref": "AAAAAAGD9mJK3wUP/U8="
 										},
-										"multiplicity": "1"
+										"multiplicity": "*"
 									},
 									"end2": {
 										"_type": "UMLAssociationEnd",
@@ -12534,11 +12533,12 @@
 										"_parent": {
 											"$ref": "AAAAAAGD9mJK3wUQGLM="
 										},
+										"name": "organisateur",
 										"reference": {
 											"$ref": "AAAAAAGD9mJK3wUKdn0="
 										},
 										"aggregation": "composite",
-										"multiplicity": "*"
+										"multiplicity": "1"
 									}
 								},
 								{
