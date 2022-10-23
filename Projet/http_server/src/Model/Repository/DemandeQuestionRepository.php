@@ -2,14 +2,14 @@
 
 namespace App\SAE\Model\Repository;
 
-use App\SAE\Model\DataObject\Question;
+use App\SAE\Model\DataObject\DemandeQuestion;
 
-class QuestionRepository extends AbstractRepository
+class DemandeQuestionRepository extends AbstractRepository
 {
 
     protected function getNomTable(): string
     {
-        return 'question';
+        return 'demandequestion';
     }
 
     protected function getNomClePrimaire(): string
@@ -20,18 +20,18 @@ class QuestionRepository extends AbstractRepository
     protected function getNomsColonnes(): array
     {
         return [
-            'question',
+            'titre',
             'intitule',
             'estvalide',
             'idutilisateur'
         ];
     }
 
-    public function construire(array $row): Question
+    public function construire(array $row): DemandeQuestion
     {
-        $question = new Question(
+        $question = new DemandeQuestion(
             $row['idquestion'],
-            $row['question'],
+            $row['titre'],
             $row['intitule'],
             $row['estvalide'],
             (new UtilisateurRepository)->select($row['idutilisateur'])

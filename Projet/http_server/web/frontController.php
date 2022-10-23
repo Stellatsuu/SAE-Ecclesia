@@ -21,7 +21,7 @@ $loader->register();
 if (isset($_GET['action'])) {
     $action = $_GET['action'];
 } else {
-    $action = "listerQuestions";
+    $action = "listerDemandesQuestion";
 }
 
 Controller::$action();

@@ -2,12 +2,12 @@
 
 namespace App\SAE\Model\DataObject;
 
-class Question extends AbstractDataObject
+class DemandeQuestion extends AbstractDataObject
 {
 
     private int $idQuestion;
 
-    private string $question;
+    private string $titre;
 
     private string $intitule;
 
@@ -15,10 +15,10 @@ class Question extends AbstractDataObject
 
     private Utilisateur $organisateur;
 
-    public function __construct(int $idQuestion, string $question, string $intitule, bool $estValide, Utilisateur $organisateur)
+    public function __construct(int $idQuestion, string $titre, string $intitule, bool $estValide, Utilisateur $organisateur)
     {
         $this->idQuestion = $idQuestion;
-        $this->question = $question;
+        $this->titre = $titre;
         $this->intitule = $intitule;
         $this->estValide = $estValide;
         $this->organisateur = $organisateur;
@@ -27,7 +27,7 @@ class Question extends AbstractDataObject
     public function formatTableau(): array
     {
         return [
-            'question' => $this->question,
+            'titre' => $this->titre,
             'intitule' => $this->intitule,
             'estvalide' => $this->estValide ? "true" : "false",
             'idutilisateur' => $this->organisateur->getIdUtilisateur()
@@ -46,9 +46,9 @@ class Question extends AbstractDataObject
         return $this->idQuestion;
     }
 
-    public function getQuestion(): string
+    public function getTitre(): string
     {
-        return $this->question;
+        return $this->titre;
     }
 
     public function getIntitule(): string

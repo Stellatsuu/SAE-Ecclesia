@@ -33,7 +33,7 @@ class UtilisateurRepository extends AbstractRepository {
         return $utilisateur;
     }
 
-    public static function getQuestionsPoseesParUtilisateur($idUtilisateur): array {
+    public static function getDemandesFaitesParUtilisateur($idUtilisateur): array {
         $pdo = DatabaseConnection::getPdo();
         $sql = "SELECT * FROM question WHERE idutilisateur = :idutilisateur";
 
@@ -45,10 +45,10 @@ class UtilisateurRepository extends AbstractRepository {
 
         $pdoStatement->execute($values);
 
-        $questions = [];
+        $demandes = [];
         foreach ($pdoStatement as $q) {
-            $questions[] = (new QuestionRepository)->construire($q);
+            $demandes[] = (new DemandeQuestionRepository)->construire($q);
         }
-        return $questions;
+        return $demandes;
     }
 }

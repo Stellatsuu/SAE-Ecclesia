@@ -1,10 +1,10 @@
  <main>
-     <form method="post" action="../../../web/frontController.php?action=poserQuestion">
+     <form method="post" action="../../../web/frontController.php?action=demanderCreationQuestion">
          <fieldset>
              <legend>Formulaire de demande de création d'une question :</legend>
              <p>
-                 <label for="question_id"><h3>Question :</h3></label>
-                 <textarea rows=6 cols=50 id="question_id" placeholder="Écrivez votre question ici" name="question" required></textarea>
+                 <label for="titre_id"><h3>Question :</h3></label>
+                 <textarea rows=6 cols=50 id="titre_id" placeholder="Écrivez votre question ici" name="titre" required></textarea>
              </p>
              <p>
                  <label for="intitule_id"><h3>Intitulé :</h3></label>
