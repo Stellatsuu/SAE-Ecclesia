@@ -19,7 +19,9 @@ class Conf
 
         'login' => 'alex',
 
-        'password' => '9fZBgbju$eR9*rb9N3ciPq9hRbCRqu'
+        'password' => '9fZBgbju$eR9*rb9N3ciPq9hRbCRqu',
+
+        'schema' => 'alex'
     );
 
     static public function getLogin(): string
@@ -45,5 +47,10 @@ class Conf
     static public function getPassword(): string
     {
         return static::$databases['password'];
+    }
+
+    static public function getSchema(): string
+    {
+        return static::$databases['schema'];
     }
 }

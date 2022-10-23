@@ -50,9 +50,9 @@ class Utilisateur extends AbstractDataObject
         return $this->prenom;
     }
 
-    public function getQuestionsPosees(): array
+    public function getDemandes(): array
     {
-        return UtilisateurRepository::getQuestionsPoseesParUtilisateur($this->getIdUtilisateur());
+        return UtilisateurRepository::getDemandesFaitesParUtilisateur($this->getIdUtilisateur());
     }
     
 }

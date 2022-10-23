@@ -22,10 +22,9 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-    background: -webkit-linear-gradient(45deg, #2DD25A, #2D52D2 80%);
+    background: -webkit-linear-gradient(45deg, #2dd25a, #2d52d2 80%);
     color: white;
 }
-
 
 body {
     width: 600px;
@@ -38,10 +37,25 @@ footer p {
     padding-right: 1em;
 }
 
-div.question {
+div.demande {
     border: 1px solid black;
     padding: 1em;
     margin-bottom: 1em;
+    animation: slideInFromRight 1s ease-in-out forwards;
+    animation-delay: calc(0.3s * var(--order));
+    transform: translateX(50%);
+    opacity: 0;
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(50%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 .boutons {
@@ -63,7 +77,7 @@ div.question {
 }
 
 .boutons a:hover {
-    background: -webkit-linear-gradient(45deg, #D22DA5, #D2AD2D 80%);
+    background: -webkit-linear-gradient(45deg, #d22da5, #d2ad2d 80%);
     color: white;
 }
 
@@ -88,27 +102,4 @@ footer p {
     font-weight: bold;
     font-size: 1.2em;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    animation: rainbow 4s infinite;
-}
-
-@keyframes rainbow {
-    0% {
-        background: -webkit-linear-gradient(45deg, #2DD25A, #2D52D2 80%);
-    }
-    25% {
-        background: -webkit-linear-gradient(45deg, #2D52D2, #D22DA5 80%);
-
-    }
-    50% {
-        background: -webkit-linear-gradient(45deg, #D22DA5, #D2AD2D 80%);
-
-    }
-    75% {
-        background: -webkit-linear-gradient(45deg, #D2AD2D, #2DD25A 80%);
-
-    }
-    100% {
-        background: -webkit-linear-gradient(45deg, #2DD25A, #2D52D2 80%);
-
-    }
 }
