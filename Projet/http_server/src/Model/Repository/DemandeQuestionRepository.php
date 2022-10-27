@@ -9,7 +9,7 @@ class DemandeQuestionRepository extends AbstractRepository
 
     protected function getNomTable(): string
     {
-        return 'demandequestion';
+        return 'demande_question';
     }
 
     protected function getNomClePrimaire(): string
@@ -22,7 +22,6 @@ class DemandeQuestionRepository extends AbstractRepository
         return [
             'titre',
             'intitule',
-            'estvalide',
             'idutilisateur'
         ];
     }
@@ -33,7 +32,6 @@ class DemandeQuestionRepository extends AbstractRepository
             $row['idquestion'],
             $row['titre'],
             $row['intitule'],
-            $row['estvalide'],
             (new UtilisateurRepository)->select($row['idutilisateur'])
         );
         return $question;

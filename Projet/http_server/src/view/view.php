@@ -11,8 +11,8 @@
     <header>
         <nav>
             <ul>
-                <li><a href="frontController.php?action=listerDemandesQuestion">Liste des questions</a></li>
-                <li><a href="frontController.php?action=afficherFormulaireDemandeQuestion">Poser une question</a></li>
+                <li><a href="frontController.php?action=listerDemandesQuestion">Liste des demandes</a></li>
+                <li><a href="frontController.php?action=afficherFormulaireDemandeQuestion">Demande création question</a></li>
             </ul>
         </nav>
     </header>
