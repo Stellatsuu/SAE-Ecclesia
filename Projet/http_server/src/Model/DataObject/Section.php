@@ -31,4 +31,8 @@ class Section extends AbstractDataObject {
         return $this->idSection;
     }
 
+    public function getNomSection(): string {
+        return $this->nomSection;
+    }
+
 }

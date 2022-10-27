@@ -6,9 +6,11 @@ use App\SAE\Model\Repository\DemandeQuestionRepository as DemandeQuestionReposit
 use App\SAE\Model\DataObject\DemandeQuestion as DemandeQuestion;
 use App\SAE\Model\Repository\QuestionRepository as QuestionRepository;
 use App\SAE\Model\DataObject\Question as Question;
+use App\SAE\Model\DataObject\Section;
 use App\SAE\Model\Repository\UtilisateurRepository as UtilisateurRepository;
 use App\SAE\Model\DataObject\Utilisateur as Utilisateur;
 use DateTime;
+use DateInterval;
 
 class Controller
 {
@@ -65,8 +67,9 @@ class Controller
             null,
             null
         );
-        (new QuestionRepository)->insert($question);
+        (new QuestionRepository)->insertEbauche($question);
 
+        self::message("Demande acceptée", "La demande a été acceptée.");
     }
 
     public static function afficherFormulaireDemandeQuestion(): void
@@ -88,5 +91,63 @@ class Controller
         (new DemandeQuestionRepository)->insert($demande);
 
         static::message("Demande effectuée", "Votre demande de question a bien été prise en compte. Elle sera publiée après validation par un administrateur.");
-    }    
+    }
+
+    public static function afficherFormulairePoserQuestion(): void
+    {   
+        $idQuestion = intval($_GET['idQuestion']);
+        $question = (new QuestionRepository)->select($idQuestion);
+
+        static::afficherVue("view.php", [
+            "titrePage" => "Poser une question",
+            "contenuPage" => "formulairePoserQuestion.php",
+            "question" => $question
+        ]);
+    }
+
+    public static function poserQuestion(): void
+    {
+        echo '<pre>'; print_r($_POST); echo '</pre>';
+
+        $idQuestion = intval($_POST['idQuestion']);
+        $titre = $_POST['titre'];
+        $intitule = $_POST['intitule'];
+        $idUtilisateur = intval($_POST['idUtilisateur']);
+        $nbSections = intval($_POST['nbSections']);
+        $sections = [];
+        for ($i = 0; $i < $nbSections; $i++) {
+            $sections[] = new Section(-1, -1, $_POST['section_' . $i]);
+        }
+
+        $dateDebutRedaction = new DateTime($_POST['dateDebutRedaction']);
+        $heureDebutRedaction = preg_split('/\D/', $_POST['heureDebutRedaction']);
+        $dateDebutRedaction->setTime($heureDebutRedaction[0], $heureDebutRedaction[1]);
+
+        $dateFinRedaction = new DateTime($_POST['dateFinRedaction']);
+        $heureFinRedaction = preg_split('/\D/', $_POST['heureFinRedaction']);
+        $dateFinRedaction->setTime($heureFinRedaction[0], $heureFinRedaction[1]);
+
+        $dateOuvertureVotes = new DateTime($_POST['dateOuvertureVotes']);
+        $heureOuvertureVotes = preg_split('/\D/', $_POST['heureOuvertureVotes']);
+        $dateOuvertureVotes->setTime($heureOuvertureVotes[0], $heureOuvertureVotes[1]);
+
+        $dateFermetureVotes = new DateTime($_POST['dateFermetureVotes']);
+        $heureFermetureVotes = preg_split('/\D/', $_POST['heureFermetureVotes']);
+        $dateFermetureVotes->setTime($heureFermetureVotes[0], $heureFermetureVotes[1]);
+
+        $question = new Question(
+            $idQuestion,
+            $titre,
+            $intitule,
+            (new UtilisateurRepository)->select($idUtilisateur),
+            $sections,
+            $dateDebutRedaction,
+            $dateFinRedaction,
+            $dateOuvertureVotes,
+            $dateFermetureVotes
+        );
+
+        (new QuestionRepository)->updateEbauche($question);
+
+    }
 }
