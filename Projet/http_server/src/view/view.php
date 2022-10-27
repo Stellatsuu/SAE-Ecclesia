@@ -4,15 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <title><?php echo $titrePage; ?></title>
-    <link rel="stylesheet" href="../../../web/css/style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
     <header>
         <nav>
             <ul>
-                <li><a href="frontController.php?action=listerDemandesQuestion">Liste des demandes</a></li>
-                <li><a href="frontController.php?action=afficherFormulaireDemandeQuestion">Demande création question</a></li>
+                <li><a href="">Accueil</a></li>
+                <li><a href="">Voter</a></li>
+                <li><a href="">Mes questions</a></li>
+                <li><a href="">Mes groupes</a></li>
+                <li><a href="">Mon compte</a></li>
             </ul>
         </nav>
     </header>
@@ -23,11 +26,8 @@
         ?>
     </main>
 
-    <footer id="complex-gradient-transition">
-        <p>Le js c'est cool</p>
+    <footer id="">
     </footer>
-
-    <script src="../../web/js/anim.js"></script>    
 </body>
 
 </html>
