@@ -1,13 +1,8 @@
-
-DROP TABLE Utilisateur CASCADE;
-
-DROP TABLE Administrateur CASCADE;
-
-DROP TABLE Demande_Question CASCADE;
-
-DROP TABLE Question CASCADE;
-
 DROP TABLE Section CASCADE;
+DROP TABLE Question CASCADE;
+DROP TABLE Demande_Question CASCADE;
+DROP TABLE Administrateur CASCADE;
+DROP TABLE Utilisateur CASCADE;
 
 CREATE TABLE Utilisateur (
     idUtilisateur serial,
