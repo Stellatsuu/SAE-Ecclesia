@@ -22,22 +22,22 @@ CREATE TABLE Demande_Question (
     idQuestion serial,
     titre text NOT NULL,
     intitule text NOT NULL,
-    estValide boolean NOT NULL DEFAULT FALSE,
     idUtilisateur serial, -- nom de l'organisateur de la question
     CONSTRAINT pk_demande_question PRIMARY KEY (idQuestion),
     CONSTRAINT fk_demande_question_organisateur FOREIGN KEY (idUtilisateur) REFERENCES Utilisateur (idUtilisateur)
 );
 
 CREATE TABLE Question (
-    dateDebutRedaction timestamp NOT NULL,
-    dateFinRedaction timestamp NOT NULL,
-    dateOuvertureVotes timestamp NOT NULL,
-    dateFermetureVotes timestamp NOT NULL,
+    idQuestion serial,
+    titre text NOT NULL,
+    intitule text NOT NULL,
+    idUtilisateur serial,
+    dateDebutRedaction timestamp,
+    dateFinRedaction timestamp,
+    dateOuvertureVotes timestamp,
+    dateFermetureVotes timestamp,
     CONSTRAINT pk_question PRIMARY KEY (idQuestion),
     CONSTRAINT fk_question_organisateur FOREIGN KEY (idUtilisateur) REFERENCES Utilisateur (idUtilisateur)
-)
-INHERITS (
-    Demande_Question
 );
 
 CREATE TABLE Section (
