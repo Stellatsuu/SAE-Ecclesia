@@ -1,0 +1,48 @@
+nav{
+  background-color: #E1603C;
+  width: 70%;
+  height: 45px;
+  margin: 15px auto 0 auto;
+  border: solid black 1px;
+
+  ul{
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+
+    li{
+      display: block;
+
+      &:not(:nth-last-child(0)){
+        border-right: solid black 1px;
+      }
+      &:hover{
+        background-color: $couleurPrincipaleSurvol;
+      }
+      a{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        text-decoration: none;
+        color: $couleurTexte;
+        width:100%;
+        height:100%;
+
+        font-weight: 500;
+        font-size: 1.1em;
+      }
+    }
+  }
+
+  #activeMenu {
+    background-color: $couleurPrincipaleSurvol;
+
+    a{
+      cursor:default;
+    }
+  }
+
+}

@@ -1,0 +1,29 @@
+@import "abstracts/couleursTheme";
+@import "base/polices";
+
+@import "utils/textes";
+@import "layout/menu";
+@import "layout/panel";
+@import "layout/forms";
+
+html, body{
+  margin: 0;
+}
+
+body{
+  min-height: 100vh;
+  background-color: $couleurFond;
+  font-family: Raleway, serif;
+
+  &::before{
+    content: "";
+    position:absolute;
+    top: 5%;
+    left: 5%;
+    width:95%;
+    height:95%;
+    background-image: url("../assets/images/greek_logo_fond.png");
+    background-size: 30%;
+    z-index: -1;
+  }
+}
