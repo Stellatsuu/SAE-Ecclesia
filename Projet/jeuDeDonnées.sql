@@ -17,4 +17,4 @@ INSERT INTO Demande_Question(titre, intitule, idUtilisateur) VALUES('Est-ce que 
 INSERT INTO Demande_Question(titre, intitule, idUtilisateur) VALUES('Suis-je prof de maths ?', 'Quelles sont les probabilités que je sois prof de maths ? Fait-il beau ou non ? Cette question me parait fort épineuse..', 10004);
 
 -- Question
-INSERT INTO Question(titre, intitule, idUtilisateur, dateDebutRedaction, dateFinRedaction, dateOuvertureVotes, dateFermetureVotes) VALUES('Comment pensez-vous que nous devrions organiser la SAÉ ?', 'Chers collègues, je sais que je m''y prends un petit peu tard, mais je pense que nous devrions commencer à discuter de l''organisation de cette SAÉ...', 100005, '2022-09-05', '2022-09-15', '2022-09-15', '2022-09-20');
+INSERT INTO Question(titre, intitule, idUtilisateur, dateDebutRedaction, dateFinRedaction, dateOuvertureVotes, dateFermetureVotes) VALUES('Comment pensez-vous que nous devrions organiser la SAÉ ?', 'Chers collègues, je sais que je m''y prends un petit peu tard, mais je pense que nous devrions commencer à discuter de l''organisation de cette SAÉ...', 10005, '2022-09-05', '2022-09-15', '2022-09-15', '2022-09-20');
