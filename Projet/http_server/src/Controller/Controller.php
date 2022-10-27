@@ -4,8 +4,11 @@ namespace App\SAE\Controller;
 
 use App\SAE\Model\Repository\DemandeQuestionRepository as DemandeQuestionRepository;
 use App\SAE\Model\DataObject\DemandeQuestion as DemandeQuestion;
+use App\SAE\Model\Repository\QuestionRepository as QuestionRepository;
+use App\SAE\Model\DataObject\Question as Question;
 use App\SAE\Model\Repository\UtilisateurRepository as UtilisateurRepository;
 use App\SAE\Model\DataObject\Utilisateur as Utilisateur;
+use DateTime;
 
 class Controller
 {
@@ -40,31 +43,37 @@ class Controller
         ]);
     }
 
-    public static function refuserQuestion(): void
+    public static function refuserDemandeQuestion(): void
     {
-        // TODO: à modifier
         $idQuestion = intval($_GET['idQuestion']);
         (new DemandeQuestionRepository)->delete($idQuestion);
         static::listerDemandesQuestion();
     }
 
-    public static function accepterQuestion(): void
+    public static function accepterDemandeQuestion(): void
     {
-        // TODO: à modifier
         $idQuestion = intval($_GET['idQuestion']);
+        $demande = (new DemandeQuestionRepository)->select($idQuestion);
+        $question = new Question(
+            -1,
+            $demande->getTitre(),
+            $demande->getIntitule(),
+            $demande->getOrganisateur(),
+            null,
+            null,
+            null,
+            null,
+            null
+        );
+        (new QuestionRepository)->insert($question);
 
-        $question = (new DemandeQuestionRepository)->select($idQuestion);
-        $question->setEstValide(true);
-
-        (new DemandeQuestionRepository)->update($question);
-        static::listerDemandesQuestion();
     }
 
     public static function afficherFormulaireDemandeQuestion(): void
     {
         static::afficherVue("view.php", [
             "titrePage" => "Demande de question",
-            "contenuPage" => "demandeQuestion.php"
+            "contenuPage" => "formulaireDemandeQuestion.php"
         ]);
     }
 
@@ -74,14 +83,10 @@ class Controller
         $intitule = $_POST['intitule'];
         $idUtilisateur = intval($_POST['idUtilisateur']);
 
-        $demande = new DemandeQuestion(-1, $titre, $intitule, false, (new UtilisateurRepository)->select($idUtilisateur));
+        $demande = new DemandeQuestion(-1, $titre, $intitule, (new UtilisateurRepository)->select($idUtilisateur));
 
         (new DemandeQuestionRepository)->insert($demande);
 
         static::message("Demande effectuée", "Votre demande de question a bien été prise en compte. Elle sera publiée après validation par un administrateur.");
-    }
-
-    
-
-    
+    }    
 }
