@@ -1,7 +1,11 @@
 <main>
 
     <h1>Mes Questions</h1>
-
+    <?php
+        if($message){
+            require('message.php');
+        }
+    ?>
     
 
     <?php

@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset {
+h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset, body {
   color: white;
   font-family: Raleway, serif;
 }
@@ -84,6 +84,8 @@ textarea {
 }
 
 input[type=date], input[type=time] {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
   width: fit-content;
 }
 
@@ -169,7 +171,7 @@ label {
     width: calc(100% - 26px);
   }
 }
-.message {
+.message, .errorMessage {
   /* glassmorphism */
   background: rgba(255, 255, 255, 0.2);
   border-radius: 7px;
@@ -178,8 +180,43 @@ label {
   -webkit-backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   padding: 10px 20px;
+  /* positionnement */
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* animation */
+  -webkit-animation: disappear 5s forwards;
+          animation: disappear 5s forwards;
+  -webkit-animation-delay: 2s;
+          animation-delay: 2s;
 }
 
+.errorMessage {
+  background: rgba(255, 122, 122, 0.2);
+  border: 1px solid rgba(255, 122, 122, 0.3);
+  color: #c2320b;
+}
+
+@-webkit-keyframes disappear {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes disappear {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
 html, body {
   margin: 0;
 }
@@ -190,6 +227,4 @@ body {
   font-family: Raleway, serif;
   background-image: url("../assets/images/greek_logo_fond.png");
   background-size: 30%;
-}
-
-/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */

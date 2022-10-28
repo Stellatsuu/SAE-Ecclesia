@@ -16,10 +16,12 @@ class Controller
 {
 
     private static ?string $message = NULL;
+    private static ?string $messageType = "message";
 
     private static function afficherVue(string $cheminVue, array $parametres = []): void
     {
         $parametres['message'] = self::$message;
+        $parametres['messageType'] = self::$messageType;
         extract($parametres); // Crée des variables à partir du tableau $parametres
         require __DIR__ . '/../view/' . $cheminVue;
     }
@@ -31,6 +33,12 @@ class Controller
     {
         self::$message = $message;
         self::$action();
+    }
+
+    private static function error(string $action, string $message): void
+    {
+        self::$messageType = "errorMessage";
+        self::message($action, $message);
     }
 
     public static function listerDemandesQuestion(): void
@@ -110,13 +118,18 @@ class Controller
 
     public static function poserQuestion(): void
     {
-        echo '<pre>'; print_r($_POST); echo '</pre>';
-
         $idQuestion = intval($_POST['idQuestion']);
         $titre = $_POST['titre'];
         $intitule = $_POST['intitule'];
         $idUtilisateur = intval($_POST['idUtilisateur']);
         $nbSections = intval($_POST['nbSections']);
+
+        if($nbSections == 0){
+            $_GET['idUtilisateur'] = $idUtilisateur;
+            static::error("listerMesQuestions", "Vous devez ajouter au moins une section");
+            return;
+        }
+
         $sections = [];
         for ($i = 0; $i < $nbSections; $i++) {
             $sections[] = new Section(-1, -1, $_POST['section_' . $i]);
@@ -141,7 +154,8 @@ class Controller
         $dateCoherentes = $dateDebutRedaction < $dateFinRedaction && $dateFinRedaction <= $dateOuvertureVotes && $dateOuvertureVotes < $dateFermetureVotes;
 
         if(!$dateCoherentes) {
-            //TODO
+            $_GET['idUtilisateur'] = $idUtilisateur;
+            static::error("listerMesQuestions", "Les dates ne sont pas cohérentes");
             return;
         }
 
@@ -159,6 +173,8 @@ class Controller
 
         (new QuestionRepository)->updateEbauche($question);
 
+        $_GET['idUtilisateur'] = $idUtilisateur;
+        static::message("listerMesQuestions", "La question a été posée");
     }
 
     public static function listerMesQuestions() {

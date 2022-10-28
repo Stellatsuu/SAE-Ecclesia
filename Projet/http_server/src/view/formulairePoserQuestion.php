@@ -18,32 +18,23 @@
             <label for="sections_input">Sections:</label>
 
             <div id="sections_input">
-
-
                 <button type="button" id="add_section">+</button>
-                <input hidden id="nbSections_id" type="number" min="1" max="100" value="0" name="nbSections">
+                <input hidden id="nbSections_id" type="number" value="0" name="nbSections">
             </div>
 
 
-            <h3>Ouverture aux propositions : </h3>
+            <h3>Début de la phase de rédaction : </h3>
             le <input type="date" name="dateDebutRedaction" id=""> à <input type="time" name="heureDebutRedaction" id="">
 
-
-
-
-            <h3>Fermeture des propositions : </h3>
+            <h3>Fin de la phase de rédaction : </h3>
             le <input type="date" name="dateFinRedaction" id=""> à
             <input type="time" name="heureFinRedaction" id="">
-
-
 
             <h3>Ouverture des votes : </h3>
             le <input type="date" name="dateOuvertureVotes" id=""> à
             <input type="time" name="heureOuvertureVotes" id="">
 
-
-
-            <h3>Fermetures des propositions : </h3>
+            <h3>Fermeture des votes : </h3>
             le <input type="date" name="dateFermetureVotes" id=""> à
             <input type="time" name="heureFermetureVotes" id="">
 
@@ -80,6 +71,7 @@
             new_input.setAttribute("type", "text");
             new_input.setAttribute("id", "section_" + sections + "_id");
             new_input.setAttribute("name", "section_" + sections);
+            new_input.setAttribute("required", "true");
 
             var new_rmbutton = document.createElement("button");
             new_rmbutton.setAttribute("type", "button");
