@@ -17,11 +17,11 @@ class Conf
 
         'database' => 'sae3',
 
-        'login' => 'alex',
+        'login' => 'raf',
 
-        'password' => '9fZBgbju$eR9*rb9N3ciPq9hRbCRqu',
+        'password' => 'ZRoHMD*7dz$PS5zt6pwao6SQPct4a9',
 
-        'schema' => 'alex'
+        'schema' => 'raf'
     );
 
     static public function getLogin(): string

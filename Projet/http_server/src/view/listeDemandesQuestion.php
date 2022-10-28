@@ -1,4 +1,9 @@
 <div class="panel">
+    <?php
+        if(isset($message)){
+            require('message.php');
+        }
+    ?>
     <h1>Questions à valider</h1>
 
     <?php

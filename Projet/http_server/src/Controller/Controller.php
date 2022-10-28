@@ -47,9 +47,16 @@ class Controller
 
     public static function refuserDemandeQuestion(): void
     {
+        $demandes = (new DemandeQuestionRepository)->selectAll();
+
         $idQuestion = intval($_GET['idQuestion']);
         (new DemandeQuestionRepository)->delete($idQuestion);
-        static::listerDemandesQuestion();
+
+        self::afficherVue("view.php", [
+            "titrePage" => "Liste des demandes",
+            "contenuPage" => "listeDemandesQuestion.php",
+            "message" => "La demande a été refusée",
+            "demandes" => $demandes]);
     }
 
     public static function accepterDemandeQuestion(): void
@@ -69,7 +76,13 @@ class Controller
         );
         (new QuestionRepository)->insertEbauche($question);
 
-        self::message("Demande acceptée", "La demande a été acceptée.");
+        $demandes = (new DemandeQuestionRepository)->selectAll();
+
+        self::afficherVue("view.php", [
+            "titrePage" => "Liste des demandes",
+            "contenuPage" => "listeDemandesQuestion.php",
+            "message" => "La demande a été acceptée",
+            "demandes" => $demandes]);
     }
 
     public static function afficherFormulaireDemandeQuestion(): void

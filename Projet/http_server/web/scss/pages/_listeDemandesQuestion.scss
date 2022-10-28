@@ -1,11 +1,16 @@
 .demandeQuestion{
-
+  width:100%;
+  margin: 10px 0;
 
   .boite:last-child{
     display:flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+  }
+
+  .boite:first-child{
+    width:calc(100% - 26px);
   }
 
   .button{
@@ -27,5 +32,6 @@
 @media screen and (max-width: 499px){
   .demandeQuestion .boite:last-child{
     border-top: 0;
+    width:calc(100% - 26px);
   }
 }

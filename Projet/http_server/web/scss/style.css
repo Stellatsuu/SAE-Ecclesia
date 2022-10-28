@@ -139,11 +139,18 @@ label {
   padding: 10px;
 }
 
+.demandeQuestion {
+  width: 100%;
+  margin: 10px 0;
+}
 .demandeQuestion .boite:last-child {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.demandeQuestion .boite:first-child {
+  width: calc(100% - 26px);
 }
 .demandeQuestion .button {
   margin: 5px;
@@ -161,8 +168,20 @@ label {
 @media screen and (max-width: 499px) {
   .demandeQuestion .boite:last-child {
     border-top: 0;
+    width: calc(100% - 26px);
   }
 }
+.message {
+  /* glassmorphism */
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 7px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 10px 20px;
+}
+
 html, body {
   margin: 0;
 }
