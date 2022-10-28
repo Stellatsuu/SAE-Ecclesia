@@ -1,2 +1,1 @@
-    <p> <?php echo $message; ?></p>
-    <p> <?php require 'listeDemandeQuestions.php'; ?></p>
+    <p class="message"> <?= $message; ?></p>
