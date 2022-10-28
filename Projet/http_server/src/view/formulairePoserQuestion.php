@@ -2,55 +2,58 @@
     <form method="post" action="../../../web/frontController.php?action=poserQuestion">
         <fieldset>
             <legend>Posez votre question :</legend>
-            <p>
-                <label for="titre_id">
-                    <h3>Question :</h3>
-                </label>
-                <textarea readonly rows=6 cols=50 id="titre_id" name="titre" required><?=$question->getTitre()?></textarea>
-            </p>
-            <p>
-                <label for="intitule_id">
-                    <h3>Intitulé :</h3>
-                </label>
-                <textarea rows=6 cols=50 id="intitule_id" name="intitule" required><?=$question->getIntitule()?></textarea>
-            </p>
+
+            <label for="titre_id">
+                Question :
+            </label>
+            <textarea readonly rows=6 cols=50 id="titre_id" name="titre" required><?= $question->getTitre() ?></textarea>
+
+
+            <label for="intitule_id">
+                Intitulé :
+            </label>
+            <textarea rows=6 cols=50 id="intitule_id" name="intitule" required><?= $question->getIntitule() ?></textarea>
+
+
+            <label for="sections_input">Sections:</label>
 
             <div id="sections_input">
-                <h3>Sections:</h3>
+
 
                 <button type="button" id="add_section">+</button>
-                <input id="nbSections_id" type="hidden" name="nbSections">
+                <input hidden id="nbSections_id" type="number" min="1" max="100" value="0" name="nbSections">
             </div>
 
-            <p>
+
             <h3>Ouverture aux propositions : </h3>
-            le <input type="date" name="dateDebutRedaction" id=""> à
-            <input type="time" name="heureDebutRedaction" id="">
-            </p>
-            <p>
+            le <input type="date" name="dateDebutRedaction" id=""> à <input type="time" name="heureDebutRedaction" id="">
+
+
+
+
             <h3>Fermeture des propositions : </h3>
             le <input type="date" name="dateFinRedaction" id=""> à
             <input type="time" name="heureFinRedaction" id="">
-            </p>
 
-            <p>
+
+
             <h3>Ouverture des votes : </h3>
             le <input type="date" name="dateOuvertureVotes" id=""> à
             <input type="time" name="heureOuvertureVotes" id="">
-            </p>
 
-            <p>
+
+
             <h3>Fermetures des propositions : </h3>
             le <input type="date" name="dateFermetureVotes" id=""> à
             <input type="time" name="heureFermetureVotes" id="">
-            </p>
 
-            <input type="hidden" name="idUtilisateur" value="<?=$question->getOrganisateur()->getIdUtilisateur()?>">
-            <input type="hidden" name="idQuestion" value="<?=$question->getIdQuestion()?>">
 
-            <p>
-                <input type="submit" value="Envoyer" />
-            </p>
+            <input type="hidden" name="idUtilisateur" value="<?= $question->getOrganisateur()->getIdUtilisateur() ?>">
+            <input type="hidden" name="idQuestion" value="<?= $question->getIdQuestion() ?>">
+
+
+            <input type="submit" value="Envoyer" />
+
         </fieldset>
     </form>
 
@@ -67,7 +70,7 @@
 
         function addSection() {
             sections++;
-            var new_section = document.createElement("p");
+            var new_section = document.createElement("div");
 
             var new_label = document.createElement("label");
             new_label.setAttribute("for", "section_" + sections + "_id");
@@ -105,7 +108,7 @@
             var labels = sections_input.getElementsByTagName("label");
             var inputs = sections_input.getElementsByTagName("input");
             var rm_buttons = sections_input.getElementsByClassName("rmbutton");
-            
+
             for (var i = 0; i < labels.length; i++) {
                 labels[i].innerHTML = i + 1 + " : ";
                 inputs[i].setAttribute("id", "section_" + i + "_id");

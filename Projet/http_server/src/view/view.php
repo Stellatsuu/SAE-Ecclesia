@@ -12,7 +12,7 @@
     <header>
         <nav>
             <ul>
-                <li><a href="">Accueil</a></li>
+                <li><a href="frontController.php">Accueil</a></li>
                 <li><a href="">Voter</a></li>
                 <li><a href="frontController.php?action=listerMesQuestions&idUtilisateur=10005">Mes questions</a></li>
                 <li><a href="">Mes groupes</a></li>
