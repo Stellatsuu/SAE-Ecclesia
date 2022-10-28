@@ -1,6 +1,6 @@
 <div class="panel">
     <?php
-        if(isset($message)){
+        if($message){
             require('message.php');
         }
     ?>

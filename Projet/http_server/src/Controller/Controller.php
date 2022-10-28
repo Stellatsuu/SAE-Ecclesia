@@ -15,23 +15,22 @@ use DateInterval;
 class Controller
 {
 
+    private static ?string $message = NULL;
+
     private static function afficherVue(string $cheminVue, array $parametres = []): void
     {
+        $parametres['message'] = self::$message;
         extract($parametres); // Crée des variables à partir du tableau $parametres
         require __DIR__ . '/../view/' . $cheminVue;
     }
 
     /**
-     * Affiche un message avant de rediriger vers la liste des demandes.
+     * Affiche le message $message sur la page associée à $action
      */
-    private static function message(string $titrePage, string $message): void
+    private static function message(string $action, string $message): void
     {
-        static::afficherVue("view.php", [
-            "titrePage" => $titrePage,
-            "contenuPage" => "message.php",
-            "message" => $message,
-            "demandes" => (new DemandeQuestionRepository)->selectAll()
-        ]);
+        self::$message = $message;
+        self::$action();
     }
 
     public static function listerDemandesQuestion(): void
@@ -52,11 +51,7 @@ class Controller
         $idQuestion = intval($_GET['idQuestion']);
         (new DemandeQuestionRepository)->delete($idQuestion);
 
-        self::afficherVue("view.php", [
-            "titrePage" => "Liste des demandes",
-            "contenuPage" => "listeDemandesQuestion.php",
-            "message" => "La demande a été refusée",
-            "demandes" => $demandes]);
+        self::message("listerDemandesQuestion", "La question a été refusée");
     }
 
     public static function accepterDemandeQuestion(): void
@@ -75,14 +70,9 @@ class Controller
             null
         );
         (new QuestionRepository)->insertEbauche($question);
+        (new DemandeQuestionRepository)->delete($idQuestion);
 
-        $demandes = (new DemandeQuestionRepository)->selectAll();
-
-        self::afficherVue("view.php", [
-            "titrePage" => "Liste des demandes",
-            "contenuPage" => "listeDemandesQuestion.php",
-            "message" => "La demande a été acceptée",
-            "demandes" => $demandes]);
+        self::message("listerDemandesQuestion", "La question a été acceptée");
     }
 
     public static function afficherFormulaireDemandeQuestion(): void
@@ -151,11 +141,9 @@ class Controller
         $dateCoherentes = $dateDebutRedaction < $dateFinRedaction && $dateFinRedaction <= $dateOuvertureVotes && $dateOuvertureVotes < $dateFermetureVotes;
 
         if(!$dateCoherentes) {
-            
+            //TODO
             return;
         }
-
-        if()
 
         $question = new Question(
             $idQuestion,
