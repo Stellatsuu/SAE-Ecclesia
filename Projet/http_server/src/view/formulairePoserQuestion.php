@@ -1,7 +1,7 @@
 <main>
-    <form method="post" action="frontController.php?action=poserQuestion">
+    <form method="post" action="frontController.php?action=poserQuestion" class="panel">
+        <h1>Posez votre question :</h1>
         <fieldset>
-            <legend>Posez votre question :</legend>
 
             <label for="titre_id">
                 Question :
@@ -23,30 +23,30 @@
             </div>
 
 
-            <h3>Début de la phase de rédaction : </h3>
-            le <input required type="date" name="dateDebutRedaction" id=""> à 
+            <label>Phase de rédaction : </label>
+            <span class="conteneurDateHeure">Du <input required type="date" name="dateDebutRedaction" id=""> à
             <input required type="time" name="heureDebutRedaction" id="">
 
-            <h3>Fin de la phase de rédaction : </h3>
-            le <input required type="date" name="dateFinRedaction" id=""> à
-            <input required type="time" name="heureFinRedaction" id="">
+            au <input required type="date" name="dateFinRedaction" id=""> à
+                <input required type="time" name="heureFinRedaction" id=""></span>
 
-            <h3>Ouverture des votes : </h3>
-            le <input required type="date" name="dateOuvertureVotes" id=""> à
+            <label>Phase de votes : </label>
+            <span class="conteneurDateHeure">Du <input required type="date" name="dateOuvertureVotes" id=""> à
             <input required type="time" name="heureOuvertureVotes" id="">
 
-            <h3>Fermeture des votes : </h3>
-            le <input required type="date" name="dateFermetureVotes" id=""> à
-            <input required type="time" name="heureFermetureVotes" id="">
+
+            au <input required type="date" name="dateFermetureVotes" id=""> à
+                <input required type="time" name="heureFermetureVotes" id=""></span>
 
 
             <input type="hidden" name="idUtilisateur" value="<?= $question->getOrganisateur()->getIdUtilisateur() ?>">
             <input type="hidden" name="idQuestion" value="<?= $question->getIdQuestion() ?>">
 
+        </fieldset>
 
             <input type="submit" value="Envoyer" />
 
-        </fieldset>
+
     </form>
 
     <script>
@@ -66,7 +66,7 @@
 
             var new_label = document.createElement("label");
             new_label.setAttribute("for", "section_" + sections + "_id");
-            new_label.innerHTML = sections + " : ";
+            //new_label.innerHTML = sections + " : ";
 
             var new_input = document.createElement("input");
             new_input.setAttribute("type", "text");
@@ -103,7 +103,7 @@
             var rm_buttons = sections_input.getElementsByClassName("rmbutton");
 
             for (var i = 0; i < labels.length; i++) {
-                labels[i].innerHTML = i + 1 + " : ";
+                //labels[i].innerHTML = i + 1 + " : ";
                 inputs[i].setAttribute("id", "section_" + i + "_id");
                 inputs[i].setAttribute("name", "section_" + i);
                 rm_buttons[i].setAttribute("id", "section_" + i + "_rm");

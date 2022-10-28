@@ -121,6 +121,11 @@ input[type=button].refuserBtn:disabled, input[type=submit].refuserBtn:disabled, 
   background-color: #c2320b;
 }
 
+.rmbutton {
+  margin: 5px;
+  padding: 6px 20px;
+}
+
 .button {
   text-decoration: none;
   text-align: center;
@@ -129,6 +134,14 @@ input[type=button].refuserBtn:disabled, input[type=submit].refuserBtn:disabled, 
 label {
   margin-top: 20px;
   font-size: 1.5em;
+}
+
+.conteneurDateHeure {
+  display: flex;
+  justify-content: space-around;
+  width: 75%;
+  align-items: center;
+  margin-top: 7px;
 }
 
 .boite {
