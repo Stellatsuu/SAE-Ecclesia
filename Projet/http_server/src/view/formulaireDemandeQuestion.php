@@ -1,4 +1,4 @@
-<form method="post" action="../../../web/frontController.php?action=demanderCreationQuestion" class="panel">
+<form method="post" action="frontController.php?action=demanderCreationQuestion" class="panel">
     <h1>Proposer une question</h1>
     <fieldset>
         <label for="titre_id">Question :</label>

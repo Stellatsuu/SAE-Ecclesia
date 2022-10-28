@@ -1,5 +1,5 @@
 <main>
-    <form method="post" action="../../../web/frontController.php?action=poserQuestion">
+    <form method="post" action="frontController.php?action=poserQuestion">
         <fieldset>
             <legend>Posez votre question :</legend>
 
@@ -24,19 +24,20 @@
 
 
             <h3>Début de la phase de rédaction : </h3>
-            le <input type="date" name="dateDebutRedaction" id=""> à <input type="time" name="heureDebutRedaction" id="">
+            le <input required type="date" name="dateDebutRedaction" id=""> à 
+            <input required type="time" name="heureDebutRedaction" id="">
 
             <h3>Fin de la phase de rédaction : </h3>
-            le <input type="date" name="dateFinRedaction" id=""> à
-            <input type="time" name="heureFinRedaction" id="">
+            le <input required type="date" name="dateFinRedaction" id=""> à
+            <input required type="time" name="heureFinRedaction" id="">
 
             <h3>Ouverture des votes : </h3>
-            le <input type="date" name="dateOuvertureVotes" id=""> à
-            <input type="time" name="heureOuvertureVotes" id="">
+            le <input required type="date" name="dateOuvertureVotes" id=""> à
+            <input required type="time" name="heureOuvertureVotes" id="">
 
             <h3>Fermeture des votes : </h3>
-            le <input type="date" name="dateFermetureVotes" id=""> à
-            <input type="time" name="heureFermetureVotes" id="">
+            le <input required type="date" name="dateFermetureVotes" id=""> à
+            <input required type="time" name="heureFermetureVotes" id="">
 
 
             <input type="hidden" name="idUtilisateur" value="<?= $question->getOrganisateur()->getIdUtilisateur() ?>">
