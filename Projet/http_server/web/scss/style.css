@@ -84,8 +84,6 @@ textarea {
 }
 
 input[type=date], input[type=time] {
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
   width: fit-content;
 }
 
@@ -175,7 +173,7 @@ label {
   /* glassmorphism */
   background: rgba(255, 255, 255, 0.2);
   border-radius: 7px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 30px rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -186,26 +184,15 @@ label {
   left: 50%;
   transform: translate(-50%, -50%);
   /* animation */
-  -webkit-animation: disappear 5s forwards;
-          animation: disappear 5s forwards;
-  -webkit-animation-delay: 2s;
-          animation-delay: 2s;
+  animation: disappear 500ms forwards;
+  animation-delay: 2s;
 }
 
 .errorMessage {
-  background: rgba(255, 122, 122, 0.2);
-  border: 1px solid rgba(255, 122, 122, 0.3);
-  color: #c2320b;
-}
-
-@-webkit-keyframes disappear {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    visibility: hidden;
-  }
+  background: rgba(194, 50, 11, 0.2);
+  border: 1px solid rgba(194, 50, 11, 0.3);
+  box-shadow: 0 4px 30px rgba(194, 50, 11, 0.1);
+  color: #E43C0E;
 }
 
 @keyframes disappear {
@@ -227,4 +214,6 @@ body {
   font-family: Raleway, serif;
   background-image: url("../assets/images/greek_logo_fond.png");
   background-size: 30%;
-}/*# sourceMappingURL=style.css.map */
+}
+
+/*# sourceMappingURL=style.css.map */

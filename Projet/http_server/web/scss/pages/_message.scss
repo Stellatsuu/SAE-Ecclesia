@@ -1,11 +1,11 @@
 .message, .errorMessage{
   /* glassmorphism */
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba($couleurMessage, 20%);
   border-radius: 7px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 30px rgba($couleurMessage, 10%);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba($couleurMessage, 30%);
   padding: 10px 20px;
 
   /* positionnement */
@@ -15,14 +15,15 @@
   transform: translate(-50%, -50%);
 
   /* animation */
-  animation: disappear 5s forwards;
+  animation: disappear 500ms forwards;
   animation-delay: 2s;
 }
 
 .errorMessage{
-  background: rgba(255, 122, 122, 0.2);
-  border: 1px solid rgba(255, 122, 122, 0.3);
-  color: $couleurRefuserSurvol;
+  background: rgba($couleurRefuserSurvol, 20%);
+  border: 1px solid rgba($couleurRefuserSurvol, 30%);
+  box-shadow: 0 4px 30px rgba($couleurRefuserSurvol, 10%);
+  color: $couleurRefuser;
 }
 
 @keyframes disappear {
