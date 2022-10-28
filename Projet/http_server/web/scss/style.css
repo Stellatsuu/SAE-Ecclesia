@@ -84,8 +84,6 @@ textarea {
 }
 
 input[type=date], input[type=time] {
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
   width: fit-content;
 }
 
@@ -190,15 +188,8 @@ body {
   min-height: 100vh;
   background-color: #1B1B1B;
   font-family: Raleway, serif;
-}
-body::before {
-  content: "";
-  position: absolute;
-  top: 5%;
-  left: 5%;
-  width: 95%;
-  height: 95%;
   background-image: url("../assets/images/greek_logo_fond.png");
   background-size: 30%;
-  z-index: -1;
-}/*# sourceMappingURL=style.css.map */
+}
+
+/*# sourceMappingURL=style.css.map */
