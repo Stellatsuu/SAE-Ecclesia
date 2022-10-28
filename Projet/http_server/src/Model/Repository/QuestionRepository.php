@@ -97,4 +97,22 @@ class QuestionRepository extends AbstractRepository
             $pdoStatement->execute($values);
         }
     }
+
+    public function getQuestionsParOrganisateur(int $idUtilisateur) : array {
+        $pdo = DatabaseConnection::getPdo();
+
+        $sql = "SELECT * FROM question WHERE idutilisateur = :idutilisateur";
+        $pdoStatement = $pdo->prepare($sql);
+        $values = [
+            'idutilisateur' => $idUtilisateur
+        ];
+
+        $pdoStatement->execute($values);
+
+        $questions = [];
+        foreach ($pdoStatement as $row) {
+            $questions[] = $this->construire($row);
+        }
+        return $questions;
+    }
 }

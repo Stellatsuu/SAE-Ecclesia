@@ -150,4 +150,16 @@ class Controller
         (new QuestionRepository)->updateEbauche($question);
 
     }
+
+    public static function listerMesQuestions() {
+        $idUtilisateur = intval($_GET['idUtilisateur']);
+        $questions = (new QuestionRepository)->getQuestionsParOrganisateur($idUtilisateur);
+
+        static::afficherVue("view.php", [
+            "titrePage" => "Mes questions",
+            "contenuPage" => "listeMesQuestions.php",
+            "questions" => $questions
+        ]);
+        
+    }
 }
