@@ -7,6 +7,9 @@ fieldset{
 
 input, textarea{
   outline: none;
+  background-color: $couleurFond3;
+  border: solid 2px $couleurPrincipale;
+  padding: 5px;
 }
 
 textarea{
@@ -17,8 +20,9 @@ textarea{
   padding: 5px;
 }
 
-input{
-  outline: none;
+input[type="date"], input[type="time"] {
+  
+  width: fit-content;
 }
 
 input[type="button"], input[type="submit"], button, .button{

@@ -148,6 +148,15 @@ class Controller
         $heureFermetureVotes = preg_split('/\D/', $_POST['heureFermetureVotes']);
         $dateFermetureVotes->setTime($heureFermetureVotes[0], $heureFermetureVotes[1]);
 
+        $dateCoherentes = $dateDebutRedaction < $dateFinRedaction && $dateFinRedaction <= $dateOuvertureVotes && $dateOuvertureVotes < $dateFermetureVotes;
+
+        if(!$dateCoherentes) {
+            
+            return;
+        }
+
+        if()
+
         $question = new Question(
             $idQuestion,
             $titre,

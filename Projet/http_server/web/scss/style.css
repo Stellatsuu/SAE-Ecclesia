@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-h1, h2, h3, h4, h5, h6, p, label, input, textarea {
+h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset {
   color: white;
   font-family: Raleway, serif;
 }
@@ -70,6 +70,9 @@ fieldset {
 
 input, textarea {
   outline: none;
+  background-color: #353535;
+  border: solid 2px #E1603C;
+  padding: 5px;
 }
 
 textarea {
@@ -80,8 +83,10 @@ textarea {
   padding: 5px;
 }
 
-input {
-  outline: none;
+input[type=date], input[type=time] {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
 }
 
 input[type=button], input[type=submit], button, .button {
@@ -196,6 +201,4 @@ body::before {
   background-image: url("../assets/images/greek_logo_fond.png");
   background-size: 30%;
   z-index: -1;
-}
-
-/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */
