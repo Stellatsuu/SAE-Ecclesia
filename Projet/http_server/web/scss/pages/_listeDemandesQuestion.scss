@@ -1,0 +1,31 @@
+.demandeQuestion{
+
+
+  .boite:last-child{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .button{
+    margin: 5px;
+    width:calc(100% - 60px);
+  }
+}
+
+@media screen and (min-width: 500px){
+  .demandeQuestion{
+    display:flex;
+
+    .boite:last-child{
+      border-left: 0;
+    }
+  }
+}
+
+@media screen and (max-width: 499px){
+  .demandeQuestion .boite:last-child{
+    border-top: 0;
+  }
+}

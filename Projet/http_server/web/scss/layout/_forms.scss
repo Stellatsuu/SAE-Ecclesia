@@ -21,7 +21,7 @@ input{
   outline: none;
 }
 
-input[type="button"], input[type="submit"], button{
+input[type="button"], input[type="submit"], button, .button{
   background-color: $couleurPrincipale;
   border:none;
   border-radius: 4px;
@@ -36,6 +36,32 @@ input[type="button"], input[type="submit"], button{
   &:disabled{
     background-color: $couleurPrincipaleSurvol;
   }
+
+  &.validerBtn{
+    background-color: $couleurValider;
+
+    &:hover{
+      background-color: $couleurValiderSurvol;
+    }
+    &:disabled{
+      background-color: $couleurValiderSurvol;
+    }
+  }
+  &.refuserBtn{
+    background-color: $couleurRefuser;
+
+    &:hover{
+      background-color: $couleurRefuserSurvol;
+    }
+    &:disabled{
+      background-color: $couleurRefuserSurvol;
+    }
+  }
+}
+
+.button{
+  text-decoration: none;
+  text-align: center;
 }
 
 label{
