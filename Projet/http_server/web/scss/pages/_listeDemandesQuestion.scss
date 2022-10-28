@@ -10,7 +10,7 @@
   }
 
   .boite:first-child{
-    width:100%;
+    width:calc(100% - 26px);
   }
 
   .button{
@@ -32,5 +32,6 @@
 @media screen and (max-width: 499px){
   .demandeQuestion .boite:last-child{
     border-top: 0;
+    width:calc(100% - 26px);
   }
 }

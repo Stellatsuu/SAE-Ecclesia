@@ -145,7 +145,7 @@ label {
   justify-content: center;
 }
 .demandeQuestion .boite:first-child {
-  width: 100%;
+  width: calc(100% - 26px);
 }
 .demandeQuestion .button {
   margin: 5px;
@@ -163,6 +163,7 @@ label {
 @media screen and (max-width: 499px) {
   .demandeQuestion .boite:last-child {
     border-top: 0;
+    width: calc(100% - 26px);
   }
 }
 .message {
