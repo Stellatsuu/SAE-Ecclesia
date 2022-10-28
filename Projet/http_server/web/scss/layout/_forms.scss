@@ -3,6 +3,11 @@ fieldset{
   display: flex;
   flex-direction: column;
   width: 70%;
+  padding:0;
+
+  > textarea{
+    max-width:100%;
+  }
 }
 
 input, textarea{
@@ -14,7 +19,7 @@ input, textarea{
 
 textarea{
   background-color: $couleurFond3;
-  width: 100%;
+  width: calc(100% - 14px);
   resize: vertical;
   border: solid 2px $couleurPrincipale;
   padding: 5px;
@@ -80,8 +85,28 @@ label{
 
 .conteneurDateHeure{
   display: flex;
-  justify-content: space-around;
-  width: 75%;
-  align-items: center;
+  flex-wrap: wrap;
   margin-top: 7px;
+
+  div{
+    display:flex;
+    flex-wrap: wrap;
+    margin: 2.5px 0;
+
+    span{
+      display:flex;
+      align-items: center;
+    }
+  }
+
+  input{
+    height:20px;
+    margin: 2.5px 10px;
+  }
+}
+
+@media screen and (max-width: 600px){
+  fieldset{
+    width: 90%;
+  }
 }

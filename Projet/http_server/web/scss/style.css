@@ -66,6 +66,10 @@ fieldset {
   display: flex;
   flex-direction: column;
   width: 70%;
+  padding: 0;
+}
+fieldset > textarea {
+  max-width: 100%;
 }
 
 input, textarea {
@@ -77,7 +81,7 @@ input, textarea {
 
 textarea {
   background-color: #353535;
-  width: 100%;
+  width: calc(100% - 14px);
   resize: vertical;
   border: solid 2px #E1603C;
   padding: 5px;
@@ -138,12 +142,28 @@ label {
 
 .conteneurDateHeure {
   display: flex;
-  justify-content: space-around;
-  width: 75%;
-  align-items: center;
+  flex-wrap: wrap;
   margin-top: 7px;
 }
+.conteneurDateHeure div {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 2.5px 0;
+}
+.conteneurDateHeure div span {
+  display: flex;
+  align-items: center;
+}
+.conteneurDateHeure input {
+  height: 20px;
+  margin: 2.5px 10px;
+}
 
+@media screen and (max-width: 600px) {
+  fieldset {
+    width: 90%;
+  }
+}
 .boite {
   border: solid 3px #E1603C;
   background-color: #353535;
