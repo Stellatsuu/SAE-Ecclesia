@@ -18,7 +18,7 @@
             <div id="sections_input">
                 <h3>Sections:</h3>
 
-                <span id="add_section">+</span>
+                <button type="button" id="add_section">+</button>
                 <input id="nbSections_id" type="hidden" name="nbSections">
             </div>
 
@@ -78,7 +78,8 @@
             new_input.setAttribute("id", "section_" + sections + "_id");
             new_input.setAttribute("name", "section_" + sections);
 
-            var new_rmbutton = document.createElement("span");
+            var new_rmbutton = document.createElement("button");
+            new_rmbutton.setAttribute("type", "button");
             new_rmbutton.setAttribute("class", "rmbutton");
             new_rmbutton.setAttribute("id", "section_" + sections + "_rm");
             new_rmbutton.innerHTML = "-";
