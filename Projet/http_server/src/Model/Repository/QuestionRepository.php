@@ -40,10 +40,10 @@ class QuestionRepository extends AbstractRepository
             $row['intitule'],
             (new UtilisateurRepository)->select($row['idutilisateur']),
             (new SectionRepository)->selectAllByQuestion($row['idquestion']),
-            new DateTime($row['datedebutredaction']),
-            new DateTime($row['datefinredaction']),
-            new DateTime($row['dateouverturevotes']),
-            new DateTime($row['datefermeturevotes'])
+            $row['datedebutredaction'] === NULL ? NULL : new DateTime($row['datedebutredaction']),
+            $row['datefinredaction'] === NULL ? NULL : new DateTime($row['datefinredaction']),
+            $row['dateouverturevotes'] === NULL ? NULL : new DateTime($row['dateouverturevotes']),
+            $row['datefermeturevotes'] === NULL ? NULL : new DateTime($row['datefermeturevotes'])
         );
         return $question;
     }

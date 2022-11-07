@@ -9,12 +9,13 @@ INSERT INTO Utilisateur(idUtilisateur, nom, prenom, motDePasse) VALUES(10006, 'P
 INSERT INTO Utilisateur(idUtilisateur, nom, prenom, motDePasse) VALUES(10007, 'Rosenfeld', 'Matthieu', '1234');
 INSERT INTO Utilisateur(idUtilisateur, nom, prenom, motDePasse) VALUES(10008, 'Rouchon', 'Bruno', '1234');
 INSERT INTO Utilisateur(idUtilisateur, nom, prenom, motDePasse) VALUES(10009, 'Rice', 'Lorraine', '1234');
+INSERT INTO Utilisateur(idUtilisateur, nom, prenom, motDePasse) VALUES(10010, 'Troll', 'Face', '1234');
 
 -- Administrateur
 
 -- Demande_Question
-INSERT INTO Demande_Question(titre, intitule, idUtilisateur) VALUES('Est-ce que les sql ninjas existent ?', 'Les sql ninjas une légende urbaine, personne ne les a jamais vus. Pensez-vous qu''ils existent ?', 10002);
-INSERT INTO Demande_Question(titre, intitule, idUtilisateur) VALUES('Suis-je prof de maths ?', 'Quelles sont les probabilités que je sois prof de maths ? Fait-il beau ou non ? Cette question me parait fort épineuse..', 10004);
+INSERT INTO Demande_Question(titre, intitule, idUtilisateur) VALUES('azertyuiop', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', 10010);
+INSERT INTO Demande_Question(titre, intitule, idUtilisateur) VALUES('Barèmes des modules de mathématiques', 'Quels devraient être les barèmes pour les différents modules de mathématique cette année?', 10004);
+INSERT INTO Demande_Question(titre, intitule, idUtilisateur) VALUES('Blind Test', 'Quand devrait se dérouler le prochain blind test?', 10001);
 
 -- Question
-INSERT INTO Question(titre, intitule, idUtilisateur, dateDebutRedaction, dateFinRedaction, dateOuvertureVotes, dateFermetureVotes) VALUES('Comment pensez-vous que nous devrions organiser la SAÉ ?', 'Chers collègues, je sais que je m''y prends un petit peu tard, mais je pense que nous devrions commencer à discuter de l''organisation de cette SAÉ...', 10005, '2022-09-05', '2022-09-15', '2022-09-15', '2022-09-20');
