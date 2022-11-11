@@ -84,6 +84,7 @@ class QuestionRepository extends AbstractRepository
         (new SectionRepository)->deleteAllByQuestion($question->getIdQuestion());
 
         foreach ($question->getSections() as $section) {
+            $section->setIdQuestion($question->getIdQuestion());
             (new SectionRepository)->insert($section);
         }
     }

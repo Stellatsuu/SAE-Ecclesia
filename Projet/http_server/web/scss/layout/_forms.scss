@@ -15,6 +15,7 @@ input, textarea{
   background-color: $couleurFond3;
   border: solid 2px $couleurPrincipale;
   padding: 5px;
+  font-size: 1rem;
 }
 
 textarea{
@@ -23,6 +24,12 @@ textarea{
   resize: vertical;
   border: solid 2px $couleurPrincipale;
   padding: 5px;
+  font-size: 1rem;
+}
+
+label{
+  margin-top:20px;
+  font-size: 1.5em;
 }
 
 input[type="date"], input[type="time"] {
@@ -68,21 +75,6 @@ input[type="button"], input[type="submit"], button, .button{
   }
 }
 
-.rmbutton{
-  margin: 5px;
-  padding: 6px 20px;
-}
-
-.button{
-  text-decoration: none;
-  text-align: center;
-}
-
-label{
-  margin-top:20px;
-  font-size: 1.5em;
-}
-
 .conteneurDateHeure{
   display: flex;
   flex-wrap: wrap;
@@ -102,6 +94,21 @@ label{
   input{
     height:20px;
     margin: 2.5px 10px;
+  }
+}
+
+#sections_input {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+
+  #add_section {
+    height: 60px;
+    width: 60px;
+    padding: 0;
+    align-self: center;
+    justify-self: center;
+    text-align: center;
   }
 }
 

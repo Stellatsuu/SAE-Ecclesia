@@ -97,12 +97,13 @@ class Controller
         $description = $_POST['description'];
         $idUtilisateur = intval($_POST['idUtilisateur']);
 
-        if($titre == "" || $description == "") {
+        // Vérification des données
+        if ($titre == "" || $description == "") {
             self::error("afficherFormulaireDemandeQuestion", "Veuillez remplir tous les champs");
             return;
         }
 
-        if(strlen($titre) > 100) {
+        if (strlen($titre) > 100) {
             self::error("afficherFormulaireDemandeQuestion", "Le titre ne doit pas dépasser 100 caractères");
             return;
         }
@@ -115,35 +116,56 @@ class Controller
     }
 
     public static function afficherFormulairePoserQuestion(): void
-    {   
+    {
         $idQuestion = intval($_GET['idQuestion']);
         $question = Question::toQuestion((new QuestionRepository)->select($idQuestion));
 
+        if (
+            $question->getDateDebutRedaction() === null
+            || $question->getDateFinRedaction() === null
+            || $question->getDateOuvertureVotes() === null
+            || $question->getDateFermetureVotes() === null
+        ) {
+
+            $question->setDateDebutRedaction((new DateTime())->add(new DateInterval('P1D')));
+            $question->setDateFinRedaction((new DateTime())->add(new DateInterval('P8D')));
+            $question->setDateOuvertureVotes((new DateTime())->add(new DateInterval('P8D')));
+            $question->setDateFermetureVotes((new DateTime())->add(new DateInterval('P15D')));
+        }
+
+        $datesFormatees = array(
+            "dateDebutRedaction" => $question->getDateDebutRedaction()->format("Y-m-d"),
+            "dateFinRedaction" => $question->getDateFinRedaction()->format("Y-m-d"),
+            "dateOuvertureVotes" => $question->getDateOuvertureVotes()->format("Y-m-d"),
+            "dateFermetureVotes" => $question->getDateFermetureVotes()->format("Y-m-d")
+        );
 
         static::afficherVue("view.php", [
             "titrePage" => "Poser une question",
             "contenuPage" => "formulairePoserQuestion.php",
-            "question" => $question
+            "question" => $question,
+            "datesFormatees" => $datesFormatees
         ]);
     }
 
     public static function poserQuestion(): void
     {
+
         $idQuestion = intval($_POST['idQuestion']);
         $titre = $_POST['titre'];
         $intitule = $_POST['intitule'];
         $idUtilisateur = intval($_POST['idUtilisateur']);
         $nbSections = intval($_POST['nbSections']);
-
-        if($nbSections == 0){
+        echo $nbSections;
+        if ($nbSections == 0) {
             $_GET['idUtilisateur'] = $idUtilisateur;
             static::error("listerMesQuestions", "Vous devez ajouter au moins une section");
             return;
         }
 
         $sections = [];
-        for ($i = 0; $i < $nbSections; $i++) {
-            $sections[] = new Section(-1, -1, $_POST['section_' . $i]);
+        for ($i = 1; $i <= $nbSections; $i++) {
+            $sections[] = new Section(-1, -1, $_POST['nomSection' . $i], $_POST['descriptionSection' . $i]);
         }
 
         $dateDebutRedaction = new DateTime($_POST['dateDebutRedaction']);
@@ -164,7 +186,7 @@ class Controller
 
         $dateCoherentes = $dateDebutRedaction < $dateFinRedaction && $dateFinRedaction <= $dateOuvertureVotes && $dateOuvertureVotes < $dateFermetureVotes;
 
-        if(!$dateCoherentes) {
+        if (!$dateCoherentes) {
             $_GET['idUtilisateur'] = $idUtilisateur;
             static::error("listerMesQuestions", "Les dates ne sont pas cohérentes");
             return;
@@ -188,7 +210,8 @@ class Controller
         static::message("listerMesQuestions", "La question a été posée");
     }
 
-    public static function listerMesQuestions() {
+    public static function listerMesQuestions()
+    {
         $idUtilisateur = intval($_GET['idUtilisateur']);
         $questions = (new QuestionRepository)->getQuestionsParOrganisateur($idUtilisateur);
 
@@ -197,6 +220,5 @@ class Controller
             "contenuPage" => "listeMesQuestions.php",
             "questions" => $questions
         ]);
-        
     }
 }

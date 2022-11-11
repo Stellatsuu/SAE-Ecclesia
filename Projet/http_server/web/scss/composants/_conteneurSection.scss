@@ -1,0 +1,32 @@
+.conteneur_section {
+  padding: 20px;
+  padding-top: 0px;
+  border: $couleurFond3 1px solid;
+
+  width: 1fr;
+
+  div {
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  label {
+    display: block;
+    font-size: 1em;
+    margin: 4px 0;
+  }
+
+  .rmbutton {
+    padding: 3px 6px;
+  }
+
+  textarea {
+    resize: none;
+  }
+
+  input[type="text"] {
+    width: calc(100% - 14px);
+  }
+}

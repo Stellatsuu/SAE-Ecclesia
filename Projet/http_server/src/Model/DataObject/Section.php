@@ -42,4 +42,10 @@ class Section extends AbstractDataObject {
         return $this->descriptionSection;
     }
 
+    // Setters
+
+    public function setIdQuestion(int $idQuestion): void {
+        $this->idQuestion = $idQuestion;
+    }
+
 }

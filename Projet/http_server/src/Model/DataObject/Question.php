@@ -67,5 +67,36 @@ class Question extends DemandeQuestion
         return $this->dateFermetureVotes;
     }
 
+    //Setters
+
+    public function setSections(?array $sections): void
+    {
+        $this->sections = $sections;
+    }
+
+    public function setDateDebutRedaction(?DateTime $dateDebutRedaction): void
+    {
+        $this->dateDebutRedaction = $dateDebutRedaction;
+    }
+
+    public function setDateFinRedaction(?DateTime $dateFinRedaction): void
+    {
+        $this->dateFinRedaction = $dateFinRedaction;
+    }
+
+    public function setDateOuvertureVotes(?DateTime $dateOuvertureVotes): void
+    {
+        $this->dateOuvertureVotes = $dateOuvertureVotes;
+    }
+
+    public function setDateFermetureVotes(?DateTime $dateFermetureVotes): void
+    {
+        $this->dateFermetureVotes = $dateFermetureVotes;
+    }
+
+    public static function toQuestion($object) : Question {
+        return $object;
+    }
+
     
 }

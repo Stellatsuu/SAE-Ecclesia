@@ -77,6 +77,7 @@ input, textarea {
   background-color: #353535;
   border: solid 2px #E1603C;
   padding: 5px;
+  font-size: 1rem;
 }
 
 textarea {
@@ -85,9 +86,17 @@ textarea {
   resize: vertical;
   border: solid 2px #E1603C;
   padding: 5px;
+  font-size: 1rem;
+}
+
+label {
+  margin-top: 20px;
+  font-size: 1.5em;
 }
 
 input[type=date], input[type=time] {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
   width: fit-content;
 }
 
@@ -125,21 +134,6 @@ input[type=button].refuserBtn:disabled, input[type=submit].refuserBtn:disabled, 
   background-color: #c2320b;
 }
 
-.rmbutton {
-  margin: 5px;
-  padding: 6px 20px;
-}
-
-.button {
-  text-decoration: none;
-  text-align: center;
-}
-
-label {
-  margin-top: 20px;
-  font-size: 1.5em;
-}
-
 .conteneurDateHeure {
   display: flex;
   flex-wrap: wrap;
@@ -159,6 +153,20 @@ label {
   margin: 2.5px 10px;
 }
 
+#sections_input {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+}
+#sections_input #add_section {
+  height: 60px;
+  width: 60px;
+  padding: 0;
+  align-self: center;
+  justify-self: center;
+  text-align: center;
+}
+
 @media screen and (max-width: 600px) {
   fieldset {
     width: 90%;
@@ -168,6 +176,33 @@ label {
   border: solid 3px #E1603C;
   background-color: #353535;
   padding: 10px;
+}
+
+.conteneur_section {
+  padding: 20px;
+  padding-top: 0px;
+  border: #353535 1px solid;
+  width: 1fr;
+}
+.conteneur_section div {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.conteneur_section label {
+  display: block;
+  font-size: 1em;
+  margin: 4px 0;
+}
+.conteneur_section .rmbutton {
+  padding: 3px 6px;
+}
+.conteneur_section textarea {
+  resize: none;
+}
+.conteneur_section input[type=text] {
+  width: calc(100% - 14px);
 }
 
 .demandeQuestion {
@@ -217,8 +252,10 @@ label {
   left: 50%;
   transform: translate(-50%, -50%);
   /* animation */
-  animation: disappear 500ms forwards;
-  animation-delay: 2s;
+  -webkit-animation: disappear 500ms forwards;
+          animation: disappear 500ms forwards;
+  -webkit-animation-delay: 2s;
+          animation-delay: 2s;
 }
 
 .errorMessage {
@@ -226,6 +263,16 @@ label {
   border: 1px solid rgba(194, 50, 11, 0.3);
   box-shadow: 0 4px 30px rgba(194, 50, 11, 0.1);
   color: #E43C0E;
+}
+
+@-webkit-keyframes disappear {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
 
 @keyframes disappear {
@@ -247,6 +294,4 @@ body {
   font-family: Raleway, serif;
   background-image: url("../assets/images/greek_logo_fond.png");
   background-size: 30%;
-}
-
-/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */
