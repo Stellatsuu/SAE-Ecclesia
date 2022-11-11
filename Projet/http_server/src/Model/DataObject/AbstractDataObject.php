@@ -6,6 +6,6 @@ abstract class AbstractDataObject {
 
     public abstract function formatTableau(): array;
 
-    public abstract function getValeurClePrimaire(): int;
+    public abstract function getValeurClePrimaire();
 
 }
