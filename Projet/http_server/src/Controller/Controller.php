@@ -94,10 +94,20 @@ class Controller
     public static function demanderCreationQuestion(): void
     {
         $titre = $_POST['titre'];
-        $intitule = $_POST['intitule'];
+        $description = $_POST['description'];
         $idUtilisateur = intval($_POST['idUtilisateur']);
 
-        $demande = new DemandeQuestion(-1, $titre, $intitule, (new UtilisateurRepository)->select($idUtilisateur));
+        if($titre == "" || $description == "") {
+            self::error("afficherFormulaireDemandeQuestion", "Veuillez remplir tous les champs");
+            return;
+        }
+
+        if(strlen($titre) > 100) {
+            self::error("afficherFormulaireDemandeQuestion", "Le titre ne doit pas dépasser 100 caractères");
+            return;
+        }
+
+        $demande = new DemandeQuestion(-1, $titre, $description, (new UtilisateurRepository)->select($idUtilisateur));
 
         (new DemandeQuestionRepository)->insert($demande);
 
