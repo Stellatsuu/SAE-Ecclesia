@@ -69,7 +69,7 @@ class Controller
         $question = new Question(
             -1,
             $demande->getTitre(),
-            $demande->getIntitule(),
+            $demande->getDescription(),
             $demande->getOrganisateur(),
             null,
             null,
@@ -101,13 +101,14 @@ class Controller
 
         (new DemandeQuestionRepository)->insert($demande);
 
-        static::message("Demande effectuée", "Votre demande de question a bien été prise en compte. Elle sera publiée après validation par un administrateur.");
+        static::message("listerDemandesQuestion", "Votre demande a été envoyée");
     }
 
     public static function afficherFormulairePoserQuestion(): void
     {   
         $idQuestion = intval($_GET['idQuestion']);
-        $question = (new QuestionRepository)->select($idQuestion);
+        $question = Question::toQuestion((new QuestionRepository)->select($idQuestion));
+
 
         static::afficherVue("view.php", [
             "titrePage" => "Poser une question",

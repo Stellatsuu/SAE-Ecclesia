@@ -23,6 +23,11 @@
 
     <main>
         <?php
+        if ($message) {
+            require('message.php');
+        }
+        ?>
+        <?php
         require __DIR__ . "/{$contenuPage}";
         ?>
     </main>

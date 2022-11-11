@@ -91,10 +91,10 @@ class QuestionRepository extends AbstractRepository
     public function getQuestionsParOrganisateur(int $idUtilisateur) : array {
         $pdo = DatabaseConnection::getPdo();
 
-        $sql = "SELECT * FROM question WHERE id_utilisateur = :id_utilisateur";
+        $sql = "SELECT * FROM question WHERE id_organisateur = :id_organisateur";
         $pdoStatement = $pdo->prepare($sql);
         $values = [
-            'id_utilisateur' => $idUtilisateur
+            'id_organisateur' => $idUtilisateur
         ];
 
         $pdoStatement->execute($values);
