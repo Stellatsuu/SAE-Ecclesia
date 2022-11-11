@@ -5,46 +5,47 @@ DROP TABLE Administrateur CASCADE;
 DROP TABLE Utilisateur CASCADE;
 
 CREATE TABLE Utilisateur (
-    idUtilisateur serial,
-    nom varchar(50) NOT NULL,
-    prenom varchar(50) NOT NULL,
-    motDePasse varchar(128) NOT NULL,
-    CONSTRAINT pk_Utilisateur PRIMARY KEY (idUtilisateur)
+    id_utilisateur serial,
+    nom_utilisateur varchar(50) NOT NULL,
+    prenom_utilisateur varchar(50) NOT NULL,
+    mot_de_passe varchar(128) NOT NULL,
+    CONSTRAINT pk_Utilisateur PRIMARY KEY (id_utilisateur)
 );
 
 CREATE TABLE Administrateur (
-    idUtilisateur serial,
-    CONSTRAINT pk_Administrateur PRIMARY KEY (idUtilisateur),
-    CONSTRAINT fk_Administrateur FOREIGN KEY (idUtilisateur) REFERENCES Utilisateur (idUtilisateur)
+    id_administrateur serial,
+    CONSTRAINT pk_Administrateur PRIMARY KEY (id_administrateur),
+    CONSTRAINT fk_Administrateur FOREIGN KEY (id_utilisateur) REFERENCES Utilisateur (id_utilisateur)
 );
 
 CREATE TABLE Demande_Question (
-    idQuestion serial,
-    titre text NOT NULL,
-    intitule text NOT NULL,
-    idUtilisateur serial, -- nom de l'organisateur de la question
-    CONSTRAINT pk_demande_question PRIMARY KEY (idQuestion),
-    CONSTRAINT fk_demande_question_organisateur FOREIGN KEY (idUtilisateur) REFERENCES Utilisateur (idUtilisateur)
+    id_demande_question serial,
+    titre_demande_question varchar(100) NOT NULL,
+    description_demande_question text NOT NULL,
+    id_organisateur serial NOT NULL,
+    CONSTRAINT pk_demande_question PRIMARY KEY (id_question),
+    CONSTRAINT fk_demande_question_organisateur FOREIGN KEY (id_organisateur) REFERENCES Utilisateur (id_utilisateur)
 );
 
 CREATE TABLE Question (
-    idQuestion serial,
-    titre text NOT NULL,
-    intitule text NOT NULL,
-    idUtilisateur serial,
-    dateDebutRedaction timestamp,
-    dateFinRedaction timestamp,
-    dateOuvertureVotes timestamp,
-    dateFermetureVotes timestamp,
-    CONSTRAINT pk_question PRIMARY KEY (idQuestion),
-    CONSTRAINT fk_question_organisateur FOREIGN KEY (idUtilisateur) REFERENCES Utilisateur (idUtilisateur)
+    id_question serial,
+    titre_question varchar(100) NOT NULL,
+    description_question text NOT NULL,
+    id_organisateur serial NOT NULL,
+    date_debut_redaction timestamp,
+    date_fin_redaction timestamp,
+    date_ouverture_votes timestamp,
+    date_fermeture_votes timestamp,
+    CONSTRAINT pk_question PRIMARY KEY (id_question),
+    CONSTRAINT fk_question_organisateur FOREIGN KEY (id_organisateur) REFERENCES Utilisateur (id_utilisateur)
 );
 
 CREATE TABLE Section (
-    idSection serial,
-    idQuestion serial NOT NULL,
-    nomSection varchar(50) NOT NULL,
-    CONSTRAINT pk_section PRIMARY KEY (idSection),
-    CONSTRAINT fk_section_question FOREIGN KEY (idQuestion) REFERENCES Question (idQuestion)
+    id_section serial,
+    id_question serial NOT NULL,
+    nom_section varchar(50) NOT NULL,
+    description_section text NOT NULL,
+    CONSTRAINT pk_section PRIMARY KEY (id_section),
+    CONSTRAINT fk_section_question FOREIGN KEY (id_question) REFERENCES Question (id_question)
 );
 
