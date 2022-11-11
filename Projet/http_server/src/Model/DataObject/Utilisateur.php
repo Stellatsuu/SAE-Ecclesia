@@ -23,8 +23,8 @@ class Utilisateur extends AbstractDataObject
     public function formatTableau(): array
     {
         return [
-            'nom' => $this->nom,
-            'prenom' => $this->prenom
+            'nom_utilisateur' => $this->nom,
+            'prenom_utilisateur' => $this->prenom
         ];
     }
 

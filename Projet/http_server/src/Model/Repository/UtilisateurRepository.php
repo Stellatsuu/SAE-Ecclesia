@@ -13,34 +13,34 @@ class UtilisateurRepository extends AbstractRepository {
 
     protected function getNomClePrimaire(): string
     {
-        return 'idutilisateur';
+        return 'id_utilisateur';
     }
 
     protected function getNomsColonnes(): array
     {
         return [
-            'nom',
-            'prenom'
+            'nom_utilisateur',
+            'prenom_utilisateur'
         ];
     }
 
     public function construire(array $row): Utilisateur {
         $utilisateur = new Utilisateur(
-            $row['idutilisateur'],
-            $row['nom'],
-            $row['prenom']
+            $row['id_utilisateur'],
+            $row['nom_utilisateur'],
+            $row['prenom_utilisateur']
         );
         return $utilisateur;
     }
 
     public static function getDemandesFaitesParUtilisateur($idUtilisateur): array {
         $pdo = DatabaseConnection::getPdo();
-        $sql = "SELECT * FROM question WHERE idutilisateur = :idutilisateur";
+        $sql = "SELECT * FROM question WHERE id_utilisateur = :id_utilisateur";
 
         $pdoStatement = $pdo->prepare($sql);
 
         $values = array(
-            "idutilisateur" => $idUtilisateur
+            "id_utilisateur" => $idUtilisateur
         );
 
         $pdoStatement->execute($values);

@@ -9,24 +9,24 @@ class DemandeQuestion extends AbstractDataObject
 
     private string $titre;
 
-    private string $intitule;
+    private string $description;
 
     private Utilisateur $organisateur;
 
-    public function __construct(int $idQuestion, string $titre, string $intitule, Utilisateur $organisateur)
+    public function __construct(int $idQuestion, string $titre, string $description, Utilisateur $organisateur)
     {
         $this->idQuestion = $idQuestion;
         $this->titre = $titre;
-        $this->intitule = $intitule;
+        $this->description = $description;
         $this->organisateur = $organisateur;
     }
 
     public function formatTableau(): array
     {
         return [
-            'titre' => $this->titre,
-            'intitule' => $this->intitule,
-            'idutilisateur' => $this->organisateur->getIdUtilisateur()
+            'titre_demande_question' => $this->titre,
+            'description_demande_question' => $this->description,
+            'id_organisateur' => $this->organisateur->getIdUtilisateur()
         ];
     }
 
@@ -47,9 +47,9 @@ class DemandeQuestion extends AbstractDataObject
         return $this->titre;
     }
 
-    public function getIntitule(): string
+    public function getDescription(): string
     {
-        return $this->intitule;
+        return $this->description;
     }
 
     public function getOrganisateur(): Utilisateur

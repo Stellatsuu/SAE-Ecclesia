@@ -13,9 +13,9 @@ class Question extends DemandeQuestion
     private ?DateTime $dateOuvertureVotes;
     private ?DateTime $dateFermetureVotes;
 
-    public function __construct(int $idQuestion, string $titre, string $intitule, Utilisateur $organisateur, ?array $sections, ?DateTime $dateDebutRedaction, ?DateTime $dateFinRedaction, ?DateTime $dateOuvertureVotes, ?DateTime $dateFermetureVotes)
+    public function __construct(int $idQuestion, string $titre, string $description, Utilisateur $organisateur, ?array $sections, ?DateTime $dateDebutRedaction, ?DateTime $dateFinRedaction, ?DateTime $dateOuvertureVotes, ?DateTime $dateFermetureVotes)
     {
-        parent::__construct($idQuestion, $titre, $intitule, $organisateur);
+        parent::__construct($idQuestion, $titre, $description, $organisateur);
         $this->sections = $sections;
         $this->dateDebutRedaction = $dateDebutRedaction;
         $this->dateFinRedaction = $dateFinRedaction;
@@ -26,13 +26,13 @@ class Question extends DemandeQuestion
     public function formatTableau(): array
     {
         return [
-            'titre' => $this->getTitre(),
-            'intitule' => $this->getIntitule(),
-            'idutilisateur' => $this->getOrganisateur()->getIdUtilisateur(),
-            'datedebutredaction' => $this->dateDebutRedaction === null ? "" : $this->dateDebutRedaction->format('Y-m-d H:i:s'),
-            'datefinredaction' => $this->dateFinRedaction === null ? "" : $this->dateFinRedaction ->format('Y-m-d H:i:s'),
-            'dateouverturevotes' => $this->dateOuvertureVotes === null ? "" : $this->dateOuvertureVotes->format('Y-m-d H:i:s'),
-            'datefermeturevotes' => $this->dateOuvertureVotes === null ? "" : $this->dateFermetureVotes->format('Y-m-d H:i:s')
+            'titre_question' => $this->getTitre(),
+            'description_question' => $this->getDescription(),
+            'id_organisateur' => $this->getOrganisateur()->getIdUtilisateur(),
+            'date_debut_redaction' => $this->dateDebutRedaction === null ? "" : $this->dateDebutRedaction->format('Y-m-d H:i:s'),
+            'date_fin_redaction' => $this->dateFinRedaction === null ? "" : $this->dateFinRedaction ->format('Y-m-d H:i:s'),
+            'date_ouverture_votes' => $this->dateOuvertureVotes === null ? "" : $this->dateOuvertureVotes->format('Y-m-d H:i:s'),
+            'date_fermeture_votes' => $this->dateOuvertureVotes === null ? "" : $this->dateFermetureVotes->format('Y-m-d H:i:s')
         ];
     }
 
