@@ -1,17 +1,17 @@
-<form method="post" action="frontController.php?action=poserQuestion" class="panel">
+<form method="post" action="frontController.php?controller=question&action=poserQuestion" class="panel">
     <h1>Posez votre question :</h1>
     <fieldset>
 
         <label for="titre_id">
             Question :
         </label>
-        <input readonly type="text" name="titre" id="titre_id" value="<?= $question->getTitre() ?>" required>
+        <input readonly type="text" name="titre" id="titre_id" value="<?= htmlspecialchars($question->getTitre()) ?>" required>
 
 
         <label for="intitule_id">
             Intitulé :
         </label>
-        <textarea rows=6 cols=50 id="intitule_id" name="intitule" required><?= $question->getDescription() ?></textarea>
+        <textarea rows=6 cols=50 id="intitule_id" name="intitule" required><?= htmlspecialchars($question->getDescription()) ?></textarea>
 
 
         <label for="sections_input">Sections:</label>
@@ -71,8 +71,8 @@
         </div>
 
 
-        <input type="hidden" name="idUtilisateur" value="<?= $question->getOrganisateur()->getIdUtilisateur() ?>">
-        <input type="hidden" name="idQuestion" value="<?= $question->getIdQuestion() ?>">
+        <input type="hidden" name="idUtilisateur" value="<?= htmlspecialchars($question->getOrganisateur()->getIdUtilisateur()) ?>">
+        <input type="hidden" name="idQuestion" value="<?= htmlspecialchars($question->getIdQuestion()) ?>">
 
     </fieldset>
 
@@ -98,7 +98,7 @@
         section.querySelector("textarea").value = descriptionSection;
     });
 
-    if(sectionsQuestion.length == 0){
+    if (sectionsQuestion.length == 0) {
         addSection();
     }
 

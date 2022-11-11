@@ -12,8 +12,8 @@
 
             echo "</div>";
             echo "<div class='boite'>";
-            echo ("<a class='button refuserBtn' href='frontController.php?action=refuserDemandeQuestion&idQuestion=" . rawurlencode($q->getIdQuestion()) . "'>Refuser</a>");
-            echo ("<a class='button validerBtn' href='frontController.php?action=accepterDemandeQuestion&idQuestion=" . rawurlencode($q->getIdQuestion()) . "'>Valider</a>");
+            echo ("<a class='button refuserBtn' href='frontController.php?controller=demandeQuestion&action=refuserDemandeQuestion&idQuestion=" . rawurlencode($q->getIdQuestion()) . "'>Refuser</a>");
+            echo ("<a class='button validerBtn' href='frontController.php?controller=demandeQuestion&action=accepterDemandeQuestion&idQuestion=" . rawurlencode($q->getIdQuestion()) . "'>Valider</a>");
             echo "</div></div>";
         }
     ?>

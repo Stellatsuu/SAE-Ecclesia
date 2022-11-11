@@ -2,8 +2,7 @@
 
 require_once __DIR__ . '/../src/Lib/Psr4AutoloaderClass.php';
 
-use App\SAE\Controller\Controller as Controller;
-
+use App\SAE\Controller\DemandeQuestionController as DemandeQuestionController;
 
 
 
@@ -18,13 +17,18 @@ $loader->addNamespace('App\SAE', __DIR__ . '/../src');
 // register the autoloader
 $loader->register();
 
-if (isset($_GET['action'])) {
-    $action = $_GET['action'];
+// On récupère le contrôleur et l'action à appeler
+$controller = $_GET['controller'] ?? 'demandeQuestion';
+$action = $_GET['action'] ?? 'listerDemandesQuestion';
+
+$controller = 'App\\SAE\\Controller\\' . ucfirst($controller) . 'Controller';
+
+if (class_exists($controller)) {
+    if (method_exists($controller, $action)) {
+        $controller::$action();
+    } else {
+        DemandeQuestionController::error('listerDemandesQuestion', "L'action $action n'existe pas");
+    }
 } else {
-    $action = "listerDemandesQuestion";
+    DemandeQuestionController::error('listerDemandesQuestion', "Le contrôleur $controller n'existe pas");
 }
-
-Controller::$action();
-
-
-

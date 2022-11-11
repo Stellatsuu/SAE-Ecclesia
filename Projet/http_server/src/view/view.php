@@ -13,8 +13,8 @@
         <nav>
             <ul>
                 <li><a href="frontController.php">Accueil</a></li>
-                <li><a href="frontController.php?action=afficherFormulaireDemandeQuestion">Voter</a></li>
-                <li><a href="frontController.php?action=listerMesQuestions&idUtilisateur=10004">Mes questions</a></li>
+                <li><a href="frontController.php?controller=demandeQuestion&action=afficherFormulaireDemandeQuestion">Demande question</a></li>
+                <li><a href="frontController.php?controller=question&action=listerMesQuestions&idUtilisateur=10001">Mes questions</a></li>
                 <li><a href="">Mes groupes</a></li>
                 <li><a href="">Mon compte</a></li>
             </ul>
