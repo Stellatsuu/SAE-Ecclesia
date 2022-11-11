@@ -15,7 +15,7 @@ CREATE TABLE Utilisateur (
 CREATE TABLE Administrateur (
     id_administrateur serial,
     CONSTRAINT pk_Administrateur PRIMARY KEY (id_administrateur),
-    CONSTRAINT fk_Administrateur FOREIGN KEY (id_utilisateur) REFERENCES Utilisateur (id_utilisateur)
+    CONSTRAINT fk_Administrateur FOREIGN KEY (id_administrateur) REFERENCES Utilisateur (id_utilisateur)
 );
 
 CREATE TABLE Demande_Question (
@@ -23,7 +23,7 @@ CREATE TABLE Demande_Question (
     titre_demande_question varchar(100) NOT NULL,
     description_demande_question text NOT NULL,
     id_organisateur serial NOT NULL,
-    CONSTRAINT pk_demande_question PRIMARY KEY (id_question),
+    CONSTRAINT pk_demande_question PRIMARY KEY (id_demande_question),
     CONSTRAINT fk_demande_question_organisateur FOREIGN KEY (id_organisateur) REFERENCES Utilisateur (id_utilisateur)
 );
 
