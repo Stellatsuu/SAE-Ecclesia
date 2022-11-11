@@ -3,8 +3,9 @@
 namespace App\SAE\Model\DataObject;
 
 use DateTime;
+use JsonSerializable;
 
-class Question extends DemandeQuestion
+class Question extends DemandeQuestion implements JsonSerializable
 {
     private ?array $sections;
 
@@ -98,5 +99,19 @@ class Question extends DemandeQuestion
         return $object;
     }
 
+    public function jsonSerialize() : mixed
+    {
+        return [
+            'id_question' => $this->getIdQuestion(),
+            'titre_question' => $this->getTitre(),
+            'description_question' => $this->getDescription(),
+            'organisateur' => $this->getOrganisateur(),
+            'sections' => $this->getSections(),
+            'date_debut_redaction' => $this->getDateDebutRedaction(),
+            'date_fin_redaction' => $this->getDateFinRedaction(),
+            'date_ouverture_votes' => $this->getDateOuvertureVotes(),
+            'date_fermeture_votes' => $this->getDateFermetureVotes()
+        ];
+    }
     
 }

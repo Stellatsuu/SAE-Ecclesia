@@ -56,5 +56,10 @@ class DemandeQuestion extends AbstractDataObject
     {
         return $this->organisateur;
     }
+
+    public static function toDemandeQuestion($object): DemandeQuestion
+    {
+        return $object;
+    }
     
 }

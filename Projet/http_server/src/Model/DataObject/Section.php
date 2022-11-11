@@ -2,7 +2,9 @@
 
 namespace App\SAE\Model\DataObject;
 
-class Section extends AbstractDataObject {
+use JsonSerializable;
+
+class Section extends AbstractDataObject implements JsonSerializable {
 
     private int $idSection;
     private int $idQuestion;
@@ -48,4 +50,12 @@ class Section extends AbstractDataObject {
         $this->idQuestion = $idQuestion;
     }
 
+    public function JsonSerialize(): array {
+        return [
+            'id_section' => $this->idSection,
+            'id_question' => $this->idQuestion,
+            'nom_section' => $this->nomSection,
+            'description_section' => $this->descriptionSection
+        ];
+    }
 }

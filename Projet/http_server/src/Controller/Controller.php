@@ -65,7 +65,7 @@ class Controller
     public static function accepterDemandeQuestion(): void
     {
         $idQuestion = intval($_GET['idQuestion']);
-        $demande = (new DemandeQuestionRepository)->select($idQuestion);
+        $demande = DemandeQuestion::toDemandeQuestion((new DemandeQuestionRepository)->select($idQuestion));
         $question = new Question(
             -1,
             $demande->getTitre(),
@@ -120,6 +120,8 @@ class Controller
         $idQuestion = intval($_GET['idQuestion']);
         $question = Question::toQuestion((new QuestionRepository)->select($idQuestion));
 
+
+
         if (
             $question->getDateDebutRedaction() === null
             || $question->getDateFinRedaction() === null
@@ -155,17 +157,50 @@ class Controller
         $titre = $_POST['titre'];
         $intitule = $_POST['intitule'];
         $idUtilisateur = intval($_POST['idUtilisateur']);
-        $nbSections = intval($_POST['nbSections']);
-        echo $nbSections;
-        if ($nbSections == 0) {
-            $_GET['idUtilisateur'] = $idUtilisateur;
-            static::error("listerMesQuestions", "Vous devez ajouter au moins une section");
+
+        $nbSections = 1;
+        $sections = [];
+
+        // Remplissage du _GET pour les messages d'erreur
+        $_GET["idQuestion"] = $idQuestion;
+
+        while (isset($_POST['nomSection' . $nbSections]) && isset($_POST['descriptionSection' . $nbSections])) {
+            $nomSection = $_POST['nomSection' . $nbSections];
+            $descriptionSection = $_POST['descriptionSection' . $nbSections];
+
+            if ($nomSection == "" || $descriptionSection == "") {
+                self::error("afficherFormulairePoserQuestion", "Veuillez remplir tous les champs");
+                return;
+            }
+
+            if (strlen($nomSection) > 50) {
+                self::error("afficherFormulairePoserQuestion", "Le nom de la section ne doit pas dépasser 50 caractères");
+                return;
+            }
+
+            $section = new Section(-1, -1, $nomSection, $descriptionSection);
+            $sections[] = $section;
+            $nbSections++;
+        }
+
+        if (
+            !preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/", $_POST['dateDebutRedaction'])
+            || !preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/", $_POST['dateFinRedaction'])
+            || !preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/", $_POST['dateOuvertureVotes'])
+            || !preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/", $_POST['dateFermetureVotes'])
+        ) {
+            self::error("afficherFormulairePoserQuestion", "Veuillez entrer des dates valides");
             return;
         }
 
-        $sections = [];
-        for ($i = 1; $i <= $nbSections; $i++) {
-            $sections[] = new Section(-1, -1, $_POST['nomSection' . $i], $_POST['descriptionSection' . $i]);
+        if (
+            !preg_match("/^[0-9]{2}:[0-9]{2}$/", $_POST['heureDebutRedaction'])
+            || !preg_match("/^[0-9]{2}:[0-9]{2}$/", $_POST['heureFinRedaction'])
+            || !preg_match("/^[0-9]{2}:[0-9]{2}$/", $_POST['heureOuvertureVotes'])
+            || !preg_match("/^[0-9]{2}:[0-9]{2}$/", $_POST['heureFermetureVotes'])
+        ) {
+            self::error("afficherFormulairePoserQuestion", "Veuillez entrer des heures valides");
+            return;
         }
 
         $dateDebutRedaction = new DateTime($_POST['dateDebutRedaction']);
@@ -184,11 +219,31 @@ class Controller
         $heureFermetureVotes = preg_split('/\D/', $_POST['heureFermetureVotes']);
         $dateFermetureVotes->setTime($heureFermetureVotes[0], $heureFermetureVotes[1]);
 
-        $dateCoherentes = $dateDebutRedaction < $dateFinRedaction && $dateFinRedaction <= $dateOuvertureVotes && $dateOuvertureVotes < $dateFermetureVotes;
+        $dateCoherentes =
+            $dateDebutRedaction < $dateFinRedaction
+            && $dateFinRedaction <= $dateOuvertureVotes
+            && $dateOuvertureVotes < $dateFermetureVotes
+            && $dateDebutRedaction > (new DateTime("now"));
 
+        // Vérification des données
         if (!$dateCoherentes) {
             $_GET['idUtilisateur'] = $idUtilisateur;
             static::error("listerMesQuestions", "Les dates ne sont pas cohérentes");
+            return;
+        }
+
+        if ($sections == []) {
+            self::error("afficherFormulairePoserQuestion", "Au moins une section est requise");
+            return;
+        }
+
+        if ($titre == "" || $intitule == "") {
+            self::error("afficherFormulairePoserQuestion", "Veuillez remplir tous les champs");
+            return;
+        }
+
+        if (strlen($titre) > 100) {
+            self::error("afficherFormulairePoserQuestion", "Le titre ne doit pas dépasser 100 caractères");
             return;
         }
 

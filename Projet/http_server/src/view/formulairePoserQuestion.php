@@ -1,3 +1,6 @@
+<pre>
+<?= json_encode($question, JSON_PRETTY_PRINT) ?>
+</pre>
 <form method="post" action="frontController.php?action=poserQuestion" class="panel">
     <h1>Posez votre question :</h1>
     <fieldset>
@@ -5,7 +8,7 @@
         <label for="titre_id">
             Question :
         </label>
-        <textarea readonly rows=6 cols=50 id="titre_id" name="titre" required><?= $question->getTitre() ?></textarea>
+        <input readonly type="text" name="titre" id="titre_id" value="<?= $question->getTitre() ?>" required>
 
 
         <label for="intitule_id">
@@ -19,7 +22,6 @@
         <div id="sections_input">
 
             <button type="button" id="add_section">+</button>
-            <input hidden id="nbSections_id" type="number" value="0" name="nbSections">
         </div>
 
 
@@ -87,7 +89,21 @@
     const add_section_button = document.getElementById("add_section");
     const nbSections = document.getElementById("nbSections_id");
 
-    addSection();
+    const question = <?= json_encode($question) ?>;
+    const sectionsQuestion = question.sections || [];
+
+    sectionsQuestion.forEach(element => {
+        const nomSection = element.nom_section;
+        const descriptionSection = element.description_section;
+        addSection();
+        const section = document.getElementById("section" + sections + "_id");
+        section.querySelector("input").value = nomSection;
+        section.querySelector("textarea").value = descriptionSection;
+    });
+
+    if(sectionsQuestion.length == 0){
+        addSection();
+    }
 
     add_section_button.onclick = () => {
         addSection();
@@ -113,6 +129,9 @@
         updateNumbers();
     }
 
+
+
+
     function removeSection(i) {
         var section = document.getElementById("section" + i + "_id");
         sections_input.removeChild(section);
@@ -130,9 +149,5 @@
             sections[i].children[2].name = "descriptionSection" + (i + 1);
         }
         sections = conteneurs_sections.length;
-        nbSections.value = "" + sections;
-        console.log(sections);
-        
-
     }
 </script>
