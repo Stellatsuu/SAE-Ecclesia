@@ -1,6 +1,3 @@
-<pre>
-<?= json_encode($question, JSON_PRETTY_PRINT) ?>
-</pre>
 <form method="post" action="frontController.php?action=poserQuestion" class="panel">
     <h1>Posez votre question :</h1>
     <fieldset>
