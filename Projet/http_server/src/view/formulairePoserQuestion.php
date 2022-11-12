@@ -31,7 +31,7 @@
                 </span>
                 <span>
                     à
-                    <input required type="time" name="heureDebutRedaction" id="" value="16:00">
+                    <input required type="time" name="heureDebutRedaction" id="" value="<?= $heuresFormatees['heureDebutRedaction'] ?>">
                 </span>
             </div>
             <div>
@@ -41,7 +41,7 @@
                 </span>
                 <span>
                     à
-                    <input required type="time" name="heureFinRedaction" id="" value="16:00">
+                    <input required type="time" name="heureFinRedaction" id="" value="<?= $heuresFormatees['heureFinRedaction'] ?>">
                 </span>
             </div>
         </div>
@@ -55,7 +55,7 @@
                 </span>
                 <span>
                     à
-                    <input required type="time" name="heureOuvertureVotes" id="" value="16:00">
+                    <input required type="time" name="heureOuvertureVotes" id="" value="<?= $heuresFormatees['heureOuvertureVotes'] ?>">
                 </span>
             </div>
             <div>
@@ -65,7 +65,7 @@
                 </span>
                 <span>
                     à
-                    <input required type="time" name="heureFermetureVotes" id="" value="16:00">
+                    <input required type="time" name="heureFermetureVotes" id="" value="<?= $heuresFormatees['heureFermetureVotes'] ?>">
                 </span>
             </div>
         </div>

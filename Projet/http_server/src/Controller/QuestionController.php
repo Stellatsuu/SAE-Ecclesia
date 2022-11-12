@@ -25,10 +25,10 @@ class QuestionController extends Controller
             || $question->getDateFermetureVotes() === null
         ) {
 
-            $question->setDateDebutRedaction((new DateTime())->add(new DateInterval('P1D')));
-            $question->setDateFinRedaction((new DateTime())->add(new DateInterval('P8D')));
-            $question->setDateOuvertureVotes((new DateTime())->add(new DateInterval('P8D')));
-            $question->setDateFermetureVotes((new DateTime())->add(new DateInterval('P15D')));
+            $question->setDateDebutRedaction((new DateTime())->add(new DateInterval('P1D'))->setTime(16, 0, 0));
+            $question->setDateFinRedaction((new DateTime())->add(new DateInterval('P8D'))->setTime(16, 0, 0));
+            $question->setDateOuvertureVotes((new DateTime())->add(new DateInterval('P8D'))->setTime(16, 0, 0));
+            $question->setDateFermetureVotes((new DateTime())->add(new DateInterval('P15D'))->setTime(16, 0, 0));
         }
 
         $datesFormatees = array(
@@ -38,11 +38,19 @@ class QuestionController extends Controller
             "dateFermetureVotes" => $question->getDateFermetureVotes()->format("Y-m-d")
         );
 
+        $heuresFormatees = array (
+            "heureDebutRedaction" => $question->getDateDebutRedaction()->format("H:i"),
+            "heureFinRedaction" => $question->getDateFinRedaction()->format("H:i"),
+            "heureOuvertureVotes" => $question->getDateOuvertureVotes()->format("H:i"),
+            "heureFermetureVotes" => $question->getDateFermetureVotes()->format("H:i")
+        );
+
         static::afficherVue("view.php", [
             "titrePage" => "Poser une question",
             "contenuPage" => "formulairePoserQuestion.php",
             "question" => $question,
-            "datesFormatees" => $datesFormatees
+            "datesFormatees" => $datesFormatees,
+            "heuresFormatees" => $heuresFormatees
         ]);
     }
 
