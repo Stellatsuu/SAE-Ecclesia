@@ -116,7 +116,7 @@
             <div>Section ${sections}<button class="rmbutton" type="button" onclick="removeSection(${sections})">supprimer</button></div>
                 
             <label for="nomSection${sections}_id">Nom:</label>
-            <input type="text" name="nomSection${sections}" id="nomSection${sections}_id" placeholder="Nom de la section" required>
+            <input type="text" name="nomSection${sections}" id="nomSection${sections}_id" placeholder="Nom de la section" maxlength="50" required>
 
             <label for="descriptionSection${sections}_id">Description:</label>
             <textarea rows="5" id="descriptionSection${sections}_id" name="descriptionSection${sections}" placeholder="Description de la section" required></textarea>

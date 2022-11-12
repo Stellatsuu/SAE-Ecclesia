@@ -123,8 +123,7 @@ class QuestionController extends Controller
 
         // Vérification des données
         if (!$dateCoherentes) {
-            $_GET['idUtilisateur'] = $idUtilisateur;
-            static::error("listerMesQuestions", "Les dates ne sont pas cohérentes");
+            static::error("afficherFormulairePoserQuestion", "Les dates ne sont pas cohérentes");
             return;
         }
 
