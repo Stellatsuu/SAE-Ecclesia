@@ -17,7 +17,7 @@
             <span class="indicateur_max_chars unselectable">4000 max</span>
         </div>
 
-        <label for="sections_input">Sections:</label>
+        <label for="sections_input">Plan :</label>
         <div id="sections_input">
             <button type="button" id="add_section">+</button>
         </div>
@@ -71,6 +71,26 @@
             </div>
         </div>
 
+        <div id="roles_input">
+
+            <div id="responsables_input">
+                <label for="responsables_input">Responsables : </label>
+
+
+                <button type="button" id="add_responsable">+</button>
+            </div>
+
+
+            <div id="votants_input">
+                <label for="votants_input">Votants : </label>
+                <button type="button" id="add_votant">+</button>
+            </div>
+
+        </div>
+
+
+
+
 
         <input type="hidden" name="idUtilisateur" value="<?= htmlspecialchars($question->getOrganisateur()->getIdUtilisateur()) ?>">
         <input type="hidden" name="idQuestion" value="<?= htmlspecialchars($question->getIdQuestion()) ?>">
@@ -104,7 +124,7 @@
 
     add_section_button.onclick = () => {
         addSection();
-        updateNumbers();
+        updateSectionsNumbers();
     }
 
     function addSection() {
@@ -127,19 +147,16 @@
             </div>`;
 
         sections_input.insertBefore(new_section, add_section_button);
-        updateNumbers();
+        updateSectionsNumbers();
     }
-
-
-
 
     function removeSection(i) {
         const section = document.getElementById("section" + i + "_id");
         sections_input.removeChild(section);
-        updateNumbers();
+        updateSectionsNumbers();
     }
 
-    function updateNumbers() {
+    function updateSectionsNumbers() {
         const conteneurs_sections = document.getElementsByClassName("conteneur_section");
         for (let i = 0; i < conteneurs_sections.length; i++) {
             conteneurs_sections[i].id = "section" + (i + 1) + "_id";
@@ -151,6 +168,142 @@
         }
         nbSections = conteneurs_sections.length;
 
-        
+
     }
+</script>
+
+<script>
+    var nbResponsables = 0;
+    const responsables_input = document.getElementById("responsables_input");
+    const add_responsable_button = document.getElementById("add_responsable");
+
+    const utilisateurs = <?= json_encode($utilisateurs) ?>;
+    const allUtilisateursOption = '<option value="" selected disabled>---</option>' + utilisateurs.map(utilisateur => `<option value="${utilisateur.idUtilisateur}">${(utilisateur.nom).toUpperCase()} ${utilisateur.prenom}</option>`).join("\n");
+
+    add_responsable_button.onclick = () => {
+        addResponsable();
+        updateResponsablesNumbers();
+    }
+
+    addResponsable();
+
+    function addResponsable() {
+        nbResponsables++;
+        const new_responsable = document.createElement("span");
+        new_responsable.classList.add("conteneur_responsable");
+        new_responsable.innerHTML = `
+            <select name="responsable${nbResponsables}" id="responsable${nbResponsables}_select" onfocus="this.oldvalue = this.value;" onchange="unlockValueResponsable(this.oldvalue);lockValueResponsable(this, this.value)" required>
+                ${allUtilisateursOption}
+            </select>
+            <button type="button" class="remove_responsable" onclick="removeResponsable(${nbResponsables})">-</button>`;
+
+        responsables_input.insertBefore(new_responsable, add_responsable_button);
+
+        const responsables = document.getElementsByClassName("conteneur_responsable");
+        for (let i = 0; i < responsables.length; i++) {
+            const select = responsables[i].children[0];
+            lockValueResponsable(select, select.value);
+        }
+
+        updateResponsablesNumbers();
+    }
+
+    function removeResponsable(i) {
+        const responsable = document.getElementById("responsable" + i + "_select").parentElement;
+
+        const selectValue = responsable.children[0].value;
+        unlockValueResponsable(selectValue);
+
+        responsables_input.removeChild(responsable);
+        updateResponsablesNumbers();
+    }
+
+    function updateResponsablesNumbers() {
+        const conteneurs_responsables = document.getElementsByClassName("conteneur_responsable");
+        for (let i = 0; i < conteneurs_responsables.length; i++) {
+            conteneurs_responsables[i].children[0].id = "responsable" + (i + 1) + "_select";
+            conteneurs_responsables[i].children[0].name = "responsable" + (i + 1);
+            conteneurs_responsables[i].children[1].onclick = () => removeResponsable(i + 1);
+        }
+        nbResponsables = conteneurs_responsables.length;
+    }
+
+    function unlockValueResponsable(value) {
+        if(value == "") return;
+
+        const options = document.querySelectorAll(`#responsables_input option[value="${value}"]`);
+        options.forEach(option => option.disabled = false);
+    }
+
+    function lockValueResponsable(caller, value) {
+        const options = document.querySelectorAll(`#responsables_input option[value="${value}"]`);
+        options.forEach(option => option.disabled = true);
+        caller.querySelector(`option[value="${value}"]`).disabled = (value == "");
+    }
+
+</script>
+
+<script>
+    var nbVotants = 0;
+    const votants_input = document.getElementById("votants_input");
+    const add_votant_button = document.getElementById("add_votant");
+
+    add_votant_button.onclick = () => {
+        addVotant();
+        updateVotantsNumbers();
+    }
+
+    addVotant();
+
+    function addVotant() {
+        nbVotants++;
+        const new_votant = document.createElement("span");
+        new_votant.classList.add("conteneur_votant");
+        new_votant.innerHTML = `
+            <select name="votant${nbVotants}" id="votant${nbVotants}_select" onfocus="this.oldvalue = this.value;" onchange="unlockValueVotant(this.oldvalue);lockValueVotant(this, this.value)" required>
+                ${allUtilisateursOption}
+            </select>
+            <button type="button" class="remove_votant" onclick="removeVotant(${nbVotants})">-</button>`;
+
+        votants_input.insertBefore(new_votant, add_votant_button);
+
+        const votants = document.getElementsByClassName("conteneur_votant");
+        for (let i = 0; i < votants.length; i++) {
+            const select = votants[i].children[0];
+            lockValueVotant(select, select.value);
+        }
+
+        updateVotantsNumbers();
+    }
+
+    function removeVotant(i) {
+        const votant = document.getElementById("votant" + i + "_select").parentElement;
+
+        unlockValueVotant(votant.children[0].value);
+
+        votants_input.removeChild(votant);
+        updateVotantsNumbers();
+    }
+
+    function updateVotantsNumbers() {
+        const conteneurs_votants = document.getElementsByClassName("conteneur_votant");
+        for (let i = 0; i < conteneurs_votants.length; i++) {
+            conteneurs_votants[i].children[0].id = "votant" + (i + 1) + "_select";
+            conteneurs_votants[i].children[0].name = "votant" + (i + 1);
+            conteneurs_votants[i].children[1].onclick = () => removeVotant(i + 1);
+        }
+        nbVotants = conteneurs_votants.length;
+    }
+
+    function unlockValueVotant(value) {
+        const options = document.querySelectorAll(`#votants_input option[value="${value}"]`);
+        options.forEach(option => option.disabled = false);
+    }
+
+    function lockValueVotant(caller, value) {
+        const options = document.querySelectorAll(`#votants_input option[value="${value}"]`);
+        options.forEach(option => option.disabled = true);
+        caller.querySelector(`option[value="${value}"]`).disabled = false;
+    }
+
 </script>

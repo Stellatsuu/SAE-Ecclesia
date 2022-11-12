@@ -138,6 +138,20 @@ button,
   }
 }
 
+#roles_input {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+
+
+  #votants_input, #responsables_input {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+  }
+
+}
+
 @media screen and (max-width: 600px) {
   fieldset {
     width: 90%;

@@ -40,6 +40,8 @@ class QuestionRepository extends AbstractRepository
             $row['description_question'],
             (new UtilisateurRepository)->select($row['id_organisateur']),
             (new SectionRepository)->selectAllByQuestion($row['id_question']),
+            null,
+            null,
             $row['date_debut_redaction'] === NULL ? NULL : new DateTime($row['date_debut_redaction']),
             $row['date_fin_redaction'] === NULL ? NULL : new DateTime($row['date_fin_redaction']),
             $row['date_ouverture_votes'] === NULL ? NULL : new DateTime($row['date_ouverture_votes']),

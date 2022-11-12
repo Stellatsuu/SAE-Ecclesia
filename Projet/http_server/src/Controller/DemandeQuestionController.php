@@ -45,6 +45,8 @@ class DemandeQuestionController extends Controller
             null,
             null,
             null,
+            null,
+            null,
             null
         );
         (new QuestionRepository)->insertEbauche($question);

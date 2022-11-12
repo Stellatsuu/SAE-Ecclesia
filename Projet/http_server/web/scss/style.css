@@ -228,6 +228,17 @@ button.refuserBtn:disabled,
   }
 }
 
+#roles_input {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+}
+#roles_input #votants_input, #roles_input #responsables_input {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
 @media screen and (max-width: 600px) {
   fieldset {
     width: 90%;

@@ -17,6 +17,7 @@ class QuestionController extends Controller
     {
         $idQuestion = intval($_GET['idQuestion']);
         $question = Question::toQuestion((new QuestionRepository)->select($idQuestion));
+        $utilisateurs = (new UtilisateurRepository)->selectAll();
 
         if (
             $question->getDateDebutRedaction() === null
@@ -49,6 +50,7 @@ class QuestionController extends Controller
             "titrePage" => "Poser une question",
             "contenuPage" => "formulairePoserQuestion.php",
             "question" => $question,
+            "utilisateurs" => $utilisateurs,
             "datesFormatees" => $datesFormatees,
             "heuresFormatees" => $heuresFormatees
         ]);
@@ -56,6 +58,9 @@ class QuestionController extends Controller
 
     public static function poserQuestion(): void
     {
+        echo "<pre>";
+        print_r($_POST);
+        echo "</pre>";
 
         $idQuestion = intval($_POST['idQuestion']);
         $titre = $_POST['titre'];
@@ -161,6 +166,8 @@ class QuestionController extends Controller
             $description,
             (new UtilisateurRepository)->select($idUtilisateur),
             $sections,
+            null,
+            null,
             $dateDebutRedaction,
             $dateFinRedaction,
             $dateOuvertureVotes,

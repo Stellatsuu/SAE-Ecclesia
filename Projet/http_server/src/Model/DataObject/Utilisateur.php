@@ -3,8 +3,9 @@
 namespace App\SAE\Model\DataObject;
 
 use App\SAE\Model\Repository\UtilisateurRepository;
+use JsonSerializable;
 
-class Utilisateur extends AbstractDataObject
+class Utilisateur extends AbstractDataObject implements JsonSerializable
 {
 
     private int $idUtilisateur;
@@ -48,6 +49,15 @@ class Utilisateur extends AbstractDataObject
     public function getPrenom(): string
     {
         return $this->prenom;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'idUtilisateur' => $this->idUtilisateur,
+            'nom' => $this->nom,
+            'prenom' => $this->prenom
+        ];
     }
     
 }

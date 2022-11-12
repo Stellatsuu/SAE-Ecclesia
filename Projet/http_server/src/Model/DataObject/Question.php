@@ -8,16 +8,20 @@ use JsonSerializable;
 class Question extends DemandeQuestion implements JsonSerializable
 {
     private ?array $sections;
+    private ?array $responsables;
+    private ?array $votants;
 
     private ?DateTime $dateDebutRedaction;
     private ?DateTime $dateFinRedaction;
     private ?DateTime $dateOuvertureVotes;
     private ?DateTime $dateFermetureVotes;
 
-    public function __construct(int $idQuestion, string $titre, string $description, Utilisateur $organisateur, ?array $sections, ?DateTime $dateDebutRedaction, ?DateTime $dateFinRedaction, ?DateTime $dateOuvertureVotes, ?DateTime $dateFermetureVotes)
+    public function __construct(int $idQuestion, string $titre, string $description, Utilisateur $organisateur, ?array $sections, ?array $responsables, ?array $votants, ?DateTime $dateDebutRedaction, ?DateTime $dateFinRedaction, ?DateTime $dateOuvertureVotes, ?DateTime $dateFermetureVotes)
     {
         parent::__construct($idQuestion, $titre, $description, $organisateur);
         $this->sections = $sections;
+        $this->responsables = $responsables;
+        $this->votants = $votants;
         $this->dateDebutRedaction = $dateDebutRedaction;
         $this->dateFinRedaction = $dateFinRedaction;
         $this->dateOuvertureVotes = $dateOuvertureVotes;
