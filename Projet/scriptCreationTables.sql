@@ -21,7 +21,7 @@ CREATE TABLE Administrateur (
 CREATE TABLE Demande_Question (
     id_demande_question serial,
     titre_demande_question varchar(100) NOT NULL,
-    description_demande_question text NOT NULL,
+    description_demande_question varchar(4000) NOT NULL,
     id_organisateur serial NOT NULL,
     CONSTRAINT pk_demande_question PRIMARY KEY (id_demande_question),
     CONSTRAINT fk_demande_question_organisateur FOREIGN KEY (id_organisateur) REFERENCES Utilisateur (id_utilisateur)
@@ -30,7 +30,7 @@ CREATE TABLE Demande_Question (
 CREATE TABLE Question (
     id_question serial,
     titre_question varchar(100) NOT NULL,
-    description_question text NOT NULL,
+    description_question varchar(4000) NOT NULL,
     id_organisateur serial NOT NULL,
     date_debut_redaction timestamp,
     date_fin_redaction timestamp,
@@ -44,7 +44,7 @@ CREATE TABLE Section (
     id_section serial,
     id_question serial NOT NULL,
     nom_section varchar(50) NOT NULL,
-    description_section text NOT NULL,
+    description_section varchar(2000) NOT NULL,
     CONSTRAINT pk_section PRIMARY KEY (id_section),
     CONSTRAINT fk_section_question FOREIGN KEY (id_question) REFERENCES Question (id_question)
 );
