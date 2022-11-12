@@ -25,10 +25,10 @@ class QuestionController extends Controller
             || $question->getDateFermetureVotes() === null
         ) {
 
-            $question->setDateDebutRedaction((new DateTime())->add(new DateInterval('P1D')));
-            $question->setDateFinRedaction((new DateTime())->add(new DateInterval('P8D')));
-            $question->setDateOuvertureVotes((new DateTime())->add(new DateInterval('P8D')));
-            $question->setDateFermetureVotes((new DateTime())->add(new DateInterval('P15D')));
+            $question->setDateDebutRedaction((new DateTime())->add(new DateInterval('P1D'))->setTime(16, 0, 0));
+            $question->setDateFinRedaction((new DateTime())->add(new DateInterval('P8D'))->setTime(16, 0, 0));
+            $question->setDateOuvertureVotes((new DateTime())->add(new DateInterval('P8D'))->setTime(16, 0, 0));
+            $question->setDateFermetureVotes((new DateTime())->add(new DateInterval('P15D'))->setTime(16, 0, 0));
         }
 
         $datesFormatees = array(
@@ -38,11 +38,19 @@ class QuestionController extends Controller
             "dateFermetureVotes" => $question->getDateFermetureVotes()->format("Y-m-d")
         );
 
+        $heuresFormatees = array (
+            "heureDebutRedaction" => $question->getDateDebutRedaction()->format("H:i"),
+            "heureFinRedaction" => $question->getDateFinRedaction()->format("H:i"),
+            "heureOuvertureVotes" => $question->getDateOuvertureVotes()->format("H:i"),
+            "heureFermetureVotes" => $question->getDateFermetureVotes()->format("H:i")
+        );
+
         static::afficherVue("view.php", [
             "titrePage" => "Poser une question",
             "contenuPage" => "formulairePoserQuestion.php",
             "question" => $question,
-            "datesFormatees" => $datesFormatees
+            "datesFormatees" => $datesFormatees,
+            "heuresFormatees" => $heuresFormatees
         ]);
     }
 
@@ -51,7 +59,7 @@ class QuestionController extends Controller
 
         $idQuestion = intval($_POST['idQuestion']);
         $titre = $_POST['titre'];
-        $intitule = $_POST['intitule'];
+        $description = $_POST['description'];
         $idUtilisateur = intval($_POST['idUtilisateur']);
 
         $nbSections = 1;
@@ -123,8 +131,7 @@ class QuestionController extends Controller
 
         // Vérification des données
         if (!$dateCoherentes) {
-            $_GET['idUtilisateur'] = $idUtilisateur;
-            static::error("listerMesQuestions", "Les dates ne sont pas cohérentes");
+            static::error("afficherFormulairePoserQuestion", "Les dates ne sont pas cohérentes");
             return;
         }
 
@@ -133,7 +140,7 @@ class QuestionController extends Controller
             return;
         }
 
-        if ($titre == "" || $intitule == "") {
+        if ($titre == "" || $description == "") {
             static::error("afficherFormulairePoserQuestion", "Veuillez remplir tous les champs");
             return;
         }
@@ -146,7 +153,7 @@ class QuestionController extends Controller
         $question = new Question(
             $idQuestion,
             $titre,
-            $intitule,
+            $description,
             (new UtilisateurRepository)->select($idUtilisateur),
             $sections,
             $dateDebutRedaction,

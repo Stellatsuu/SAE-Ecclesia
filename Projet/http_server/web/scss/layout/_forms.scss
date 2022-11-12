@@ -1,16 +1,17 @@
-fieldset{
+fieldset {
   border: 0;
   display: flex;
   flex-direction: column;
   width: 70%;
-  padding:0;
+  padding: 0;
 
-  > textarea{
-    max-width:100%;
+  > textarea {
+    max-width: 100%;
   }
 }
 
-input, textarea{
+input,
+textarea {
   outline: none;
   background-color: $couleurFond3;
   border: solid 2px $couleurPrincipale;
@@ -18,7 +19,7 @@ input, textarea{
   font-size: 1rem;
 }
 
-textarea{
+textarea {
   background-color: $couleurFond3;
   width: calc(100% - 14px);
   resize: vertical;
@@ -27,72 +28,75 @@ textarea{
   font-size: 1rem;
 }
 
-label{
-  margin-top:20px;
+label {
+  margin-top: 20px;
   font-size: 1.5em;
 }
 
-input[type="date"], input[type="time"] {
-  
+input[type="date"],
+input[type="time"] {
   width: fit-content;
 }
 
-input[type="button"], input[type="submit"], button, .button{
+input[type="button"],
+input[type="submit"],
+button,
+.button {
   background-color: $couleurPrincipale;
-  border:none;
+  border: none;
   border-radius: 4px;
   padding: 8px 25px;
   color: $couleurTexte;
   margin: 15px 0;
 
-  &:hover{
+  &:hover {
     background-color: $couleurPrincipaleSurvol;
     cursor: pointer;
   }
-  &:disabled{
+  &:disabled {
     background-color: $couleurPrincipaleSurvol;
   }
 
-  &.validerBtn{
+  &.validerBtn {
     background-color: $couleurValider;
 
-    &:hover{
+    &:hover {
       background-color: $couleurValiderSurvol;
     }
-    &:disabled{
+    &:disabled {
       background-color: $couleurValiderSurvol;
     }
   }
-  &.refuserBtn{
+  &.refuserBtn {
     background-color: $couleurRefuser;
 
-    &:hover{
+    &:hover {
       background-color: $couleurRefuserSurvol;
     }
-    &:disabled{
+    &:disabled {
       background-color: $couleurRefuserSurvol;
     }
   }
 }
 
-.conteneurDateHeure{
+.conteneurDateHeure {
   display: flex;
   flex-wrap: wrap;
   margin-top: 7px;
 
-  div{
-    display:flex;
+  div {
+    display: flex;
     flex-wrap: wrap;
     margin: 2.5px 0;
 
-    span{
-      display:flex;
+    span {
+      display: flex;
       align-items: center;
     }
   }
 
-  input{
-    height:20px;
+  input {
+    height: 20px;
     margin: 2.5px 10px;
   }
 }
@@ -106,14 +110,23 @@ input[type="button"], input[type="submit"], button, .button{
     height: 60px;
     width: 60px;
     padding: 0;
+    font-size: 3rem;
     align-self: center;
     justify-self: center;
     text-align: center;
   }
+
+  @media screen and (max-width: 1200px) and (min-width: 751px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media screen and (max-width: 750px) {
+    grid-template-columns: 1fr;
+  }
 }
 
-@media screen and (max-width: 600px){
-  fieldset{
+@media screen and (max-width: 600px) {
+  fieldset {
     width: 90%;
   }
 }

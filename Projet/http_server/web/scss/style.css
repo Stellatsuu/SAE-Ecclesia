@@ -72,7 +72,8 @@ fieldset > textarea {
   max-width: 100%;
 }
 
-input, textarea {
+input,
+textarea {
   outline: none;
   background-color: #353535;
   border: solid 2px #E1603C;
@@ -94,13 +95,17 @@ label {
   font-size: 1.5em;
 }
 
-input[type=date], input[type=time] {
+input[type=date],
+input[type=time] {
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
 }
 
-input[type=button], input[type=submit], button, .button {
+input[type=button],
+input[type=submit],
+button,
+.button {
   background-color: #E1603C;
   border: none;
   border-radius: 4px;
@@ -108,29 +113,53 @@ input[type=button], input[type=submit], button, .button {
   color: white;
   margin: 15px 0;
 }
-input[type=button]:hover, input[type=submit]:hover, button:hover, .button:hover {
+input[type=button]:hover,
+input[type=submit]:hover,
+button:hover,
+.button:hover {
   background-color: #B1482C;
   cursor: pointer;
 }
-input[type=button]:disabled, input[type=submit]:disabled, button:disabled, .button:disabled {
+input[type=button]:disabled,
+input[type=submit]:disabled,
+button:disabled,
+.button:disabled {
   background-color: #B1482C;
 }
-input[type=button].validerBtn, input[type=submit].validerBtn, button.validerBtn, .button.validerBtn {
+input[type=button].validerBtn,
+input[type=submit].validerBtn,
+button.validerBtn,
+.button.validerBtn {
   background-color: #09B44D;
 }
-input[type=button].validerBtn:hover, input[type=submit].validerBtn:hover, button.validerBtn:hover, .button.validerBtn:hover {
+input[type=button].validerBtn:hover,
+input[type=submit].validerBtn:hover,
+button.validerBtn:hover,
+.button.validerBtn:hover {
   background-color: #069840;
 }
-input[type=button].validerBtn:disabled, input[type=submit].validerBtn:disabled, button.validerBtn:disabled, .button.validerBtn:disabled {
+input[type=button].validerBtn:disabled,
+input[type=submit].validerBtn:disabled,
+button.validerBtn:disabled,
+.button.validerBtn:disabled {
   background-color: #069840;
 }
-input[type=button].refuserBtn, input[type=submit].refuserBtn, button.refuserBtn, .button.refuserBtn {
+input[type=button].refuserBtn,
+input[type=submit].refuserBtn,
+button.refuserBtn,
+.button.refuserBtn {
   background-color: #E43C0E;
 }
-input[type=button].refuserBtn:hover, input[type=submit].refuserBtn:hover, button.refuserBtn:hover, .button.refuserBtn:hover {
+input[type=button].refuserBtn:hover,
+input[type=submit].refuserBtn:hover,
+button.refuserBtn:hover,
+.button.refuserBtn:hover {
   background-color: #c2320b;
 }
-input[type=button].refuserBtn:disabled, input[type=submit].refuserBtn:disabled, button.refuserBtn:disabled, .button.refuserBtn:disabled {
+input[type=button].refuserBtn:disabled,
+input[type=submit].refuserBtn:disabled,
+button.refuserBtn:disabled,
+.button.refuserBtn:disabled {
   background-color: #c2320b;
 }
 
@@ -162,9 +191,20 @@ input[type=button].refuserBtn:disabled, input[type=submit].refuserBtn:disabled, 
   height: 60px;
   width: 60px;
   padding: 0;
+  font-size: 3rem;
   align-self: center;
   justify-self: center;
   text-align: center;
+}
+@media screen and (max-width: 1200px) and (min-width: 751px) {
+  #sections_input {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media screen and (max-width: 750px) {
+  #sections_input {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media screen and (max-width: 600px) {
