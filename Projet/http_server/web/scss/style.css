@@ -4,6 +4,14 @@ h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset, body {
   font-family: Raleway, serif;
 }
 
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 nav {
   background-color: #E1603C;
   width: 70%;
@@ -68,7 +76,7 @@ fieldset {
   width: 70%;
   padding: 0;
 }
-fieldset > textarea {
+fieldset > textarea, fieldset input[type=text] {
   max-width: 100%;
 }
 
@@ -81,7 +89,7 @@ textarea {
   font-size: 1rem;
 }
 
-textarea {
+textarea, input[type=text] {
   background-color: #353535;
   width: calc(100% - 14px);
   resize: vertical;
@@ -161,6 +169,19 @@ input[type=submit].refuserBtn:disabled,
 button.refuserBtn:disabled,
 .button.refuserBtn:disabled {
   background-color: #c2320b;
+}
+
+.text_input_div {
+  position: relative;
+  text-align: center;
+}
+
+.indicateur_max_chars {
+  font-size: 0.8rem;
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  color: rgb(168, 168, 168);
 }
 
 .conteneurDateHeure {

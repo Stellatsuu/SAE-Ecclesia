@@ -11,13 +11,14 @@
         <label for="description_id">
             Description :
         </label>
-        <textarea rows=6 cols=50 id="description_id" name="description" maxlength="4000" required><?= htmlspecialchars($question->getDescription()) ?></textarea>
 
+        <div class="text_input_div">
+            <textarea rows=6 cols=50 id="description_id" name="description" maxlength="4000" required><?= htmlspecialchars($question->getDescription()) ?></textarea>
+            <span class="indicateur_max_chars unselectable">4000 max</span>
+        </div>
 
         <label for="sections_input">Sections:</label>
-
         <div id="sections_input">
-
             <button type="button" id="add_section">+</button>
         </div>
 
@@ -113,13 +114,17 @@
         new_section.id = "section" + nbSections + "_id";
         new_section.innerHTML = `
             <div>Section ${nbSections}<button class="rmbutton" type="button" onclick="removeSection(${nbSections})">supprimer</button></div>
-                
             <label for="nomSection${nbSections}_id">Nom:</label>
-            <input type="text" name="nomSection${nbSections}" id="nomSection${nbSections}_id" placeholder="Nom de la section" maxlength="50" required>
+            <div class="text_input_div">   
+                <input type="text" name="nomSection${nbSections}" id="nomSection${nbSections}_id" placeholder="Nom de la section" maxlength="50" required>
+                <span class="indicateur_max_chars">50 max</span>
+            </div>
 
             <label for="descriptionSection${nbSections}_id">Description:</label>
-            <textarea rows="5" id="descriptionSection${nbSections}_id" name="descriptionSection${nbSections}" maxlength="2000" placeholder="Description de la section" required></textarea>
-            `;
+            <div class="text_input_div">
+                <textarea rows="5" id="descriptionSection${nbSections}_id" name="descriptionSection${nbSections}" maxlength="2000" placeholder="Description de la section" required></textarea>
+                <span class="indicateur_max_chars">2000 max</span>
+            </div>`;
 
         sections_input.insertBefore(new_section, add_section_button);
         updateNumbers();
