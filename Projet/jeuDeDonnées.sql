@@ -19,3 +19,13 @@ INSERT INTO Demande_Question(titre_demande_question, description_demande_questio
 INSERT INTO Demande_Question(titre_demande_question, description_demande_question, id_organisateur) VALUES('Blind Test', 'Quand devrait se dérouler le prochain blind test?', 10001);
 
 -- Question
+INSERT INTO Question(id_question, titre_question, description_question, id_organisateur) VALUES(10001, 'Cryptographie', 'Est-ce que le chiffrement symétrique est un bon chiffrement ?', 10004);
+INSERT INTO Question(id_question, titre_question, description_question, id_organisateur) VALUES(10002, 'Mythes SQL', 'Les SQL Ninjas : Mythologie ou réalité ?', 10002);
+
+-- Responsable
+INSERT INTO Responsable(id_responsable, id_question) VALUES(10002, 10002);
+INSERT INTO Responsable(id_responsable, id_question) VALUES(10003, 10002);
+
+-- Votant
+INSERT INTO Votant(id_votant, id_question) VALUES(10008, 10002);
+INSERT INTO Votant(id_votant, id_question) VALUES(10004, 10002);
