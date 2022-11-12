@@ -82,6 +82,11 @@ class QuestionController extends Controller
                 return;
             }
 
+            if (strlen($descriptionSection) > 2000) {
+                static::error("afficherFormulairePoserQuestion", "La description de la section ne doit pas dépasser 2000 caractères");
+                return;
+            }
+
             $section = new Section(-1, -1, $nomSection, $descriptionSection);
             $sections[] = $section;
             $nbSections++;

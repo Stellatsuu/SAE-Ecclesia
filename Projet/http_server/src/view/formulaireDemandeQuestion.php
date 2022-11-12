@@ -5,7 +5,7 @@
          <input type="text" name="titre" maxlength="100" placeholder="Écrivez le titre de votre question ici" id="titre_id" required>
 
          <label for="description_id">Description :</label>
-         <textarea rows=6 cols=50 id="description_id" placeholder="Écrivez les détails de votre question ici, la raison de cette demande, etc" name="description" required></textarea>
+         <textarea rows=6 cols=50 id="description_id" maxlength="4000" placeholder="Écrivez les détails de votre question ici, la raison de cette demande, etc" name="description" required></textarea>
     </fieldset>
 
         <label for="idUtilisateur_id"></label>

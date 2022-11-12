@@ -78,6 +78,11 @@ class DemandeQuestionController extends Controller
             return;
         }
 
+        if (strlen($description) > 4000) {
+            static::error("afficherFormulaireDemandeQuestion", "La description ne doit pas dépasser 4000 caractères");
+            return;
+        }
+
         $demande = new DemandeQuestion(-1, $titre, $description, (new UtilisateurRepository)->select($idUtilisateur));
 
         (new DemandeQuestionRepository)->insert($demande);

@@ -11,7 +11,7 @@
         <label for="description_id">
             Description :
         </label>
-        <textarea rows=6 cols=50 id="description_id" name="description" required><?= htmlspecialchars($question->getDescription()) ?></textarea>
+        <textarea rows=6 cols=50 id="description_id" name="description" maxlength="4000" required><?= htmlspecialchars($question->getDescription()) ?></textarea>
 
 
         <label for="sections_input">Sections:</label>
@@ -118,7 +118,7 @@
             <input type="text" name="nomSection${nbSections}" id="nomSection${nbSections}_id" placeholder="Nom de la section" maxlength="50" required>
 
             <label for="descriptionSection${nbSections}_id">Description:</label>
-            <textarea rows="5" id="descriptionSection${nbSections}_id" name="descriptionSection${nbSections}" placeholder="Description de la section" required></textarea>
+            <textarea rows="5" id="descriptionSection${nbSections}_id" name="descriptionSection${nbSections}" maxlength="2000" placeholder="Description de la section" required></textarea>
             `;
 
         sections_input.insertBefore(new_section, add_section_button);
