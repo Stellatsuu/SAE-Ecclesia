@@ -49,3 +49,18 @@ CREATE TABLE Section (
     CONSTRAINT fk_section_question FOREIGN KEY (id_question) REFERENCES Question (id_question)
 );
 
+CREATE TABLE Votant (
+    id_votant serial,
+    id_question serial,
+    CONSTRAINT pk_Votant PRIMARY KEY (id_votant, id_question),
+    CONSTRAINT fk_Votant FOREIGN KEY (id_votant) REFERENCES Utilisateur (id_utilisateur)
+    CONSTRAINT fk_Votant_Question FOREIGN KEY (id_question) REFERENCES Question (id_question)
+);
+
+CREATE TABLE Responsable (
+    id_responsable serial,
+    id_question serial,
+    CONSTRAINT pk_Responsable PRIMARY KEY (id_responsable, id_question),
+    CONSTRAINT fk_Responsable FOREIGN KEY (id_responsable) REFERENCES Utilisateur (id_utilisateur)
+    CONSTRAINT fk_Responsable_Question FOREIGN KEY (id_question) REFERENCES Question (id_question)
+);
