@@ -8,10 +8,10 @@
         <input readonly type="text" name="titre" id="titre_id" value="<?= htmlspecialchars($question->getTitre()) ?>" required>
 
 
-        <label for="intitule_id">
-            Intitulé :
+        <label for="description_id">
+            Description :
         </label>
-        <textarea rows=6 cols=50 id="intitule_id" name="intitule" required><?= htmlspecialchars($question->getDescription()) ?></textarea>
+        <textarea rows=6 cols=50 id="description_id" name="description" required><?= htmlspecialchars($question->getDescription()) ?></textarea>
 
 
         <label for="sections_input">Sections:</label>

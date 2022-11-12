@@ -51,7 +51,7 @@ class QuestionController extends Controller
 
         $idQuestion = intval($_POST['idQuestion']);
         $titre = $_POST['titre'];
-        $intitule = $_POST['intitule'];
+        $description = $_POST['description'];
         $idUtilisateur = intval($_POST['idUtilisateur']);
 
         $nbSections = 1;
@@ -132,7 +132,7 @@ class QuestionController extends Controller
             return;
         }
 
-        if ($titre == "" || $intitule == "") {
+        if ($titre == "" || $description == "") {
             static::error("afficherFormulairePoserQuestion", "Veuillez remplir tous les champs");
             return;
         }
@@ -145,7 +145,7 @@ class QuestionController extends Controller
         $question = new Question(
             $idQuestion,
             $titre,
-            $intitule,
+            $description,
             (new UtilisateurRepository)->select($idUtilisateur),
             $sections,
             $dateDebutRedaction,
