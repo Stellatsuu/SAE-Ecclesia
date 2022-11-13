@@ -2,12 +2,20 @@ var nbResponsables = 0;
 const responsables_input = document.getElementById("responsables_input");
 const add_responsable_button = document.getElementById("add_responsable");
 
+const idResponsables = question.responsables.map((responsable) => responsable.idUtilisateur);
+
+idResponsables.forEach((id) => {
+  addResponsable();
+  const select = document.getElementById("responsable" + nbResponsables + "_select");
+  select.value = id;
+  lockValueResponsable(select, id);
+});
+
+if(nbResponsables == 0) addResponsable();
+
 add_responsable_button.onclick = () => {
   addResponsable();
-  updateResponsablesNumbers();
 };
-
-addResponsable();
 
 function addResponsable() {
   nbResponsables++;

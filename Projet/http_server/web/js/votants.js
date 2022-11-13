@@ -2,12 +2,21 @@ var nbVotants = 0;
 const votants_input = document.getElementById("votants_input");
 const add_votant_button = document.getElementById("add_votant");
 
+const idVotants = question.votants.map((votant) => votant.idUtilisateur);
+
+idVotants.forEach((idVotant) => {
+  addVotant();
+  const select = document.getElementById("votant" + nbVotants + "_select");
+  select.value = idVotant;
+  lockValueVotant(select, idVotant);
+});
+
+if (nbVotants == 0) addVotant();
+
 add_votant_button.onclick = () => {
   addVotant();
   updateVotantsNumbers();
 };
-
-addVotant();
 
 function addVotant() {
   nbVotants++;

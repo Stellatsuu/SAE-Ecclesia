@@ -40,8 +40,8 @@ class QuestionRepository extends AbstractRepository
             $row['description_question'],
             (new UtilisateurRepository)->select($row['id_organisateur']),
             (new SectionRepository)->selectAllByQuestion($row['id_question']),
-            null,
-            null,
+            static::getResponsables($row['id_question']),
+            static::getVotants($row['id_question']),
             $row['date_debut_redaction'] === NULL ? NULL : new DateTime($row['date_debut_redaction']),
             $row['date_fin_redaction'] === NULL ? NULL : new DateTime($row['date_fin_redaction']),
             $row['date_ouverture_votes'] === NULL ? NULL : new DateTime($row['date_ouverture_votes']),
@@ -69,7 +69,7 @@ class QuestionRepository extends AbstractRepository
     public function updateEbauche(Question $question): void
     {
         $pdo = DatabaseConnection::getPdo();
-        
+
         $sql = "UPDATE question SET description_question = :description_question, date_debut_redaction = :date_debut_redaction, date_fin_redaction = :date_fin_redaction, date_ouverture_votes = :date_ouverture_votes, date_fermeture_votes = :date_fermeture_votes WHERE id_question = :id_question";
         $pdoStatement = $pdo->prepare($sql);
         $values = [
@@ -99,11 +99,10 @@ class QuestionRepository extends AbstractRepository
         foreach ($question->getVotants() as $votant) {
             static::insertVotant($question->getIdQuestion(), $votant->getIdUtilisateur());
         }
-
-
     }
 
-    public function getQuestionsParOrganisateur(int $idUtilisateur) : array {
+    public function getQuestionsParOrganisateur(int $idUtilisateur): array
+    {
         $pdo = DatabaseConnection::getPdo();
 
         $sql = "SELECT * FROM question WHERE id_organisateur = :id_organisateur";
@@ -121,7 +120,8 @@ class QuestionRepository extends AbstractRepository
         return $questions;
     }
 
-    public function deleteResponsables(int $idQuestion) : void {
+    public function deleteResponsables(int $idQuestion): void
+    {
         $pdo = DatabaseConnection::getPdo();
 
         $sql = "DELETE FROM responsable WHERE id_question = :id_question";
@@ -133,7 +133,8 @@ class QuestionRepository extends AbstractRepository
         $pdoStatement->execute($values);
     }
 
-    public function insertResponsable(int $idQuestion, int $idUtilisateur) : void {
+    public function insertResponsable(int $idQuestion, int $idUtilisateur): void
+    {
         $pdo = DatabaseConnection::getPdo();
 
         $sql = "INSERT INTO responsable (id_question, id_responsable) VALUES (:id_question, :id_responsable)";
@@ -146,7 +147,27 @@ class QuestionRepository extends AbstractRepository
         $pdoStatement->execute($values);
     }
 
-    public function deleteVotants(int $idQuestion) : void {
+    public function getResponsables(int $idQuestion): array
+    {
+        $pdo = DatabaseConnection::getPdo();
+
+        $sql = "SELECT id_responsable FROM responsable WHERE id_question = :id_question";
+        $pdoStatement = $pdo->prepare($sql);
+        $values = [
+            'id_question' => $idQuestion
+        ];
+
+        $pdoStatement->execute($values);
+
+        $responsables = [];
+        foreach ($pdoStatement as $row) {
+            $responsables[] = (new UtilisateurRepository)->select($row['id_responsable']);
+        }
+        return $responsables;
+    }
+
+    public function deleteVotants(int $idQuestion): void
+    {
         $pdo = DatabaseConnection::getPdo();
 
         $sql = "DELETE FROM votant WHERE id_question = :id_question";
@@ -158,7 +179,8 @@ class QuestionRepository extends AbstractRepository
         $pdoStatement->execute($values);
     }
 
-    public function insertVotant(int $idQuestion, int $idUtilisateur) : void {
+    public function insertVotant(int $idQuestion, int $idUtilisateur): void
+    {
         $pdo = DatabaseConnection::getPdo();
 
         $sql = "INSERT INTO votant (id_question, id_votant) VALUES (:id_question, :id_votant)";
@@ -169,5 +191,24 @@ class QuestionRepository extends AbstractRepository
         ];
 
         $pdoStatement->execute($values);
+    }
+
+    public function getVotants(int $idQuestion): array
+    {
+        $pdo = DatabaseConnection::getPdo();
+
+        $sql = "SELECT id_votant FROM votant WHERE id_question = :id_question";
+        $pdoStatement = $pdo->prepare($sql);
+        $values = [
+            'id_question' => $idQuestion
+        ];
+
+        $pdoStatement->execute($values);
+
+        $votants = [];
+        foreach ($pdoStatement as $row) {
+            $votants[] = (new UtilisateurRepository)->select($row['id_votant']);
+        }
+        return $votants;
     }
 }
