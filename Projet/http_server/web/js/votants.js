@@ -35,8 +35,8 @@ function addVotant() {
     const select = votants[i].children[0];
     lockValueVotant(select, select.value);
   }
-
   updateVotantsNumbers();
+  updateRemoveVotantButtonLock();
 }
 
 function removeVotant(i) {
@@ -48,6 +48,18 @@ function removeVotant(i) {
 
   votants_input.removeChild(votant);
   updateVotantsNumbers();
+  updateRemoveVotantButtonLock();
+}
+
+function updateRemoveVotantButtonLock() {
+  const rmVotantButtons = document.querySelectorAll(".remove_votant");
+  rmVotantButtons.forEach((button) => {
+    if (nbVotants == 1) {
+      button.disabled = true;
+    } else {
+      button.disabled = false;
+    }
+  });
 }
 
 function updateVotantsNumbers() {

@@ -19,7 +19,6 @@ if (sectionsQuestion.length == 0) {
 
 add_section_button.onclick = () => {
   addSection();
-  updateSectionsNumbers();
 };
 
 function addSection() {
@@ -28,7 +27,7 @@ function addSection() {
   new_section.classList.add("conteneur_section");
   new_section.id = "section" + nbSections + "_id";
   new_section.innerHTML = `
-        <div>Section ${nbSections}<button class="rmbutton" type="button" onclick="removeSection(${nbSections})">supprimer</button></div>
+        <div>Section ${nbSections}<button class="remove_section" type="button" onclick="removeSection(${nbSections})">supprimer</button></div>
         <label for="nomSection${nbSections}_id">Nom:</label>
         <div class="text_input_div">   
             <input type="text" name="nomSection${nbSections}" id="nomSection${nbSections}_id" placeholder="Nom de la section" maxlength="50" required>
@@ -43,27 +42,50 @@ function addSection() {
 
   sections_input.insertBefore(new_section, add_section_button);
   updateSectionsNumbers();
+  updateRemoveSectionButtonLock();
 }
 
 function removeSection(i) {
   const section = document.getElementById("section" + i + "_id");
   sections_input.removeChild(section);
   updateSectionsNumbers();
+  updateRemoveSectionButtonLock();
+}
+
+function updateRemoveSectionButtonLock() {
+  const rmSectionButtons = document.querySelectorAll(".remove_section");
+  rmSectionButtons.forEach((button) => {
+    if (nbSections == 1) {
+      button.disabled = true;
+    } else {
+      button.disabled = false;
+    }
+  });
 }
 
 function updateSectionsNumbers() {
-  const conteneurs_sections = document.getElementsByClassName("conteneur_section");
-    for (let i = 0; i < conteneurs_sections.length; i++) {
-        conteneurs_sections[i].children[0].innerHTML = `Section ${i + 1}<button class="rmbutton" type="button" onclick="removeSection(${i + 1})">supprimer</button>`;
-        conteneurs_sections[i].children[1].id = "nomSection" + (i + 1) + "_id";
-        conteneurs_sections[i].children[1].name = "nomSection" + (i + 1);
-        conteneurs_sections[i].children[2].children[0].id = "nomSection" + (i + 1) + "_id";
-        conteneurs_sections[i].children[2].children[0].name = "nomSection" + (i + 1);
-        conteneurs_sections[i].children[3].id = "descriptionSection" + (i + 1) + "_id";
-        conteneurs_sections[i].children[3].name = "descriptionSection" + (i + 1);
-        conteneurs_sections[i].children[4].children[0].id = "descriptionSection" + (i + 1) + "_id";
-        conteneurs_sections[i].children[4].children[0].name = "descriptionSection" + (i + 1);
-        conteneurs_sections[i].id = "section" + (i + 1) + "_id";
-    }
-    nbSections = conteneurs_sections.length;
+  const conteneurs_sections =
+    document.getElementsByClassName("conteneur_section");
+  for (let i = 0; i < conteneurs_sections.length; i++) {
+    conteneurs_sections[i].children[0].innerHTML = `Section ${
+      i + 1
+    }<button class="remove_section" type="button" onclick="removeSection(${
+      i + 1
+    })">supprimer</button>`;
+    conteneurs_sections[i].children[1].id = "nomSection" + (i + 1) + "_id";
+    conteneurs_sections[i].children[1].name = "nomSection" + (i + 1);
+    conteneurs_sections[i].children[2].children[0].id =
+      "nomSection" + (i + 1) + "_id";
+    conteneurs_sections[i].children[2].children[0].name =
+      "nomSection" + (i + 1);
+    conteneurs_sections[i].children[3].id =
+      "descriptionSection" + (i + 1) + "_id";
+    conteneurs_sections[i].children[3].name = "descriptionSection" + (i + 1);
+    conteneurs_sections[i].children[4].children[0].id =
+      "descriptionSection" + (i + 1) + "_id";
+    conteneurs_sections[i].children[4].children[0].name =
+      "descriptionSection" + (i + 1);
+    conteneurs_sections[i].id = "section" + (i + 1) + "_id";
+  }
+  nbSections = conteneurs_sections.length;
 }

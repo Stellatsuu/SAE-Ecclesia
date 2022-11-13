@@ -36,6 +36,7 @@ function addResponsable() {
   }
 
   updateResponsablesNumbers();
+  updateRemoveResponsableButtonLock();
 }
 
 function removeResponsable(i) {
@@ -48,6 +49,18 @@ function removeResponsable(i) {
 
   responsables_input.removeChild(responsable);
   updateResponsablesNumbers();
+  updateRemoveResponsableButtonLock();
+}
+
+function updateRemoveResponsableButtonLock() {
+  const rmResponsableButtons = document.querySelectorAll(".remove_responsable");
+  rmResponsableButtons.forEach((button) => {
+    if (nbResponsables == 1) {
+      button.disabled = true;
+    } else {
+      button.disabled = false;
+    }
+  });
 }
 
 function updateResponsablesNumbers() {
