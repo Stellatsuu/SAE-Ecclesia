@@ -89,6 +89,18 @@ class QuestionRepository extends AbstractRepository
             $section->setIdQuestion($question->getIdQuestion());
             (new SectionRepository)->insert($section);
         }
+
+        static::deleteResponsables($question->getIdQuestion());
+        foreach ($question->getResponsables() as $responsable) {
+            static::insertResponsable($question->getIdQuestion(), $responsable->getIdUtilisateur());
+        }
+
+        static::deleteVotants($question->getIdQuestion());
+        foreach ($question->getVotants() as $votant) {
+            static::insertVotant($question->getIdQuestion(), $votant->getIdUtilisateur());
+        }
+
+
     }
 
     public function getQuestionsParOrganisateur(int $idUtilisateur) : array {
@@ -107,5 +119,55 @@ class QuestionRepository extends AbstractRepository
             $questions[] = $this->construire($row);
         }
         return $questions;
+    }
+
+    public function deleteResponsables(int $idQuestion) : void {
+        $pdo = DatabaseConnection::getPdo();
+
+        $sql = "DELETE FROM responsable WHERE id_question = :id_question";
+        $pdoStatement = $pdo->prepare($sql);
+        $values = [
+            'id_question' => $idQuestion
+        ];
+
+        $pdoStatement->execute($values);
+    }
+
+    public function insertResponsable(int $idQuestion, int $idUtilisateur) : void {
+        $pdo = DatabaseConnection::getPdo();
+
+        $sql = "INSERT INTO responsable (id_question, id_responsable) VALUES (:id_question, :id_responsable)";
+        $pdoStatement = $pdo->prepare($sql);
+        $values = [
+            'id_question' => $idQuestion,
+            'id_responsable' => $idUtilisateur
+        ];
+
+        $pdoStatement->execute($values);
+    }
+
+    public function deleteVotants(int $idQuestion) : void {
+        $pdo = DatabaseConnection::getPdo();
+
+        $sql = "DELETE FROM votant WHERE id_question = :id_question";
+        $pdoStatement = $pdo->prepare($sql);
+        $values = [
+            'id_question' => $idQuestion
+        ];
+
+        $pdoStatement->execute($values);
+    }
+
+    public function insertVotant(int $idQuestion, int $idUtilisateur) : void {
+        $pdo = DatabaseConnection::getPdo();
+
+        $sql = "INSERT INTO votant (id_question, id_votant) VALUES (:id_question, :id_votant)";
+        $pdoStatement = $pdo->prepare($sql);
+        $values = [
+            'id_question' => $idQuestion,
+            'id_votant' => $idUtilisateur
+        ];
+
+        $pdoStatement->execute($values);
     }
 }

@@ -97,6 +97,40 @@ class QuestionController extends Controller
             $nbSections++;
         }
 
+        $nbResponsables = 1;
+        $responsables = [];
+
+        while(isset($_POST['responsable' . $nbResponsables])) {
+            $idResponsable = intval($_POST['responsable' . $nbResponsables]);
+            $responsable = (new UtilisateurRepository)->select($idResponsable);
+            if($responsable) {
+                $responsables[] = $responsable;
+            }
+            $nbResponsables++;
+        }
+
+        if (count($responsables) == 0) {
+            static::error("afficherFormulairePoserQuestion", "Veuillez sélectionner au moins un responsable");
+            return;
+        }
+
+        $nbVotants = 1;
+        $votants = [];
+
+        while(isset($_POST['votant' . $nbVotants])) {
+            $idVotant = intval($_POST['votant' . $nbVotants]);
+            $votant = (new UtilisateurRepository)->select($idVotant);
+            if($votant) {
+                $votants[] = $votant;
+            }
+            $nbVotants++;
+        }
+
+        if (count($votants) == 0) {
+            static::error("afficherFormulairePoserQuestion", "Veuillez sélectionner au moins un votant");
+            return;
+        }
+
         if (
             !preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/", $_POST['dateDebutRedaction'])
             || !preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/", $_POST['dateFinRedaction'])
@@ -166,8 +200,8 @@ class QuestionController extends Controller
             $description,
             (new UtilisateurRepository)->select($idUtilisateur),
             $sections,
-            null,
-            null,
+            $responsables,
+            $votants,
             $dateDebutRedaction,
             $dateFinRedaction,
             $dateOuvertureVotes,

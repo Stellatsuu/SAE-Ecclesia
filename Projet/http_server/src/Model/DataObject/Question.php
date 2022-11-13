@@ -52,6 +52,16 @@ class Question extends DemandeQuestion implements JsonSerializable
         return $this->sections;
     }
 
+    public function getResponsables(): ?array
+    {
+        return $this->responsables;
+    }
+
+    public function getVotants(): ?array
+    {
+        return $this->votants;
+    }
+
     public function getDateDebutRedaction(): ?DateTime
     {
         return $this->dateDebutRedaction;
@@ -111,6 +121,8 @@ class Question extends DemandeQuestion implements JsonSerializable
             'description_question' => $this->getDescription(),
             'organisateur' => $this->getOrganisateur(),
             'sections' => $this->getSections(),
+            'responsables' => $this->getResponsables(),
+            'votants' => $this->getVotants(),
             'date_debut_redaction' => $this->getDateDebutRedaction(),
             'date_fin_redaction' => $this->getDateFinRedaction(),
             'date_ouverture_votes' => $this->getDateOuvertureVotes(),
