@@ -59,6 +59,7 @@ button,
   }
   &:disabled {
     background-color: $couleurPrincipaleSurvol;
+    cursor:default;
   }
 
   &.validerBtn {
