@@ -1,8 +1,3 @@
-<pre>
-    <?= json_encode($question, JSON_PRETTY_PRINT) ?>
-</pre>
-
-
 <form method="post" action="frontController.php?controller=question&action=poserQuestion" class="panel">
     <h1>Posez votre question :</h1>
     <fieldset>
@@ -106,7 +101,6 @@
     const question = <?= json_encode($question) ?>;
     const utilisateurs = <?= json_encode($utilisateurs) ?>;
     const allUtilisateursOption = '<option value="" selected disabled>---</option>' + utilisateurs.map(utilisateur => `<option value="${utilisateur.idUtilisateur}">${(utilisateur.nom).toUpperCase()} ${utilisateur.prenom}</option>`).join("\n");
-    console.log(question.sections);
 </script>
 
 <script src="js/sections.js"></script>

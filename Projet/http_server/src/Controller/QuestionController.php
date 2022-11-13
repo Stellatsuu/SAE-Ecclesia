@@ -58,9 +58,6 @@ class QuestionController extends Controller
 
     public static function poserQuestion(): void
     {
-        echo "<pre>";
-        print_r($_POST);
-        echo "</pre>";
 
         $idQuestion = intval($_POST['idQuestion']);
         $titre = $_POST['titre'];
