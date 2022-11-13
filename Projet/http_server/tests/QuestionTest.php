@@ -27,5 +27,5 @@ $loader->register();
             $this->assertNull($question->getDateFermetureVotes());
         }
 
-        
+
     }
