@@ -5,14 +5,14 @@ namespace App\SAE\Controller;
 use App\SAE\Model\Repository\QuestionRepository as QuestionRepository;
 use App\SAE\Model\DataObject\Question as Question;
 use App\SAE\Model\DataObject\Section;
+use App\SAE\Model\DataObject\Utilisateur;
 use App\SAE\Model\Repository\UtilisateurRepository as UtilisateurRepository;
 use DateTime;
 use DateInterval;
 
-
 class QuestionController extends Controller
 {
-    
+
     public static function afficherFormulairePoserQuestion(): void
     {
         $idQuestion = intval($_GET['idQuestion']);
@@ -39,7 +39,7 @@ class QuestionController extends Controller
             "dateFermetureVotes" => $question->getDateFermetureVotes()->format("Y-m-d")
         );
 
-        $heuresFormatees = array (
+        $heuresFormatees = array(
             "heureDebutRedaction" => $question->getDateDebutRedaction()->format("H:i"),
             "heureFinRedaction" => $question->getDateFinRedaction()->format("H:i"),
             "heureOuvertureVotes" => $question->getDateOuvertureVotes()->format("H:i"),
@@ -97,10 +97,10 @@ class QuestionController extends Controller
         $nbResponsables = 1;
         $responsables = [];
 
-        while(isset($_POST['responsable' . $nbResponsables])) {
+        while (isset($_POST['responsable' . $nbResponsables])) {
             $idResponsable = intval($_POST['responsable' . $nbResponsables]);
-            $responsable = (new UtilisateurRepository)->select($idResponsable);
-            if($responsable) {
+            $responsable = Utilisateur::toUtilisateur((new UtilisateurRepository)->select($idResponsable));
+            if ($responsable && !in_array($responsable, $responsables)) {
                 $responsables[] = $responsable;
             }
             $nbResponsables++;
@@ -114,10 +114,10 @@ class QuestionController extends Controller
         $nbVotants = 1;
         $votants = [];
 
-        while(isset($_POST['votant' . $nbVotants])) {
+        while (isset($_POST['votant' . $nbVotants])) {
             $idVotant = intval($_POST['votant' . $nbVotants]);
-            $votant = (new UtilisateurRepository)->select($idVotant);
-            if($votant) {
+            $votant = Utilisateur::toUtilisateur((new UtilisateurRepository)->select($idVotant));
+            if ($votant && !in_array($votant, $votants)) {
                 $votants[] = $votant;
             }
             $nbVotants++;
