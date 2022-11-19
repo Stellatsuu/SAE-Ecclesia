@@ -1,0 +1,35 @@
+.conteneurDateHeure {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 7px;
+
+  div {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 2.5px 0;
+
+    span {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  input {
+    height: 20px;
+    margin: 2.5px 10px;
+
+    &[type="date"] {
+      width: 120px;
+    }
+
+    &[type="time"] {
+      width: 70px;
+    }
+  }
+
+  div:last-child {
+    input[type="date"] {
+      margin-left: 13px;
+    }
+  }
+}

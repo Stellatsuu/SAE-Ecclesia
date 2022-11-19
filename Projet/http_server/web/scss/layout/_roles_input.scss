@@ -1,0 +1,43 @@
+#roles_input {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10%;
+
+  #votants_input,
+  #responsables_input {
+    display: flex;
+    flex-direction: column;
+
+    #remove_responsable,
+    #remove_votant {
+      margin-top: 7px;
+    }
+
+    #add_responsable,
+    #add_votant {
+      margin-left: 65px;
+    }
+
+    button {
+      width: 50px;
+      height: 30px;
+      text-align: center;
+      padding: 0;
+      margin: 5px;
+    }
+
+    @media screen and (max-width: 1000px) {
+      width: 100%;
+    }
+  }
+
+  .conteneur_responsable,
+  .conteneur_votant {
+    padding: 0;
+  }
+
+  @media screen and (max-width: 1000px) {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,41 @@
+input[type="button"],
+input[type="submit"],
+button,
+.button {
+  background-color: $couleurPrincipale;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 25px;
+  color: $couleurTexte;
+  margin: 15px 0;
+
+  &:hover {
+    background-color: $couleurPrincipaleSurvol;
+    cursor: pointer;
+  }
+  &:disabled {
+    background-color: $couleurPrincipaleSurvol;
+    cursor:default;
+  }
+
+  &.validerBtn {
+    background-color: $couleurValider;
+
+    &:hover {
+      background-color: $couleurValiderSurvol;
+    }
+    &:disabled {
+      background-color: $couleurValiderSurvol;
+    }
+  }
+  &.refuserBtn {
+    background-color: $couleurRefuser;
+
+    &:hover {
+      background-color: $couleurRefuserSurvol;
+    }
+    &:disabled {
+      background-color: $couleurRefuserSurvol;
+    }
+  }
+}

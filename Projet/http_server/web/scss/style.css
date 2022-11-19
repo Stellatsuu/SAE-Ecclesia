@@ -1,16 +1,144 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset, body {
-  color: white;
-  font-family: Raleway, serif;
+.boite {
+  border: solid 3px #E1603C;
+  background-color: #353535;
+  padding: 10px;
 }
 
-.unselectable {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+input[type=button],
+input[type=submit],
+button,
+.button {
+  background-color: #E1603C;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 25px;
+  color: white;
+  margin: 15px 0;
+}
+input[type=button]:hover,
+input[type=submit]:hover,
+button:hover,
+.button:hover {
+  background-color: #B1482C;
+  cursor: pointer;
+}
+input[type=button]:disabled,
+input[type=submit]:disabled,
+button:disabled,
+.button:disabled {
+  background-color: #B1482C;
+  cursor: default;
+}
+input[type=button].validerBtn,
+input[type=submit].validerBtn,
+button.validerBtn,
+.button.validerBtn {
+  background-color: #09B44D;
+}
+input[type=button].validerBtn:hover,
+input[type=submit].validerBtn:hover,
+button.validerBtn:hover,
+.button.validerBtn:hover {
+  background-color: #069840;
+}
+input[type=button].validerBtn:disabled,
+input[type=submit].validerBtn:disabled,
+button.validerBtn:disabled,
+.button.validerBtn:disabled {
+  background-color: #069840;
+}
+input[type=button].refuserBtn,
+input[type=submit].refuserBtn,
+button.refuserBtn,
+.button.refuserBtn {
+  background-color: #E43C0E;
+}
+input[type=button].refuserBtn:hover,
+input[type=submit].refuserBtn:hover,
+button.refuserBtn:hover,
+.button.refuserBtn:hover {
+  background-color: #c2320b;
+}
+input[type=button].refuserBtn:disabled,
+input[type=submit].refuserBtn:disabled,
+button.refuserBtn:disabled,
+.button.refuserBtn:disabled {
+  background-color: #c2320b;
+}
+
+.conteneurDateHeure {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 7px;
+}
+.conteneurDateHeure div {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 2.5px 0;
+}
+.conteneurDateHeure div span {
+  display: flex;
+  align-items: center;
+}
+.conteneurDateHeure input {
+  height: 20px;
+  margin: 2.5px 10px;
+}
+.conteneurDateHeure input[type=date] {
+  width: 120px;
+}
+.conteneurDateHeure input[type=time] {
+  width: 70px;
+}
+.conteneurDateHeure div:last-child input[type=date] {
+  margin-left: 13px;
+}
+
+.conteneur_section {
+  padding: 0 20px 20px;
+  border: #353535 1px solid;
+}
+.conteneur_section div {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.conteneur_section label {
+  display: block;
+  font-size: 1em;
+  margin: 4px 0;
+}
+.conteneur_section .remove_section {
+  padding: 3px 6px;
+}
+.conteneur_section textarea {
+  resize: none;
+}
+.conteneur_section input[type=text] {
+  width: calc(100% - 14px);
+}
+
+.text_input_div {
+  position: relative;
+  text-align: center;
+}
+
+.indicateur_max_chars {
+  font-size: 0.8rem;
+  position: absolute;
+  bottom: -16px;
+  right: 0;
+  color: rgb(168, 168, 168);
+}
+
+select {
+  background-color: #353535;
+  color: white;
+  padding: 5px;
+  border: #E1603C 2px solid;
+  outline: none;
 }
 
 nav {
@@ -77,8 +205,14 @@ fieldset {
   width: 70%;
   padding: 0;
 }
-fieldset > textarea, fieldset input[type=text] {
+fieldset > textarea,
+fieldset input[type=text] {
   max-width: 100%;
+}
+@media screen and (max-width: 600px) {
+  fieldset {
+    width: 90%;
+  }
 }
 
 input,
@@ -90,7 +224,8 @@ textarea {
   font-size: 1rem;
 }
 
-textarea, input[type=text] {
+textarea,
+input[type=text] {
   background-color: #353535;
   width: calc(100% - 14px);
   resize: vertical;
@@ -108,11 +243,6 @@ label {
   font-size: 1.5em;
 }
 
-input[type=date],
-input[type=time] {
-  width: fit-content;
-}
-
 input[type=date]::-webkit-calendar-picker-indicator {
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" viewBox="0 0 24 24"><path fill="%23bbbbbb" d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/></svg>');
 }
@@ -121,98 +251,51 @@ input[type=time]::-webkit-calendar-picker-indicator {
   background-image: url('data:image/svg+xml;utf8,<svg style="color: white" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16"> <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" fill="white"></path> <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" fill="white"></path> </svg>');
 }
 
-input[type=button],
-input[type=submit],
-button,
-.button {
-  background-color: #E1603C;
-  border: none;
-  border-radius: 4px;
-  padding: 8px 25px;
-  color: white;
-  margin: 15px 0;
-}
-input[type=button]:hover,
-input[type=submit]:hover,
-button:hover,
-.button:hover {
-  background-color: #B1482C;
-  cursor: pointer;
-}
-input[type=button]:disabled,
-input[type=submit]:disabled,
-button:disabled,
-.button:disabled {
-  background-color: #B1482C;
-  cursor: default;
-}
-input[type=button].validerBtn,
-input[type=submit].validerBtn,
-button.validerBtn,
-.button.validerBtn {
-  background-color: #09B44D;
-}
-input[type=button].validerBtn:hover,
-input[type=submit].validerBtn:hover,
-button.validerBtn:hover,
-.button.validerBtn:hover {
-  background-color: #069840;
-}
-input[type=button].validerBtn:disabled,
-input[type=submit].validerBtn:disabled,
-button.validerBtn:disabled,
-.button.validerBtn:disabled {
-  background-color: #069840;
-}
-input[type=button].refuserBtn,
-input[type=submit].refuserBtn,
-button.refuserBtn,
-.button.refuserBtn {
-  background-color: #E43C0E;
-}
-input[type=button].refuserBtn:hover,
-input[type=submit].refuserBtn:hover,
-button.refuserBtn:hover,
-.button.refuserBtn:hover {
-  background-color: #c2320b;
-}
-input[type=button].refuserBtn:disabled,
-input[type=submit].refuserBtn:disabled,
-button.refuserBtn:disabled,
-.button.refuserBtn:disabled {
-  background-color: #c2320b;
-}
-
-.text_input_div {
-  position: relative;
-  text-align: center;
-}
-
-.indicateur_max_chars {
-  font-size: 0.8rem;
-  position: absolute;
-  bottom: -16px;
-  right: 0;
-  color: rgb(168, 168, 168);
-}
-
-.conteneurDateHeure {
+#roles_input {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10%;
+}
+#roles_input #votants_input,
+#roles_input #responsables_input {
+  display: flex;
+  flex-direction: column;
+}
+#roles_input #votants_input #remove_responsable,
+#roles_input #votants_input #remove_votant,
+#roles_input #responsables_input #remove_responsable,
+#roles_input #responsables_input #remove_votant {
   margin-top: 7px;
 }
-.conteneurDateHeure div {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 2.5px 0;
+#roles_input #votants_input #add_responsable,
+#roles_input #votants_input #add_votant,
+#roles_input #responsables_input #add_responsable,
+#roles_input #responsables_input #add_votant {
+  margin-left: 65px;
 }
-.conteneurDateHeure div span {
-  display: flex;
-  align-items: center;
+#roles_input #votants_input button,
+#roles_input #responsables_input button {
+  width: 50px;
+  height: 30px;
+  text-align: center;
+  padding: 0;
+  margin: 5px;
 }
-.conteneurDateHeure input {
-  height: 20px;
-  margin: 2.5px 10px;
+@media screen and (max-width: 1000px) {
+  #roles_input #votants_input,
+#roles_input #responsables_input {
+    width: 100%;
+  }
+}
+#roles_input .conteneur_responsable,
+#roles_input .conteneur_votant {
+  padding: 0;
+}
+@media screen and (max-width: 1000px) {
+  #roles_input {
+    flex-direction: column;
+  }
 }
 
 #sections_input {
@@ -238,85 +321,6 @@ button.refuserBtn:disabled,
   #sections_input {
     grid-template-columns: 1fr;
   }
-}
-
-#roles_input {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-#roles_input select {
-  background-color: #353535;
-  color: white;
-  padding: 5px;
-  border: #E1603C 2px solid;
-  outline: none;
-}
-#roles_input #votants_input, #roles_input #responsables_input {
-  display: flex;
-  flex-direction: column;
-}
-#roles_input #votants_input :nth-child(2), #roles_input #responsables_input :nth-child(2) {
-  margin-top: 7px;
-}
-#roles_input #votants_input button, #roles_input #responsables_input button {
-  width: 50px;
-  height: 30px;
-  text-align: center;
-  padding: 0;
-  margin: 5px;
-}
-@media screen and (max-width: 1000px) {
-  #roles_input #votants_input, #roles_input #responsables_input {
-    width: 100%;
-  }
-}
-#roles_input #votants_input #add_responsable, #roles_input #votants_input #add_votant, #roles_input #responsables_input #add_responsable, #roles_input #responsables_input #add_votant {
-  margin-left: 65px;
-}
-#roles_input .conteneur_responsable, #roles_input .conteneur_votant {
-  padding: 0;
-}
-@media screen and (max-width: 1000px) {
-  #roles_input {
-    flex-direction: column;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  fieldset {
-    width: 90%;
-  }
-}
-.boite {
-  border: solid 3px #E1603C;
-  background-color: #353535;
-  padding: 10px;
-}
-
-.conteneur_section {
-  padding: 0 20px 20px;
-  border: #353535 1px solid;
-}
-.conteneur_section div {
-  font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.conteneur_section label {
-  display: block;
-  font-size: 1em;
-  margin: 4px 0;
-}
-.conteneur_section .remove_section {
-  padding: 3px 6px;
-}
-.conteneur_section textarea {
-  resize: none;
-}
-.conteneur_section input[type=text] {
-  width: calc(100% - 14px);
 }
 
 .demandeQuestion {
@@ -366,8 +370,10 @@ button.refuserBtn:disabled,
   left: 50%;
   transform: translate(-50%, -50%);
   /* animation */
-  animation: disappear 500ms forwards;
-  animation-delay: 2s;
+  -webkit-animation: disappear 500ms forwards;
+          animation: disappear 500ms forwards;
+  -webkit-animation-delay: 2s;
+          animation-delay: 2s;
 }
 
 .errorMessage {
@@ -375,6 +381,16 @@ button.refuserBtn:disabled,
   border: 1px solid rgba(194, 50, 11, 0.3);
   box-shadow: 0 4px 30px rgba(194, 50, 11, 0.1);
   color: #E43C0E;
+}
+
+@-webkit-keyframes disappear {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
 
 @keyframes disappear {
@@ -386,6 +402,19 @@ button.refuserBtn:disabled,
     visibility: hidden;
   }
 }
+h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset, body {
+  color: white;
+  font-family: Raleway, serif;
+}
+
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 html, body {
   margin: 0;
 }
@@ -396,6 +425,4 @@ body {
   font-family: Raleway, serif;
   background-image: url("../assets/images/greek_logo_fond.png");
   background-size: 30%;
-}
-
-/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */

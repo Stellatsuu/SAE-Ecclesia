@@ -5,8 +5,13 @@ fieldset {
   width: 70%;
   padding: 0;
 
-   > textarea, input[type="text"] {
+  > textarea,
+  input[type="text"] {
     max-width: 100%;
+  }
+
+  @media screen and (max-width: 600px) {
+    width: 90%;
   }
 }
 
@@ -19,7 +24,8 @@ textarea {
   font-size: 1rem;
 }
 
-textarea, input[type="text"] {
+textarea,
+input[type="text"] {
   background-color: $couleurFond3;
   width: calc(100% - 14px);
   resize: vertical;
@@ -37,169 +43,11 @@ label {
   font-size: 1.5em;
 }
 
-input[type="date"],
-input[type="time"] {
-  width: fit-content;
-}
-
 input[type="date"]::-webkit-calendar-picker-indicator {
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" viewBox="0 0 24 24"><path fill="%23bbbbbb" d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/></svg>');
 }
 
 input[type="time"]::-webkit-calendar-picker-indicator {
-  background-image: url('data:image/svg+xml;utf8,<svg style="color: white" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16"> <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" fill="white"></path> <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" fill="white"></path> </svg>');;
+  background-image: url('data:image/svg+xml;utf8,<svg style="color: white" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16"> <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" fill="white"></path> <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" fill="white"></path> </svg>');
 }
 
-input[type="button"],
-input[type="submit"],
-button,
-.button {
-  background-color: $couleurPrincipale;
-  border: none;
-  border-radius: 4px;
-  padding: 8px 25px;
-  color: $couleurTexte;
-  margin: 15px 0;
-
-  &:hover {
-    background-color: $couleurPrincipaleSurvol;
-    cursor: pointer;
-  }
-  &:disabled {
-    background-color: $couleurPrincipaleSurvol;
-    cursor:default;
-  }
-
-  &.validerBtn {
-    background-color: $couleurValider;
-
-    &:hover {
-      background-color: $couleurValiderSurvol;
-    }
-    &:disabled {
-      background-color: $couleurValiderSurvol;
-    }
-  }
-  &.refuserBtn {
-    background-color: $couleurRefuser;
-
-    &:hover {
-      background-color: $couleurRefuserSurvol;
-    }
-    &:disabled {
-      background-color: $couleurRefuserSurvol;
-    }
-  }
-}
-
-.text_input_div {
-  position: relative;
-  text-align: center;
-}
-
-.indicateur_max_chars {
-  font-size: 0.8rem;
-  position: absolute;
-  bottom: -16px;
-  right: 0;
-  color: rgb(168, 168, 168);
-}
-
-.conteneurDateHeure {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 7px;
-
-  div {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 2.5px 0;
-
-    span {
-      display: flex;
-      align-items: center;
-    }
-  }
-
-  input {
-    height: 20px;
-    margin: 2.5px 10px;
-  }
-
-}
-
-#sections_input {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 10px;
-
-  #add_section {
-    height: 60px;
-    width: 60px;
-    padding: 0;
-    font-size: 2rem;
-    align-self: center;
-    justify-self: center;
-    text-align: center;
-  }
-
-  @media screen and (max-width: 1200px) and (min-width: 751px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media screen and (max-width: 750px) {
-    grid-template-columns: 1fr;
-  }
-}
-
-#roles_input {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-
-  select {
-    background-color: $couleurFond3;
-    color: $couleurTexte;
-    padding: 5px;
-    border: $couleurPrincipale 2px solid;
-    outline: none;
-  }
-
-  #votants_input, #responsables_input {
-    display: flex;
-    flex-direction: column;
-
-    :nth-child(2) {
-      margin-top: 7px;
-    }
-
-    button {
-      width: 50px;
-      height: 30px;
-      text-align: center;
-      padding: 0;
-      margin: 5px;
-    }
-    @media screen and (max-width: 1000px){
-      width: 100%;
-    }
-
-    #add_responsable, #add_votant{
-      margin-left: 65px;
-    }
-  }
-
-  .conteneur_responsable, .conteneur_votant {
-    padding: 0;
-  }
-
-  @media screen and (max-width: 1000px){
-    flex-direction: column;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  fieldset {
-    width: 90%;
-  }
-}
