@@ -86,12 +86,12 @@ CREATE TABLE Votant (
 CREATE TABLE Proposition (
     id_proposition serial,
     titre_proposition varchar(100) NOT NULL,
-    id_responsable serial NOT NULL,
+    id_redacteur serial NOT NULL,
     id_question serial NOT NULL,
     CONSTRAINT pk_Proposition PRIMARY KEY (id_proposition),
-    CONSTRAINT fk_Proposition_Responsable FOREIGN KEY (id_responsable) REFERENCES Utilisateur (id_utilisateur),
+    CONSTRAINT fk_Proposition_Redacteur FOREIGN KEY (id_redacteur) REFERENCES Utilisateur (id_utilisateur),
     CONSTRAINT fk_Proposition_Question FOREIGN KEY (id_question) REFERENCES Question (id_question),
-    CONSTRAINT fk_Proposition_Responsable_Question FOREIGN KEY (id_responsable, id_question) REFERENCES Redacteur (id_redacteur, id_question)
+    CONSTRAINT fk_Proposition_Redacteur_Question FOREIGN KEY (id_redacteur, id_question) REFERENCES Redacteur (id_redacteur, id_question)
 );
 
 CREATE TABLE Paragraphe (

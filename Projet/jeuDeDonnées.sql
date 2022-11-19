@@ -34,7 +34,7 @@ INSERT INTO Votant(id_votant, id_question) VALUES(10008, 10002); --Rouchon
 INSERT INTO Votant(id_votant, id_question) VALUES(10004, 10002); --MJ
 
 -- Proposition
-INSERT INTO Proposition(id_proposition, titre_proposition, id_responsable, id_question) VALUES (20001, 'test proposition', 10003, 10002) --Palleja N
+INSERT INTO Proposition(id_proposition, titre_proposition, id_redacteur, id_question) VALUES (20001, 'test proposition', 10003, 10002) --Palleja N
 
 -- Paragraphe
 
