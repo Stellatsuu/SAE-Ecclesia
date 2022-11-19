@@ -59,5 +59,10 @@ class Utilisateur extends AbstractDataObject implements JsonSerializable
             'prenom' => $this->prenom
         ];
     }
+
+    public static function toUtilisateur($object): Utilisateur
+    {
+        return $object;
+    }
     
 }

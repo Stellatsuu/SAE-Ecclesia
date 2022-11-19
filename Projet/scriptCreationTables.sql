@@ -1,10 +1,24 @@
 DROP TABLE Votant CASCADE;
-DROP TABLE Responsable CASCADE;
+
+DROP TABLE Redacteur CASCADE;
+
 DROP TABLE Section CASCADE;
+
 DROP TABLE Question CASCADE;
+
 DROP TABLE Demande_Question CASCADE;
+
 DROP TABLE Administrateur CASCADE;
+
 DROP TABLE Utilisateur CASCADE;
+
+DROP TABLE Redacteur CASCADE;
+
+DROP TABLE Votant CASCADE;
+
+DROP TABLE Proposition CASCADE;
+
+DROP TABLE Paragraphe CASCADE;
 
 CREATE TABLE Utilisateur (
     id_utilisateur serial,
@@ -59,12 +73,61 @@ CREATE TABLE Votant (
     CONSTRAINT fk_Votant_Question FOREIGN KEY (id_question) REFERENCES Question (id_question)
 );
 
-CREATE TABLE Responsable (
-    id_responsable serial,
+CREATE TABLE Redacteur (
+    id_redacteur serial,
     id_question serial,
-    CONSTRAINT pk_Responsable PRIMARY KEY (id_responsable, id_question),
-    CONSTRAINT fk_Responsable FOREIGN KEY (id_responsable) REFERENCES Utilisateur (id_utilisateur),
-    CONSTRAINT fk_Responsable_Question FOREIGN KEY (id_question) REFERENCES Question (id_question)
+    CONSTRAINT pk_Redacteur PRIMARY KEY (id_redacteur, id_question),
+    CONSTRAINT fk_Redacteur FOREIGN KEY (id_redacteur) REFERENCES Utilisateur (id_utilisateur),
+    CONSTRAINT fk_Redacteur_Question FOREIGN KEY (id_question) REFERENCES Question (id_question)
 );
 
+CREATE TABLE Proposition (
+    id_proposition serial,
+    titre_proposition varchar(100) NOT NULL,
+    id_responsable serial NOT NULL,
+    id_question serial NOT NULL,
+    CONSTRAINT pk_Proposition PRIMARY KEY (id_proposition),
+    CONSTRAINT fk_Proposition_Responsable FOREIGN KEY (id_responsable) REFERENCES Utilisateur (id_utilisateur),
+    CONSTRAINT fk_Proposition_Question FOREIGN KEY (id_question) REFERENCES Question (id_question),
+    CONSTRAINT fk_Proposition_Responsable_Question FOREIGN KEY (id_responsable, id_question) REFERENCES Redacteur (id_redacteur, id_question)
+);
+
+CREATE TABLE Paragraphe (
+    id_paragraphe serial,
+    id_proposition serial NOT NULL,
+    id_section serial NOT NULL,
+    contenu_paragraphe TEXT NOT NULL,
+    CONSTRAINT pk_Paragraphe PRIMARY KEY (id_paragraphe),
+    CONSTRAINT fk_Paragraphe_Proposition FOREIGN KEY (id_proposition) REFERENCES Proposition (id_proposition),
+    CONSTRAINT fk_Paragraphe_Section FOREIGN KEY (id_section) REFERENCES Section (id_section)
+);
+
+CREATE OR REPLACE FUNCTION check_question_proposition_section ()
+    RETURNS TRIGGER
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF (
+        SELECT
+            id_question
+        FROM
+            Proposition
+        WHERE
+            id_proposition = NEW.id_proposition) != (
+    SELECT
+        id_question
+    FROM
+        Section
+    WHERE
+        id_section = NEW.id_section) THEN
+        RAISE EXCEPTION 'La question de la proposition et la question de la section ne sont pas les mêmes';
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER check_question_proposition_section
+    BEFORE INSERT OR UPDATE ON Paragraphe
+    FOR EACH ROW
+    EXECUTE PROCEDURE check_question_proposition_section ();
 
