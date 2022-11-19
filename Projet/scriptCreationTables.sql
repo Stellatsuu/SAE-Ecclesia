@@ -16,15 +16,11 @@ DROP TABLE Administrateur CASCADE;
 
 DROP TABLE Utilisateur CASCADE;
 
-DROP TABLE Redacteur CASCADE;
-
-DROP TABLE Votant CASCADE;
-
 DROP TABLE Proposition CASCADE;
 
 DROP TABLE Paragraphe CASCADE;
 
-#CREATION DES TABLES 
+-- CREATION DES TABLES
 
 CREATE TABLE Utilisateur (
     id_utilisateur serial,
@@ -117,7 +113,7 @@ CREATE TABLE Co_Auteur(
    CONSTRAINT fk_Co_Auteur_Paragraphe FOREIGN KEY(id_paragraphe) REFERENCES Paragraphe(id_paragraphe)
 );
 
-#FONCTIONS, PROCEDURES ET TRIGGERS
+-- FONCTIONS, PROCEDURES ET TRIGGERS
 
 CREATE OR REPLACE FUNCTION check_question_proposition_section ()
     RETURNS TRIGGER
