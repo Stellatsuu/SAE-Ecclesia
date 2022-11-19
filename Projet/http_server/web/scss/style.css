@@ -113,6 +113,14 @@ input[type=time] {
   width: fit-content;
 }
 
+input[type=date]::-webkit-calendar-picker-indicator {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" viewBox="0 0 24 24"><path fill="%23bbbbbb" d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/></svg>');
+}
+
+input[type=time]::-webkit-calendar-picker-indicator {
+  background-image: url('data:image/svg+xml;utf8,<svg style="color: white" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16"> <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" fill="white"></path> <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" fill="white"></path> </svg>');
+}
+
 input[type=button],
 input[type=submit],
 button,
@@ -184,7 +192,7 @@ button.refuserBtn:disabled,
   font-size: 0.8rem;
   position: absolute;
   bottom: -16px;
-  right: 0px;
+  right: 0;
   color: rgb(168, 168, 168);
 }
 
@@ -235,12 +243,44 @@ button.refuserBtn:disabled,
 #roles_input {
   display: flex;
   flex-direction: row;
-  justify-content: stretch;
+  justify-content: space-between;
+}
+#roles_input select {
+  background-color: #353535;
+  color: white;
+  padding: 5px;
+  border: #E1603C 2px solid;
+  outline: none;
 }
 #roles_input #votants_input, #roles_input #responsables_input {
-  width: 50%;
   display: flex;
   flex-direction: column;
+}
+#roles_input #votants_input :nth-child(2), #roles_input #responsables_input :nth-child(2) {
+  margin-top: 7px;
+}
+#roles_input #votants_input button, #roles_input #responsables_input button {
+  width: 50px;
+  height: 30px;
+  text-align: center;
+  padding: 0;
+  margin: 5px;
+}
+@media screen and (max-width: 1000px) {
+  #roles_input #votants_input, #roles_input #responsables_input {
+    width: 100%;
+  }
+}
+#roles_input #votants_input #add_responsable, #roles_input #votants_input #add_votant, #roles_input #responsables_input #add_responsable, #roles_input #responsables_input #add_votant {
+  margin-left: 65px;
+}
+#roles_input .conteneur_responsable, #roles_input .conteneur_votant {
+  padding: 0;
+}
+@media screen and (max-width: 1000px) {
+  #roles_input {
+    flex-direction: column;
+  }
 }
 
 @media screen and (max-width: 600px) {
@@ -255,10 +295,8 @@ button.refuserBtn:disabled,
 }
 
 .conteneur_section {
-  padding: 20px;
-  padding-top: 0px;
+  padding: 0 20px 20px;
   border: #353535 1px solid;
-  width: 1fr;
 }
 .conteneur_section div {
   font-size: 1.2rem;
