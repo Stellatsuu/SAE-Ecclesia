@@ -24,6 +24,7 @@ INSERT INTO Question(id_question, titre_question, description_question, id_organ
 INSERT INTO Question(id_question, titre_question, description_question, id_organisateur) VALUES(10002, 'Mythes SQL', 'Les SQL Ninjas : Mythologie ou réalité ?', 10002); --Palleja X
 
 -- Section
+insert into section(id_section, id_question, nom_section, description_section) values (4001, 10002, 'nomSectionTest', 'descriptionSectionTest');
 
 -- Responsable/Redacteur
 INSERT INTO Redacteur(id_redacteur, id_question) VALUES(10002, 10002); --Palleja X
@@ -34,9 +35,10 @@ INSERT INTO Votant(id_votant, id_question) VALUES(10008, 10002); --Rouchon
 INSERT INTO Votant(id_votant, id_question) VALUES(10004, 10002); --MJ
 
 -- Proposition
-INSERT INTO Proposition(id_proposition, titre_proposition, id_redacteur, id_question) VALUES (20001, 'test proposition', 10003, 10002) --Palleja N
+INSERT INTO Proposition(id_proposition, titre_proposition, id_redacteur, id_question) VALUES (20001, 'test proposition', 10003, 10002); --Palleja N
 
 -- Paragraphe
+insert into paragraphe(id_paragraphe, id_proposition, id_section, contenu_paragraphe) values (5001, 20001, 4001, 'blablabla');
 
 -- Co_Auteur
 

@@ -298,6 +298,26 @@ input[type=time]::-webkit-calendar-picker-indicator {
   }
 }
 
+#co_auteurs_input {
+  display: flex;
+  flex-direction: column;
+}
+#co_auteurs_input #remove_responsable,
+#co_auteurs_input #remove_votant {
+  margin-top: 7px;
+}
+#co_auteurs_input #add_responsable,
+#co_auteurs_input #add_votant {
+  margin-left: 65px;
+}
+#co_auteurs_input button {
+  width: 50px;
+  height: 30px;
+  text-align: center;
+  padding: 0;
+  margin: 5px;
+}
+
 #sections_input {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -370,8 +390,10 @@ input[type=time]::-webkit-calendar-picker-indicator {
   left: 50%;
   transform: translate(-50%, -50%);
   /* animation */
-  animation: disappear 500ms forwards;
-  animation-delay: 2s;
+  -webkit-animation: disappear 500ms forwards;
+          animation: disappear 500ms forwards;
+  -webkit-animation-delay: 2s;
+          animation-delay: 2s;
 }
 
 .errorMessage {
@@ -379,6 +401,16 @@ input[type=time]::-webkit-calendar-picker-indicator {
   border: 1px solid rgba(194, 50, 11, 0.3);
   box-shadow: 0 4px 30px rgba(194, 50, 11, 0.1);
   color: #E43C0E;
+}
+
+@-webkit-keyframes disappear {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
 
 @keyframes disappear {
@@ -398,7 +430,6 @@ h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset, body {
 .unselectable {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -414,6 +445,4 @@ body {
   font-family: Raleway, serif;
   background-image: url("../assets/images/greek_logo_fond.png");
   background-size: 30%;
-}
-
-/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */

@@ -90,7 +90,7 @@ class QuestionRepository extends AbstractRepository
             (new SectionRepository)->insert($section);
         }
 
-        static::deleteRedacteur($question->getIdQuestion());
+        static::deleteRedacteurs($question->getIdQuestion());
         foreach ($question->getResponsables() as $redacteur) {
             static::insertRedacteur($question->getIdQuestion(), $redacteur->getIdUtilisateur());
         }
@@ -120,7 +120,7 @@ class QuestionRepository extends AbstractRepository
         return $questions;
     }
 
-    public function deleteRedacteur(int $idQuestion): void
+    public function deleteRedacteurs(int $idQuestion): void
     {
         $pdo = DatabaseConnection::getPdo();
 

@@ -1,5 +1,4 @@
 -- CLEAN DES TABLES
-
 DROP TABLE Co_Auteur CASCADE;
 
 DROP TABLE Votant CASCADE;
@@ -21,7 +20,6 @@ DROP TABLE Proposition CASCADE;
 DROP TABLE Paragraphe CASCADE;
 
 -- CREATION DES TABLES
-
 CREATE TABLE Utilisateur (
     id_utilisateur serial,
     nom_utilisateur varchar(50) NOT NULL,
@@ -98,22 +96,40 @@ CREATE TABLE Paragraphe (
     id_paragraphe serial,
     id_proposition serial NOT NULL,
     id_section serial NOT NULL,
-    contenu_paragraphe TEXT NOT NULL,
+    contenu_paragraphe text NOT NULL,
     CONSTRAINT pk_Paragraphe PRIMARY KEY (id_paragraphe),
     CONSTRAINT fk_Paragraphe_Proposition FOREIGN KEY (id_proposition) REFERENCES Proposition (id_proposition),
     CONSTRAINT fk_Paragraphe_Section FOREIGN KEY (id_section) REFERENCES Section (id_section)
 );
 
-
-CREATE TABLE Co_Auteur(
-   id_utilisateur serial,
-   id_paragraphe serial,
-   CONSTRAINT pk_Co_Auteur PRIMARY KEY(id_utilisateur, id_paragraphe),
-   CONSTRAINT fk_Co_Auteur FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur),
-   CONSTRAINT fk_Co_Auteur_Paragraphe FOREIGN KEY(id_paragraphe) REFERENCES Paragraphe(id_paragraphe)
+CREATE TABLE Co_Auteur (
+    id_utilisateur serial,
+    id_paragraphe serial,
+    CONSTRAINT pk_Co_Auteur PRIMARY KEY (id_utilisateur, id_paragraphe),
+    CONSTRAINT fk_Co_Auteur FOREIGN KEY (id_utilisateur) REFERENCES Utilisateur (id_utilisateur),
+    CONSTRAINT fk_Co_Auteur_Paragraphe FOREIGN KEY (id_paragraphe) REFERENCES Paragraphe (id_paragraphe)
 );
 
 -- FONCTIONS, PROCEDURES ET TRIGGERS
+CREATE OR REPLACE PROCEDURE supprimer_co_auteurs (p_id_proposition integer)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_id_paragraphe integer;
+BEGIN
+    FOR v_id_paragraphe IN (
+        SELECT
+            p.id_paragraphe
+        FROM
+            Paragraphe p
+        WHERE
+            p.id_proposition = p_id_proposition)
+        LOOP
+            DELETE FROM Co_Auteur c
+            WHERE c.id_paragraphe = v_id_paragraphe;
+        END LOOP;
+END;
+$$;
 
 CREATE OR REPLACE FUNCTION check_question_proposition_section ()
     RETURNS TRIGGER

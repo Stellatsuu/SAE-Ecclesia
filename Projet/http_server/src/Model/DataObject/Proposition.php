@@ -95,6 +95,10 @@ class Proposition extends AbstractDataObject{
         $this->idProposition = $idProposition;
     }
 
+    public static function toProposition($object) : Proposition {
+        return $object;
+    }
+
 
 
 }
