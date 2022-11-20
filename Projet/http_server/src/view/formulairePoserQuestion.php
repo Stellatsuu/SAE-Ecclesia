@@ -104,5 +104,11 @@
 </script>
 
 <script src="js/sections.js"></script>
-<script src="js/responsables.js"></script>
+<script>
+    import { SmartSelect } from "./SmartSelect.js";
+
+    const responsableSelect = new SmartSelect("responsables_input", "add_responsable", "responsable");
+
+
+</script>
 <script src="js/votants.js"></script>
