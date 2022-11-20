@@ -1,3 +1,7 @@
+-- CLEAN DES TABLES
+
+DROP TABLE Co_Auteur CASCADE;
+
 DROP TABLE Votant CASCADE;
 
 DROP TABLE Redacteur CASCADE;
@@ -12,13 +16,11 @@ DROP TABLE Administrateur CASCADE;
 
 DROP TABLE Utilisateur CASCADE;
 
-DROP TABLE Redacteur CASCADE;
-
-DROP TABLE Votant CASCADE;
-
 DROP TABLE Proposition CASCADE;
 
 DROP TABLE Paragraphe CASCADE;
+
+-- CREATION DES TABLES
 
 CREATE TABLE Utilisateur (
     id_utilisateur serial,
@@ -65,14 +67,6 @@ CREATE TABLE Section (
     CONSTRAINT fk_section_question FOREIGN KEY (id_question) REFERENCES Question (id_question)
 );
 
-CREATE TABLE Votant (
-    id_votant serial,
-    id_question serial,
-    CONSTRAINT pk_Votant PRIMARY KEY (id_votant, id_question),
-    CONSTRAINT fk_Votant FOREIGN KEY (id_votant) REFERENCES Utilisateur (id_utilisateur),
-    CONSTRAINT fk_Votant_Question FOREIGN KEY (id_question) REFERENCES Question (id_question)
-);
-
 CREATE TABLE Redacteur (
     id_redacteur serial,
     id_question serial,
@@ -81,15 +75,23 @@ CREATE TABLE Redacteur (
     CONSTRAINT fk_Redacteur_Question FOREIGN KEY (id_question) REFERENCES Question (id_question)
 );
 
+CREATE TABLE Votant (
+    id_votant serial,
+    id_question serial,
+    CONSTRAINT pk_Votant PRIMARY KEY (id_votant, id_question),
+    CONSTRAINT fk_Votant FOREIGN KEY (id_votant) REFERENCES Utilisateur (id_utilisateur),
+    CONSTRAINT fk_Votant_Question FOREIGN KEY (id_question) REFERENCES Question (id_question)
+);
+
 CREATE TABLE Proposition (
     id_proposition serial,
     titre_proposition varchar(100) NOT NULL,
-    id_responsable serial NOT NULL,
+    id_redacteur serial NOT NULL,
     id_question serial NOT NULL,
     CONSTRAINT pk_Proposition PRIMARY KEY (id_proposition),
-    CONSTRAINT fk_Proposition_Responsable FOREIGN KEY (id_responsable) REFERENCES Utilisateur (id_utilisateur),
+    CONSTRAINT fk_Proposition_Redacteur FOREIGN KEY (id_redacteur) REFERENCES Utilisateur (id_utilisateur),
     CONSTRAINT fk_Proposition_Question FOREIGN KEY (id_question) REFERENCES Question (id_question),
-    CONSTRAINT fk_Proposition_Responsable_Question FOREIGN KEY (id_responsable, id_question) REFERENCES Redacteur (id_redacteur, id_question)
+    CONSTRAINT fk_Proposition_Redacteur_Question FOREIGN KEY (id_redacteur, id_question) REFERENCES Redacteur (id_redacteur, id_question)
 );
 
 CREATE TABLE Paragraphe (
@@ -101,6 +103,17 @@ CREATE TABLE Paragraphe (
     CONSTRAINT fk_Paragraphe_Proposition FOREIGN KEY (id_proposition) REFERENCES Proposition (id_proposition),
     CONSTRAINT fk_Paragraphe_Section FOREIGN KEY (id_section) REFERENCES Section (id_section)
 );
+
+
+CREATE TABLE Co_Auteur(
+   id_utilisateur serial,
+   id_paragraphe serial,
+   CONSTRAINT pk_Co_Auteur PRIMARY KEY(id_utilisateur, id_paragraphe),
+   CONSTRAINT fk_Co_Auteur FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur),
+   CONSTRAINT fk_Co_Auteur_Paragraphe FOREIGN KEY(id_paragraphe) REFERENCES Paragraphe(id_paragraphe)
+);
+
+-- FONCTIONS, PROCEDURES ET TRIGGERS
 
 CREATE OR REPLACE FUNCTION check_question_proposition_section ()
     RETURNS TRIGGER

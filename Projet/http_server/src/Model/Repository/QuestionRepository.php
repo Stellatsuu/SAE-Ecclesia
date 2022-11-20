@@ -40,7 +40,7 @@ class QuestionRepository extends AbstractRepository
             $row['description_question'],
             (new UtilisateurRepository)->select($row['id_organisateur']),
             (new SectionRepository)->selectAllByQuestion($row['id_question']),
-            static::getResponsables($row['id_question']),
+            static::getRedacteur($row['id_question']),
             static::getVotants($row['id_question']),
             $row['date_debut_redaction'] === NULL ? NULL : new DateTime($row['date_debut_redaction']),
             $row['date_fin_redaction'] === NULL ? NULL : new DateTime($row['date_fin_redaction']),
@@ -90,9 +90,9 @@ class QuestionRepository extends AbstractRepository
             (new SectionRepository)->insert($section);
         }
 
-        static::deleteResponsables($question->getIdQuestion());
-        foreach ($question->getResponsables() as $responsable) {
-            static::insertResponsable($question->getIdQuestion(), $responsable->getIdUtilisateur());
+        static::deleteRedacteur($question->getIdQuestion());
+        foreach ($question->getResponsables() as $redacteur) {
+            static::insertRedacteur($question->getIdQuestion(), $redacteur->getIdUtilisateur());
         }
 
         static::deleteVotants($question->getIdQuestion());
@@ -120,11 +120,11 @@ class QuestionRepository extends AbstractRepository
         return $questions;
     }
 
-    public function deleteResponsables(int $idQuestion): void
+    public function deleteRedacteur(int $idQuestion): void
     {
         $pdo = DatabaseConnection::getPdo();
 
-        $sql = "DELETE FROM responsable WHERE id_question = :id_question";
+        $sql = "DELETE FROM redacteur WHERE id_question = :id_question";
         $pdoStatement = $pdo->prepare($sql);
         $values = [
             'id_question' => $idQuestion
@@ -133,25 +133,25 @@ class QuestionRepository extends AbstractRepository
         $pdoStatement->execute($values);
     }
 
-    public function insertResponsable(int $idQuestion, int $idUtilisateur): void
+    public function insertRedacteur(int $idQuestion, int $idUtilisateur): void
     {
         $pdo = DatabaseConnection::getPdo();
 
-        $sql = "INSERT INTO responsable (id_question, id_responsable) VALUES (:id_question, :id_responsable)";
+        $sql = "INSERT INTO redacteur (id_question, id_redacteur) VALUES (:id_question, :id_redacteur)";
         $pdoStatement = $pdo->prepare($sql);
         $values = [
             'id_question' => $idQuestion,
-            'id_responsable' => $idUtilisateur
+            'id_redacteur' => $idUtilisateur
         ];
 
         $pdoStatement->execute($values);
     }
 
-    public function getResponsables(int $idQuestion): array
+    public function getRedacteur(int $idQuestion): array
     {
         $pdo = DatabaseConnection::getPdo();
 
-        $sql = "SELECT id_responsable FROM responsable WHERE id_question = :id_question";
+        $sql = "SELECT id_redacteur FROM redacteur WHERE id_question = :id_question";
         $pdoStatement = $pdo->prepare($sql);
         $values = [
             'id_question' => $idQuestion
@@ -159,11 +159,11 @@ class QuestionRepository extends AbstractRepository
 
         $pdoStatement->execute($values);
 
-        $responsables = [];
+        $redacteurs = [];
         foreach ($pdoStatement as $row) {
-            $responsables[] = (new UtilisateurRepository)->select($row['id_responsable']);
+            $redacteurs[] = (new UtilisateurRepository)->select($row['id_redacteur']);
         }
-        return $responsables;
+        return $redacteurs;
     }
 
     public function deleteVotants(int $idQuestion): void
