@@ -16,7 +16,11 @@
 
     #add_responsable,
     #add_votant {
-      margin-left: 65px;
+      align-self: center;
+    }
+
+    select {
+      max-width: 65%;
     }
 
     button {
