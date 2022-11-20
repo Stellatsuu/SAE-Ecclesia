@@ -100,15 +100,8 @@
 <script>
     const question = <?= json_encode($question) ?>;
     const utilisateurs = <?= json_encode($utilisateurs) ?>;
-    const allUtilisateursOption = '<option value="" selected disabled>---</option>' + utilisateurs.map(utilisateur => `<option value="${utilisateur.idUtilisateur}">${(utilisateur.nom).toUpperCase()} ${utilisateur.prenom}</option>`).join("\n");
+    const allUtilisateurOptions = '<option value="" selected disabled>---</option>' + utilisateurs.map(utilisateur => `<option value="${utilisateur.idUtilisateur}">${(utilisateur.nom).toUpperCase()} ${utilisateur.prenom}</option>`).join("\n");
 </script>
 
 <script src="js/sections.js"></script>
-<script>
-    import { SmartSelect } from "./SmartSelect.js";
-
-    const responsableSelect = new SmartSelect("responsables_input", "add_responsable", "responsable");
-
-
-</script>
-<script src="js/votants.js"></script>
+<script type='module' src="js/roles.js"></script>

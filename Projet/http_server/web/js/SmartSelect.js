@@ -1,44 +1,72 @@
 export class SmartSelect {
-  constructor(inputId, addButtonId, elementName) {
+  constructor(inputId, addButtonId, elementName, allOptions, defaultValues) {
     this.input = document.getElementById(inputId);
     this.addButton = document.getElementById(addButtonId);
     this.elementName = elementName;
     this.nbElements = 0;
     this.allElements = [];
-
+    this.allOptions = allOptions;
     this.addButton.onclick = () => this.addElement();
+
+    if (defaultValues) {
+      defaultValues.forEach((id) => {
+        const select = this.addElement().children[0];
+        select.value = id;
+        this.lockValue(select, id);
+      });
+    }
+
+    if (this.nbElements == 0) this.addElement();
   }
 
   addElement() {
-    nbElements++;
+    this.nbElements++;
     const new_element = document.createElement("span");
-    fillElement(new_element, nbElements);
-    responsables_input.insertBefore(new_responsable, add_responsable_button);
+    this.fillElement(new_element, this.nbElements);
+    this.input.insertBefore(new_element, this.addButton);
     this.allElements.push(new_element);
+
+    for (let i = 0; i < this.allElements.length; i++) {
+      const select = this.allElements[i].children[0];
+      this.lockValue(select, select.value);
+    }
+
+    this.updateNumbers();
+    this.updateRemoveButtonLock();
+    return new_element;
   }
 
   removeElement(number) {
     const element = document.getElementById(
       `${this.elementName}${number}_select`
     ).parentElement;
+
+    this.unlockValue(element.children[0].value);
+
     this.input.removeChild(element);
     this.allElements.splice(number - 1, 1);
+    this.updateNumbers();
+    this.updateRemoveButtonLock();
   }
 
   fillElement(element, number) {
-    element.classList.add(`conteneur_${elementName}`);
+    element.classList.add(`conteneur_${this.elementName}`);
 
-    select = document.createElement("select");
-    select.name = `${elementName}${number}`;
-    select.id = `${elementName}${number}_select`;
-    select.onfocus = "this.oldvalue = this.value;";
-
+    const select = document.createElement("select");
+    select.name = `${this.elementName}${number}`;
+    select.id = `${this.elementName}${number}_select`;
     select.required = true;
-    select.innerHTML = allUtilisateursOption;
+    select.innerHTML = this.allOptions;
+    select.onfocus = "this.oldvalue = this.value;";
+    select.onchange = (event) => {
+      this.lockValue(event.target, event.target.value);
+      this.unlockValue(event.target.oldvalue);
+    };
 
-    button = document.createElement("button");
+    const button = document.createElement("button");
     button.type = "button";
-    button.classList.add(`remove_${elementName}`);
+    button.classList.add(`remove_${this.elementName}`);
+    button.innerHTML = "-";
     button.onclick = () => this.removeElement(number);
 
     element.appendChild(select);
