@@ -16,10 +16,12 @@
 
 
         foreach($question->getSections() as $section){
+            $sectionId = htmlspecialchars($section->getIdSection());
+
             echo "
                 <h2>" . htmlspecialchars($section->getNomSection()) . "</h2>
                 <p>" . htmlspecialchars($section->getDescriptionSection()) . "</p>
-                <textarea name='section_" . htmlspecialchars($section->getIdSection()) . "'>";
+                <textarea name='section_" . $sectionId . "'>";
 
             if($existeProposition){
                 foreach($paragraphes as $paragraphe){
@@ -30,12 +32,16 @@
                 }
             }
 
-            echo "</textarea>
-            ";
+            echo "</textarea>";
+            if($existeProposition){
+                echo "<input type='hidden' name='section_" . $sectionId . "_idParagraphe' value='" . $paragraphe->getIdParagraphe() . "'/>";
+            }
+
         }
     ?>
 
     <input type="number" name="idResponsable" <?= $existeProposition ? "value=\"{$proposition->getRedacteur()->getIdUtilisateur()}\"" : "" ?> required/>
+    <?= $existeProposition ? "<input type=\"hidden\" name=\"idProposition\" value=\"{$proposition->getidProposition()}\"/>" : "" ?>
     <input type="hidden" name="idQuestion" value="<?= $question->getIdQuestion() ?>" />
 
     <input type="submit" value="Enregistrer"/>

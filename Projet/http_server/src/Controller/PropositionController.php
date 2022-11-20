@@ -80,7 +80,7 @@ class PropositionController extends Controller
         foreach ($question->getSections() as $section) {
             $idParagraphe = 'section_' . $section->getIdSection();
 
-            $paragraphes[] = new Paragraphe(0, $proposition->getIdProposition(), $section, empty($_POST[$idParagraphe]) ? "" : $_POST[$idParagraphe]);
+            $paragraphes[] = new Paragraphe(empty($_POST[$idParagraphe . '_idParagraphe']) ? 0 : $_POST[$idParagraphe . '_idParagraphe'], $proposition->getIdProposition(), $section, empty($_POST[$idParagraphe]) ? "" : $_POST[$idParagraphe]);
         }
 
         $proposition->setParagraphes($paragraphes);

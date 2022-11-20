@@ -45,7 +45,7 @@ class ParagrapheRepository extends AbstractRepository{
         $paragraphes = [];
 
         foreach($statement as $paragraphe){
-            $paragraphe[] = $this->construire($paragraphe);
+            $paragraphes[] = $this->construire($paragraphe);
         }
 
         return $paragraphes;
