@@ -19,16 +19,20 @@ class Controller
     /**
      * Affiche le message $message sur la page associée à $action
      */
-    public static function message(string $action, string $message): void
+    public static function message(string $action, string $message, array $parametres = []): void
     {
         static::$message = $message;
-        static::$action();
+        if(empty($parametres)){
+            static::$action();
+        }else{
+            static::$action($parametres);
+        }
     }
 
-    public static function error(string $action, string $message): void
+    public static function error(string $action, string $message, array $parametres = []): void
     {
         static::$messageType = "errorMessage";
-        static::message($action, $message);
+        static::message($action, $message, $parametres);
     }
 
 }

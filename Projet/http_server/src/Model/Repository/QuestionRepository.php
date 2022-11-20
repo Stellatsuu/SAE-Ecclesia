@@ -91,8 +91,8 @@ class QuestionRepository extends AbstractRepository
         }
 
         static::deleteRedacteur($question->getIdQuestion());
-        foreach ($question->getResponsables() as $responsable) {
-            static::insertRedacteur($question->getIdQuestion(), $responsable->getIdUtilisateur());
+        foreach ($question->getResponsables() as $redacteur) {
+            static::insertRedacteur($question->getIdQuestion(), $redacteur->getIdUtilisateur());
         }
 
         static::deleteVotants($question->getIdQuestion());
@@ -137,11 +137,11 @@ class QuestionRepository extends AbstractRepository
     {
         $pdo = DatabaseConnection::getPdo();
 
-        $sql = "INSERT INTO redacteur (id_question, id_redacteur VALUES (:id_question, :id_responsable)";
+        $sql = "INSERT INTO redacteur (id_question, id_redacteur) VALUES (:id_question, :id_redacteur)";
         $pdoStatement = $pdo->prepare($sql);
         $values = [
             'id_question' => $idQuestion,
-            'id_responsable' => $idUtilisateur
+            'id_redacteur' => $idUtilisateur
         ];
 
         $pdoStatement->execute($values);
