@@ -100,6 +100,7 @@
 <script>
     const question = <?= json_encode($question) ?>;
     const utilisateurs = <?= json_encode($utilisateurs) ?>;
+    console.log(utilisateurs);
     const allUtilisateurOptions = '<option value="" selected disabled>---</option>' + utilisateurs.map(utilisateur => `<option value="${utilisateur.idUtilisateur}">${(utilisateur.nom).toUpperCase()} ${utilisateur.prenom}</option>`).join("\n");
 </script>
 

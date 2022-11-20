@@ -35,4 +35,9 @@ class Controller
         static::message($action, $message, $parametres);
     }
 
+    public static function afficherAccueil(): void
+    {
+        static::afficherVue('accueil.php');
+    }
+
 }

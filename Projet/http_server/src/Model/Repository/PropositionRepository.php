@@ -53,4 +53,36 @@ class PropositionRepository extends AbstractRepository {
 
         return static::construire($pdo->fetch());
     }
+
+    public function deleteCoAuteurs($idProposition) {
+        $sql = "CALL supprimer_co_auteurs(:id_proposition)";
+        $values = [
+            "id_proposition" => $idProposition
+        ];
+
+        $pdo = DatabaseConnection::getPdo()->prepare($sql);
+        $pdo->execute($values);
+    }
+
+    public function addCoAuteur($idParagraphe, $idUtilisateur) {
+        $sql = "INSERT INTO co_auteur (id_paragraphe, id_utilisateur) VALUES (:id_paragraphe, :id_utilisateur)";
+        $values = [
+            "id_paragraphe" => $idParagraphe,
+            "id_utilisateur" => $idUtilisateur
+        ];
+
+        $pdo = DatabaseConnection::getPdo()->prepare($sql);
+        $pdo->execute($values);
+    }
+
+    public function addCoAuteurGlobal($idProposition, $idUtilisateur) {
+        $sql = "INSERT INTO co_auteur (id_paragraphe, id_utilisateur) SELECT p.id_paragraphe, :id_utilisateur FROM paragraphe p WHERE p.id_proposition = :id_proposition";
+        $values = [
+            "id_proposition" => $idProposition,
+            "id_utilisateur" => $idUtilisateur
+        ];
+
+        $pdo = DatabaseConnection::getPdo()->prepare($sql);
+        $pdo->execute($values);
+    }
 }
