@@ -4,6 +4,7 @@ namespace App\SAE\Model\Repository;
 
 use App\SAE\Model\DataObject\AbstractDataObject;
 use App\SAE\Model\DataObject\Paragraphe;
+use App\SAE\Model\DataObject\Utilisateur;
 
 class ParagrapheRepository extends AbstractRepository{
 
@@ -49,5 +50,29 @@ class ParagrapheRepository extends AbstractRepository{
         }
 
         return $paragraphes;
+    }
+
+    public function getCoAuteurs(int $idParagraphe): array{
+        $sql = "SELECT * FROM co_auteur WHERE id_paragraphe = :idParagraphe;";
+        $pdo = DatabaseConnection::getPdo()->prepare($sql);
+        $pdo->execute(["idParagraphe" => $idParagraphe]);
+
+        $coAuteurs = [];
+        foreach($pdo->fetchAll() as $auteur){
+            $coAuteurs[] = Utilisateur::toUtilisateur((new UtilisateurRepository())->select($auteur['id_utilisateur']));
+        }
+
+        return $coAuteurs;
+    }
+
+    public function estCoAuteur(int $idParagraphe, int $idUtilisateur): bool{
+        $sql = "SELECT COUNT(*) AS est_coauteur FROM co_auteur WHERE id_paragraphe = :idParagraphe AND id_utilisateur = :idUtilisateur";
+        $pdo = DatabaseConnection::getPdo()->prepare($sql);
+        $pdo->execute([
+            "idParagraphe" => $idParagraphe,
+            "idUtilisateur" => $idUtilisateur
+        ]);
+
+        return $pdo->fetch()['est_coauteur'] > 0;
     }
 }

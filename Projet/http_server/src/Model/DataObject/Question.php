@@ -2,6 +2,7 @@
 
 namespace App\SAE\Model\DataObject;
 
+use App\SAE\Model\Repository\DatabaseConnection;
 use DateTime;
 use JsonSerializable;
 
@@ -129,5 +130,16 @@ class Question extends DemandeQuestion implements JsonSerializable
             'date_fermeture_votes' => $this->getDateFermetureVotes()
         ];
     }
-    
+
+    public function estRedacteur(int $idQuestion, int $idUtilisateur): bool
+    {
+        $sql = "SELECT COUNT(*) FROM redacteur WHERE id_question = :idQuestion AND id_redacteur = :idUtilisateur";
+        $pdo = DatabaseConnection::getPdo()->prepare($sql);
+        $pdo->execute([
+            "idQuestion" => $idQuestion,
+            "idUtilisateur" => $idUtilisateur
+        ]);
+
+        return !empty($pdo->fetch());
+    }
 }

@@ -51,4 +51,18 @@ class UtilisateurRepository extends AbstractRepository {
         }
         return $demandes;
     }
+
+    public function existeUtilisateur($idUtilisateur){
+        $sql = "SELECT COUNT(*) FROM utilisateur WHERE id_utilisateur = :idUtilisateur";
+
+        $pdoStatement = DatabaseConnection::getPdo()->prepare($sql);
+
+        $values = [
+            "idUtilisateur" => $idUtilisateur
+        ];
+
+        $pdoStatement->execute($values);
+
+        return !empty($pdoStatement->fetch());
+    }
 }

@@ -17,9 +17,13 @@ class PropositionController extends Controller
     public static function afficherFormulaireEcrireProposition(array $parametre = null)
     {
 
+
+        /* TODO: vérifier si l'utilisateur est co-auteur ou rédacteur (si co-auteur, pas le droit de toucher au titre) --> need authentification*/
+
         if (empty($_GET["idQuestion"])) {
             if (empty($parametre['proposition'])) {
-                QuestionController::error("listerMesQuestions", "Veuillez sélectionner la question pour laquelle vous souhaitez écrire une proposition.");
+                QuestionController::error("afficherAccueil", "Veuillez sélectionner la question pour laquelle vous souhaitez écrire une proposition.");
+                return;
             } else {
                 $idQuestion = $parametre['proposition']->getQuestion()->getIdQuestion();
             }
@@ -29,7 +33,8 @@ class PropositionController extends Controller
 
         $question = (new QuestionRepository())->select($idQuestion);
         if (empty($question)) {
-            QuestionController::error("listerMesQuestions", "Veuillez sélectionner la question pour laquelle vous souhaitez écrire une proposition.");
+            QuestionController::error("afficherAccueil", "Veuillez sélectionner la question pour laquelle vous souhaitez écrire une proposition.");
+            return;
         }
 
         $question = Question::toQuestion($question);
@@ -63,11 +68,16 @@ class PropositionController extends Controller
         $error = "";
 
         if (empty($_POST["idQuestion"])) {
-            static::error("afficherFormulaireEcrireProposition", $error);
+            static::error("afficherAccueil", "La question n'existe pas");
             return;
         }
 
         $question = Question::toQuestion((new QuestionRepository())->select($_POST['idQuestion']));
+        if (empty($question)) {
+            static::error("afficherAccueil", "La question n'existe pas");
+            return;
+        }
+
         $proposition = new Proposition(
             empty($_POST['idProposition']) ? 0 : intval($_POST['idProposition']),
             empty($_POST['titreProposition']) ? "" : $_POST['titreProposition'],
@@ -103,7 +113,15 @@ class PropositionController extends Controller
             return;
         }
 
+        $estRedacteur = (new QuestionRepository())->estRedacteur($proposition->getQuestion()->getIdQuestion(), $_POST['idResponsable']);
+        echo $estRedacteur;
         if (empty($_POST["idProposition"])) { // création d'une nouvelle proposition
+            // vérification autorisations rédacteur
+            if(!$estRedacteur){
+                static::error("afficherAccueil",  "Vous devez être rédacteur sur cette question pour écrire une nouvelle proposition");
+                return;
+            }
+
             (new PropositionRepository())->insert($proposition);
 
             $idProposition = (new PropositionRepository())->selectByQuestionEtRedacteur($question, $_POST['idResponsable'])->getIdProposition();
@@ -114,10 +132,23 @@ class PropositionController extends Controller
                 (new ParagrapheRepository())->insert($paragraphe);
             }
         } else { // édition d'une proposition déjà existante
-            (new PropositionRepository())->update($proposition);
+            // vérification autorisation rédacteur ou co-auteur
+            $estCoAuteur = $estRedacteur;
+
+            if($estRedacteur){
+                (new PropositionRepository())->update($proposition);
+            }
 
             foreach ($paragraphes as $paragraphe) {
-                (new ParagrapheRepository())->update($paragraphe);
+                if($estRedacteur || (new ParagrapheRepository())->estCoAuteur($paragraphe->getIdParagraphe(), $_POST['idResponsable'])){
+                    (new ParagrapheRepository())->update($paragraphe);
+                    $estCoAuteur = true;
+                }
+            }
+
+            if(!$estCoAuteur){
+                static::error("afficherAccueil",  "Vous devez être co-auteur ou rédacteur sur cette proposition pour la modifier.");
+                return;
             }
         }
 
