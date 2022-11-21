@@ -414,6 +414,41 @@ input[type=time]::-webkit-calendar-picker-indicator {
     visibility: hidden;
   }
 }
+#ecrirePropositionForm .sectionTitle {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+#ecrirePropositionForm .sectionTitle h2 {
+  margin: 0;
+}
+#ecrirePropositionForm .sectionTitle label {
+  margin: 0;
+}
+#ecrirePropositionForm .sectionTitle img {
+  cursor: pointer;
+  margin: 0 10px;
+  height: 13px;
+}
+#ecrirePropositionForm .sectionTitleCheckbox {
+  display: none;
+}
+#ecrirePropositionForm .sectionTitleCheckbox:not(:checked) + div img {
+  transform: rotate(180deg);
+}
+#ecrirePropositionForm .sectionTitleCheckbox:not(:checked) + div + p {
+  display: none;
+}
+#ecrirePropositionForm .descriptionProposition {
+  width: calc(100% - 10px);
+  margin: 0;
+  background-color: #3C3C3C;
+  padding: 5px;
+}
+#ecrirePropositionForm .descriptionProposition + textarea {
+  margin-top: 10px;
+}
+
 h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset, body {
   color: white;
   font-family: Raleway, serif;

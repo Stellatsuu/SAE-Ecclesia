@@ -6,43 +6,48 @@
     }
 ?>
 
-<form class="panel" method="post" action="frontController.php?controller=proposition&action=ecrireProposition">
-    <h1><?= htmlspecialchars($question->getTitre()) ?></h1>
-    <p><?= htmlspecialchars($question->getDescription()) ?></p>
-    <label for="titreProposition">Nom de la proposition : </label>
-    <input type="text" id="titreProposition" name="titreProposition" maxlength="100" <?= $existeProposition ? "value=\"{$proposition->getTitreProposition()}\"" : "" ?> required/>
+<form class="panel" method="post" action="frontController.php?controller=proposition&action=ecrireProposition" id="ecrirePropositionForm">
+    <h1>Écrire proposition</h1>
+    <fieldset>
+        <label for="titreProposition">Nom de la proposition : </label>
+        <input type="text" id="titreProposition" name="titreProposition" maxlength="100" <?= $existeProposition ? "value=\"{$proposition->getTitreProposition()}\"" : "" ?> required/>
 
-    <?php
+        <?php
+            foreach($question->getSections() as $section){
+                $sectionId = htmlspecialchars($section->getIdSection());
 
+                echo "
+                    <input type='checkbox' id='deploy_" . $sectionId . "' class='sectionTitleCheckbox'/>
+                    <div class='sectionTitle'>
+                        <h2>" . htmlspecialchars($section->getNomSection()) . "</h2>
+                        <label for='deploy_" . $sectionId . "'>
+                            <img src='./assets/images/arrow.svg' class='arrow' alt='open and close arrow'/>
+                        </label>
+                    </div>
+                    <p class='descriptionProposition'>" . htmlspecialchars($section->getDescriptionSection()) . "</p>
+                    <textarea name='section_" . $sectionId . "'>";
 
-        foreach($question->getSections() as $section){
-            $sectionId = htmlspecialchars($section->getIdSection());
-
-            echo "
-                <h2>" . htmlspecialchars($section->getNomSection()) . "</h2>
-                <p>" . htmlspecialchars($section->getDescriptionSection()) . "</p>
-                <textarea name='section_" . $sectionId . "'>";
-
-            if($existeProposition){
-                foreach($paragraphes as $paragraphe){
-                    if($paragraphe->getSection()->getIdSection() == $section->getIdSection()){
-                        echo htmlspecialchars($paragraphe->getContenuParagraphe());
-                        break;
+                if($existeProposition){
+                    foreach($paragraphes as $paragraphe){
+                        if($paragraphe->getSection()->getIdSection() == $section->getIdSection()){
+                            echo htmlspecialchars($paragraphe->getContenuParagraphe());
+                            break;
+                        }
                     }
                 }
+
+                echo "</textarea>";
+                if($existeProposition){
+                    echo "<input type='hidden' name='section_" . $sectionId . "_idParagraphe' value='" . htmlspecialchars($paragraphe->getIdParagraphe()) . "'/>";
+                }
+
             }
+        ?>
 
-            echo "</textarea>";
-            if($existeProposition){
-                echo "<input type='hidden' name='section_" . $sectionId . "_idParagraphe' value='" . htmlspecialchars($paragraphe->getIdParagraphe()) . "'/>";
-            }
+        <input type="number" name="idResponsable" <?= $existeProposition ? "value=\"{$proposition->getRedacteur()->getIdUtilisateur()}\"" : "" ?> required/>
+        <?= $existeProposition ? "<input type=\"hidden\" name=\"idProposition\" value=\"{$proposition->getidProposition()}\"/>" : "" ?>
+        <input type="hidden" name="idQuestion" value="<?= $question->getIdQuestion() ?>" />
 
-        }
-    ?>
-
-    <input type="number" name="idResponsable" <?= $existeProposition ? "value=\"{$proposition->getRedacteur()->getIdUtilisateur()}\"" : "" ?> required/>
-    <?= $existeProposition ? "<input type=\"hidden\" name=\"idProposition\" value=\"{$proposition->getidProposition()}\"/>" : "" ?>
-    <input type="hidden" name="idQuestion" value="<?= $question->getIdQuestion() ?>" />
-
-    <input type="submit" value="Enregistrer"/>
+        <input type="submit" value="Enregistrer"/>
+    </fieldset>
 </form>
