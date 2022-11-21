@@ -74,7 +74,7 @@
         <div id="roles_input">
 
             <div id="responsables_input">
-                <label for="responsables_input">Responsables : </label>
+                <label for="responsables_input">Rédacteurs : </label>
 
 
                 <button type="button" id="add_responsable">+</button>

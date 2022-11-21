@@ -2,12 +2,16 @@
 
 namespace App\SAE\Model\DataObject;
 
+use App\SAE\Model\Repository\ParagrapheRepository;
+use App\SAE\Model\Repository\PropositionRepository;
+
 class Paragraphe extends AbstractDataObject{
 
     private int $idParagraphe;
     private int $idProposition;
     private Section $section;
     private string $contenuParagraphe;
+    private array $coAuteurs;
 
     /**
      * @param int $idParagraphe
@@ -21,6 +25,7 @@ class Paragraphe extends AbstractDataObject{
         $this->idProposition = $idProposition;
         $this->section = $section;
         $this->contenuParagraphe = $contenuParagraphe;
+        $this->coAuteurs = (new ParagrapheRepository())->getCoAuteurs($idParagraphe);
     }
 
 
@@ -68,6 +73,14 @@ class Paragraphe extends AbstractDataObject{
     public function getContenuParagraphe(): string
     {
         return $this->contenuParagraphe;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCoAuteurs(): array
+    {
+        return $this->coAuteurs;
     }
 
     /**

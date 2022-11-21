@@ -26,7 +26,7 @@
             if($existeProposition){
                 foreach($paragraphes as $paragraphe){
                     if($paragraphe->getSection()->getIdSection() == $section->getIdSection()){
-                        echo $paragraphe->getContenuParagraphe();
+                        echo htmlspecialchars($paragraphe->getContenuParagraphe());
                         break;
                     }
                 }
@@ -34,7 +34,7 @@
 
             echo "</textarea>";
             if($existeProposition){
-                echo "<input type='hidden' name='section_" . $sectionId . "_idParagraphe' value='" . $paragraphe->getIdParagraphe() . "'/>";
+                echo "<input type='hidden' name='section_" . $sectionId . "_idParagraphe' value='" . htmlspecialchars($paragraphe->getIdParagraphe()) . "'/>";
             }
 
         }

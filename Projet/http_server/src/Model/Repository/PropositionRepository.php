@@ -27,7 +27,6 @@ class PropositionRepository extends AbstractRepository
             "titre_proposition",
             "id_redacteur",
             "id_question"
-
         ];
     }
 
