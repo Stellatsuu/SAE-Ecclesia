@@ -2,6 +2,8 @@
 
 namespace App\SAE\Model\DataObject;
 
+use App\SAE\Model\Repository\PropositionRepository;
+
 class Proposition extends AbstractDataObject{
 
     private int $idProposition;
@@ -77,6 +79,10 @@ class Proposition extends AbstractDataObject{
     public function getParagraphes(): array
     {
         return $this->paragraphes;
+    }
+
+    public function getCoAuteurs():array {
+        return (new PropositionRepository)->selectCoAuteurs($this->idProposition);
     }
 
     /**

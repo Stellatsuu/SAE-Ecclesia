@@ -142,7 +142,8 @@ class PropositionController extends Controller
             "titrePage" => "Gérer les co-auteurs",
             "contenuPage" => "formulaireGererCoAuteurs.php",
             "proposition" => $proposition,
-            "utilisateursAutorises" => $utilisateursAutorises
+            "utilisateursAutorises" => $utilisateursAutorises,
+            "coAuteurs" => $proposition->getCoAuteurs()
         ]);
     }
 
@@ -181,4 +182,5 @@ class PropositionController extends Controller
 
         static::message("afficherAccueil", "Les co-auteurs ont bien été modifiés.");
     }
+
 }

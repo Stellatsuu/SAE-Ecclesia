@@ -16,6 +16,7 @@
 
 <script>
     const utilisateurs = <?= json_encode($utilisateursAutorises) ?>;
+    const coAuteurs = <?= json_encode($coAuteurs) ?>;
     console.log(utilisateurs);
     const options = '<option value="" selected disabled>---</option>' + utilisateurs.map(utilisateur => `<option value="${utilisateur.idUtilisateur}">${(utilisateur.nom).toUpperCase()} ${utilisateur.prenom}</option>`).join("\n");
 
