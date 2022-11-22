@@ -17,15 +17,16 @@
 @import "pages/listeDemandesQuestion";
 @import "pages/message";
 @import "pages/ecrireProposition";
+@import "pages/gererCoAuteurs";
 
 @import "utils/textes";
 @import "utils/unselectable";
 
-html, body{
+html, body {
   margin: 0;
 }
 
-body{
+body {
   min-height: 100vh;
   background-color: $couleurFond;
   font-family: Raleway, serif;

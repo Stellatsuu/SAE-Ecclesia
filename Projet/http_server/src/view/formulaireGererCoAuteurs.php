@@ -1,16 +1,18 @@
-<form method="post" action="frontController.php?action=gererCoAuteurs&controller=proposition" class="panel">
+<form method="post" action="frontController.php?action=gererCoAuteurs&controller=proposition" class="panel" id="gererCoAuteursForm">
     <h1>Co-auteurs :</h1>
     <fieldset>
 
+        <label for="co_auteurs_input">Co-auteurs :</label>
         <div id="co_auteurs_input">
-            <label for="co_auteurs_input">Co-auteurs :</label>
+
 
             <button type="button" id="add_co_auteur">+</button>
         </div>
 
         <input type="hidden" name="idProposition" value="<?= $proposition->getIdProposition() ?>">
-        <input type="submit" value="Valider">
     </fieldset>
+
+    <input type="submit" value="Valider">
 </form>
 
 

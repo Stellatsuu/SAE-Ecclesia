@@ -20,7 +20,8 @@
     }
 
     select {
-      max-width: 65%;
+      /*max-width: 200px;*/
+      width: calc(100% - 60px);
     }
 
     button {
