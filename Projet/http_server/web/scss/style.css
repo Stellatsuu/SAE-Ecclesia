@@ -276,7 +276,7 @@ input[type=time]::-webkit-calendar-picker-indicator {
 }
 #roles_input #votants_input select,
 #roles_input #responsables_input select {
-  max-width: 65%;
+  max-width: 200px;
 }
 #roles_input #votants_input button,
 #roles_input #responsables_input button {
@@ -447,6 +447,23 @@ input[type=time]::-webkit-calendar-picker-indicator {
 }
 #ecrirePropositionForm .descriptionProposition + textarea {
   margin-top: 10px;
+}
+
+#gererCoAuteursForm #co_auteurs_input select {
+  max-width: 200px;
+}
+#gererCoAuteursForm #co_auteurs_input #add_co_auteur {
+  grid-column: span 2;
+  margin: 20px auto 0 auto;
+}
+@media screen and (min-width: 1000px) {
+  #gererCoAuteursForm #co_auteurs_input {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  #gererCoAuteursForm #co_auteurs_input .conteneur_co_auteur:nth-child(2n) {
+    justify-self: end;
+  }
 }
 
 h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset, body {
