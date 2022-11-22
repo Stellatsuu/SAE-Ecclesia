@@ -46,11 +46,10 @@
 
             }
         ?>
-
-        <input type="number" name="idResponsable" <?= $existeProposition ? "value=\"{$proposition->getRedacteur()->getIdUtilisateur()}\"" : "" ?> required/>
-        <?= $existeProposition ? "<input type=\"hidden\" name=\"idProposition\" value=\"{$proposition->getidProposition()}\"/>" : "" ?>
-        <input type="hidden" name="idQuestion" value="<?= $question->getIdQuestion() ?>" />
-
-        <input type="submit" value="Enregistrer"/>
     </fieldset>
+
+    <input type="number" name="idResponsable" <?= $existeProposition ? "value=\"{$proposition->getRedacteur()->getIdUtilisateur()}\"" : "" ?> required/>
+    <?= $existeProposition ? "<input type=\"hidden\" name=\"idProposition\" value=\"{$proposition->getidProposition()}\"/>" : "" ?>
+    <input type="hidden" name="idQuestion" value="<?= $question->getIdQuestion() ?>" />
+    <input type="submit" value="Enregistrer"/>
 </form>
