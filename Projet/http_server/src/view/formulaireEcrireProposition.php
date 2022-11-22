@@ -10,7 +10,10 @@
     <h1>Écrire proposition</h1>
     <fieldset>
         <label for="titreProposition">Nom de la proposition : </label>
-        <input type="text" id="titreProposition" name="titreProposition" maxlength="100" <?= $existeProposition ? "value=\"{$proposition->getTitreProposition()}\"" : "" ?> required/>
+        <div class="text_input_div">
+            <input type="text" id="titreProposition" name="titreProposition" maxlength="100" <?= $existeProposition ? "value=\"{$proposition->getTitreProposition()}\"" : "" ?> required/>
+            <span class="indicateur_max_chars  unselectable">100 max</span>
+        </div>
 
         <?php
             foreach($question->getSections() as $section){
