@@ -277,7 +277,7 @@ input[type=time]::-webkit-calendar-picker-indicator {
 #roles_input #votants_input select,
 #roles_input #responsables_input select {
   /*max-width: 200px;*/
-  width: calc(100% - 50px);
+  width: calc(100% - 60px);
 }
 #roles_input #votants_input button,
 #roles_input #responsables_input button {
