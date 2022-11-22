@@ -10,6 +10,7 @@ use App\SAE\Model\Repository\ParagrapheRepository;
 use App\SAE\Model\Repository\PropositionRepository;
 use App\SAE\Model\Repository\QuestionRepository;
 use App\SAE\Model\Repository\UtilisateurRepository;
+use App\SAE\Lib\PhaseQuestion as Phase;
 
 class PropositionController extends Controller
 {
@@ -38,6 +39,11 @@ class PropositionController extends Controller
         }
 
         $question = Question::toQuestion($question);
+
+        if ($question->getPhase() !== Phase::Redaction) {
+            QuestionController::error("afficherAccueil", "La question est en cours de vote, vous ne pouvez plus écrire de proposition.");
+            return;
+        }
 
         // si la proposition existe déjà, on charge ses valeurs
         if (isset($_GET["idProposition"]) || !empty($parametre['proposition'])) {
@@ -75,6 +81,11 @@ class PropositionController extends Controller
         $question = Question::toQuestion((new QuestionRepository())->select($_POST['idQuestion']));
         if (empty($question)) {
             static::error("afficherAccueil", "La question n'existe pas");
+            return;
+        }
+
+        if ($question->getPhase() !== Phase::Redaction) {
+            static::error("afficherAccueil", "La question est en cours de vote, vous ne pouvez plus écrire de proposition.");
             return;
         }
 
@@ -161,6 +172,14 @@ class PropositionController extends Controller
         $idProposition = intval($_GET['idProposition']);
 
         $proposition = Proposition::toProposition((new PropositionRepository())->select($idProposition));
+
+        $question = $proposition->getQuestion();
+        if($question->getPhase() !== Phase::Redaction){
+            QuestionController::error("afficherAccueil", "La question est en cours de vote, vous ne pouvez plus gérer les co-auteurs.");
+            return;
+        }
+
+
         $utilisateursAutorises = (new UtilisateurRepository())->selectAll();
 
         $utilisateursAutorises = array_filter($utilisateursAutorises, function ($utilisateur) use ($proposition) {
@@ -189,9 +208,14 @@ class PropositionController extends Controller
             return;
         }
 
+        $question = $proposition->getQuestion();
+        if($question->getPhase() !== Phase::Redaction){
+            QuestionController::error("afficherAccueil", "La question est en cours de vote, vous ne pouvez plus gérer les co-auteurs.");
+            return;
+        }
+
         $nbCoAuteurs = 1;
         $coAuteurs = [];
-
         while (isset($_POST['co_auteur' . $nbCoAuteurs])) {
             $coAuteur = Utilisateur::toUtilisateur((new UtilisateurRepository())->select($_POST['co_auteur' . $nbCoAuteurs]));
             if ($coAuteur && !in_array($coAuteur, $coAuteurs)) {

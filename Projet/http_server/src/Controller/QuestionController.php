@@ -7,6 +7,7 @@ use App\SAE\Model\DataObject\Question as Question;
 use App\SAE\Model\DataObject\Section;
 use App\SAE\Model\DataObject\Utilisateur;
 use App\SAE\Model\Repository\UtilisateurRepository as UtilisateurRepository;
+use App\SAE\Lib\PhaseQuestion as Phase;
 use DateTime;
 use DateInterval;
 
@@ -19,13 +20,13 @@ class QuestionController extends Controller
         $question = Question::toQuestion((new QuestionRepository)->select($idQuestion));
         $utilisateurs = (new UtilisateurRepository)->selectAll();
 
-        if (
-            $question->getDateDebutRedaction() === null
-            || $question->getDateFinRedaction() === null
-            || $question->getDateOuvertureVotes() === null
-            || $question->getDateFermetureVotes() === null
-        ) {
+        $phase = $question->getPhase();
 
+        if($phase !== Phase::NonRemplie && $phase !== Phase::Attente) {
+            static::error("afficherAccueil", "La question est déjà en cours de rédaction ou de vote, elle ne peut plus être modifiée.");
+        }
+
+        if ($phase === Phase::NonRemplie) {
             $question->setDateDebutRedaction((new DateTime())->add(new DateInterval('P1D'))->setTime(16, 0, 0));
             $question->setDateFinRedaction((new DateTime())->add(new DateInterval('P8D'))->setTime(16, 0, 0));
             $question->setDateOuvertureVotes((new DateTime())->add(new DateInterval('P8D'))->setTime(16, 0, 0));
@@ -58,18 +59,21 @@ class QuestionController extends Controller
 
     public static function poserQuestion(): void
     {
-
         $idQuestion = intval($_POST['idQuestion']);
-        $titre = $_POST['titre'];
         $description = $_POST['description'];
-        $idUtilisateur = intval($_POST['idUtilisateur']);
 
-        $nbSections = 1;
-        $sections = [];
+        $questionOld = Question::toQuestion((new QuestionRepository)->select($idQuestion));
+
+        $phase = $questionOld->getPhase();
+        if($phase !== Phase::NonRemplie && $phase !== Phase::Attente) {
+            static::error("afficherAccueil", "La question est déjà en cours de rédaction ou de vote, elle ne peut plus être modifiée.");
+        }
 
         // Remplissage du _GET pour les messages d'erreur
         $_GET["idQuestion"] = $idQuestion;
 
+        $nbSections = 1;
+        $sections = [];
         while (isset($_POST['nomSection' . $nbSections]) && isset($_POST['descriptionSection' . $nbSections])) {
             $nomSection = $_POST['nomSection' . $nbSections];
             $descriptionSection = $_POST['descriptionSection' . $nbSections];
@@ -94,9 +98,13 @@ class QuestionController extends Controller
             $nbSections++;
         }
 
+        if (count($sections) == 0) {
+            static::error("afficherFormulairePoserQuestion", "Au moins une section est requise");
+            return;
+        }
+
         $nbResponsables = 1;
         $responsables = [];
-
         while (isset($_POST['responsable' . $nbResponsables])) {
             $idResponsable = intval($_POST['responsable' . $nbResponsables]);
             $responsable = Utilisateur::toUtilisateur((new UtilisateurRepository)->select($idResponsable));
@@ -113,7 +121,6 @@ class QuestionController extends Controller
 
         $nbVotants = 1;
         $votants = [];
-
         while (isset($_POST['votant' . $nbVotants])) {
             $idVotant = intval($_POST['votant' . $nbVotants]);
             $votant = Utilisateur::toUtilisateur((new UtilisateurRepository)->select($idVotant));
@@ -176,26 +183,16 @@ class QuestionController extends Controller
             return;
         }
 
-        if ($sections == []) {
-            static::error("afficherFormulairePoserQuestion", "Au moins une section est requise");
-            return;
-        }
-
-        if ($titre == "" || $description == "") {
+        if ($description == "") {
             static::error("afficherFormulairePoserQuestion", "Veuillez remplir tous les champs");
-            return;
-        }
-
-        if (strlen($titre) > 100) {
-            static::error("afficherFormulairePoserQuestion", "Le titre ne doit pas dépasser 100 caractères");
             return;
         }
 
         $question = new Question(
             $idQuestion,
-            $titre,
+            $questionOld->getTitre(),
             $description,
-            (new UtilisateurRepository)->select($idUtilisateur),
+            $questionOld->getOrganisateur(),
             $sections,
             $responsables,
             $votants,
@@ -207,7 +204,7 @@ class QuestionController extends Controller
 
         (new QuestionRepository)->updateEbauche($question);
 
-        $_GET['idUtilisateur'] = $idUtilisateur;
+        $_GET['idUtilisateur'] = $questionOld->getOrganisateur()->getIdUtilisateur();
         static::message("listerMesQuestions", "La question a été posée");
     }
 

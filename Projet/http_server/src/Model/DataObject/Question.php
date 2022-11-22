@@ -3,6 +3,7 @@
 namespace App\SAE\Model\DataObject;
 
 use App\SAE\Model\Repository\DatabaseConnection;
+use App\SAE\Lib\PhaseQuestion as Phase;
 use DateTime;
 use JsonSerializable;
 
@@ -81,6 +82,33 @@ class Question extends DemandeQuestion implements JsonSerializable
     public function getDateFermetureVotes(): ?DateTime
     {
         return $this->dateFermetureVotes;
+    }
+
+    public function getPhase() {
+        $now = new DateTime();
+        if($this->dateDebutRedaction === null || $this->dateFinRedaction === null || $this->dateOuvertureVotes === null || $this->dateFermetureVotes === null) {
+            return Phase::NonRemplie;
+        }
+            
+        if($now < $this->dateDebutRedaction) {
+            return Phase::Attente;
+        }
+
+        if($now >= $this->dateDebutRedaction && $now <= $this->dateFinRedaction) {
+            return Phase::Redaction;
+        }
+
+        if($now > $this->dateFinRedaction && $now < $this->dateOuvertureVotes) {
+            return Phase::Lecture;
+        }
+
+        if($now >= $this->dateOuvertureVotes && $now <= $this->dateFermetureVotes) {
+            return Phase::Vote;
+        }
+
+        if($now > $this->dateFermetureVotes) {
+            return Phase::Resultat;
+        }
     }
 
     //Setters
