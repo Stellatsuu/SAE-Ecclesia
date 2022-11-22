@@ -276,7 +276,8 @@ input[type=time]::-webkit-calendar-picker-indicator {
 }
 #roles_input #votants_input select,
 #roles_input #responsables_input select {
-  max-width: 200px;
+  /*max-width: 200px;*/
+  width: calc(100% - 50px);
 }
 #roles_input #votants_input button,
 #roles_input #responsables_input button {
@@ -450,11 +451,15 @@ input[type=time]::-webkit-calendar-picker-indicator {
 }
 
 #gererCoAuteursForm #co_auteurs_input select {
-  max-width: 200px;
+  /*max-width: 200px;*/
+  width: calc(100% - 85px);
 }
 #gererCoAuteursForm #co_auteurs_input #add_co_auteur {
   grid-column: span 2;
   margin: 20px auto 0 auto;
+}
+#gererCoAuteursForm #co_auteurs_input .conteneur_co_auteur {
+  width: 100%;
 }
 @media screen and (min-width: 1000px) {
   #gererCoAuteursForm #co_auteurs_input {
@@ -463,6 +468,9 @@ input[type=time]::-webkit-calendar-picker-indicator {
   }
   #gererCoAuteursForm #co_auteurs_input .conteneur_co_auteur:nth-child(2n) {
     justify-self: end;
+  }
+  #gererCoAuteursForm #co_auteurs_input .conteneur_co_auteur:nth-child(2n) select {
+    margin-left: 25px;
   }
 }
 

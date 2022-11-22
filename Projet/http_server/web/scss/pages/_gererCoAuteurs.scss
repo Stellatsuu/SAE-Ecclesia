@@ -1,12 +1,17 @@
 #gererCoAuteursForm {
   #co_auteurs_input{
     select{
-      max-width: 200px;
+      /*max-width: 200px;*/
+      width: calc(100% - 85px);
     }
 
     #add_co_auteur{
       grid-column: span 2;
       margin: 20px auto 0 auto;
+    }
+
+    .conteneur_co_auteur{
+      width:100%;
     }
 
     @media screen and (min-width: 1000px){
@@ -15,6 +20,10 @@
 
       .conteneur_co_auteur:nth-child(2n) {
         justify-self: end;
+
+        select{
+          margin-left:25px;
+        }
       }
     }
   }
