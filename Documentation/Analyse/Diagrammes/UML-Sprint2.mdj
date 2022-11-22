@@ -373,7 +373,7 @@
 									"font": "Arial;13;0",
 									"left": 410,
 									"top": 100.5,
-									"width": 124.83544921875,
+									"width": 124,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGD1WT7tlLwgn0="
@@ -1743,7 +1743,7 @@
 									"font": "Arial;13;0",
 									"left": 411,
 									"top": 292.5,
-									"width": 130.630859375,
+									"width": 130,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGD9kn4RjFwsCU="
@@ -12568,7 +12568,7 @@
 													},
 													"visible": false,
 													"font": "Arial;13;0",
-													"left": 116.07177734375,
+													"left": 111.72998046875,
 													"top": 212,
 													"width": 1,
 													"height": 13
@@ -12582,9 +12582,9 @@
 													"font": "Arial;13;1",
 													"left": 92,
 													"top": 212,
-													"width": 19.07177734375,
+													"width": 14.72998046875,
 													"height": 13,
-													"text": "opt"
+													"text": "alt"
 												},
 												{
 													"_type": "UMLInteractionOperandCompartmentView",
@@ -13661,7 +13661,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGEAAzndcEhivQ="
 									},
-									"interactionOperator": "opt",
+									"interactionOperator": "alt",
 									"operands": [
 										{
 											"_type": "UMLInteractionOperand",
@@ -13797,9 +13797,9 @@
 														"$ref": "AAAAAAGEAC3wZMhw3Ys="
 													},
 													"font": "Arial;13;0",
-													"left": 22.55908203125,
+													"left": 24.72998046875,
 													"top": 5,
-													"width": 107.13916015625,
+													"width": 119.498046875,
 													"height": 13,
 													"text": "GererRolesQuestion"
 												},
@@ -13812,7 +13812,7 @@
 													"font": "Arial;13;1",
 													"left": 5,
 													"top": 5,
-													"width": 12.55908203125,
+													"width": 14.72998046875,
 													"height": 13,
 													"text": "sd"
 												}
@@ -18152,7 +18152,7 @@
 													},
 													"visible": false,
 													"font": "Arial;13;0",
-													"left": 124.07177734375,
+													"left": 119.72998046875,
 													"top": 197,
 													"width": 1,
 													"height": 13
@@ -18166,9 +18166,9 @@
 													"font": "Arial;13;1",
 													"left": 100,
 													"top": 197,
-													"width": 19.07177734375,
+													"width": 14.72998046875,
 													"height": 13,
-													"text": "opt"
+													"text": "alt"
 												},
 												{
 													"_type": "UMLInteractionOperandCompartmentView",
@@ -18604,7 +18604,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGEcNtzmFetCdE="
 									},
-									"interactionOperator": "opt",
+									"interactionOperator": "alt",
 									"operands": [
 										{
 											"_type": "UMLInteractionOperand",
@@ -19512,8 +19512,8 @@
 													},
 													"visible": false,
 													"font": "Arial;13;0",
-													"left": 76.07177734375,
-													"top": 214,
+													"left": 71.72998046875,
+													"top": 213,
 													"width": 1,
 													"height": 13
 												},
@@ -19525,10 +19525,10 @@
 													},
 													"font": "Arial;13;1",
 													"left": 52,
-													"top": 214,
-													"width": 19.07177734375,
+													"top": 213,
+													"width": 14.72998046875,
 													"height": 13,
-													"text": "opt"
+													"text": "alt"
 												},
 												{
 													"_type": "UMLInteractionOperandCompartmentView",
@@ -19558,7 +19558,7 @@
 																	},
 																	"font": "Arial;13;0",
 																	"left": 67,
-																	"top": 247,
+																	"top": 246,
 																	"width": 204.521484375,
 																	"height": 13,
 																	"text": "[question.getPhase() == Redaction]"
@@ -19566,7 +19566,7 @@
 															],
 															"font": "Arial;13;0",
 															"left": 47,
-															"top": 232,
+															"top": 231,
 															"width": 808,
 															"height": 281,
 															"guardLabel": {
@@ -19591,7 +19591,7 @@
 																	},
 																	"font": "Arial;13;0",
 																	"left": 67,
-																	"top": 528,
+																	"top": 527,
 																	"width": 31.07177734375,
 																	"height": 13,
 																	"text": "[else]"
@@ -19599,7 +19599,7 @@
 															],
 															"font": "Arial;13;0",
 															"left": 47,
-															"top": 513,
+															"top": 512,
 															"width": 808,
 															"height": 58,
 															"guardLabel": {
@@ -19609,14 +19609,14 @@
 													],
 													"font": "Arial;13;0",
 													"left": 47,
-													"top": 232,
+													"top": 231,
 													"width": 808,
 													"height": 339
 												}
 											],
 											"font": "Arial;13;0",
 											"left": 47,
-											"top": 209,
+											"top": 208,
 											"width": 808,
 											"height": 362,
 											"nameLabel": {
@@ -20853,7 +20853,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGEleCFoXGAC/Y="
 									},
-									"interactionOperator": "opt",
+									"interactionOperator": "alt",
 									"operands": [
 										{
 											"_type": "UMLInteractionOperand",
@@ -21714,7 +21714,7 @@
 													},
 													"visible": false,
 													"font": "Arial;13;0",
-													"left": 67.07177734375,
+													"left": 62.72998046875,
 													"top": 218,
 													"width": 1,
 													"height": 13
@@ -21728,9 +21728,9 @@
 													"font": "Arial;13;1",
 													"left": 43,
 													"top": 218,
-													"width": 19.07177734375,
+													"width": 14.72998046875,
 													"height": 13,
-													"text": "opt"
+													"text": "alt"
 												},
 												{
 													"_type": "UMLInteractionOperandCompartmentView",
@@ -23409,7 +23409,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGEl0CgtVRGcXo="
 									},
-									"interactionOperator": "opt",
+									"interactionOperator": "alt",
 									"operands": [
 										{
 											"_type": "UMLInteractionOperand",
