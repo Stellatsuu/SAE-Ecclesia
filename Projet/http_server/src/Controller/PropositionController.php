@@ -143,7 +143,11 @@ class PropositionController extends Controller
                 (new ParagrapheRepository())->insert($paragraphe);
             }
         } else { // édition d'une proposition déjà existante
-            // vérification autorisation rédacteur ou co-auteur
+            /*vérification autorisation rédacteur ou co-auteur
+            * si l'utilisateur est coAuteur, il a au moins les droits de co-auteur
+             * on vérifiera ensuite s'il est co-auteur d'au moins une section :
+             * si ce n'est pas le cas, on retourne une erreur
+            */
             $estCoAuteur = $estRedacteur;
 
             if($estRedacteur){
