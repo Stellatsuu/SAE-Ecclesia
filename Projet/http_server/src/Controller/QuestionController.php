@@ -24,6 +24,7 @@ class QuestionController extends Controller
 
         if($phase !== Phase::NonRemplie && $phase !== Phase::Attente) {
             static::error("afficherAccueil", "La question est déjà en cours de rédaction ou de vote, elle ne peut plus être modifiée.");
+            return;
         }
 
         if ($phase === Phase::NonRemplie) {
@@ -67,6 +68,7 @@ class QuestionController extends Controller
         $phase = $questionOld->getPhase();
         if($phase !== Phase::NonRemplie && $phase !== Phase::Attente) {
             static::error("afficherAccueil", "La question est déjà en cours de rédaction ou de vote, elle ne peut plus être modifiée.");
+            return;
         }
 
         // Remplissage du _GET pour les messages d'erreur
