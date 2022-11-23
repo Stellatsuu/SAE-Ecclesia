@@ -228,7 +228,7 @@ class QuestionController extends Controller
         (new QuestionRepository)->update($question);
 
         $_GET['idUtilisateur'] = $question->getOrganisateur()->getIdUtilisateur();
-        static::message("afficherMesQuestions", "La question est maintenant en phase de vote");
+        static::message("listerMesQuestions", "La question est maintenant en phase de vote");
     }
 
     public static function passagePhaseRedaction()
