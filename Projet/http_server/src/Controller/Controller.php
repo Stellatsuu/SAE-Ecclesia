@@ -37,7 +37,10 @@ class Controller
 
     public static function afficherAccueil(): void
     {
-        static::afficherVue('accueil.php');
+        static::afficherVue("view.php", [
+            "titrePage" => "Accueil",
+            "contenuPage" => "accueil.php"
+        ]);
     }
 
 }

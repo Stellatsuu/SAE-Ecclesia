@@ -22,7 +22,7 @@ class QuestionController extends Controller
 
         $phase = $question->getPhase();
 
-        if($phase !== Phase::NonRemplie && $phase !== Phase::Attente) {
+        if ($phase !== Phase::NonRemplie && $phase !== Phase::Attente) {
             static::error("afficherAccueil", "La question est déjà en cours de rédaction ou de vote, elle ne peut plus être modifiée.");
             return;
         }
@@ -66,7 +66,7 @@ class QuestionController extends Controller
         $questionOld = Question::toQuestion((new QuestionRepository)->select($idQuestion));
 
         $phase = $questionOld->getPhase();
-        if($phase !== Phase::NonRemplie && $phase !== Phase::Attente) {
+        if ($phase !== Phase::NonRemplie && $phase !== Phase::Attente) {
             static::error("afficherAccueil", "La question est déjà en cours de rédaction ou de vote, elle ne peut plus être modifiée.");
             return;
         }
@@ -208,6 +208,45 @@ class QuestionController extends Controller
 
         $_GET['idUtilisateur'] = $questionOld->getOrganisateur()->getIdUtilisateur();
         static::message("listerMesQuestions", "La question a été posée");
+    }
+
+    public static function passagePhaseVote()
+    {
+        $idQuestion = intval($_GET['idQuestion']);
+        $question = Question::toQuestion((new QuestionRepository)->select($idQuestion));
+
+        $phase = $question->getPhase();
+        if ($phase != Phase::Redaction && $phase != Phase::Lecture) {
+            static::error("afficherAccueil", "Vous ne pouvez pas passer à la phase de vote depuis cette phase");
+            return;
+        }
+
+        if ($phase == Phase::Redaction)
+            $question->setDateFinRedaction(new DateTime("now"));
+
+        $question->setDateOuvertureVotes(new DateTime("now"));
+        (new QuestionRepository)->update($question);
+
+        $_GET['idUtilisateur'] = $question->getOrganisateur()->getIdUtilisateur();
+        static::message("afficherMesQuestions", "La question est maintenant en phase de vote");
+    }
+
+    public static function passagePhaseRedaction()
+    {
+        $idQuestion = intval($_GET['idQuestion']);
+        $question = Question::toQuestion((new QuestionRepository)->select($idQuestion));
+
+        $phase = $question->getPhase();
+        if ($phase != Phase::Attente) {
+            static::error("afficherAccueil", "Vous ne pouvez pas passer à la phase de rédaction depuis cette phase");
+            return;
+        }
+
+        $question->setDateDebutRedaction(new DateTime("now"));
+        (new QuestionRepository)->update($question);
+
+        $_GET['idUtilisateur'] = $question->getOrganisateur()->getIdUtilisateur();
+        static::message("afficherMesQuestions", "La question est maintenant en phase de rédaction");
     }
 
     public static function listerMesQuestions()

@@ -18,8 +18,22 @@
         echo ("<p>" . htmlspecialchars($q->getDescription()) . "</p>");
         echo ("<p>Phase : " . $phase->toString() . "</p>");
 
-        echo "<a href='frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=" . rawurlencode($q->getIdQuestion()) . "'>Éditer</a>";
+        echo "<a class='button' href='frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=" . rawurlencode($q->getIdQuestion()) . "'>Éditer</a>";
 
+        switch ($phase) {
+            case Phase::Attente:
+                echo "<a class='button' href='frontController.php?controller=question&action=passagePhaseRedaction&idQuestion=" . rawurlencode($q->getIdQuestion()) . "'>Passer à la phase de rédaction</a>";
+                break;
+            
+            case Phase::Redaction:
+                echo "<a class='button' href='frontController.php?controller=question&action=passagePhaseVote&idQuestion=" . rawurlencode($q->getIdQuestion()) . "'>Passer à la phase de vote</a>";
+                break;
+
+            case Phase::Lecture:
+                echo "<a class='button' href='frontController.php?controller=question&action=passagePhaseVote&idQuestion=" . rawurlencode($q->getIdQuestion()) . "'>Passer à la phase de vote</a>";
+                break;
+        }
+        
         echo "</div></div>";
     }
 
