@@ -24,7 +24,10 @@ class DemandeQuestionController extends MainController
 
     public static function refuserDemandeQuestion(): void
     {
-        $demandes = (new DemandeQuestionRepository)->selectAll();
+        if(!isset($_GET['idQuestion'])) {
+            static::error("listerDemandesQuestion", "Aucune question n'a été sélectionnée");
+            return;
+        }
 
         $idQuestion = intval($_GET['idQuestion']);
         (new DemandeQuestionRepository)->delete($idQuestion);
@@ -34,6 +37,11 @@ class DemandeQuestionController extends MainController
 
     public static function accepterDemandeQuestion(): void
     {
+        if(!isset($_GET['idQuestion'])) {
+            static::error("listerDemandesQuestion", "Aucune question n'a été sélectionnée");
+            return;
+        }
+
         $idQuestion = intval($_GET['idQuestion']);
         $demande = DemandeQuestion::toDemandeQuestion((new DemandeQuestionRepository)->select($idQuestion));
         $question = new Question(
@@ -65,13 +73,18 @@ class DemandeQuestionController extends MainController
 
     public static function demanderCreationQuestion(): void
     {
+        if(!isset($_POST['titre']) || !isset($_POST['description']) || !isset($_POST['idUtilisateur'])) {
+            static::error("afficherFormulaireDemandeQuestion", "Tous les champs doivent être remplis");
+            return;
+        }
+
         $titre = $_POST['titre'];
         $description = $_POST['description'];
         $idUtilisateur = intval($_POST['idUtilisateur']);
 
         // Vérification des données
         if ($titre == "" || $description == "") {
-            static::error("afficherFormulaireDemandeQuestion", "Veuillez remplir tous les champs");
+            static::error("afficherFormulaireDemandeQuestion", "Tous les champs doivent être remplis");
             return;
         }
 
@@ -86,7 +99,6 @@ class DemandeQuestionController extends MainController
         }
 
         $demande = new DemandeQuestion(-1, $titre, $description, (new UtilisateurRepository)->select($idUtilisateur));
-
         (new DemandeQuestionRepository)->insert($demande);
 
         static::message("listerDemandesQuestion", "Votre demande a été envoyée");

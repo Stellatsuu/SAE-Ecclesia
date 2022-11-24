@@ -113,9 +113,24 @@ class Question extends DemandeQuestion implements JsonSerializable
 
     //Setters
 
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
     public function setSections(?array $sections): void
     {
         $this->sections = $sections;
+    }
+
+    public function setResponsables(?array $responsables): void
+    {
+        $this->responsables = $responsables;
+    }
+
+    public function setVotants(?array $votants): void
+    {
+        $this->votants = $votants;
     }
 
     public function setDateDebutRedaction(?DateTime $dateDebutRedaction): void
