@@ -418,15 +418,17 @@ input[type=time]::-webkit-calendar-picker-indicator {
 #ecrirePropositionForm .sectionTitle {
   display: flex;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 25px;
 }
 #ecrirePropositionForm .sectionTitle h2 {
   margin: 0;
+  font-weight: normal;
 }
 #ecrirePropositionForm .sectionTitle label {
   margin: 0;
 }
 #ecrirePropositionForm .sectionTitle img {
+  transition: transform 150ms ease-in-out;
   cursor: pointer;
   margin: 0 10px;
   height: 13px;
@@ -451,8 +453,10 @@ input[type=time]::-webkit-calendar-picker-indicator {
 }
 
 #gererCoAuteursForm #co_auteurs_input select {
-  /*max-width: 200px;*/
-  width: calc(100% - 85px);
+  width: calc(100% - 55px);
+}
+#gererCoAuteursForm #co_auteurs_input select + button {
+  margin-right: 0;
 }
 #gererCoAuteursForm #co_auteurs_input #add_co_auteur {
   grid-column: span 2;
@@ -465,6 +469,9 @@ input[type=time]::-webkit-calendar-picker-indicator {
   #gererCoAuteursForm #co_auteurs_input {
     display: grid;
     grid-template-columns: 1fr 1fr;
+  }
+  #gererCoAuteursForm #co_auteurs_input .conteneur_co_auteur select {
+    width: calc(100% - 80px);
   }
   #gererCoAuteursForm #co_auteurs_input .conteneur_co_auteur:nth-child(2n) {
     justify-self: end;

@@ -1,8 +1,11 @@
 #gererCoAuteursForm {
   #co_auteurs_input{
     select{
-      /*max-width: 200px;*/
-      width: calc(100% - 85px);
+      width: calc(100% - 55px);
+
+      + button{
+        margin-right: 0;
+      }
     }
 
     #add_co_auteur{
@@ -18,11 +21,17 @@
       display:grid;
       grid-template-columns: 1fr 1fr;
 
-      .conteneur_co_auteur:nth-child(2n) {
-        justify-self: end;
-
+      .conteneur_co_auteur{
         select{
-          margin-left:25px;
+          width: calc(100% - 80px);
+        }
+
+        &:nth-child(2n) {
+          justify-self: end;
+
+          select{
+            margin-left:25px;
+          }
         }
       }
     }
