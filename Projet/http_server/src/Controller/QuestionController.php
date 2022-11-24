@@ -16,7 +16,7 @@ class QuestionController extends MainController
 
     public static function afficherFormulairePoserQuestion(): void
     {
-        if (!is_numeric($_GET['idQuestion'])) {
+        if (!isset($_GET['idQuestion']) || !is_numeric($_GET['idQuestion'])) {
             static::error("afficherAccueil", "Aucune question n'a été sélectionnée");
             return;
         }
@@ -87,7 +87,7 @@ class QuestionController extends MainController
 
     public static function poserQuestion(): void
     {
-        if (!is_numeric($_POST['idQuestion'])) {
+        if (!isset($_POST['idQuestion']) || !is_numeric($_POST['idQuestion'])) {
             static::error("afficherAccueil", "Aucune question n'a été sélectionnée");
             return;
         }
@@ -223,7 +223,7 @@ class QuestionController extends MainController
     public static function passagePhaseRedaction()
     {
 
-        if (!is_numeric($_GET['idQuestion'])) {
+        if (!isset($_GET['idQuestion']) || !is_numeric($_GET['idQuestion'])) {
             static::error("afficherAccueil", "Veuillez entrer un identifiant de question valide");
             return;
         }
@@ -251,7 +251,7 @@ class QuestionController extends MainController
 
     public static function passagePhaseVote()
     {
-        if (!is_numeric($_GET['idQuestion'])) {
+        if (!isset($_GET['idQuestion']) || !is_numeric($_GET['idQuestion'])) {
             static::error("afficherAccueil", "Veuillez entrer un identifiant de question valide");
             return;
         }
@@ -283,7 +283,7 @@ class QuestionController extends MainController
 
     public static function listerMesQuestions()
     {
-        if (!is_numeric($_GET['idUtilisateur'])) {
+        if (!isset($_GET['idUtilisateur']) || !is_numeric($_GET['idUtilisateur'])) {
             static::error("afficherAccueil", "Veuillez entrer un identifiant d'utilisateur valide");
             return;
         }

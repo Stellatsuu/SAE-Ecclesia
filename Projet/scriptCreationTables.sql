@@ -19,6 +19,8 @@ DROP TABLE Proposition CASCADE;
 
 DROP TABLE Paragraphe CASCADE;
 
+DROP TABLE Vote CASCADE;
+
 -- CREATION DES TABLES
 CREATE TABLE Utilisateur (
     id_utilisateur serial,
@@ -110,6 +112,15 @@ CREATE TABLE Co_Auteur (
     CONSTRAINT fk_Co_Auteur_Paragraphe FOREIGN KEY (id_paragraphe) REFERENCES Paragraphe (id_paragraphe)
 );
 
+CREATE TABLE Vote (
+    id_votant serial,
+    id_proposition serial,
+    valeur int,
+    CONSTRAINT pk_Vote PRIMARY KEY (id_votant, id_proposition),
+    CONSTRAINT fk_Vote_Votant FOREIGN KEY (id_votant) REFERENCES Utilisateur (id_utilisateur),
+    CONSTRAINT fk_Vote_Proposition FOREIGN KEY (id_proposition) REFERENCES Proposition (id_proposition)
+);
+
 -- FONCTIONS, PROCEDURES ET TRIGGERS
 CREATE OR REPLACE PROCEDURE supprimer_co_auteurs (p_id_proposition integer)
 LANGUAGE plpgsql
@@ -155,8 +166,37 @@ BEGIN
 END;
 $$;
 
+CREATE OR REPLACE FUNCTION check_est_votant ()
+    RETURNS TRIGGER
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF(
+        SELECT
+            id_votant
+        FROM
+            Votant
+        WHERE
+            id_votant = NEW.id_votant AND id_question = (
+                SELECT
+                    id_question
+                FROM
+                    Proposition
+                WHERE
+                    id_proposition = NEW.id_proposition)) IS NULL THEN
+        RAISE EXCEPTION 'L''utilisateur n''est pas votant pour cette question';
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+
 CREATE TRIGGER check_question_proposition_section
     BEFORE INSERT OR UPDATE ON Paragraphe
     FOR EACH ROW
     EXECUTE PROCEDURE check_question_proposition_section ();
 
+CREATE TRIGGER check_est_votant
+    BEFORE INSERT OR UPDATE ON Vote
+    FOR EACH ROW
+    EXECUTE PROCEDURE check_est_votant ();

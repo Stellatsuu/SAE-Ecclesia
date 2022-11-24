@@ -194,10 +194,17 @@ class PropositionController extends MainController
 
     public static function afficherFormulaireGererCoAuteurs()
     {
-
+        if(!isset($_GET['idProposition']) || !is_numeric($_GET['idProposition'])){
+            static::error("afficherAccueil", "Aucune proposition n'a été sélectionnée.");
+            return;
+        }
         $idProposition = intval($_GET['idProposition']);
-
         $proposition = Proposition::toProposition((new PropositionRepository())->select($idProposition));
+
+        if(!$proposition){
+            static::error("afficherAccueil", "La proposition n'existe pas.");
+            return;
+        }
 
         $question = $proposition->getQuestion();
         $phase = $question->getPhase();
@@ -216,13 +223,11 @@ class PropositionController extends MainController
                 break;
         }
 
-        $utilisateursAutorises = (new UtilisateurRepository())->selectAll();
+        $utilisateurs = (new UtilisateurRepository())->selectAll();
 
-        $utilisateursAutorises = array_filter($utilisateursAutorises, function ($utilisateur) use ($proposition) {
+        $utilisateursAutorises = array_values(array_filter($utilisateurs, function ($utilisateur) use ($proposition) {
             return $utilisateur->getIdUtilisateur() != $proposition->getRedacteur()->getIdUtilisateur();
-        });
-
-        $utilisateursAutorises = array_values($utilisateursAutorises);
+        }));
 
         static::afficherVue('view.php', [
             "titrePage" => "Gérer les co-auteurs",
@@ -235,11 +240,14 @@ class PropositionController extends MainController
 
     public static function gererCoAuteurs()
     {
-
+        if(!isset($_POST['idProposition']) || !is_numeric($_POST['idProposition'])){
+            static::error("afficherAccueil", "Aucune proposition n'a été sélectionnée.");
+            return;
+        }
         $idProposition = intval($_POST['idProposition']);
 
         $proposition = Proposition::toProposition((new PropositionRepository())->select($idProposition));
-        if (empty($proposition)) {
+        if (!$proposition) {
             DemandeQuestionController::error("afficherAccueil", "La proposition n'existe pas.");
             return;
         }
@@ -261,14 +269,15 @@ class PropositionController extends MainController
                 break;
         }
 
-        $nbCoAuteurs = 1;
         $coAuteurs = [];
-        while (isset($_POST['co_auteur' . $nbCoAuteurs])) {
-            $coAuteur = Utilisateur::toUtilisateur((new UtilisateurRepository())->select($_POST['co_auteur' . $nbCoAuteurs]));
-            if ($coAuteur && !in_array($coAuteur, $coAuteurs)) {
-                $coAuteurs[] = $coAuteur;
+        foreach($_POST as $key => $value){
+            if(substr($key, 0, 9) == "co_auteur"){
+                $idCoAuteur = intval($value);
+                $coAuteur = Utilisateur::toUtilisateur((new UtilisateurRepository())->select($idCoAuteur));
+                if($coAuteur && !in_array($coAuteur, $coAuteurs)){
+                    $coAuteurs[] = $coAuteur;
+                }   
             }
-            $nbCoAuteurs++;
         }
 
         if (in_array($proposition->getRedacteur(), $coAuteurs)) {
@@ -277,7 +286,6 @@ class PropositionController extends MainController
         }
 
         (new PropositionRepository)->deleteCoAuteurs($proposition->getIdProposition());
-
         foreach ($coAuteurs as $coAuteur) {
             (new PropositionRepository)->addCoAuteurGlobal($proposition->getIdProposition(), $coAuteur->getIdUtilisateur());
         }

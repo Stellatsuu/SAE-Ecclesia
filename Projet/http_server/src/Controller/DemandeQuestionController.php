@@ -24,7 +24,7 @@ class DemandeQuestionController extends MainController
 
     public static function refuserDemandeQuestion(): void
     {
-        if(!isset($_GET['idQuestion'])) {
+        if(!isset($_GET['idQuestion']) || !is_numeric($_GET['idQuestion'])) {
             static::error("listerDemandesQuestion", "Aucune question n'a été sélectionnée");
             return;
         }
@@ -37,7 +37,7 @@ class DemandeQuestionController extends MainController
 
     public static function accepterDemandeQuestion(): void
     {
-        if(!isset($_GET['idQuestion'])) {
+        if(!isset($_GET['idQuestion']) || !is_numeric($_GET['idQuestion'])) {
             static::error("listerDemandesQuestion", "Aucune question n'a été sélectionnée");
             return;
         }
