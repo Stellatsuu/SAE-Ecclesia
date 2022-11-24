@@ -96,9 +96,20 @@ class PropositionController extends MainController
             return;
         }
 
-        if ($question->getPhase() !== Phase::Redaction) {
-            static::error("afficherAccueil", "La question est en cours de vote, vous ne pouvez plus écrire de proposition.");
-            return;
+        $phase = $question->getPhase();
+        switch ($phase) {
+            case Phase::NonRemplie:
+                QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore écrire de proposition.");
+                break;
+            case Phase::Attente:
+                QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore écrire de proposition.");
+                break;
+            case Phase::Vote:
+                QuestionController::error("afficherAccueil", "La question est en cours de vote. Vous ne pouvez plus écrire de proposition.");
+                break;
+            case Phase::Resultat:
+                QuestionController::error("afficherAccueil", "La question est terminée. Vous ne pouvez plus écrire de proposition.");
+                break;
         }
 
         $proposition = new Proposition(
@@ -189,11 +200,21 @@ class PropositionController extends MainController
         $proposition = Proposition::toProposition((new PropositionRepository())->select($idProposition));
 
         $question = $proposition->getQuestion();
-        if($question->getPhase() !== Phase::Redaction){
-            QuestionController::error("afficherAccueil", "La question est en cours de vote, vous ne pouvez plus gérer les co-auteurs.");
-            return;
+        $phase = $question->getPhase();
+        switch ($phase) {
+            case Phase::NonRemplie:
+                QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
+                break;
+            case Phase::Attente:
+                QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
+                break;
+            case Phase::Vote:
+                QuestionController::error("afficherAccueil", "La question est en cours de vote. Vous ne pouvez plus gérer les co-auteurs.");
+                break;
+            case Phase::Resultat:
+                QuestionController::error("afficherAccueil", "La question est terminée. Vous ne pouvez plus gérer les co-auteurs.");
+                break;
         }
-
 
         $utilisateursAutorises = (new UtilisateurRepository())->selectAll();
 
@@ -224,9 +245,20 @@ class PropositionController extends MainController
         }
 
         $question = $proposition->getQuestion();
-        if($question->getPhase() !== Phase::Redaction){
-            QuestionController::error("afficherAccueil", "La question est en cours de vote, vous ne pouvez plus gérer les co-auteurs.");
-            return;
+        $phase = $question->getPhase();
+        switch ($phase) {
+            case Phase::NonRemplie:
+                QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
+                break;
+            case Phase::Attente:
+                QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
+                break;
+            case Phase::Vote:
+                QuestionController::error("afficherAccueil", "La question est en cours de vote. Vous ne pouvez plus gérer les co-auteurs.");
+                break;
+            case Phase::Resultat:
+                QuestionController::error("afficherAccueil", "La question est terminée. Vous ne pouvez plus gérer les co-auteurs.");
+                break;
         }
 
         $nbCoAuteurs = 1;
