@@ -12,12 +12,11 @@ use App\SAE\Model\Repository\QuestionRepository;
 use App\SAE\Model\Repository\UtilisateurRepository;
 use App\SAE\Lib\PhaseQuestion as Phase;
 
-class PropositionController extends Controller
+class PropositionController extends MainController
 {
 
     public static function afficherFormulaireEcrireProposition(array $parametre = null)
     {
-
 
         /* TODO: vérifier si l'utilisateur est co-auteur ou rédacteur (si co-auteur, pas le droit de toucher au titre) --> need authentification*/
 
@@ -39,9 +38,22 @@ class PropositionController extends Controller
         }
 
         $question = Question::toQuestion($question);
-
-        if ($question->getPhase() !== Phase::Redaction) {
-            QuestionController::error("afficherAccueil", "La question est en cours de vote, vous ne pouvez plus écrire de proposition.");
+        $phase = $question->getPhase();
+        if ($phase !== Phase::Redaction) {
+            switch ($phase) {
+                case Phase::NonRemplie:
+                    QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore écrire de proposition.");
+                    break;
+                case Phase::Attente:
+                    QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore écrire de proposition.");
+                    break;
+                case Phase::Vote:
+                    QuestionController::error("afficherAccueil", "La question est en cours de vote. Vous ne pouvez plus écrire de proposition.");
+                    break;
+                case Phase::Resultat:
+                    QuestionController::error("afficherAccueil", "La question est terminée. Vous ne pouvez plus écrire de proposition.");
+                    break;
+            }
             return;
         }
 
@@ -55,14 +67,14 @@ class PropositionController extends Controller
             }
 
             static::afficherVue('view.php', [
-                "titrePage" => "Régiger une proposition",
+                "titrePage" => "Rédiger une proposition",
                 "contenuPage" => "formulaireEcrireProposition.php",
                 "question" => $question,
                 "proposition" => $proposition
             ]);
         } else {
             static::afficherVue('view.php', [
-                "titrePage" => "Régiger une proposition",
+                "titrePage" => "Rédiger une proposition",
                 "contenuPage" => "formulaireEcrireProposition.php",
                 "question" => $question
             ]);
@@ -125,7 +137,6 @@ class PropositionController extends Controller
         }
 
         $estRedacteur = (new QuestionRepository())->estRedacteur($proposition->getQuestion()->getIdQuestion(), $_POST['idResponsable']);
-        echo $estRedacteur;
         if (empty($_POST["idProposition"])) { // création d'une nouvelle proposition
             // vérification autorisations rédacteur
             if(!$estRedacteur){
@@ -167,7 +178,7 @@ class PropositionController extends Controller
             }
         }
 
-        QuestionController::listerMesQuestions();
+        static::message("afficherAccueil", "La proposition a bien été enregistrée.");
     }
 
     public static function afficherFormulaireGererCoAuteurs()

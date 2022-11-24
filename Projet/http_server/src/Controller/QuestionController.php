@@ -11,7 +11,7 @@ use App\SAE\Lib\PhaseQuestion as Phase;
 use DateTime;
 use DateInterval;
 
-class QuestionController extends Controller
+class QuestionController extends MainController
 {
 
     public static function afficherFormulairePoserQuestion(): void
@@ -246,7 +246,7 @@ class QuestionController extends Controller
         (new QuestionRepository)->update($question);
 
         $_GET['idUtilisateur'] = $question->getOrganisateur()->getIdUtilisateur();
-        static::message("afficherMesQuestions", "La question est maintenant en phase de rédaction");
+        static::message("listerMesQuestions", "La question est maintenant en phase de rédaction");
     }
 
     public static function listerMesQuestions()

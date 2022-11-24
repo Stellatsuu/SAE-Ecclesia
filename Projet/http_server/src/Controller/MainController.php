@@ -2,7 +2,9 @@
 
 namespace App\SAE\Controller;
 
-class Controller
+use App\SAE\Model\Repository\DatabaseConnection;
+
+class MainController
 {
 
     private static ?string $message = NULL;
@@ -43,4 +45,14 @@ class Controller
         ]);
     }
 
+    public static function resetDatabase(): void
+    {
+        $pdo = DatabaseConnection::getPdo();
+        $query1 = file_get_contents(__DIR__ . "/../../../scriptCreationTables.sql");
+        $query2 = file_get_contents(__DIR__ . "/../../../jeuDeDonnées.sql");
+
+        $pdo->exec($query1);
+        $pdo->exec($query2);
+        
+    }
 }

@@ -1,5 +1,5 @@
 <form method="post" action="frontController.php?action=gererCoAuteurs&controller=proposition" class="panel" id="gererCoAuteursForm">
-    <h1>Co-auteurs :</h1>
+    <h1>Co-auteurs de la proposition "<?= htmlspecialchars($proposition->getTitreProposition()) ?>" :</h1>
     <fieldset>
 
         <label for="co_auteurs_input">Co-auteurs :</label>

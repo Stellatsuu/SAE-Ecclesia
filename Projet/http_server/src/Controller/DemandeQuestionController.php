@@ -8,7 +8,7 @@ use App\SAE\Model\Repository\DemandeQuestionRepository as DemandeQuestionReposit
 use App\SAE\Model\DataObject\DemandeQuestion as DemandeQuestion;
 use App\SAE\Model\Repository\UtilisateurRepository as UtilisateurRepository;
 
-class DemandeQuestionController extends Controller
+class DemandeQuestionController extends MainController
 {
     
     public static function listerDemandesQuestion(): void

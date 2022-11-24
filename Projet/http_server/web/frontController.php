@@ -18,8 +18,8 @@ $loader->addNamespace('App\SAE', __DIR__ . '/../src');
 $loader->register();
 
 // On récupère le contrôleur et l'action à appeler
-$controller = $_GET['controller'] ?? 'demandeQuestion';
-$action = $_GET['action'] ?? 'listerDemandesQuestion';
+$controller = $_GET['controller'] ?? 'main';
+$action = $_GET['action'] ?? 'afficherAccueil';
 
 $controller = 'App\\SAE\\Controller\\' . ucfirst($controller) . 'Controller';
 
