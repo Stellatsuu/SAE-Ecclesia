@@ -25,7 +25,7 @@ class MessageFlash
     {
         $messages = static::lireTousMessages();
         foreach ($messages as $message) {
-            if ($message["type"] == $type) {
+            if (isset($message["type"]) && $message["type"] == $type) {
                 return true;
             }
         }
@@ -39,7 +39,7 @@ class MessageFlash
         $messages = static::lireTousMessages();
         $messagesFiltres = [];
         foreach ($messages as $key => $value) {
-            if ($value["type"] == $type) {
+            if (isset($value["type"]) && $value["type"] == $type) {
                 $messagesFiltres[] = $value;
                 unset($messages[$key]);
             }

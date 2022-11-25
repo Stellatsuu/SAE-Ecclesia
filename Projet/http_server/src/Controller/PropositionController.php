@@ -109,9 +109,6 @@ class PropositionController extends MainController
         if ($titreProposition == "") {
             static::error("afficherAccueil", "Veuillez saisir un titre pour votre proposition.");
             return;
-        } else if ($titreProposition == "") {
-            static::error("afficherAccueil", "Veuillez saisir un titre pour votre proposition.");
-            return;
         } else if (strlen($titreProposition) > 100) {
             static::error("afficherAccueil", "Le titre de votre proposition ne doit pas dépasser 100 caractères.");
             return;
@@ -165,12 +162,108 @@ class PropositionController extends MainController
 
     public static function afficherFormulaireContribuerProposition()
     {
-        //TODO
+        if (!isset($_GET['idProposition']) || !is_numeric($_GET['idProposition'])) {
+            static::error("afficherAccueil", "Aucune proposition n'a été sélectionnée");
+            return;
+        }
+
+        $idProposition = $_GET['idProposition'];
+
+        $proposition = (new PropositionRepository())->select($idProposition);
+        if (!$proposition) {
+            static::error("afficherAccueil", "La proposition n'existe pas");
+            return;
+        }
+        $proposition = Proposition::toProposition($proposition);
+
+        $phase = $proposition->getQuestion()->getPhase();
+        if ($phase !== Phase::Redaction) {
+            switch ($phase) {
+                case Phase::NonRemplie:
+                    QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer à une proposition.");
+                    break;
+                case Phase::Attente:
+                    QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer à une proposition.");
+                    break;
+                case Phase::Vote:
+                    QuestionController::error("afficherAccueil", "La question est en cours de vote. Vous ne pouvez plus contribuer à une proposition.");
+                    break;
+                case Phase::Resultat:
+                    QuestionController::error("afficherAccueil", "La question est terminée. Vous ne pouvez plus contribuer à une proposition.");
+                    break;
+            }
+            return;
+        }
+
+        static::afficherVue("view.php", [
+            "proposition" => $proposition,
+            "titrePage" => "Écrire une proposition",
+            "contenuPage" => "formulaireContribuerProposition.php"
+        ]);
     }
 
     public static function contribuerProposition()
     {
-        //TODO
+        if (!isset($_POST['idProposition']) || !is_numeric($_POST['idProposition'])) {
+            static::error("afficherAccueil", "Veuillez sélectionner la proposition pour laquelle vous souhaitez contribuer");
+            return;
+        }
+
+        $proposition = Proposition::toProposition((new PropositionRepository())->select($_POST['idProposition']));
+
+        if (!$proposition) {
+            static::error("afficherAccueil", "La proposition n'existe pas");
+            return;
+        }
+
+        $phase = $proposition->getQuestion()->getPhase();
+        switch ($phase) {
+            case Phase::NonRemplie:
+                QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer pour la proposition.");
+                break;
+            case Phase::Attente:
+                QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer pour la proposition.");
+                break;
+            case Phase::Vote:
+                QuestionController::error("afficherAccueil", "La question est en cours de vote. Vous ne pouvez plus contribuer pour la proposition.");
+                break;
+            case Phase::Resultat:
+                QuestionController::error("afficherAccueil", "La question est terminée. Vous ne pouvez plus contribuer pour la proposition.");
+                break;
+        }
+
+        $paragraphes = [];
+        $sections = $proposition->getQuestion()->getSections();
+        $estCoAuteur = (new QuestionRepository())->estRedacteur($proposition->getQuestion()->getIdQuestion(), $_POST['idCoAuteur']); // si l'utilisateur est rédacteur, il a les droits d'édition
+
+        for ($i = 0; $i < count($sections); $i++) {
+
+            $nom_paragraphe = 'section_' . $i;
+            if (!isset($_POST[$nom_paragraphe]) || $_POST[$nom_paragraphe] == "") {
+                static::error("afficherAccueil", "Veuillez saisir un contenu pour votre proposition.");
+                return;
+            }
+
+            $contenu = $_POST[$nom_paragraphe];
+
+            $paragraphe = (new ParagrapheRepository())->selectByPropositionEtSection($proposition->getIdProposition(), $sections[$i]->getIdSection());
+            $paragraphe->setContenuParagraphe($contenu);
+            $paragraphes[] = $paragraphe;
+
+            if((new ParagrapheRepository())->estCoAuteur($paragraphe->getIdParagraphe(), $_POST['idCoAuteur'])){
+                $estCoAuteur = true;
+            }
+        }
+
+        if (!$estCoAuteur) {
+            static::error("afficherAccueil", "Vous ne faites pas partie des co-auteurs ou des rédacteurs de cette proposition.");
+            return;
+        }
+
+        foreach($paragraphes as $paragraphe){
+            (new ParagrapheRepository())->update($paragraphe);
+        }
+        static::message("afficherAccueil", "La proposition a bien été enregistrée.");
     }
 
     public static function afficherFormulaireGererCoAuteurs()

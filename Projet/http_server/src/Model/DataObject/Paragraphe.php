@@ -91,6 +91,14 @@ class Paragraphe extends AbstractDataObject{
         $this->idProposition = $idProposition;
     }
 
+    /**
+     * @param string $contenuParagraphe
+     */
+    public function setContenuParagraphe(string $contenuParagraphe): void
+    {
+        $this->contenuParagraphe = $contenuParagraphe;
+    }
+
 
 
 

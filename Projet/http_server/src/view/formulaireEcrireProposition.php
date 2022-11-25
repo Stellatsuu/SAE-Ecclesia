@@ -41,7 +41,7 @@
 
                 echo "</textarea>";
                 if($existeProposition){
-                    echo "<input type='hidden' name='section_" . $sectionId . "_idParagraphe' value='" . htmlspecialchars($paragraphe->getIdParagraphe()) . "'/>";
+                    echo "<input type='hidden' name='section_" . $i . "_idParagraphe' value='" . htmlspecialchars($paragraphe->getIdParagraphe()) . "'/>";
                 }
             }
         ?>

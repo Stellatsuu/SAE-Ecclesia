@@ -75,4 +75,15 @@ class ParagrapheRepository extends AbstractRepository{
 
         return $pdo->fetch()['est_coauteur'] > 0;
     }
+
+    public function selectByPropositionEtSection(int $idProposition, int $idSection): Paragraphe{
+        $sql = "SELECT * FROM {$this->getNomTable()} WHERE id_proposition = :idProposition AND id_section = :idSection";
+        $statement = DatabaseConnection::getPdo()->prepare($sql);
+        $statement->execute([
+            "idProposition" => $idProposition,
+            "idSection" => $idSection
+        ]);
+
+        return $this->construire($statement->fetch());
+    }
 }
