@@ -4,9 +4,14 @@
 ?>
 
 <form class="panel" method="post" action="frontController.php?controller=proposition&action=contribuerProposition" id="ecrirePropositionForm">
-    <h1>Écrire proposition</h1>
+    <h1>Contribuer proposition</h1>
     <fieldset>
-        <h2><?= htmlspecialchars($proposition->getTitreProposition()) ?></h2>
+        <label for="titreProposition">Nom de la proposition : </label>
+        <div class="text_input_div">
+            <input type="text" id="titreProposition" name="titreProposition" maxlength="100" value="<?= $proposition->getTitreProposition() ?>" required/>
+            <span class="indicateur_max_chars  unselectable">100 max</span>
+        </div>
+
 
         <?php
         $sections = $question->getSections();
@@ -23,16 +28,18 @@
                 <p class='descriptionProposition'>" . htmlspecialchars($section->getDescriptionSection()) . "</p>
                 <textarea name='section_" . $i . "'>";
 
-                foreach($paragraphes as $paragraphe){
-                    if($paragraphe->getSection()->getIdSection() == $section->getIdSection()){
-                        echo htmlspecialchars($paragraphe->getContenuParagraphe());
+                $paragraphe = null;
+                foreach($paragraphes as $p){
+                    if($p->getSection()->getIdSection() == $section->getIdSection()){
+                        echo htmlspecialchars($p->getContenuParagraphe());
+                        $paragraphe = $p;
                         break;
                     }
                 }
 
-            echo "</textarea>
-                <input type='hidden' name='section_" . $i . "_idParagraphe' value='" . htmlspecialchars($paragraphe->getIdParagraphe()) . "'/>
-            ";
+            echo '</textarea>
+                <input type="hidden" name="section_' . $i . '_idParagraphe" value="' . (isset($paragraphe) ? htmlspecialchars($paragraphe->getIdParagraphe()) : "-1") . '"/>
+            ';
         }
         ?>
     </fieldset>
