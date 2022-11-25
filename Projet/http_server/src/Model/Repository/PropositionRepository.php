@@ -115,4 +115,16 @@ class PropositionRepository extends AbstractRepository
         }
         return $resultat;
     }
+
+    public function insert(AbstractDataObject $object) : void {
+        parent::insert($object);
+
+        $object = Proposition::toProposition($object);
+        $proposition = $this->selectByQuestionEtRedacteur($object->getQuestion()->getIdQuestion(), $object->getRedacteur()->getIdUtilisateur());
+
+        foreach ($object->getParagraphes() as $paragraphe) {
+            $paragraphe->setIdProposition($proposition->getIdProposition());
+            (new ParagrapheRepository())->insert($paragraphe);
+        }
+    }
 }
