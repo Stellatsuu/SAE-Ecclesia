@@ -15,25 +15,21 @@ use App\SAE\Lib\PhaseQuestion as Phase;
 class PropositionController extends MainController
 {
 
-    public static function afficherFormulaireEcrireProposition(array $parametre = null)
+    public static function afficherFormulaireEcrireProposition()
     {
 
         /* TODO: vérifier si l'utilisateur est co-auteur ou rédacteur (si co-auteur, pas le droit de toucher au titre) --> need authentification*/
 
-        if (empty($_GET["idQuestion"])) {
-            if (empty($parametre['proposition'])) {
-                QuestionController::error("afficherAccueil", "Veuillez sélectionner la question pour laquelle vous souhaitez écrire une proposition.");
-                return;
-            } else {
-                $idQuestion = $parametre['proposition']->getQuestion()->getIdQuestion();
-            }
-        } else {
-            $idQuestion = intval($_GET['idQuestion']);
+        if (!isset($_GET['idQuestion']) || !is_numeric($_GET['idQuestion'])) {
+            static::error("afficherAccueil", "Aucune question n'a été sélectionnée");
+            return;
         }
 
+        $idQuestion = $_POST['idQuestion'];
+
         $question = (new QuestionRepository())->select($idQuestion);
-        if (empty($question)) {
-            QuestionController::error("afficherAccueil", "Veuillez sélectionner la question pour laquelle vous souhaitez écrire une proposition.");
+        if (!$question) {
+            static::error("afficherAccueil", "La question n'existe pas");
             return;
         }
 
@@ -57,28 +53,11 @@ class PropositionController extends MainController
             return;
         }
 
-        // si la proposition existe déjà, on charge ses valeurs
-        if (isset($_GET["idProposition"]) || !empty($parametre['proposition'])) {
-            if (isset($_GET["idProposition"])) {
-                $idProposition = intval($_GET['idProposition']);
-                $proposition = (new PropositionRepository())->select($idProposition);
-            } else {
-                $proposition = $parametre['proposition'];
-            }
-
-            static::afficherVue('view.php', [
-                "titrePage" => "Rédiger une proposition",
-                "contenuPage" => "formulaireEcrireProposition.php",
-                "question" => $question,
-                "proposition" => $proposition
-            ]);
-        } else {
-            static::afficherVue('view.php', [
-                "titrePage" => "Rédiger une proposition",
-                "contenuPage" => "formulaireEcrireProposition.php",
-                "question" => $question
-            ]);
-        }
+        static::afficherVue("view.php", [
+            "question" => $question,
+            "titre" => "Ecrire une proposition",
+            "vue" => "formulaireEcrireProposition.php",
+        ]);
     }
 
     public static function ecrireProposition()
@@ -98,7 +77,14 @@ class PropositionController extends MainController
             return;
         }
         $titreProposition = $_POST['titreProposition'];
-        $idResponsable = $_POST['idResponsable']; //pas de vérification nécessaire (gestion par les sessions)
+        $idResponsable = $_POST['idResponsable'];
+
+        $responsable = (new UtilisateurRepository())->select($idResponsable);
+
+        if (!$responsable) {
+            static::error("afficherAccueil", "Le responsable n'existe pas");
+            return;
+        }
 
         /*
         TODO : vérifier si l'utilisateur n'a pas déjà écrit une proposition pour cette question
@@ -134,91 +120,57 @@ class PropositionController extends MainController
         $proposition = new Proposition(
             -1,
             $titreProposition,
-            (new UtilisateurRepository())->select($idResponsable),
+            $responsable,
             $question,
             []
         );
 
         $paragraphes = [];
-        foreach ($question->getSections() as $section) {
-            $nom_paragraphe = 'section_' . $section->getIdSection();
-            if (!isset($_POST[$nom_paragraphe])) {
+        $sections = $question->getSections();
+        for ($i = 0; $i < count($sections); $i++) {
+
+            $nom_paragraphe = 'section_' . $i;
+            if (!isset($_POST[$nom_paragraphe]) || $_POST[$nom_paragraphe] == "") {
                 static::error("afficherAccueil", "Veuillez saisir un contenu pour votre proposition.");
                 return;
             }
 
             $contenu = $_POST[$nom_paragraphe];
 
-            if ($contenu == "") {
-                static::error("afficherAccueil", "Veuillez saisir un contenu pour votre proposition.");
-                return;
-            }
-
             $paragraphe = new Paragraphe(
                 -1,
                 $proposition->getIdProposition(),
-                $section->getIdSection(),
+                $sections[$i]->getIdSection(),
                 $contenu
             );
+            $paragraphes[] = $paragraphe;
         }
 
         $proposition->setParagraphes($paragraphes);
 
-        /* 
-
-        // vérification existence des variables obligatoires
-        if (empty($_POST['titreProposition'])) $error = "Vous devez préciser un nom pour votre proposition.";
-
-        // vérification cohérence des données (taille, type)
-        if (strlen($_POST['titreProposition']) > 100) $error = "Le titre ne doit pas faire plus de 100 caractères.";
-
-
-
-
-
-        $estRedacteur = (new QuestionRepository())->estRedacteur($proposition->getQuestion()->getIdQuestion(), $_POST['idResponsable']);
-        if (empty($_POST["idProposition"])) { // création d'une nouvelle proposition
-            // vérification autorisations rédacteur
-            if (!$estRedacteur) {
-                static::error("afficherAccueil",  "Vous devez être rédacteur sur cette question pour écrire une nouvelle proposition");
-                return;
-            }
-
-            (new PropositionRepository())->insert($proposition);
-
-            $idProposition = (new PropositionRepository())->selectByQuestionEtRedacteur($question, $_POST['idResponsable'])->getIdProposition();
-
-            foreach ($paragraphes as $paragraphe) {
-                $paragraphe->setIdProposition($idProposition);
-
-                (new ParagrapheRepository())->insert($paragraphe);
-            }
-        } else { // édition d'une proposition déjà existante
-            /*vérification autorisation rédacteur ou co-auteur
-            * si l'utilisateur est coAuteur, il a au moins les droits de co-auteur
-             * on vérifiera ensuite s'il est co-auteur d'au moins une section :
-             * si ce n'est pas le cas, on retourne une erreur
-            
-            $estCoAuteur = $estRedacteur;
-
-            if ($estRedacteur) {
-                (new PropositionRepository())->update($proposition);
-            }
-
-            foreach ($paragraphes as $paragraphe) {
-                if ($estRedacteur || (new ParagrapheRepository())->estCoAuteur($paragraphe->getIdParagraphe(), $_POST['idResponsable'])) {
-                    (new ParagrapheRepository())->update($paragraphe);
-                    $estCoAuteur = true;
-                }
-            }
-
-            if (!$estCoAuteur) {
-                static::error("afficherAccueil",  "Vous devez être co-auteur ou rédacteur sur cette proposition pour la modifier.");
-                return;
-            }
+        $estRedacteur = (new QuestionRepository())->estRedacteur($question->getIdQuestion(), $idResponsable);
+        if (!$estRedacteur) {
+            static::error("afficherAccueil", "Vous ne faites pas partie des rédacteurs de cette question.");
+            return;
         }
- */
+
+        $propositionExiste = (new PropositionRepository())->selectByQuestionEtRedacteur($question->getIdQuestion(), $idResponsable) == null ? false : true;
+        if ($propositionExiste) {
+            static::error("afficherAccueil", "Vous avez déjà écrit une proposition pour cette question.");
+            return;
+        }
+
         static::message("afficherAccueil", "La proposition a bien été enregistrée.");
+    }
+
+    public static function afficherFormulaireContribuerProposition()
+    {
+        //TODO
+    }
+
+    public static function contribuerProposition()
+    {
+        //TODO
     }
 
     public static function afficherFormulaireGererCoAuteurs()
@@ -228,8 +180,8 @@ class PropositionController extends MainController
             return;
         }
         $idProposition = intval($_GET['idProposition']);
-        $proposition = Proposition::toProposition((new PropositionRepository())->select($idProposition));
 
+        $proposition = Proposition::toProposition((new PropositionRepository())->select($idProposition));
         if (!$proposition) {
             static::error("afficherAccueil", "La proposition n'existe pas.");
             return;

@@ -41,18 +41,22 @@ class PropositionRepository extends AbstractRepository
         );
     }
 
-    public function selectByQuestionEtRedacteur(Question $question, int $idRedacteur): ?Proposition
+    public function selectByQuestionEtRedacteur(int $idQuestion, int $idRedacteur): ?Proposition
     {
         $sql = "SELECT * FROM {$this->getNomTable()} WHERE id_redacteur = :id_redacteur AND id_question = :id_question";
         $values = [
             "id_redacteur" => $idRedacteur,
-            "id_question" => $question->getIdQuestion()
+            "id_question" => $idQuestion
         ];
 
         $pdo = DatabaseConnection::getPdo()->prepare($sql);
         $pdo->execute($values);
 
-        return static::construire($pdo->fetch());
+        $ligne = $pdo->fetch();
+        if ($ligne === false) {
+            return null;
+        }
+        return $this->construire($ligne);
     }
 
     public function deleteCoAuteurs($idProposition)
