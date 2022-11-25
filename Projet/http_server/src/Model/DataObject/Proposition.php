@@ -42,6 +42,14 @@ class Proposition extends AbstractDataObject{
     }
 
     /**
+     * @param string $titreProposition
+     */
+    public function setTitreProposition(string $titreProposition): void
+    {
+        $this->titreProposition = $titreProposition;
+    }
+
+    /**
      * @return int
      */
     public function getIdProposition(): int
