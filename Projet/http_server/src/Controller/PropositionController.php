@@ -157,6 +157,8 @@ class PropositionController extends MainController
             return;
         }
 
+        (new PropositionRepository())->insert($proposition);
+
         static::message("afficherAccueil", "La proposition a bien été enregistrée.");
     }
 
