@@ -195,6 +195,9 @@ class QuestionController extends MainController
         } else if ($description == "") {
             static::error("afficherFormulairePoserQuestion", "Veuillez remplir tous les champs");
             return;
+        } else if(strlen($description) > 4000) {
+            static::error("afficherFormulairePoserQuestion", "La description de la question ne doit pas dépasser 4000 caractères");
+            return;
         } else if (count($sections) == 0) {
             static::error("afficherFormulairePoserQuestion", "Au moins une section est requise");
             return;
