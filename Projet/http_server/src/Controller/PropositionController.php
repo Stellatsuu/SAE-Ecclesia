@@ -216,7 +216,10 @@ class PropositionController extends MainController
         if (!$proposition) {
             static::error("afficherAccueil", "La proposition n'existe pas");
             return;
+        } else if (!isset($_POST['titreProposition'])) {
+            static::error("afficherAccueil", "Veuillez saisir un titre pour votre proposition.");
         }
+
 
         $phase = $proposition->getQuestion()->getPhase();
         switch ($phase) {
@@ -234,9 +237,12 @@ class PropositionController extends MainController
                 break;
         }
 
+
+
         $paragraphes = [];
         $sections = $proposition->getQuestion()->getSections();
-        $estCoAuteur = (new QuestionRepository())->estRedacteur($proposition->getQuestion()->getIdQuestion(), $_POST['idCoAuteur']); // si l'utilisateur est rédacteur, il a les droits d'édition
+        $estRedacteur = (new QuestionRepository())->estRedacteur($proposition->getQuestion()->getIdQuestion(), $_POST['idCoAuteur']);
+        $estCoAuteur = $estRedacteur; // si l'utilisateur est rédacteur, il a les droits d'édition
 
         for ($i = 0; $i < count($sections); $i++) {
 
@@ -252,7 +258,7 @@ class PropositionController extends MainController
             $paragraphe->setContenuParagraphe($contenu);
             $paragraphes[] = $paragraphe;
 
-            if((new ParagrapheRepository())->estCoAuteur($paragraphe->getIdParagraphe(), $_POST['idCoAuteur'])){
+            if ((new ParagrapheRepository())->estCoAuteur($paragraphe->getIdParagraphe(), $_POST['idCoAuteur'])) {
                 $estCoAuteur = true;
             }
         }
@@ -262,13 +268,19 @@ class PropositionController extends MainController
             return;
         }
 
-        foreach($paragraphes as $paragraphe){
+        if($estRedacteur){
+            $proposition->setTitreProposition($_POST['titreProposition']);
+            (new PropositionRepository())->update($proposition);
+        }
+
+        foreach ($paragraphes as $paragraphe) {
             (new ParagrapheRepository())->update($paragraphe);
         }
         static::message("afficherAccueil", "La proposition a bien été enregistrée.");
     }
 
-    public static function afficherFormulaireGererCoAuteurs()
+    public
+    static function afficherFormulaireGererCoAuteurs()
     {
         if (!isset($_GET['idProposition']) || !is_numeric($_GET['idProposition'])) {
             static::error("afficherAccueil", "Aucune proposition n'a été sélectionnée.");
@@ -314,7 +326,8 @@ class PropositionController extends MainController
         ]);
     }
 
-    public static function gererCoAuteurs()
+    public
+    static function gererCoAuteurs()
     {
         if (!isset($_POST['idProposition']) || !is_numeric($_POST['idProposition'])) {
             static::error("afficherAccueil", "Aucune proposition n'a été sélectionnée.");
