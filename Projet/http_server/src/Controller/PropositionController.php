@@ -25,7 +25,7 @@ class PropositionController extends MainController
             return;
         }
 
-        $idQuestion = $_POST['idQuestion'];
+        $idQuestion = $_GET['idQuestion'];
 
         $question = (new QuestionRepository())->select($idQuestion);
         if (!$question) {
@@ -55,8 +55,8 @@ class PropositionController extends MainController
 
         static::afficherVue("view.php", [
             "question" => $question,
-            "titre" => "Ecrire une proposition",
-            "vue" => "formulaireEcrireProposition.php",
+            "titrePage" => "Écrire une proposition",
+            "contenuPage" => "formulaireEcrireProposition.php"
         ]);
     }
 
@@ -140,7 +140,7 @@ class PropositionController extends MainController
             $paragraphe = new Paragraphe(
                 -1,
                 $proposition->getIdProposition(),
-                $sections[$i]->getIdSection(),
+                $sections[$i],
                 $contenu
             );
             $paragraphes[] = $paragraphe;

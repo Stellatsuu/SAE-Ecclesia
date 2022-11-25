@@ -23,11 +23,20 @@
 
     <main>
         <?php
-        if ($message) {
-            require('message.php');
+        use App\SAE\Lib\MessageFlash;
+        if (MessageFlash::contientMessage("info")) {
+            $messages = MessageFlash::lireMessages("info");
+            foreach ($messages as $message) {
+                echo "<div class='message'>" . $message["message"] . "</div>";
+            }
         }
-        ?>
-        <?php
+        if (MessageFlash::contientMessage("error")) {
+            $messages = MessageFlash::lireMessages("error");
+            foreach ($messages as $message) {
+                echo "<div class='errorMessage'>" . $message["message"] . "</div>";
+            }
+        }
+
         require __DIR__ . "/{$contenuPage}";
         ?>
     </main>

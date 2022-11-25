@@ -16,19 +16,19 @@
         </div>
 
         <?php
-            foreach($question->getSections() as $section){
-                $sectionId = htmlspecialchars($section->getIdSection());
-
+            $sections = $question->getSections();
+            for ($i=0; $i < count($sections); $i++) { 
+                $section = $sections[$i];
                 echo "
-                    <input type='checkbox' id='deploy_" . $sectionId . "' class='sectionTitleCheckbox'/>
+                    <input type='checkbox' id='deploy_" . $i . "' class='sectionTitleCheckbox'/>
                     <div class='sectionTitle'>
                         <h2>" . htmlspecialchars($section->getNomSection()) . "</h2>
-                        <label for='deploy_" . $sectionId . "'>
+                        <label for='deploy_" . $i . "'>
                             <img src='./assets/images/arrow.svg' class='arrow' alt='open and close arrow'/>
                         </label>
                     </div>
                     <p class='descriptionProposition'>" . htmlspecialchars($section->getDescriptionSection()) . "</p>
-                    <textarea name='section_" . $sectionId . "'>";
+                    <textarea name='section_" . $i . "'>";
 
                 if($existeProposition){
                     foreach($paragraphes as $paragraphe){
@@ -43,7 +43,6 @@
                 if($existeProposition){
                     echo "<input type='hidden' name='section_" . $sectionId . "_idParagraphe' value='" . htmlspecialchars($paragraphe->getIdParagraphe()) . "'/>";
                 }
-
             }
         ?>
     </fieldset>

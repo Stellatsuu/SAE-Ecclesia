@@ -2,18 +2,13 @@
 
 namespace App\SAE\Controller;
 
+use App\SAE\Lib\MessageFlash;
 use App\SAE\Model\Repository\DatabaseConnection;
 
 class MainController
 {
-
-    private static ?string $message = NULL;
-    private static ?string $messageType = "message";
-
-    public static function afficherVue(string $cheminVue, array $parametres = []): void
+    public static function afficherVue(string $cheminVue, array $parametres): void
     {
-        $parametres['message'] = static::$message;
-        $parametres['messageType'] = static::$messageType;
         extract($parametres); // Crée des variables à partir du tableau $parametres
         require __DIR__ . '/../view/' . $cheminVue;
     }
@@ -21,20 +16,21 @@ class MainController
     /**
      * Affiche le message $message sur la page associée à $action
      */
-    public static function message(string $action, string $message, array $parametres = []): void
+    public static function message(string $action, string $message): void
     {
-        static::$message = $message;
-        if(empty($parametres)){
-            static::$action();
-        }else{
-            static::$action($parametres);
-        }
+        MessageFlash::ajouter("info", $message);
+        static::$action();
     }
 
-    public static function error(string $action, string $message, array $parametres = []): void
+    public static function error(string $action, string $message): void
     {
-        static::$messageType = "errorMessage";
-        static::message($action, $message, $parametres);
+        MessageFlash::ajouter("error", $message);
+        static::$action();
+    }
+
+    public static function redirect(string $url): void
+    {
+
     }
 
     public static function afficherAccueil(): void
@@ -53,6 +49,7 @@ class MainController
 
         $pdo->exec($query1);
         $pdo->exec($query2);
-        
+
+        static::message("afficherAccueil", "La base de données a été réinitialisée");
     }
 }
