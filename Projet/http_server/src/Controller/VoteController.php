@@ -19,25 +19,25 @@ class VoteController extends MainController
         $session = Session::getInstance();
 
         if(!$session->contient("idUtilisateur")) {
-            static::error("afficherAccueil", "Vous devez être connecté pour voter");
+            static::error("frontController.php", "Vous devez être connecté pour voter");
         }
 
         if(!isset($_POST['idProposition']) || !is_numeric($_POST['idProposition'])) {
-            static::error("afficherAccueil", "Aucune proposition n'a été sélectionnée");
+            static::error("frontController.php", "Aucune proposition n'a été sélectionnée");
             return;
         }
         $idProposition = intval($_POST['idProposition']);
 
         $proposition = Proposition::toProposition((new PropositionRepository)->select($idProposition));
         if(!$proposition) {
-            static::error("afficherAccueil", "La proposition n'existe pas");
+            static::error("frontController.php", "La proposition n'existe pas");
             return;
         }
 
         $question = $proposition->getQuestion();
         $phase = $question->getPhase();
         if($phase !== PhaseQuestion::Vote) {
-            static::error("afficherAccueil", "La question n'est pas en phase de vote");
+            static::error("frontController.php", "La question n'est pas en phase de vote");
             return;
         }
 
@@ -45,13 +45,13 @@ class VoteController extends MainController
 
         $estVotant = (new QuestionRepository)->estVotant($proposition->getQuestion()->getIdQuestion(), $idUtilisateur);
         if(!$estVotant) {
-            static::error("afficherAccueil", "Vous n'êtes pas votant pour cette question");
+            static::error("frontController.php", "Vous n'êtes pas votant pour cette question");
             return;
         }
 
         $aDejaVote = (new QuestionRepository)->aVote($proposition->getQuestion()->getIdQuestion(), $idUtilisateur);
         if($aDejaVote) {
-            static::error("afficherAccueil", "Vous avez déjà voté sur cette question");
+            static::error("frontController.php", "Vous avez déjà voté sur cette question");
             return;
         }
 
@@ -59,6 +59,6 @@ class VoteController extends MainController
         $vote = new Vote($proposition, $votant, 1);
         (new VoteRepository)->insert($vote);
 
-    static::message("afficherAccueil", "Votre vote a bien été pris en compte");
+    static::message("frontController.php", "Votre vote a bien été pris en compte");
     }
 }

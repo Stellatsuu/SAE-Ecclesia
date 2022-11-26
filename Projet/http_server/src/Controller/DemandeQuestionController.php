@@ -25,20 +25,20 @@ class DemandeQuestionController extends MainController
     public static function refuserDemandeQuestion(): void
     {
         if(!isset($_GET['idQuestion']) || !is_numeric($_GET['idQuestion'])) {
-            static::error("listerDemandesQuestion", "Aucune question n'a été sélectionnée");
+            static::error("frontController.php?controller=demandeQuestion&action=listerDemandesQuestion", "Aucune question n'a été sélectionnée");
             return;
         }
 
         $idQuestion = intval($_GET['idQuestion']);
         (new DemandeQuestionRepository)->delete($idQuestion);
 
-        static::message("listerDemandesQuestion", "La question a été refusée");
+        static::message("frontController.php?controller=demandeQuestion&action=listerDemandesQuestion", "La demande a été refusée");
     }
 
     public static function accepterDemandeQuestion(): void
     {
         if(!isset($_GET['idQuestion']) || !is_numeric($_GET['idQuestion'])) {
-            static::error("listerDemandesQuestion", "Aucune question n'a été sélectionnée");
+            static::error("frontController.php?controller=demandeQuestion&action=listerDemandesQuestion", "Aucune question n'a été sélectionnée");
             return;
         }
 
@@ -60,7 +60,7 @@ class DemandeQuestionController extends MainController
         (new QuestionRepository)->insertEbauche($question);
         (new DemandeQuestionRepository)->delete($idQuestion);
 
-        static::message("listerDemandesQuestion", "La question a été acceptée");
+        static::message("frontController.php?controller=demandeQuestion&action=listerDemandesQuestion", "La question a été acceptée");
     }
 
     public static function afficherFormulaireDemandeQuestion(): void
@@ -74,7 +74,7 @@ class DemandeQuestionController extends MainController
     public static function demanderCreationQuestion(): void
     {
         if(!isset($_POST['titre']) || !isset($_POST['description']) || !isset($_POST['idUtilisateur'])) {
-            static::error("afficherFormulaireDemandeQuestion", "Tous les champs doivent être remplis");
+            static::error("frontController.php?controller=demandeQuestion&action=afficherFormulaireDemandeQuestion", "Tous les champs doivent être remplis");
             return;
         }
 
@@ -84,24 +84,24 @@ class DemandeQuestionController extends MainController
 
         // Vérification des données
         if ($titre == "" || $description == "") {
-            static::error("afficherFormulaireDemandeQuestion", "Tous les champs doivent être remplis");
+            static::error("frontController.php?controller=demandeQuestion&action=afficherFormulaireDemandeQuestion", "Tous les champs doivent être remplis");
             return;
         }
 
         if (strlen($titre) > 100) {
-            static::error("afficherFormulaireDemandeQuestion", "Le titre ne doit pas dépasser 100 caractères");
+            static::error("frontController.php?controller=demandeQuestion&action=afficherFormulaireDemandeQuestion", "Le titre ne doit pas dépasser 100 caractères");
             return;
         }
 
         if (strlen($description) > 4000) {
-            static::error("afficherFormulaireDemandeQuestion", "La description ne doit pas dépasser 4000 caractères");
+            static::error("frontController.php?controller=demandeQuestion&action=afficherFormulaireDemandeQuestion", "La description ne doit pas dépasser 4000 caractères");
             return;
         }
 
         $demande = new DemandeQuestion(-1, $titre, $description, (new UtilisateurRepository)->select($idUtilisateur));
         (new DemandeQuestionRepository)->insert($demande);
 
-        static::message("listerDemandesQuestion", "Votre demande a été envoyée");
+        static::message("frontController.php", "Votre demande a été envoyée");
     }
 
 }

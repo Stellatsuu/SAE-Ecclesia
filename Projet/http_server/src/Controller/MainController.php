@@ -17,21 +17,22 @@ class MainController
     /**
      * Affiche le message $message sur la page associée à $action
      */
-    public static function message(string $action, string $message): void
+    public static function message(string $url, string $message): void
     {
         MessageFlash::ajouter("info", $message);
-        static::$action();
+        static::redirect($url);
     }
 
-    public static function error(string $action, string $message): void
+    public static function error(string $url, string $message): void
     {
         MessageFlash::ajouter("error", $message);
-        static::$action();
+        static::redirect($url);
     }
 
     public static function redirect(string $url): void
     {
-
+        header("Location: $url");
+        exit();
     }
 
     public static function afficherAccueil(): void
@@ -51,7 +52,7 @@ class MainController
         $pdo->exec($query1);
         $pdo->exec($query2);
 
-        static::message("afficherAccueil", "La base de données a été réinitialisée");
+        static::message("frontController.php", "La base de données a été réinitialisée");
     }
 
     public static function seConnecter(): void
@@ -62,6 +63,6 @@ class MainController
 
         $session->enregistrer("idUtilisateur", $idUtilisateur);
 
-        static::message("afficherAccueil", "Désormais connecté en tant que $idUtilisateur");
+        static::message("frontController.php", "Désormais connecté en tant que $idUtilisateur");
     }
 }
