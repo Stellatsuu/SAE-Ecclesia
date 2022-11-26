@@ -39110,7 +39110,7 @@
 											"top": 744,
 											"width": 188.2333984375,
 											"height": 13,
-											"text": "+getPropositiongagnante()",
+											"text": "+getPropositionGagnante()",
 											"horizontalAlignment": 0
 										}
 									],
@@ -49749,7 +49749,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGEBTGZuXoKb1M="
 									},
-									"name": "getPropositiongagnante"
+									"name": "getPropositionGagnante"
 								}
 							]
 						},
