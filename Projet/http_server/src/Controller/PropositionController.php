@@ -381,4 +381,39 @@ class PropositionController extends MainController
 
         static::message("afficherAccueil", "Les co-auteurs ont bien été modifiés.");
     }
+
+    public static function afficherPropositions(){
+        if (!isset($_GET['idQuestion']) || !is_numeric($_GET['idQuestion'])) {
+            static::error("afficherAccueil", "Aucune question n'a été sélectionnée");
+            return;
+        }
+
+        $idQuestion = $_GET['idQuestion'];
+
+        $question = (new QuestionRepository())->select($idQuestion);
+        if (!$question) {
+            static::error("afficherAccueil", "La question n'existe pas");
+            return;
+        }
+
+        if (!isset($_GET['index'])) {
+            $index = 0;
+        }
+        else {
+            $index = $_GET['index'];
+        }
+
+        $question = Question::toQuestion($question);
+
+        $propositions = (new PropositionRepository())->selectAllByQuestion($idQuestion);
+
+        static::afficherVue("view.php", [
+            "titrePage" => "Propositions",
+            "contenuPage" => "afficherPropositions.php",
+            "idQuestion" => $idQuestion,
+            "question" => $question,
+            "propositions" => $propositions,
+            "index" => $index
+        ]);
+    }
 }

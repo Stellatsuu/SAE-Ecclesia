@@ -127,4 +127,21 @@ class PropositionRepository extends AbstractRepository
             (new ParagrapheRepository())->insert($paragraphe);
         }
     }
+
+    public function selectAllByQuestion(int $idQuestion) : array{
+        $sql = "SELECT * FROM proposition WHERE id_question = :id_question";
+        $pdo = DatabaseConnection::getPdo();
+        $values = [
+            'id_question' => $idQuestion
+        ];
+
+        $pdoStatement = $pdo->prepare($sql);
+        $pdoStatement->execute($values);
+
+        $resultat = [];
+        foreach ($pdoStatement as $ligne) {
+            $resultat[] = $this->construire($ligne);
+        }
+        return $resultat;
+    }
 }
