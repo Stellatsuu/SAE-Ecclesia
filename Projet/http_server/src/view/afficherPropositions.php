@@ -1,6 +1,12 @@
 <?php
+
+
+use App\SAE\Lib\PhaseQuestion;
+use App\SAE\Model\DataObject\Question;
+
 $propositionActuelle = $propositions[$index];
 $nbPropopositions = count($propositions);
+$question = Question::toQuestion($question);
 ?>
 
 <div class="panel" id="afficherPropositions">
@@ -28,7 +34,7 @@ $nbPropopositions = count($propositions);
         ?>
     </div>
 
-    <form id="formulaire_vote" action="frontController.php?controller=vote&action=voter" method="post">
+    <form id="formulaire_vote" action="frontController.php?controller=vote&action=voter" method="post" style="<?= $question->getPhase() != PhaseQuestion::Vote ? 'display: none;' : '' ?>">
 
         <h2>Vote</h2>
         <p>Le vote se déroule en 1 tour. Choisissez une unique proposition parmi les suivantes</p>

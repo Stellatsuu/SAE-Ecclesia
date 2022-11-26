@@ -2,7 +2,9 @@
 
 namespace App\SAE\Controller;
 
+use App\SAE\Lib\PhaseQuestion;
 use App\SAE\Model\DataObject\Proposition;
+use App\SAE\Model\DataObject\Question;
 use App\SAE\Model\DataObject\Vote;
 use App\SAE\Model\HTTP\Session;
 use App\SAE\Model\Repository\PropositionRepository;
@@ -29,6 +31,13 @@ class VoteController extends MainController
         $proposition = Proposition::toProposition((new PropositionRepository)->select($idProposition));
         if(!$proposition) {
             static::error("afficherAccueil", "La proposition n'existe pas");
+            return;
+        }
+
+        $question = $proposition->getQuestion();
+        $phase = $question->getPhase();
+        if($phase !== PhaseQuestion::Vote) {
+            static::error("afficherAccueil", "La question n'est pas en phase de vote");
             return;
         }
 
