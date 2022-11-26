@@ -3,6 +3,7 @@
 namespace App\SAE\Controller;
 
 use App\SAE\Lib\MessageFlash;
+use App\SAE\Model\HTTP\Session;
 use App\SAE\Model\Repository\DatabaseConnection;
 
 class MainController
@@ -51,5 +52,14 @@ class MainController
         $pdo->exec($query2);
 
         static::message("afficherAccueil", "La base de données a été réinitialisée");
+    }
+
+    public static function seConnecter(): void
+    {
+        $session = Session::getInstance();
+
+        $idUtilisateur = $_GET['idUtilisateur'];
+
+        $session->enregistrer("idUtilisateur", $idUtilisateur);
     }
 }
