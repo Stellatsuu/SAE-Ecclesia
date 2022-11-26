@@ -20,11 +20,11 @@ class VoteController extends MainController
             static::error("afficherAccueil", "Vous devez être connecté pour voter");
         }
 
-        if(!isset($_GET['idProposition']) || !is_numeric($_GET['idProposition'])) {
+        if(!isset($_POST['idProposition']) || !is_numeric($_POST['idProposition'])) {
             static::error("afficherAccueil", "Aucune proposition n'a été sélectionnée");
             return;
         }
-        $idProposition = intval($_GET['idProposition']);
+        $idProposition = intval($_POST['idProposition']);
 
         $proposition = Proposition::toProposition((new PropositionRepository)->select($idProposition));
         if(!$proposition) {
@@ -40,9 +40,9 @@ class VoteController extends MainController
             return;
         }
 
-        $exists = (new VoteRepository)->select($idUtilisateur, $idProposition);
-        if($exists) {
-            static::error("afficherAccueil", "Vous avez déjà voté pour cette proposition");
+        $aDejaVote = (new QuestionRepository)->aVote($proposition->getQuestion()->getIdQuestion(), $idUtilisateur);
+        if($aDejaVote) {
+            static::error("afficherAccueil", "Vous avez déjà voté sur cette question");
             return;
         }
 
