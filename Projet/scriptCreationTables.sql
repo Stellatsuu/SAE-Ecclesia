@@ -54,6 +54,7 @@ CREATE TABLE Question (
     date_fin_redaction timestamp,
     date_ouverture_votes timestamp,
     date_fermeture_votes timestamp,
+    systeme_vote varchar(50),
     CONSTRAINT pk_question PRIMARY KEY (id_question),
     CONSTRAINT fk_question_organisateur FOREIGN KEY (id_organisateur) REFERENCES Utilisateur (id_utilisateur)
 );

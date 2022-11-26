@@ -57,7 +57,7 @@ class Session
 
     public function verifierDerniereActivite()
     {
-        $dureeExpiration = Conf::getDureeExpiration();
+        $dureeExpiration = 60 * 30; // 30 minutes TODO: à mettre dans la conf
         if (isset($_SESSION['derniereActivite']) && (time() - $_SESSION['derniereActivite'] > ($dureeExpiration)))
             session_unset();     // unset $_SESSION variable for the run-time
 

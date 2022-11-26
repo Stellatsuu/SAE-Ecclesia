@@ -4,6 +4,7 @@ namespace App\SAE\Model\DataObject;
 
 use App\SAE\Model\Repository\DatabaseConnection;
 use App\SAE\Lib\PhaseQuestion as Phase;
+use App\SAE\Model\SystemeVote\AbstractSystemeVote;
 use DateTime;
 use JsonSerializable;
 
@@ -17,6 +18,7 @@ class Question extends DemandeQuestion implements JsonSerializable
     private ?DateTime $dateFinRedaction;
     private ?DateTime $dateOuvertureVotes;
     private ?DateTime $dateFermetureVotes;
+    private ?AbstractSystemeVote $systemeVote;
 
     public function __construct(int $idQuestion, string $titre, string $description, Utilisateur $organisateur, ?array $sections, ?array $responsables, ?array $votants, ?DateTime $dateDebutRedaction, ?DateTime $dateFinRedaction, ?DateTime $dateOuvertureVotes, ?DateTime $dateFermetureVotes)
     {
@@ -39,7 +41,8 @@ class Question extends DemandeQuestion implements JsonSerializable
             'date_debut_redaction' => $this->dateDebutRedaction === null ? "" : $this->dateDebutRedaction->format('Y-m-d H:i:s'),
             'date_fin_redaction' => $this->dateFinRedaction === null ? "" : $this->dateFinRedaction ->format('Y-m-d H:i:s'),
             'date_ouverture_votes' => $this->dateOuvertureVotes === null ? "" : $this->dateOuvertureVotes->format('Y-m-d H:i:s'),
-            'date_fermeture_votes' => $this->dateOuvertureVotes === null ? "" : $this->dateFermetureVotes->format('Y-m-d H:i:s')
+            'date_fermeture_votes' => $this->dateOuvertureVotes === null ? "" : $this->dateFermetureVotes->format('Y-m-d H:i:s'),
+            'systeme_vote' => $this->systemeVote === null ? "" : $this->systemeVote->getNom()
         ];
     }
 
@@ -82,6 +85,11 @@ class Question extends DemandeQuestion implements JsonSerializable
     public function getDateFermetureVotes(): ?DateTime
     {
         return $this->dateFermetureVotes;
+    }
+
+    public function getSystemeVote(): AbstractSystemeVote
+    {
+        return $this->systemeVote;
     }
 
     public function getPhase() {
@@ -153,6 +161,11 @@ class Question extends DemandeQuestion implements JsonSerializable
         $this->dateFermetureVotes = $dateFermetureVotes;
     }
 
+    public function setSystemeVote(?AbstractSystemeVote $systemeVote): void
+    {
+        $this->systemeVote = $systemeVote;
+    }
+
     public static function toQuestion($object) : Question {
         return $object;
     }
@@ -170,19 +183,8 @@ class Question extends DemandeQuestion implements JsonSerializable
             'date_debut_redaction' => $this->getDateDebutRedaction(),
             'date_fin_redaction' => $this->getDateFinRedaction(),
             'date_ouverture_votes' => $this->getDateOuvertureVotes(),
-            'date_fermeture_votes' => $this->getDateFermetureVotes()
+            'date_fermeture_votes' => $this->getDateFermetureVotes(),
+            'systeme_vote' => $this->getSystemeVote()
         ];
-    }
-
-    public function estRedacteur(int $idQuestion, int $idUtilisateur): bool
-    {
-        $sql = "SELECT COUNT(*) FROM redacteur WHERE id_question = :idQuestion AND id_redacteur = :idUtilisateur";
-        $pdo = DatabaseConnection::getPdo()->prepare($sql);
-        $pdo->execute([
-            "idQuestion" => $idQuestion,
-            "idUtilisateur" => $idUtilisateur
-        ]);
-
-        return !empty($pdo->fetch());
     }
 }

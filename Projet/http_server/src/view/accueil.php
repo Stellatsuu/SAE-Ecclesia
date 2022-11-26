@@ -12,8 +12,15 @@
     <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireGererCoAuteurs&idProposition=1">Gerer co-auteurs (proposition id 1)</a>
     <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireContribuerProposition&idProposition=1">Contribuer à la proposition en tant que co-auteur (id 1)</a>
 
+    <a class="button" href="frontController.php?controller=vote&action=voter&idProposition=1">Voter pour la proposition (id 1)</a>
 
-    <a class="button" href="frontController.php?controller=main&action=resetDatabase">Réinitialiser la base de données</a>
+    <a class="button validerBtn" href="frontController.php?controller=main&action=seConnecter&idUtilisateur=10000">Se connecter en tant que 10000 (P. Valicov)</a>
+    <a class="button validerBtn" href="frontController.php?controller=main&action=seConnecter&idUtilisateur=10001">Se connecter en tant que 10001 (A. Chollet)</a>
+    <a class="button validerBtn" href="frontController.php?controller=main&action=seConnecter&idUtilisateur=10002">Se connecter en tant que 10002 (X. Palleja)</a>
+    <a class="button validerBtn" href="frontController.php?controller=main&action=seConnecter&idUtilisateur=10003">Se connecter en tant que 10003 (N. Palleja)</a>
+    <a class="button validerBtn" href="frontController.php?controller=main&action=seConnecter&idUtilisateur=10004">Se connecter en tant que 10004 (A. Marie-Jeanne)</a>
+
+    <a class="button refuserBtn" href="frontController.php?controller=main&action=resetDatabase">Réinitialiser la base de données</a>
 
 
 
