@@ -481,6 +481,33 @@ input[type=time]::-webkit-calendar-picker-indicator {
   }
 }
 
+#afficherPropositions #description {
+  text-align: justify;
+}
+#afficherPropositions #propositionSelector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  width: 100%;
+}
+#afficherPropositions #propositionSelector a:first-child {
+  margin-right: 20px;
+}
+#afficherPropositions #propositionSelector a:last-child {
+  margin-left: 20px;
+}
+#afficherPropositions #propositionSelector .boite {
+  min-width: calc(50% - 90px);
+  text-align: center;
+}
+#afficherPropositions #proposition {
+  width: 80%;
+}
+#afficherPropositions #proposition p {
+  text-align: justify;
+}
+
 h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset, body {
   color: white;
   font-family: Raleway, serif;
