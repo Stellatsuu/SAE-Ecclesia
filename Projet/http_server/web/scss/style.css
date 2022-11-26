@@ -599,6 +599,12 @@ input[type=time]::-webkit-calendar-picker-indicator {
   flex-direction: column;
   width: 80%;
 }
+#formulaire_vote h2 {
+  margin-bottom: 0;
+}
+#formulaire_vote p {
+  margin-top: 5px;
+}
 #formulaire_vote input[type=submit] {
   margin-top: 20px;
   align-self: center;
