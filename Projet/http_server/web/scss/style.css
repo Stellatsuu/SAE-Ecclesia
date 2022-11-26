@@ -536,6 +536,7 @@ input[type=time]::-webkit-calendar-picker-indicator {
   }
 }
 
+<<<<<<< HEAD
 .question {
   text-align: justify;
   width: 100%;
@@ -565,6 +566,33 @@ input[type=time]::-webkit-calendar-picker-indicator {
 .question .boite div:last-child .button,
 .question .boite div:last-child button {
   margin: 0;
+=======
+#afficherPropositions #description {
+  text-align: justify;
+}
+#afficherPropositions #propositionSelector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  width: 100%;
+}
+#afficherPropositions #propositionSelector a:first-child {
+  margin-right: 20px;
+}
+#afficherPropositions #propositionSelector a:last-child {
+  margin-left: 20px;
+}
+#afficherPropositions #propositionSelector .boite {
+  min-width: calc(50% - 90px);
+  text-align: center;
+}
+#afficherPropositions #proposition {
+  width: 80%;
+}
+#afficherPropositions #proposition p {
+  text-align: justify;
+>>>>>>> f377cb3f492884ed0697f7906deb2671e21445f9
 }
 
 h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset, body {

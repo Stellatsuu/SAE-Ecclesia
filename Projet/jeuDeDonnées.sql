@@ -36,6 +36,7 @@ INSERT INTO Votant(id_votant, id_question) VALUES(10004, 10002); --MJ
 
 -- Proposition
 INSERT INTO Proposition(id_proposition, titre_proposition, id_redacteur, id_question) VALUES (20001, 'test proposition', 10003, 10002); --Palleja N
+INSERT INTO Proposition(id_proposition, titre_proposition, id_redacteur, id_question) VALUES (20002, 'test proposition 2', 10002, 10002); --Palleja X
 
 -- Paragraphe
 INSERT INTO Paragraphe(id_paragraphe, id_proposition, id_section, contenu_paragraphe) VALUES (5001, 20001, 4001, 'blablabla');
