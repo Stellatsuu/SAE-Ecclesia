@@ -21,14 +21,14 @@ class VoteController extends MainController
         }
 
         if(!isset($_GET['idProposition']) || !is_numeric($_GET['idProposition'])) {
-            static::error("listerPropositions", "Aucune proposition n'a été sélectionnée");
+            static::error("afficherAccueil", "Aucune proposition n'a été sélectionnée");
             return;
         }
         $idProposition = intval($_GET['idProposition']);
 
         $proposition = Proposition::toProposition((new PropositionRepository)->select($idProposition));
         if(!$proposition) {
-            static::error("listerPropositions", "La proposition n'existe pas");
+            static::error("afficherAccueil", "La proposition n'existe pas");
             return;
         }
 
@@ -36,13 +36,13 @@ class VoteController extends MainController
 
         $estVotant = (new QuestionRepository)->estVotant($idUtilisateur, $proposition->getQuestion()->getIdQuestion());
         if(!$estVotant) {
-            static::error("listerPropositions", "Vous n'êtes pas votant pour cette question");
+            static::error("afficherAccueil", "Vous n'êtes pas votant pour cette question");
             return;
         }
 
         $exists = (new VoteRepository)->select($idUtilisateur, $idProposition);
         if($exists) {
-            static::error("listerPropositions", "Vous avez déjà voté pour cette proposition");
+            static::error("afficherAccueil", "Vous avez déjà voté pour cette proposition");
             return;
         }
 
