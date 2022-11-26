@@ -34,7 +34,7 @@ class VoteController extends MainController
 
         $idUtilisateur = $session->lire("idUtilisateur");
 
-        $estVotant = (new QuestionRepository)->estVotant($idUtilisateur, $proposition->getQuestion()->getIdQuestion());
+        $estVotant = (new QuestionRepository)->estVotant($proposition->getQuestion()->getIdQuestion(), $idUtilisateur);
         if(!$estVotant) {
             static::error("afficherAccueil", "Vous n'êtes pas votant pour cette question");
             return;
