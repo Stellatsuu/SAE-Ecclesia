@@ -1,44 +1,115 @@
-<main>
+<?php
 
+use App\SAE\Model\DataObject\Question;
+use App\SAE\Lib\PhaseQuestion as Phase;
+
+$i = 0;
+?>
+<div class="panel">
     <h1>Mes Questions</h1>
 
-
     <?php
-
-    use App\SAE\Model\DataObject\Question;
-    use App\SAE\Lib\PhaseQuestion as Phase;
-
-    $i = 0;
     foreach ($questions as $q) {
-        $q = Question::toQuestion($q);
-        $phase = $q->getPhase();
         $i++;
-        echo "<div class='question'><div class='boite' style='--order: " . $i . "'>";
-        echo ("<h2>" . htmlspecialchars($q->getTitre()) . "</h2>");
-        echo ("<p>" . htmlspecialchars($q->getDescription()) . "</p>");
-        echo ("<p>Phase : " . $phase->toString() . "</p>");
+        $q = Question::toQuestion($q);
 
-        echo "<a class='button' href='frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=" . rawurlencode($q->getIdQuestion()) . "'>Éditer</a>";
+        $titre = htmlspecialchars($q->getTitre());
+        $description = htmlspecialchars($q->getDescription());
+        $idQuestion = rawurlencode($q->getIdQuestion());
+
+        $phase = $q->getPhase();
+        $phaseStr = htmlspecialchars($phase->toString());
+        $nextPhaseStr = "";
+
+        $openModalBoutonTemplate = <<<HTML
+            <a href="#modal$i" class="button">Phase suivante</a>
+        HTML;
+
+        $editerBoutonTemplate = <<<HTML
+            <a class="button" href="frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion">Éditer</a>
+        HTML;
+
+        $passageRedactionBoutonTemplate = <<<HTML
+            <a class="button validerBtn" href="frontController.php?controller=question&action=passagePhaseRedaction&idQuestion=$idQuestion">Oui</a>
+        HTML;
+
+        $passageVoteBoutonTemplate = <<<HTML
+            <a class="button validerBtn" href="frontController.php?controller=question&action=passagePhaseVote&idQuestion=$idQuestion">Oui</a>
+        HTML;
 
         switch ($phase) {
+            case Phase::NonRemplie:
+                $openModalBouton = "";
+                $nextPhaseBouton = "";
+                $nextPhaseStr = "";
+                $editerBouton = $editerBoutonTemplate;
+                break;
             case Phase::Attente:
-                echo "<a class='button' href='frontController.php?controller=question&action=passagePhaseRedaction&idQuestion=" . rawurlencode($q->getIdQuestion()) . "'>Passer à la phase de rédaction</a>";
+                $openModalBouton = $openModalBoutonTemplate;
+                $nextPhaseBouton = $passageRedactionBoutonTemplate;
+                $nextPhaseStr = "rédaction";
+                $editerBouton = $editerBoutonTemplate;
                 break;
-            
             case Phase::Redaction:
-                echo "<a class='button' href='frontController.php?controller=question&action=passagePhaseVote&idQuestion=" . rawurlencode($q->getIdQuestion()) . "'>Passer à la phase de vote</a>";
+                $openModalBouton = $openModalBoutonTemplate;
+                $nextPhaseBouton = $passageVoteBoutonTemplate;
+                $nextPhaseStr = "vote";
+                $editerBouton = "";
                 break;
-
             case Phase::Lecture:
-                echo "<a class='button' href='frontController.php?controller=question&action=passagePhaseVote&idQuestion=" . rawurlencode($q->getIdQuestion()) . "'>Passer à la phase de vote</a>";
+                $openModalBouton = "";
+                $nextPhaseBouton = $passageVoteBoutonTemplate;
+                $nextPhaseStr = "vote";
+                $editerBouton = "";
+                break;
+            case Phase::Vote:
+                $openModalBouton = "";
+                $nextPhaseBouton = "";
+                $nextPhaseStr = "";
+                $editerBouton = "";
+                break;
+            case Phase::Resultat:
+                $openModalBouton = "";
+                $nextPhaseBouton = "";
+                $nextPhaseStr = "";
+                $editerBouton = "";
                 break;
         }
-        
-        echo "</div></div>";
-    }
 
+        $html = <<<HTML
+        <div class="question">
+            <div class="boite">
+                <div>
+                    <h2>$titre</h2>
+                    <p>$description</p>
+                </div>
+                <div>
+                    <p>Phase : $phaseStr</p>
+                    $openModalBouton
+                    $editerBouton
+                </div>
+            </div>
+        </div>
+        HTML;
+
+        $modalHtml = <<<HTML
+        <div id="modal$i" class="modal">
+            <div class="modal-content boite">
+                <p>Êtes-vous sûr(e) de vouloir passer à la phase de $nextPhaseStr ?</p>
+                <div>
+                    <a class="button refuserBtn" href="#">Non</a>
+                    $nextPhaseBouton
+                </div>
+                <a href="#" class="modal-close">X</a>
+            </div>
+         </div>
+        HTML;
+
+        echo $html;
+        if ($nextPhaseBouton != "") {
+            echo $modalHtml;
+        }
+    }
     ?>
 
-
-
-</main>
+</div>
