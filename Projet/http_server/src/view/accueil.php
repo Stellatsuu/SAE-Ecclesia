@@ -14,6 +14,8 @@
 
     <a class="button" href="frontController.php?controller=vote&action=voter&idProposition=1">Voter pour la proposition (id 1)</a>
 
+    <a class="button" href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=1">Afficher les propositions (question id 1)</a>
+
     <a class="button validerBtn" href="frontController.php?controller=main&action=seConnecter&idUtilisateur=10000">Se connecter en tant que 10000 (P. Valicov)</a>
     <a class="button validerBtn" href="frontController.php?controller=main&action=seConnecter&idUtilisateur=10001">Se connecter en tant que 10001 (A. Chollet)</a>
     <a class="button validerBtn" href="frontController.php?controller=main&action=seConnecter&idUtilisateur=10002">Se connecter en tant que 10002 (X. Palleja)</a>
