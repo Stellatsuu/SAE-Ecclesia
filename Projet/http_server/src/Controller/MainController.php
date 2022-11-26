@@ -61,5 +61,7 @@ class MainController
         $idUtilisateur = $_GET['idUtilisateur'];
 
         $session->enregistrer("idUtilisateur", $idUtilisateur);
+
+        static::message("afficherAccueil", "Désormais connecté en tant que $idUtilisateur");
     }
 }

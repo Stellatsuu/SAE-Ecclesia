@@ -6,7 +6,9 @@ use App\SAE\Model\DataObject\Proposition;
 use App\SAE\Model\DataObject\Vote;
 use App\SAE\Model\HTTP\Session;
 use App\SAE\Model\Repository\PropositionRepository;
+use App\SAE\Model\Repository\QuestionRepository;
 use App\SAE\Model\Repository\VoteRepository;
+use App\SAE\Model\Repository\UtilisateurRepository;
 
 class VoteController extends MainController
 {
@@ -23,21 +25,31 @@ class VoteController extends MainController
             return;
         }
         $idProposition = intval($_GET['idProposition']);
+
         $proposition = Proposition::toProposition((new PropositionRepository)->select($idProposition));
         if(!$proposition) {
             static::error("listerPropositions", "La proposition n'existe pas");
             return;
         }
+
         $idUtilisateur = $session->lire("idUtilisateur");
 
-        $exists = (new VoteRepository)->select($idUtilisateur, $idProposition);
+        $estVotant = (new QuestionRepository)->estVotant($idUtilisateur, $proposition->getQuestion()->getIdQuestion());
+        if(!$estVotant) {
+            static::error("listerPropositions", "Vous n'êtes pas votant pour cette question");
+            return;
+        }
 
+        $exists = (new VoteRepository)->select($idUtilisateur, $idProposition);
         if($exists) {
             static::error("listerPropositions", "Vous avez déjà voté pour cette proposition");
             return;
         }
 
-        $vote = new Vote($proposition, $idUtilisateur, 1);
+        $votant = (new UtilisateurRepository())->select($idUtilisateur);
+        $vote = new Vote($proposition, $votant, 1);
         (new VoteRepository)->insert($vote);
+
+    static::message("afficherAccueil", "Votre vote a bien été pris en compte");
     }
 }

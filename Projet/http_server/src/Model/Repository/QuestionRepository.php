@@ -226,4 +226,16 @@ class QuestionRepository extends AbstractRepository
 
         return $pdo->fetch()['est_redacteur'] > 0;
     }
+
+    public function estVotant(int $idQuestion, int $idUtilisateur): bool
+    {
+        $sql = "SELECT COUNT(*) AS est_votant FROM votant WHERE id_question = :idQuestion AND id_votant = :idUtilisateur";
+        $pdo = DatabaseConnection::getPdo()->prepare($sql);
+        $pdo->execute([
+            "idQuestion" => $idQuestion,
+            "idUtilisateur" => $idUtilisateur
+        ]);
+
+        return $pdo->fetch()['est_votant'] > 0;
+    }
 }
