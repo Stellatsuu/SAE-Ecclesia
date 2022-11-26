@@ -3,7 +3,7 @@
 namespace App\SAE\Model\Repository;
 
 use App\SAE\Model\DataObject\Question;
-
+use App\SAE\Model\SystemeVote\SystemeVoteFactory;
 use DateTime;
 
 class QuestionRepository extends AbstractRepository
@@ -28,7 +28,8 @@ class QuestionRepository extends AbstractRepository
             'date_debut_redaction',
             'date_fin_redaction',
             'date_ouverture_votes',
-            'date_fermeture_votes'
+            'date_fermeture_votes',
+            'systeme_vote'
         ];
     }
 
@@ -40,13 +41,14 @@ class QuestionRepository extends AbstractRepository
             $row['description_question'],
             (new UtilisateurRepository)->select($row['id_organisateur']),
             (new SectionRepository)->selectAllByQuestion($row['id_question']),
-            static::getRedacteur($row['id_question']),
-            static::getVotants($row['id_question']),
+            $this->getRedacteurs($row['id_question']),
+            $this->getVotants($row['id_question']),
             $row['date_debut_redaction'] === NULL ? NULL : new DateTime($row['date_debut_redaction']),
             $row['date_fin_redaction'] === NULL ? NULL : new DateTime($row['date_fin_redaction']),
             $row['date_ouverture_votes'] === NULL ? NULL : new DateTime($row['date_ouverture_votes']),
             $row['date_fermeture_votes'] === NULL ? NULL : new DateTime($row['date_fermeture_votes'])
         );
+        $question->setSystemeVote(SystemeVoteFactory::createSystemeVote($row['systeme_vote'], $question));
         return $question;
     }
 
@@ -70,7 +72,7 @@ class QuestionRepository extends AbstractRepository
     {
         $pdo = DatabaseConnection::getPdo();
 
-        $sql = "UPDATE question SET description_question = :description_question, date_debut_redaction = :date_debut_redaction, date_fin_redaction = :date_fin_redaction, date_ouverture_votes = :date_ouverture_votes, date_fermeture_votes = :date_fermeture_votes WHERE id_question = :id_question";
+        $sql = "UPDATE question SET description_question = :description_question, date_debut_redaction = :date_debut_redaction, date_fin_redaction = :date_fin_redaction, date_ouverture_votes = :date_ouverture_votes, date_fermeture_votes = :date_fermeture_votes, systeme_vote = :systeme_vote WHERE id_question = :id_question";
         $pdoStatement = $pdo->prepare($sql);
         $values = [
             'description_question' => $question->getDescription(),
@@ -78,7 +80,8 @@ class QuestionRepository extends AbstractRepository
             'date_fin_redaction' => $question->getDateFinRedaction()->format('Y-m-d H:i:s'),
             'date_ouverture_votes' => $question->getDateOuvertureVotes()->format('Y-m-d H:i:s'),
             'date_fermeture_votes' => $question->getDateFermetureVotes()->format('Y-m-d H:i:s'),
-            'id_question' => $question->getIdQuestion()
+            'id_question' => $question->getIdQuestion(),
+            'systeme_vote' => $question->getSystemeVote()->getNom()
         ];
 
         $pdoStatement->execute($values);
@@ -90,14 +93,14 @@ class QuestionRepository extends AbstractRepository
             (new SectionRepository)->insert($section);
         }
 
-        static::deleteRedacteurs($question->getIdQuestion());
+        $this->deleteRedacteurs($question->getIdQuestion());
         foreach ($question->getResponsables() as $redacteur) {
-            static::insertRedacteur($question->getIdQuestion(), $redacteur->getIdUtilisateur());
+            $this->insertRedacteur($question->getIdQuestion(), $redacteur->getIdUtilisateur());
         }
 
-        static::deleteVotants($question->getIdQuestion());
+        $this->deleteVotants($question->getIdQuestion());
         foreach ($question->getVotants() as $votant) {
-            static::insertVotant($question->getIdQuestion(), $votant->getIdUtilisateur());
+            $this->insertVotant($question->getIdQuestion(), $votant->getIdUtilisateur());
         }
     }
 
@@ -147,7 +150,7 @@ class QuestionRepository extends AbstractRepository
         $pdoStatement->execute($values);
     }
 
-    public function getRedacteur(int $idQuestion): array
+    public function getRedacteurs(int $idQuestion): array
     {
         $pdo = DatabaseConnection::getPdo();
 
