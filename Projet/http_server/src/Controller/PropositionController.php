@@ -37,10 +37,8 @@ class PropositionController extends MainController
         $phase = $question->getPhase();
         if ($phase !== Phase::Redaction) {
             switch ($phase) {
-                case Phase::NonRemplie:
-                    QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore écrire de proposition.");
-                    break;
                 case Phase::Attente:
+                case Phase::NonRemplie:
                     QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore écrire de proposition.");
                     break;
                 case Phase::Vote:
@@ -88,10 +86,8 @@ class PropositionController extends MainController
 
         $phase = $question->getPhase();
         switch ($phase) {
-            case Phase::NonRemplie:
-                QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore écrire de proposition.");
-                break;
             case Phase::Attente:
+            case Phase::NonRemplie:
                 QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore écrire de proposition.");
                 break;
             case Phase::Vote:
@@ -177,10 +173,8 @@ class PropositionController extends MainController
         $phase = $proposition->getQuestion()->getPhase();
         if ($phase !== Phase::Redaction) {
             switch ($phase) {
-                case Phase::NonRemplie:
-                    QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer à une proposition.");
-                    break;
                 case Phase::Attente:
+                case Phase::NonRemplie:
                     QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer à une proposition.");
                     break;
                 case Phase::Vote:
@@ -218,10 +212,8 @@ class PropositionController extends MainController
 
         $phase = $proposition->getQuestion()->getPhase();
         switch ($phase) {
-            case Phase::NonRemplie:
-                QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer pour la proposition.");
-                break;
             case Phase::Attente:
+            case Phase::NonRemplie:
                 QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer pour la proposition.");
                 break;
             case Phase::Vote:
@@ -290,10 +282,8 @@ class PropositionController extends MainController
         $question = $proposition->getQuestion();
         $phase = $question->getPhase();
         switch ($phase) {
-            case Phase::NonRemplie:
-                QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
-                break;
             case Phase::Attente:
+            case Phase::NonRemplie:
                 QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
                 break;
             case Phase::Vote:
@@ -337,10 +327,8 @@ class PropositionController extends MainController
         $question = $proposition->getQuestion();
         $phase = $question->getPhase();
         switch ($phase) {
-            case Phase::NonRemplie:
-                QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
-                break;
             case Phase::Attente:
+            case Phase::NonRemplie:
                 QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
                 break;
             case Phase::Vote:
@@ -376,6 +364,7 @@ class PropositionController extends MainController
     }
 
     public static function afficherPropositions(){
+        //Vérification si une question est contenue dans l'URL
         if (!isset($_GET['idQuestion']) || !is_numeric($_GET['idQuestion'])) {
             static::error("frontController.php", "Aucune question n'a été sélectionnée");
             return;
@@ -383,24 +372,40 @@ class PropositionController extends MainController
 
         $idQuestion = $_GET['idQuestion'];
 
+        //Vérification si la question existe
         $question = (new QuestionRepository())->select($idQuestion);
         if (!$question) {
             static::error("frontController.php", "La question n'existe pas");
             return;
         }
 
+        $question = Question::toQuestion($question);
+
+        //Vérification si l'utilisateur peut avoir accès aux propositions
+        if(!isset($_GET['idUtilisateur']) || !is_numeric($_GET['idUtilisateur'])) {
+            static::error("frontController.php", "Vous n'avez pas accès aux propositions");
+            return;
+        }
+
+        $idUtilisateur = $_GET['idUtilisateur'];
+        if(!(((new QuestionRepository)->estCoAuteur($idQuestion, $idUtilisateur) || (new QuestionRepository)->estVotant($idQuestion, $idUtilisateur) || ((new QuestionRepository)->estRedacteur($idQuestion, $idUtilisateur)) || ($question->getOrganisateur()->getIdUtilisateur() == $idUtilisateur)))){
+            static::error("frontController.php", "Vous n'avez pas accès aux propositions");
+            return;
+        }
+
+        //Vérification si la question contient des propositions
+        $propositions = (new PropositionRepository())->selectAllByQuestion($idQuestion);
+        if(count($propositions) == 0){
+            static::error("frontController.php", "Il n'y a aucune proposition pour cette question");
+            return;
+        }
+
+        //Index pour le tableau de propositions (prop1 = index0)
         if (!isset($_GET['index'])) {
             $index = 0;
         }
         else {
             $index = $_GET['index'];
-        }
-
-        $question = Question::toQuestion($question);
-        $propositions = (new PropositionRepository())->selectAllByQuestion($idQuestion);
-        if(count($propositions) == 0){
-            static::error("frontController.php", "Il n'y a aucune proposition pour cette question");
-            return;
         }
 
         static::afficherVue("view.php", [
