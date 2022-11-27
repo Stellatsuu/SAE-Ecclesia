@@ -183,6 +183,10 @@ select {
   text-decoration: none;
   color: white;
 }
+.modal-close img {
+  width: 20px;
+  height: 20px;
+}
 
 nav {
   background-color: #E1603C;
