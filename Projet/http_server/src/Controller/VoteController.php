@@ -45,13 +45,13 @@ class VoteController extends MainController
 
         $estVotant = (new QuestionRepository)->estVotant($proposition->getQuestion()->getIdQuestion(), $idUtilisateur);
         if(!$estVotant) {
-            static::error("frontController.php", "Vous n'êtes pas votant pour cette question");
+            static::error("frontController.php?controller=proposition&action=afficherPropositions&idQuestion={$question->getIdQuestion()}&idUtilisateur={$idUtilisateur}", "Vous n'êtes pas votant pour cette question");
             return;
         }
 
         $aDejaVote = (new QuestionRepository)->aVote($proposition->getQuestion()->getIdQuestion(), $idUtilisateur);
         if($aDejaVote) {
-            static::error("frontController.php", "Vous avez déjà voté sur cette question");
+            static::error("frontController.php?controller=proposition&action=afficherPropositions&idQuestion={$question->getIdQuestion()}&idUtilisateur={$idUtilisateur}", "Vous avez déjà voté sur cette question");
             return;
         }
 
@@ -59,6 +59,6 @@ class VoteController extends MainController
         $vote = new Vote($proposition, $votant, 1);
         (new VoteRepository)->insert($vote);
 
-    static::message("frontController.php", "Votre vote a bien été pris en compte");
+    static::message("frontController.php?controller=proposition&action=afficherPropositions&idQuestion={$question->getIdQuestion()}&idUtilisateur={$idUtilisateur}", "Votre vote a bien été pris en compte");
     }
 }

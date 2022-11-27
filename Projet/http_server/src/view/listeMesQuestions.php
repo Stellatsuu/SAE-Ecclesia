@@ -20,6 +20,7 @@ $i = 0;
         $phase = $q->getPhase();
         $phaseStr = htmlspecialchars($phase->toString());
         $nextPhaseStr = "";
+        $linkPropositions = "";
 
         $openModalBoutonTemplate = <<<HTML
             <a href="#modal$i" class="button">Phase suivante</a>
@@ -47,44 +48,63 @@ $i = 0;
                 $nextPhaseBouton = "";
                 $messageConfirmation = "";
                 $editerBouton = $editerBoutonTemplate;
+                $linkPropositions = <<<HTML
+                <h2>$titre</h2>
+                HTML;
                 break;
             case Phase::Attente:
                 $openModalBouton = $openModalBoutonTemplate;
                 $nextPhaseBouton = $passageRedactionBoutonTemplate;
                 $messageConfirmation = "Êtes-vous sûr(e) de vouloir passer à la phase de rédaction ?";
                 $editerBouton = $editerBoutonTemplate;
+                $linkPropositions = <<<HTML
+                <h2>$titre</h2>
+                HTML;
                 break;
             case Phase::Redaction:
                 $openModalBouton = $openModalBoutonTemplate;
                 $nextPhaseBouton = $passageVoteBoutonTemplate;
                 $messageConfirmation = "Êtes-vous sûr(e) de vouloir passer à la phase de vote ?";
                 $editerBouton = "";
+                $linkPropositions = <<<HTML
+                <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion&idUtilisateur={$_SESSION['idUtilisateur']}"><h2>$titre</h2></a> 
+                HTML;
                 break;
             case Phase::Lecture:
                 $openModalBouton = $openModalBoutonTemplate;
                 $nextPhaseBouton = $passageVoteBoutonTemplate;
                 $messageConfirmation = "Êtes-vous sûr(e) de vouloir passer à la phase de vote ?";
                 $editerBouton = "";
+                $linkPropositions = <<<HTML
+                <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion&idUtilisateur={$_SESSION['idUtilisateur']}"><h2>$titre</h2></a> 
+                HTML;
                 break;
             case Phase::Vote:
                 $openModalBouton = $openModalBoutonTemplate;
                 $nextPhaseBouton = $passageResultatBoutonTemplate;
                 $messageConfirmation = "Êtes-vous sûr(e) de vouloir clore la phase de vote ?";
                 $editerBouton = "";
+                $linkPropositions = <<<HTML
+                <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion&idUtilisateur={$_SESSION['idUtilisateur']}"><h2>$titre</h2></a> 
+                HTML;
                 break;
             case Phase::Resultat:
                 $openModalBouton = "";
                 $nextPhaseBouton = "";
                 $messageConfirmation = "";
                 $editerBouton = "";
+                $linkPropositions = <<<HTML
+                <h2>$titre</h2>
+                HTML;
                 break;
+
         }
 
         $html = <<<HTML
         <div class="question">
             <div class="boite">
                 <div>
-                    <h2>$titre</h2>
+                    $linkPropositions
                     <p>$description</p>
                 </div>
                 <div>
@@ -118,4 +138,5 @@ $i = 0;
     }
     ?>
 
+    <a href="frontController.php?controller=demandeQuestion&action=afficherFormulaireDemandeQuestion">Demander la création d'une nouvelle question</a>
 </div>
