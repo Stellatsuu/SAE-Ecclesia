@@ -9,7 +9,7 @@ class Cookie
     {
         $serializedValeur = serialize($valeur);
 
-        if ($dureeExpiration === null) {
+        if ($dureeExpiration == null) {
             $expiration = 0;
         } else {
             $expiration = time() + $dureeExpiration;

@@ -5,16 +5,16 @@
   gap: 10%;
 
   #votants_input,
-  #responsables_input {
+  #redacteurs_input {
     display: flex;
     flex-direction: column;
 
-    #remove_responsable,
+    #remove_redacteur,
     #remove_votant {
       margin-top: 7px;
     }
 
-    #add_responsable,
+    #add_redacteur,
     #add_votant {
       align-self: center;
     }
@@ -37,7 +37,7 @@
     }
   }
 
-  .conteneur_responsable,
+  .conteneur_redacteur,
   .conteneur_votant {
     padding: 0;
   }
@@ -51,12 +51,12 @@
   display: flex;
     flex-direction: column;
 
-    #remove_responsable,
+    #remove_redacteur,
     #remove_votant {
       margin-top: 7px;
     }
 
-    #add_responsable,
+    #add_redacteur,
     #add_votant {
       margin-left: 65px;
     }

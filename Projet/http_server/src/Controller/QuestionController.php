@@ -27,7 +27,7 @@ class QuestionController extends MainController
         $question = Question::toQuestion((new QuestionRepository)->select($idQuestion));
         $utilisateurs = (new UtilisateurRepository)->selectAll();
 
-        if ($question === null) {
+        if ($question == null) {
             static::error("frontController.php", "La question n'existe pas");
             return;
         }
@@ -84,6 +84,10 @@ class QuestionController extends MainController
 
     public static function poserQuestion(): void
     {
+
+        echo "<pre>" . print_r($_POST, JSON_PRETTY_PRINT) . "</pre>";
+
+
         if (!isset($_POST['idQuestion']) || !is_numeric($_POST['idQuestion'])) {
             static::error("afficherAccueil", "Aucune question n'a été sélectionnée");
             return;
@@ -143,7 +147,7 @@ class QuestionController extends MainController
         $responsables = [];
         $votants = [];
         foreach ($_POST as $key => $value) {
-            if (substr($key, 0, 11) == "responsable" && is_numeric($value)) {
+            if (substr($key, 0, 9) == "redacteur" && is_numeric($value)) {
                 $idResponsable = intval($value);
                 $responsable = Utilisateur::toUtilisateur((new UtilisateurRepository)->select($idResponsable));
                 if ($responsable && !in_array($responsable, $responsables)) {
@@ -205,7 +209,7 @@ class QuestionController extends MainController
 
         $question->setDescription($description);
         $question->setSections($sections);
-        $question->setResponsables($responsables);
+        $question->setRedacteurs($responsables);
         $question->setVotants($votants);
         $question->setDateDebutRedaction($dateDebutRedaction);
         $question->setDateFinRedaction($dateFinRedaction);

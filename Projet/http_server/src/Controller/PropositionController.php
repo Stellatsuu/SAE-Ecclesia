@@ -297,7 +297,7 @@ class PropositionController extends MainController
         $utilisateurs = (new UtilisateurRepository())->selectAll();
 
         $utilisateursAutorises = array_values(array_filter($utilisateurs, function ($utilisateur) use ($proposition) {
-            return $utilisateur->getIdUtilisateur() != $proposition->getRedacteur()->getIdUtilisateur();
+            return $utilisateur->getIdUtilisateur() != $proposition->getResponsable()->getIdUtilisateur();
         }));
 
         static::afficherVue('view.php', [
@@ -350,7 +350,7 @@ class PropositionController extends MainController
             }
         }
 
-        if (in_array($proposition->getRedacteur(), $coAuteurs)) {
+        if (in_array($proposition->getResponsable(), $coAuteurs)) {
             static::error("frontController.php?controller=proposition&action=afficherFormulaireGererCoAuteurs&idProposition=$idProposition", "Vous ne pouvez pas être co-auteur de votre propre proposition.");
             return;
         }
