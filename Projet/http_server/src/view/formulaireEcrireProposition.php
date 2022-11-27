@@ -20,7 +20,7 @@
             for ($i=0; $i < count($sections); $i++) { 
                 $section = $sections[$i];
                 echo "
-                    <input type='checkbox' id='deploy_" . $i . "' class='sectionTitleCheckbox'/>
+                    <input type='checkbox' id='deploy_" . $i . "' class='texteDepliantTrigger'/>
                     <div class='sectionTitle'>
                         <h2>" . htmlspecialchars($section->getNomSection()) . "</h2>
                         <label for='deploy_" . $i . "'>
