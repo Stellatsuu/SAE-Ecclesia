@@ -35,8 +35,8 @@ class PropositionRepository extends AbstractRepository
         return new Proposition(
             $objetFormatTableau['id_proposition'],
             $objetFormatTableau['titre_proposition'],
-            (new UtilisateurRepository())->select($objetFormatTableau['id_redacteur']),
-            (new QuestionRepository())->select($objetFormatTableau['id_question']),
+            $objetFormatTableau['id_redacteur'],
+            $objetFormatTableau['id_question'],
             (new ParagrapheRepository())->selectAllByProposition($objetFormatTableau['id_proposition'])
         );
     }
@@ -120,7 +120,7 @@ class PropositionRepository extends AbstractRepository
         parent::insert($object);
 
         $object = Proposition::toProposition($object);
-        $proposition = $this->selectByQuestionEtRedacteur($object->getQuestion()->getIdQuestion(), $object->getRedacteur()->getIdUtilisateur());
+        $proposition = $this->selectByQuestionEtRedacteur($object->getQuestion()->getIdQuestion(), $object->getResponsable()->getIdUtilisateur());
 
         foreach ($object->getParagraphes() as $paragraphe) {
             $paragraphe->setIdProposition($proposition->getIdProposition());
