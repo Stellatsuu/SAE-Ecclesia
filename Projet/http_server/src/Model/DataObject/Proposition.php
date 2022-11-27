@@ -2,37 +2,57 @@
 
 namespace App\SAE\Model\DataObject;
 
+use App\SAE\Model\Repository\ParagrapheRepository;
 use App\SAE\Model\Repository\PropositionRepository;
+use App\SAE\Model\Repository\QuestionRepository;
+use App\SAE\Model\Repository\UtilisateurRepository;
 
-class Proposition extends AbstractDataObject{
+class Proposition extends AbstractDataObject
+{
 
     private int $idProposition;
+
+    private int $idResponsable;
+    private int $idQuestion;
+
+    private ?Utilisateur $responsable;
+    private ?Question $question;
+
     private string $titreProposition;
-    private Utilisateur $redacteur;
-    private Question $question;
     private array $paragraphes;
 
-    /**
-     * @param int $idProposition
-     * @param string $titreProposition
-     * @param Utilisateur $redacteur
-     * @param Question $question
-     */
-    public function __construct(int $idProposition, string $titreProposition, Utilisateur $redacteur, Question $question, array $paragraphes)
+
+    public function __construct(int $idProposition, string $titreProposition, Utilisateur|int $responsable, Question|int $question)
     {
         $this->idProposition = $idProposition;
         $this->titreProposition = $titreProposition;
-        $this->redacteur = $redacteur;
-        $this->question = $question;
-        $this->paragraphes = $paragraphes;
+        $this->paragraphes = [];
+
+        if ($responsable instanceof Utilisateur) {
+            $this->responsable = $responsable;
+            $this->idResponsable = $responsable->getIdUtilisateur();
+        } else {
+            $this->responsable = null;
+            $this->idResponsable = $responsable;
+        }
+
+        if ($question instanceof Question) {
+            $this->question = $question;
+            $this->idQuestion = $question->getIdQuestion();
+        } else {
+            $this->question = null;
+            $this->idQuestion = $question;
+        }
     }
+
+    //Respect du contrat
 
     public function formatTableau(): array
     {
         return [
             "titre_proposition" => $this->titreProposition,
-            "id_redacteur" => $this->redacteur->getIdUtilisateur(),
-            "id_question" => $this->question->getIdQuestion()
+            "id_redacteur" => $this->idResponsable,
+            "id_question" => $this->idQuestion
         ];
     }
 
@@ -41,56 +61,62 @@ class Proposition extends AbstractDataObject{
         return $this->idProposition;
     }
 
-    /**
-     * @param string $titreProposition
-     */
-    public function setTitreProposition(string $titreProposition): void
-    {
-        $this->titreProposition = $titreProposition;
-    }
+    // Getters
 
-    /**
-     * @return int
-     */
     public function getIdProposition(): int
     {
         return $this->idProposition;
     }
 
-    /**
-     * @return string
-     */
+    public function getIdResponsable(): int
+    {
+        return $this->idResponsable;
+    }
+
+    public function getIdQuestion(): int
+    {
+        return $this->idQuestion;
+    }
+
+    public function getResponsable(): ?Utilisateur
+    {
+        if ($this->responsable == null) {
+            $this->responsable = (new UtilisateurRepository)->select($this->idResponsable);
+        }
+        return $this->responsable;
+    }
+
+    public function getQuestion(): ?Question
+    {
+        if ($this->question == null) {
+            $this->question = (new QuestionRepository)->select($this->idQuestion);
+        }
+        return $this->question;
+    }
+
     public function getTitreProposition(): string
     {
         return $this->titreProposition;
     }
 
-    /**
-     * @return Utilisateur
-     */
-    public function getRedacteur(): Utilisateur
-    {
-        return $this->redacteur;
-    }
-
-    /**
-     * @return Question
-     */
-    public function getQuestion(): Question
-    {
-        return $this->question;
-    }
-
-    /**
-     * @return array
-     */
     public function getParagraphes(): array
     {
+        if($this->paragraphes == null){
+            $this->paragraphes = (new ParagrapheRepository)->selectAllByProposition($this->idProposition);
+        }
         return $this->paragraphes;
     }
 
-    public function getCoAuteurs():array {
-        return (new PropositionRepository)->selectCoAuteurs($this->idProposition);
+    public function getCoAuteurs(): array
+    {
+        return (new PropositionRepository())->selectCoAuteurs($this->idProposition);
+    }
+
+    // Setters
+
+    public function setTitreProposition(string $titreProposition): void
+    {
+        $this->titreProposition = $titreProposition;
     }
 
     /**
@@ -109,10 +135,10 @@ class Proposition extends AbstractDataObject{
         $this->idProposition = $idProposition;
     }
 
-    public static function toProposition($object) : Proposition {
+    //Caster
+
+    public static function toProposition($object): Proposition
+    {
         return $object;
     }
-
-
-
 }

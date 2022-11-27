@@ -39,6 +39,14 @@ $question = Question::toQuestion($question);
         }
         ?>
     </div>
+    <div id="btns">
+        <?php
+        if($question->getPhase() == PhaseQuestion::Redaction)
+            echo <<<HTML
+            <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireContribuerProposition&idProposition={$propositionActuelle->getIdProposition()}">Modifier</a>
+            HTML;
+        ?>
+    </div>
 
     <form id="formulaire_vote" action="frontController.php?controller=vote&action=voter" method="post" style="<?= $question->getPhase() != PhaseQuestion::Vote ? 'display: none;' : '' ?>">
 

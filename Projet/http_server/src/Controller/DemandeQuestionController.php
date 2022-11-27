@@ -101,7 +101,7 @@ class DemandeQuestionController extends MainController
         $demande = new DemandeQuestion(-1, $titre, $description, (new UtilisateurRepository)->select($idUtilisateur));
         (new DemandeQuestionRepository)->insert($demande);
 
-        static::message("frontController.php", "Votre demande a été envoyée");
+        static::message("frontController.php?controller=question&action=listerMesQuestions", "Votre demande a été envoyée");
     }
 
 }

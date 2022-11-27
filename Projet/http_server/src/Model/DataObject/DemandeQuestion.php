@@ -15,22 +15,30 @@ class DemandeQuestion extends AbstractDataObject
 
     private int $idOrganisateur;
 
-    public function __construct(int $idQuestion, string $titre, string $description, Utilisateur $organisateur)
+    public function __construct(int $idQuestion, string $titre, string $description, Utilisateur|int $organisateur)
     {
         $this->idQuestion = $idQuestion;
         $this->titre = $titre;
         $this->description = $description;
-        $this->organisateur = $organisateur;
 
-        $this->idOrganisateur = $organisateur->getIdUtilisateur();
+
+        if ($organisateur instanceof Utilisateur) {
+            $this->organisateur = $organisateur;
+            $this->idOrganisateur = $organisateur->getIdUtilisateur();
+        } else {
+            $this->organisateur = null;
+            $this->idOrganisateur = $organisateur;
+        }
     }
+
+    //Respect du contrat
 
     public function formatTableau(): array
     {
         return [
             'titre_demande_question' => $this->titre,
             'description_demande_question' => $this->description,
-            'id_organisateur' => $this->organisateur->getIdUtilisateur()
+            'id_organisateur' => $this->idOrganisateur
         ];
     }
 
@@ -58,7 +66,7 @@ class DemandeQuestion extends AbstractDataObject
 
     public function getOrganisateur(): Utilisateur
     {
-        if ($this->organisateur === null) {
+        if ($this->organisateur == null) {
             $this->organisateur = (new UtilisateurRepository())->select($this->idOrganisateur);
         }
         return $this->organisateur;
@@ -68,6 +76,8 @@ class DemandeQuestion extends AbstractDataObject
     {
         return $this->idOrganisateur;
     }
+
+    // Caster
 
     public static function toDemandeQuestion($object): DemandeQuestion
     {

@@ -32,7 +32,7 @@ class ParagrapheRepository extends AbstractRepository{
         return new Paragraphe(
             $objetFormatTableau['id_paragraphe'],
             $objetFormatTableau['id_proposition'],
-            (new SectionRepository())->select($objetFormatTableau['id_section']),
+            $objetFormatTableau['id_section'],
             $objetFormatTableau['contenu_paragraphe']
         );
     }
