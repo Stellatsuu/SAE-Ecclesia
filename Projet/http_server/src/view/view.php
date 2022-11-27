@@ -13,9 +13,9 @@
         <nav>
             <ul>
                 <li><a href="frontController.php">Accueil</a></li>
-                <li><a href="frontController.php?controller=question&action=listerMesQuestions">Mes questions</a></li>
-                <li><a href="frontController.php?controller=demandeQuestion&action=afficherFormulaireDemandeQuestion">Voir les questions terminées</a></li>
-                <li><a href="frontController.php?controller=demandeQuestion&action=listerDemandesQuestion">Demandes de questions</a></li>
+                <li><a href="frontController.php?controller=question&action=listerMesQuestions">Questions</a></li>
+                <li><a href="frontController.php?controller=demandeQuestion&action=afficherFormulaireDemandeQuestion">Résultats</a></li>
+                <li><a href="frontController.php?controller=demandeQuestion&action=listerDemandesQuestion">Demandes</a></li>
             </ul>
         </nav>
     </header>

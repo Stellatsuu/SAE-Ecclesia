@@ -12,7 +12,7 @@ $question = Question::toQuestion($question);
 <div class="panel" id="afficherPropositions">
     <input type="checkbox" id="questionDescription" class="texteDepliantTrigger"/>
     <div id="propositionTitle">
-        <h1><?= $question->getTitre() ?></h1>
+        <h1 class="titre"><?= $question->getTitre() ?></h1>
         <label for="questionDescription">
             <img src='./assets/images/arrow.svg' class='arrow' alt='open and close arrow'/>
         </label>
