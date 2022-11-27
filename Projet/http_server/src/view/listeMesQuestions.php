@@ -138,5 +138,5 @@ $i = 0;
     }
     ?>
 
-    <a href="frontController.php?controller=demandeQuestion&action=afficherFormulaireDemandeQuestion">Demander la création d'une nouvelle question</a>
+    <a class=button href="frontController.php?controller=demandeQuestion&action=afficherFormulaireDemandeQuestion">Nouvelle question</a>
 </div>
