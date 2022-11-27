@@ -37,41 +37,45 @@ $i = 0;
             <a class="button validerBtn" href="frontController.php?controller=question&action=passagePhaseVote&idQuestion=$idQuestion">Oui</a>
         HTML;
 
+        $passageResultatBoutonTemplate = <<<HTML
+            <a class="button validerBtn" href="frontController.php?controller=question&action=passagePhaseResultats&idQuestion=$idQuestion">Oui</a>
+        HTML;
+
         switch ($phase) {
             case Phase::NonRemplie:
                 $openModalBouton = "";
                 $nextPhaseBouton = "";
-                $nextPhaseStr = "";
+                $messageConfirmation = "";
                 $editerBouton = $editerBoutonTemplate;
                 break;
             case Phase::Attente:
                 $openModalBouton = $openModalBoutonTemplate;
                 $nextPhaseBouton = $passageRedactionBoutonTemplate;
-                $nextPhaseStr = "rédaction";
+                $messageConfirmation = "Êtes-vous sûr(e) de vouloir passer à la phase de rédaction ?";
                 $editerBouton = $editerBoutonTemplate;
                 break;
             case Phase::Redaction:
                 $openModalBouton = $openModalBoutonTemplate;
                 $nextPhaseBouton = $passageVoteBoutonTemplate;
-                $nextPhaseStr = "vote";
+                $messageConfirmation = "Êtes-vous sûr(e) de vouloir passer à la phase de vote ?";
                 $editerBouton = "";
                 break;
             case Phase::Lecture:
-                $openModalBouton = "";
+                $openModalBouton = $openModalBoutonTemplate;
                 $nextPhaseBouton = $passageVoteBoutonTemplate;
-                $nextPhaseStr = "vote";
+                $messageConfirmation = "Êtes-vous sûr(e) de vouloir passer à la phase de vote ?";
                 $editerBouton = "";
                 break;
             case Phase::Vote:
-                $openModalBouton = "";
-                $nextPhaseBouton = "";
-                $nextPhaseStr = "";
+                $openModalBouton = $openModalBoutonTemplate;
+                $nextPhaseBouton = $passageResultatBoutonTemplate;
+                $messageConfirmation = "Êtes-vous sûr(e) de vouloir clore la phase de vote ?";
                 $editerBouton = "";
                 break;
             case Phase::Resultat:
                 $openModalBouton = "";
                 $nextPhaseBouton = "";
-                $nextPhaseStr = "";
+                $messageConfirmation = "";
                 $editerBouton = "";
                 break;
         }
@@ -95,12 +99,14 @@ $i = 0;
         $modalHtml = <<<HTML
         <div id="modal$i" class="modal">
             <div class="modal-content boite">
-                <p>Êtes-vous sûr(e) de vouloir passer à la phase de $nextPhaseStr ?</p>
+                <p>$messageConfirmation</p>
                 <div>
                     <a class="button refuserBtn" href="#">Non</a>
                     $nextPhaseBouton
                 </div>
-                <a href="#" class="modal-close">X</a>
+                <a href="#" class="modal-close">
+                    <img src="assets/images/close-icon.svg" alt="bouton fermer">
+                </a>
             </div>
          </div>
         HTML;

@@ -34,7 +34,10 @@ INSERT INTO Redacteur(id_redacteur, id_question) VALUES(10003, 10002); --Palleja
 INSERT INTO Redacteur(id_redacteur, id_question) VALUES(10004, 10002); --MJ
 
 -- Votant
-INSERT INTO Votant(id_votant, id_question) VALUES(10008, 10002); --Rouchon
+INSERT INTO Votant(id_votant, id_question) VALUES(10000, 10002); --Valicov
+INSERT INTO Votant(id_votant, id_question) VALUES(10001, 10002); --Chollet
+INSERT INTO Votant(id_votant, id_question) VALUES(10002, 10002); --Palleja X
+INSERT INTO Votant(id_votant, id_question) VALUES(10003, 10002); --Palleja N
 INSERT INTO Votant(id_votant, id_question) VALUES(10004, 10002); --MJ
 
 -- Proposition

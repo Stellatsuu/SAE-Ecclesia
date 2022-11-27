@@ -2,16 +2,18 @@
 
 namespace App\SAE\Model\DataObject;
 
+use App\SAE\Model\Repository\UtilisateurRepository;
+
 class DemandeQuestion extends AbstractDataObject
 {
 
     private int $idQuestion;
-
     private string $titre;
-
     private string $description;
 
-    private Utilisateur $organisateur;
+    private ?Utilisateur $organisateur;
+
+    private int $idOrganisateur;
 
     public function __construct(int $idQuestion, string $titre, string $description, Utilisateur $organisateur)
     {
@@ -19,6 +21,8 @@ class DemandeQuestion extends AbstractDataObject
         $this->titre = $titre;
         $this->description = $description;
         $this->organisateur = $organisateur;
+
+        $this->idOrganisateur = $organisateur->getIdUtilisateur();
     }
 
     public function formatTableau(): array
@@ -54,7 +58,15 @@ class DemandeQuestion extends AbstractDataObject
 
     public function getOrganisateur(): Utilisateur
     {
+        if ($this->organisateur === null) {
+            $this->organisateur = (new UtilisateurRepository())->select($this->idOrganisateur);
+        }
         return $this->organisateur;
+    }
+
+    public function getIdOrganisateur(): int
+    {
+        return $this->idOrganisateur;
     }
 
     public static function toDemandeQuestion($object): DemandeQuestion

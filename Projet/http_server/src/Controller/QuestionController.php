@@ -8,6 +8,7 @@ use App\SAE\Model\DataObject\Section;
 use App\SAE\Model\DataObject\Utilisateur;
 use App\SAE\Model\Repository\UtilisateurRepository as UtilisateurRepository;
 use App\SAE\Lib\PhaseQuestion as Phase;
+use App\SAE\Model\Repository\PropositionRepository as PropositionRepository;
 use App\SAE\Model\HTTP\Session;
 use DateTime;
 use DateInterval;
@@ -116,9 +117,6 @@ class QuestionController extends MainController
                 return;
                 break;
         }
-
-        // Remplissage du _GET pour les messages d'erreur
-        $_GET["idQuestion"] = $idQuestion;
 
         $nbSections = 1;
         $sections = [];
@@ -276,7 +274,35 @@ class QuestionController extends MainController
         (new QuestionRepository)->update($question);
 
         $_GET['idUtilisateur'] = $question->getOrganisateur()->getIdUtilisateur();
-        static::message("rontController.php?controller=question&action=listerMesQuestions", "La question est maintenant en phase de vote");
+        static::message("frontController.php?controller=question&action=listerMesQuestions", "La question est maintenant en phase de vote");
+    }
+
+    public static function passagePhaseResultats() {
+        if (!isset($_GET['idQuestion']) || !is_numeric($_GET['idQuestion'])) {
+            static::error("frontController.php", "Veuillez entrer un identifiant de question valide");
+            return;
+        }
+
+        $idQuestion = intval($_GET['idQuestion']);
+        $question = Question::toQuestion((new QuestionRepository)->select($idQuestion));
+
+        if (!$question) {
+            static::error("frontController.php", "La question n'existe pas");
+            return;
+        }
+
+        $phase = $question->getPhase();
+
+        if ($phase != Phase::Vote) {
+            static::error("frontController.php", "La question n'est pas en phase de vote");
+            return;
+        }
+
+        $question->setDateFermetureVotes(new DateTime("now"));
+        (new QuestionRepository)->update($question);
+
+        $_GET['idUtilisateur'] = $question->getOrganisateur()->getIdUtilisateur();
+        static::message("frontController.php?controller=question&action=listerMesQuestions", "La question est terminée. Vous pouvez maintenant voir les résultats");
     }
 
     public static function listerMesQuestions()
@@ -295,6 +321,61 @@ class QuestionController extends MainController
             "titrePage" => "Mes questions",
             "contenuPage" => "listeMesQuestions.php",
             "questions" => $questions
+        ]);
+    }
+
+    public static function afficherResultats() {
+        if (!isset($_GET['idQuestion']) || !is_numeric($_GET['idQuestion'])) {
+            static::error("frontController.php", "Aucune question n'a été sélectionnée");
+            return;
+        }
+
+        $idQuestion = $_GET['idQuestion'];
+
+        $question = (new QuestionRepository())->select($idQuestion);
+        if (!$question) {
+            static::error("frontController.php", "La question n'existe pas");
+            return;
+        }
+
+        $question = Question::toQuestion($question);
+
+        $phase = $question->getPhase();
+        if($phase != Phase::Resultat){
+            static::error("frontController.php", "La question n'est pas terminée. Vous ne pouvez pas encore voir les résultats");
+            return;
+        }
+
+        $propositions = (new PropositionRepository())->selectAllByQuestion($idQuestion);
+        if(count($propositions) == 0){
+            static::error("frontController.php", "Il n'y a aucune proposition pour cette question");
+            return;
+        }
+
+        $resultats = $question->getSystemeVote()->getResultats();
+
+        $nbTotalVotes = array_sum($resultats);
+        $nbTotalVotes = $nbTotalVotes == 0 ? 1 : $nbTotalVotes;
+
+        $idPropositionsGagnantes = array_keys($resultats, max($resultats));
+
+        $propositionsGagnantes = array_reduce($propositions, function($carry, $item) use ($idPropositionsGagnantes) {
+            if(in_array($item->getIdProposition(), $idPropositionsGagnantes))
+                $carry[] = $item;
+            return $carry;
+        }, []);
+
+        //TODO : déterminer quoi faire en cas d'égalité
+        $propositionsGagnante = $propositionsGagnantes[0];
+
+        static::afficherVue("view.php", [
+            "titrePage" => "Résultats",
+            "contenuPage" => "afficherResultats.php",
+            "question" => $question,
+            "propositions" => $propositions,
+            "propositionGagnante" => $propositionsGagnante,
+            "resultats" => $resultats,
+            "nbTotalVotes" => $nbTotalVotes
         ]);
     }
 }
