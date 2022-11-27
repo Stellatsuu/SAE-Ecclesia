@@ -21,4 +21,9 @@ abstract class AbstractSystemeVote
     {
         $this->question = $question;
     }
+
+    public function getQuestion(): Question
+    {
+        return $this->question;
+    }
 }
