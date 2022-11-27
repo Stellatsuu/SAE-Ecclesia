@@ -94,7 +94,7 @@ class PropositionRepository extends AbstractRepository
         $pdo->execute($values);
     }
 
-    public static function selectCoAuteurs($idProposition)
+    public function selectCoAuteurs($idProposition)
     {
         $sql = "SELECT 
                     DISTINCT id_utilisateur 

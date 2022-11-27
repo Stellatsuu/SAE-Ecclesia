@@ -236,6 +236,24 @@ class QuestionRepository extends AbstractRepository
         return $pdo->fetch()['est_votant'] > 0;
     }
 
+    public function estCoAuteur(int $idQuestion, int $idUtilisateur) : bool
+    {
+        $sql = "SELECT COUNT(*) AS est_coauteur FROM co_auteur 
+                                        WHERE id_paragraphe IN (SELECT id_paragraphe
+                                        FROM paragraphe
+                                        JOIN proposition ON proposition.id_proposition = paragraphe.id_proposition
+                                        JOIN question ON question.id_question = proposition.id_question
+                                        WHERE question.id_question = :idQuestion)
+                AND id_utilisateur = :idUtilisateur";
+        $pdo = DatabaseConnection::getPdo()->prepare($sql);
+        $pdo->execute([
+            "idQuestion" => $idQuestion,
+            "idUtilisateur" => $idUtilisateur
+        ]);
+
+        return $pdo->fetch()['est_coauteur'] > 0;
+    }
+
     public function aVote(int $idQuestion, int $idUtilisateur): bool
     {
         $sql = "SELECT COUNT(*) AS a_vote 
