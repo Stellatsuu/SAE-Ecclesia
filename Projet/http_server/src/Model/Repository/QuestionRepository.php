@@ -39,15 +39,12 @@ class QuestionRepository extends AbstractRepository
             $row['id_question'],
             $row['titre_question'],
             $row['description_question'],
-            (new UtilisateurRepository)->select($row['id_organisateur']),
-            (new SectionRepository)->selectAllByQuestion($row['id_question']),
-            $this->getRedacteurs($row['id_question']),
-            $this->getVotants($row['id_question']),
-            $row['date_debut_redaction'] === NULL ? NULL : new DateTime($row['date_debut_redaction']),
-            $row['date_fin_redaction'] === NULL ? NULL : new DateTime($row['date_fin_redaction']),
-            $row['date_ouverture_votes'] === NULL ? NULL : new DateTime($row['date_ouverture_votes']),
-            $row['date_fermeture_votes'] === NULL ? NULL : new DateTime($row['date_fermeture_votes'])
+            $row['id_organisateur']
         );
+        $question->setDateDebutRedaction($row['date_debut_redaction'] == NULL ? NULL : new DateTime($row['date_debut_redaction'])); 
+        $question->setDateFinRedaction($row['date_fin_redaction'] == NULL ? NULL : new DateTime($row['date_fin_redaction']));
+        $question->setDateOuvertureVotes($row['date_ouverture_votes'] == NULL ? NULL : new DateTime($row['date_ouverture_votes']));
+        $question->setDateFermetureVotes($row['date_fermeture_votes'] == NULL ? NULL : new DateTime($row['date_fermeture_votes']));
         $question->setSystemeVote(SystemeVoteFactory::createSystemeVote($row['systeme_vote'], $question));
         return $question;
     }
@@ -94,7 +91,7 @@ class QuestionRepository extends AbstractRepository
         }
 
         $this->deleteRedacteurs($question->getIdQuestion());
-        foreach ($question->getResponsables() as $redacteur) {
+        foreach ($question->getRedacteurs() as $redacteur) {
             $this->insertRedacteur($question->getIdQuestion(), $redacteur->getIdUtilisateur());
         }
 

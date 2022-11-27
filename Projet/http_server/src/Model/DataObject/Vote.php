@@ -7,21 +7,33 @@ use App\SAE\Model\Repository\UtilisateurRepository;
 
 class Vote extends AbstractDataObject
 {
+    private int $idProposition;
+    private int $idVotant;
 
     private ?Proposition $proposition;
     private ?Utilisateur $votant;
-    private int $idProposition;
-    private int $idVotant;
+    
     private ?int $valeur;
 
-    public function __construct(Proposition $proposition, Utilisateur $votant, ?int $valeur)
+    public function __construct(Proposition|int $proposition, Utilisateur|int $votant, ?int $valeur)
     {
-        $this->proposition = $proposition;
-        $this->votant = $votant;
         $this->valeur = $valeur;
-        
-        $this->idProposition = $proposition->getIdProposition();
-        $this->idVotant = $votant->getIdUtilisateur();
+
+        if ($proposition instanceof Proposition) {
+            $this->proposition = $proposition;
+            $this->idProposition = $proposition->getIdProposition();
+        } else {
+            $this->proposition = null;
+            $this->idProposition = $proposition;
+        }
+
+        if ($votant instanceof Utilisateur) {
+            $this->votant = $votant;
+            $this->idVotant = $votant->getIdUtilisateur();
+        } else {
+            $this->votant = null;
+            $this->idVotant = $votant;
+        }
     }
     
     public function formatTableau(): array {
@@ -39,7 +51,7 @@ class Vote extends AbstractDataObject
     //getters
     public function getProposition(): Proposition
     {
-        if($this->proposition === null) {
+        if($this->proposition == null) {
             $this->proposition = (new PropositionRepository())->select($this->idProposition);
         }
         return $this->proposition;
@@ -47,7 +59,7 @@ class Vote extends AbstractDataObject
 
     public function getVotant(): Utilisateur
     {
-        if($this->votant === null) {
+        if($this->votant == null) {
             $this->votant = (new UtilisateurRepository())->select($this->idVotant);
         }
         return $this->votant;

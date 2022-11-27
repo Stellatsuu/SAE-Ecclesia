@@ -73,11 +73,11 @@
 
         <div id="roles_input">
 
-            <div id="responsables_input">
-                <label for="responsables_input">Rédacteurs : </label>
+            <div id="redacteurs_input">
+                <label for="redacteurs_input">Rédacteurs : </label>
 
 
-                <button type="button" id="add_responsable">+</button>
+                <button type="button" id="add_redacteur">+</button>
             </div>
 
 

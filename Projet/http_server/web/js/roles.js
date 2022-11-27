@@ -1,13 +1,13 @@
 import { SmartSelect } from "./SmartSelect.js";
 
-const idResponsables =
-  question.responsables.map((responsable) => responsable.idUtilisateur) || [];
-const responsables_smart_select = new SmartSelect(
-  "responsables_input",
-  "add_responsable",
-  "responsable",
+const idRedacteurs =
+  question.redacteurs.map((redacteur) => redacteur.idUtilisateur) || [];
+const redacteurs_smart_select = new SmartSelect(
+  "redacteurs_input",
+  "add_redacteur",
+  "redacteur",
   allUtilisateurOptions,
-  idResponsables
+  idRedacteurs
 );
 
 const idVotants = question.votants.map((votant) => votant.idUtilisateur) || [];
