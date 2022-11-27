@@ -31,7 +31,7 @@ $propositions = array_map(function ($p) {
     </div>
 
     <div id="resultats_vote">
-        <h2>Résultat du vote</h2>
+        <h2>Résultats des votes</h2>
 
         <div>
             <?php
@@ -44,6 +44,7 @@ $propositions = array_map(function ($p) {
 
                 $html = <<<HTML
                 <div>
+                    <div class="percentage_bar" style='--percentage: $pourcents%'></div>
                     <label>$titreProposition</label>
                     <span class="vote">$pourcents %</span>
                 </div>

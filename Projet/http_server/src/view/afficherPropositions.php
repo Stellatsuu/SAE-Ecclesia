@@ -12,7 +12,7 @@ $question = Question::toQuestion($question);
 <div class="panel" id="afficherPropositions">
     <input type="checkbox" id="questionDescription" class="texteDepliantTrigger"/>
     <div id="propositionTitle">
-        <h1><?= $question->getTitre() ?></h1>
+        <h1 class="title"><?= $question->getTitre() ?></h1>
         <label for="questionDescription">
             <img src='./assets/images/arrow.svg' class='arrow' alt='open and close arrow'/>
         </label>
@@ -39,6 +39,7 @@ $question = Question::toQuestion($question);
         }
         ?>
     </div>
+    <div id="btns">
     <?php
         if($question->getPhase() == PhaseQuestion::Lecture)
             echo <<<HTML
@@ -46,9 +47,10 @@ $question = Question::toQuestion($question);
             HTML;
         if($question->getPhase() == PhaseQuestion::Redaction)
             echo <<<HTML
-            <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireContribuerProposition&idProposition=<?= $propositionActuelle->getIdProposition() ?>">Modifier</a>
+            <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireContribuerProposition&idProposition={$propositionActuelle->getIdProposition()}">Modifier</a>
             HTML;
-    ?>
+        ?>
+    </div>
 
     <form id="formulaire_vote" action="frontController.php?controller=vote&action=voter" method="post" style="<?= $question->getPhase() != PhaseQuestion::Vote ? 'display: none;' : '' ?>">
 

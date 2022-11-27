@@ -9,11 +9,16 @@ nav{
     padding: 0;
     margin: 0;
     height: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    /*display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;*/
+    display:flex;
+    justify-content: stretch;
 
     li{
-      display: block;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      width:100%;
 
       &:not(:nth-last-child(0)){
         border-right: solid black 1px;

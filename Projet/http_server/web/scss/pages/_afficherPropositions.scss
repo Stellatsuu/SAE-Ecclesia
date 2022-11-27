@@ -46,6 +46,12 @@
       }
     }
   }
+
+  #btns{
+    width:80%;
+    display:flex;
+    justify-content: flex-end;
+  }
 }
 
 #formulaire_vote {
@@ -110,6 +116,7 @@
       }
 
       label {
+        font-size: 1.2rem;
         margin: 0;
         padding-right: 60px;
 
