@@ -8,7 +8,7 @@
     <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireEcrireProposition&idQuestion=1">Ecrire nouvelle proposition (question id 1, "Blind Test")</a>
     <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireGererCoAuteurs&idProposition=1">Gerer co-auteurs (proposition id 1)</a>
     <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireContribuerProposition&idProposition=1">Contribuer à la proposition en tant que co-auteur (id 1)</a>
-    
+
     <a class="button" href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=10002&idUtilisateur=10002">Afficher les propositions (question id 10002, orga id 10002, Mythes SQL)</a>
     <a class="button" href="frontController.php?controller=question&action=afficherResultats&idQuestion=10002">Afficher les résultats (question id 10002, Mythes SQL)</a>
 
