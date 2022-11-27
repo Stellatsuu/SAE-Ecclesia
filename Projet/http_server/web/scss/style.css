@@ -685,6 +685,93 @@ input[type=time]::-webkit-calendar-picker-indicator {
   }
 }
 
+#afficherPropositions #propositionTitle {
+  width: 100%;
+}
+#afficherPropositions #description {
+  text-align: justify;
+}
+#afficherPropositions #propositionSelector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  width: 100%;
+}
+#afficherPropositions #propositionSelector a:first-child {
+  margin-right: 20px;
+}
+#afficherPropositions #propositionSelector a:last-child {
+  margin-left: 20px;
+}
+#afficherPropositions #propositionSelector .boite {
+  min-width: calc(50% - 90px);
+  text-align: center;
+}
+#afficherPropositions #proposition {
+  width: 80%;
+}
+#afficherPropositions #proposition h2 {
+  margin: 0 0 4px 0;
+}
+#afficherPropositions #proposition p {
+  text-align: justify;
+  margin: 0 0 4px 0;
+}
+#afficherPropositions #proposition p + h2 {
+  margin-top: 8px;
+}
+
+#resultats_vote {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+}
+#resultats_vote input[type=submit] {
+  margin-top: 20px;
+  align-self: center;
+}
+#resultats_vote div {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  border-radius: 5px;
+}
+#resultats_vote div div {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#resultats_vote div div + div {
+  margin-top: 20px;
+}
+#resultats_vote div div label {
+  margin: 5px 0 5px 10px;
+  padding-right: 60px;
+}
+@media screen and (max-width: 700px) {
+  #resultats_vote div div label {
+    padding-right: 20px;
+  }
+}
+#resultats_vote div div span {
+  margin-right: 10px;
+}
+#resultats_vote div div label, #resultats_vote div div span {
+  z-index: 1;
+  font-size: 1.2rem;
+}
+#resultats_vote div div .percentage_bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to right, #E1603C 0%, #E1603C var(--percentage), #1B1B1B var(--percentage), #1B1B1B 100%);
+}
+
 h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset, body {
   color: white;
   font-family: Raleway, serif;

@@ -44,6 +44,7 @@ $propositions = array_map(function ($p) {
 
                 $html = <<<HTML
                 <div>
+                    <div class="percentage_bar" style='--percentage: $pourcents%'></div>
                     <label>$titreProposition</label>
                     <span class="vote">$pourcents %</span>
                 </div>
