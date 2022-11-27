@@ -85,7 +85,7 @@ $i = 0;
                 $messageConfirmation = "Êtes-vous sûr(e) de vouloir clore la phase de vote ?";
                 $editerBouton = "";
                 $linkPropositions = <<<HTML
-                <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion&idUtilisateur={$_SESSION['idUtilisateur']}"><h2>$titre</h2></a> 
+                <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion"><h2>$titre</h2></a> 
                 HTML;
                 break;
             case Phase::Resultat:
