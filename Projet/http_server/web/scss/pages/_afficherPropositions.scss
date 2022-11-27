@@ -46,6 +46,12 @@
       }
     }
   }
+
+  #btns{
+    width:80%;
+    display:flex;
+    justify-content: flex-end;
+  }
 }
 
 #formulaire_vote {
