@@ -368,7 +368,7 @@ input[type=time]::-webkit-calendar-picker-indicator {
 }
 @media screen and (max-width: 1000px) {
   #roles_input #votants_input,
-#roles_input #redacteurs_input {
+  #roles_input #redacteurs_input {
     width: 100%;
   }
 }
