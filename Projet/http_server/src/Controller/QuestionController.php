@@ -8,6 +8,7 @@ use App\SAE\Model\DataObject\Section;
 use App\SAE\Model\DataObject\Utilisateur;
 use App\SAE\Model\Repository\UtilisateurRepository as UtilisateurRepository;
 use App\SAE\Lib\PhaseQuestion as Phase;
+use App\SAE\Model\HTTP\Session;
 use DateTime;
 use DateInterval;
 
@@ -17,7 +18,7 @@ class QuestionController extends MainController
     public static function afficherFormulairePoserQuestion(): void
     {
         if (!isset($_GET['idQuestion']) || !is_numeric($_GET['idQuestion'])) {
-            static::error("afficherAccueil", "Aucune question n'a été sélectionnée");
+            static::error("frontController.php", "Aucune question n'a été sélectionnée");
             return;
         }
 
@@ -26,31 +27,26 @@ class QuestionController extends MainController
         $utilisateurs = (new UtilisateurRepository)->selectAll();
 
         if ($question === null) {
-            static::error("afficherAccueil", "La question n'existe pas");
+            static::error("frontController.php", "La question n'existe pas");
             return;
         }
-
-        //Vivement les sessions
-        //$idUtilisateur = $_SESSION['idUtilisateur']; 
-        $idUtilisateur = $question->getOrganisateur()->getIdUtilisateur();
-        $_GET['idUtilisateur'] = $idUtilisateur;
 
         $phase = $question->getPhase();
         switch ($phase) {
             case Phase::Redaction:
-                static::error("listerMesQuestions", "La question est en phase de rédaction. Vous ne pouvez plus la modifier.");
+                static::error("frontController.php?controller=question&action=listerMesQuestions", "La question est en phase de rédaction. Vous ne pouvez plus la modifier.");
                 return;
                 break;
             case Phase::Lecture:
-                static::error("listerMesQuestions", "La question est en phase de lecture. Vous ne pouvez plus la modifier.");
+                static::error("frontController.php?controller=question&action=listerMesQuestions", "La question est en phase de lecture. Vous ne pouvez plus la modifier.");
                 return;
                 break;
             case Phase::Vote:
-                static::error("listerMesQuestions", "La question est en phase de vote. Vous ne pouvez plus la modifier.");
+                static::error("frontController.php?controller=question&action=listerMesQuestions", "La question est en phase de vote. Vous ne pouvez plus la modifier.");
                 return;
                 break;
             case Phase::Resultat:
-                static::error("listerMesQuestions", "La question est terminée. Vous ne pouvez plus la modifier.");
+                static::error("frontController.php?controller=question&action=listerMesQuestions", "La question est terminée. Vous ne pouvez plus la modifier.");
                 return;
                 break;
             case Phase::NonRemplie:
@@ -104,19 +100,19 @@ class QuestionController extends MainController
         $phase = $question->getPhase();
         switch ($phase) {
             case Phase::Redaction:
-                static::error("listerMesQuestions", "La question est en phase de rédaction. Vous ne pouvez plus la modifier.");
+                static::error("frontController.php?controller=question&action=listerMesQuestions", "La question est en phase de rédaction. Vous ne pouvez plus la modifier.");
                 return;
                 break;
             case Phase::Lecture:
-                static::error("listerMesQuestions", "La question est en phase de lecture. Vous ne pouvez plus la modifier.");
+                static::error("frontController.php?controller=question&action=listerMesQuestions", "La question est en phase de lecture. Vous ne pouvez plus la modifier.");
                 return;
                 break;
             case Phase::Vote:
-                static::error("listerMesQuestions", "La question est en phase de vote. Vous ne pouvez plus la modifier.");
+                static::error("frontController.php?controller=question&action=listerMesQuestions", "La question est en phase de vote. Vous ne pouvez plus la modifier.");
                 return;
                 break;
             case Phase::Resultat:
-                static::error("listerMesQuestions", "La question est terminée. Vous ne pouvez plus la modifier.");
+                static::error("frontController.php?controller=question&action=listerMesQuestions", "La question est terminée. Vous ne pouvez plus la modifier.");
                 return;
                 break;
         }
@@ -131,13 +127,13 @@ class QuestionController extends MainController
             $descriptionSection = $_POST['descriptionSection' . $nbSections];
 
             if ($nomSection == "" || $descriptionSection == "") {
-                static::error("afficherFormulairePoserQuestion", "Veuillez remplir tous les champs");
+                static::error("frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion", "Veuillez remplir tous les champs");
                 return;
             } else if (strlen($nomSection) > 50) {
-                static::error("afficherFormulairePoserQuestion", "Le nom de la section ne doit pas dépasser 50 caractères");
+                static::error("frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion", "Le nom de la section ne doit pas dépasser 50 caractères");
                 return;
             } else if (strlen($descriptionSection) > 2000) {
-                static::error("afficherFormulairePoserQuestion", "La description de la section ne doit pas dépasser 2000 caractères");
+                static::error("frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion", "La description de la section ne doit pas dépasser 2000 caractères");
                 return;
             }
 
@@ -166,14 +162,14 @@ class QuestionController extends MainController
 
         foreach (['dateDebutRedaction', 'dateFinRedaction', 'dateOuvertureVotes', 'dateFermetureVotes'] as $date) {
             if (!isset($_POST[$date]) || !preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/", $_POST[$date])) {
-                static::error("afficherFormulairePoserQuestion", "Veuillez entrer des dates valides");
+                static::error("frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion", "Veuillez entrer des dates valides");
                 return;
             }
         }
 
         foreach (['heureDebutRedaction', 'heureFinRedaction', 'heureOuvertureVotes', 'heureFermetureVotes'] as $heure) {
             if (!isset($_POST[$heure]) || !preg_match("/^[0-9]{2}:[0-9]{2}$/", $_POST[$heure])) {
-                static::error("afficherFormulairePoserQuestion", "Veuillez entrer des heures valides");
+                static::error("frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion", "Veuillez entrer des heures valides");
                 return;
             }
         }
@@ -190,22 +186,22 @@ class QuestionController extends MainController
             && $dateDebutRedaction > (new DateTime("now"));
 
         if (!$dateCoherentes) {
-            static::error("afficherFormulairePoserQuestion", "Les dates ne sont pas cohérentes");
+            static::error("frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion", "Les dates ne sont pas cohérentes");
             return;
         } else if ($description == "") {
-            static::error("afficherFormulairePoserQuestion", "Veuillez remplir tous les champs");
+            static::error("frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion", "Veuillez remplir tous les champs");
             return;
         } else if(strlen($description) > 4000) {
-            static::error("afficherFormulairePoserQuestion", "La description de la question ne doit pas dépasser 4000 caractères");
+            static::error("frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion", "La description de la question ne doit pas dépasser 4000 caractères");
             return;
         } else if (count($sections) == 0) {
-            static::error("afficherFormulairePoserQuestion", "Au moins une section est requise");
+            static::error("frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion", "Au moins une section est requise");
             return;
         } else if (count($responsables) == 0) {
-            static::error("afficherFormulairePoserQuestion", "Veuillez sélectionner au moins un responsable");
+            static::error("frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion", "Veuillez sélectionner au moins un responsable");
             return;
         } else if (count($votants) == 0) {
-            static::error("afficherFormulairePoserQuestion", "Veuillez sélectionner au moins un votant");
+            static::error("frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion", "Veuillez sélectionner au moins un votant");
             return;
         }
 
@@ -220,14 +216,14 @@ class QuestionController extends MainController
 
         (new QuestionRepository)->updateEbauche($question);
         $_GET['idUtilisateur'] = $question->getOrganisateur()->getIdUtilisateur();
-        static::message("listerMesQuestions", "La question a été posée");
+        static::message("frontController.php?controller=question&action=listerMesQuestions", "La question a été posée");
     }
 
     public static function passagePhaseRedaction()
     {
 
         if (!isset($_GET['idQuestion']) || !is_numeric($_GET['idQuestion'])) {
-            static::error("afficherAccueil", "Veuillez entrer un identifiant de question valide");
+            static::error("frontController.php", "Veuillez entrer un identifiant de question valide");
             return;
         }
 
@@ -235,27 +231,26 @@ class QuestionController extends MainController
         $question = Question::toQuestion((new QuestionRepository)->select($idQuestion));
 
         if (!$question) {
-            static::error("afficherAccueil", "La question n'existe pas");
+            static::error("frontController.php", "La question n'existe pas");
             return;
         }
 
         $phase = $question->getPhase();
         if ($phase != Phase::Attente) {
-            static::error("afficherAccueil", "Vous ne pouvez pas passer à la phase de rédaction depuis cette phase");
+            static::error("frontController.php", "Vous ne pouvez pas passer à la phase de rédaction depuis cette phase");
             return;
         }
 
         $question->setDateDebutRedaction(new DateTime("now"));
         (new QuestionRepository)->update($question);
 
-        $_GET['idUtilisateur'] = $question->getOrganisateur()->getIdUtilisateur();
-        static::message("listerMesQuestions", "La question est maintenant en phase de rédaction");
+        static::message("frontController.php?controller=question&action=listerMesQuestions", "La question est maintenant en phase de rédaction");
     }
 
     public static function passagePhaseVote()
     {
         if (!isset($_GET['idQuestion']) || !is_numeric($_GET['idQuestion'])) {
-            static::error("afficherAccueil", "Veuillez entrer un identifiant de question valide");
+            static::error("frontController.php", "Veuillez entrer un identifiant de question valide");
             return;
         }
 
@@ -263,14 +258,14 @@ class QuestionController extends MainController
         $question = Question::toQuestion((new QuestionRepository)->select($idQuestion));
 
         if (!$question) {
-            static::error("afficherAccueil", "La question n'existe pas");
+            static::error("frontController.php", "La question n'existe pas");
             return;
         }
 
         $phase = $question->getPhase();
 
         if ($phase != Phase::Redaction && $phase != Phase::Lecture) {
-            static::error("afficherAccueil", "La question n'est pas en phase de rédaction ou de vote");
+            static::error("frontController.php", "La question n'est pas en phase de rédaction ou de vote");
             return;
         }
 
@@ -281,17 +276,19 @@ class QuestionController extends MainController
         (new QuestionRepository)->update($question);
 
         $_GET['idUtilisateur'] = $question->getOrganisateur()->getIdUtilisateur();
-        static::message("listerMesQuestions", "La question est maintenant en phase de vote");
+        static::message("rontController.php?controller=question&action=listerMesQuestions", "La question est maintenant en phase de vote");
     }
 
     public static function listerMesQuestions()
     {
-        if (!isset($_GET['idUtilisateur']) || !is_numeric($_GET['idUtilisateur'])) {
-            static::error("afficherAccueil", "Veuillez entrer un identifiant d'utilisateur valide");
+        $session = Session::getInstance();
+
+        if(!$session->contient("idUtilisateur")) {
+            static::error("frontController.php", "Vous devez être connecté pour accéder à cette page");
             return;
         }
 
-        $idUtilisateur = intval($_GET['idUtilisateur']);
+        $idUtilisateur = $session->lire("idUtilisateur");
         $questions = (new QuestionRepository)->getQuestionsParOrganisateur($idUtilisateur);
 
         static::afficherVue("view.php", [

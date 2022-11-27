@@ -238,4 +238,21 @@ class QuestionRepository extends AbstractRepository
 
         return $pdo->fetch()['est_votant'] > 0;
     }
+
+    public function aVote(int $idQuestion, int $idUtilisateur): bool
+    {
+        $sql = "SELECT COUNT(*) AS a_vote 
+                    FROM vote v JOIN proposition p 
+                    ON v.id_proposition = p.id_proposition 
+                WHERE p.id_question = :idQuestion 
+                    AND v.id_votant = :idUtilisateur";
+        
+        $pdo = DatabaseConnection::getPdo()->prepare($sql);
+        $pdo->execute([
+            "idQuestion" => $idQuestion,
+            "idUtilisateur" => $idUtilisateur
+        ]);
+
+        return $pdo->fetch()['a_vote'] > 0;
+    }
 }

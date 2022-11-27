@@ -21,7 +21,7 @@ class PropositionController extends MainController
         /* TODO: vérifier si l'utilisateur est co-auteur ou rédacteur (si co-auteur, pas le droit de toucher au titre) --> need authentification*/
 
         if (!isset($_GET['idQuestion']) || !is_numeric($_GET['idQuestion'])) {
-            static::error("afficherAccueil", "Aucune question n'a été sélectionnée");
+            static::error("frontController.php", "Aucune question n'a été sélectionnée");
             return;
         }
 
@@ -29,7 +29,7 @@ class PropositionController extends MainController
 
         $question = (new QuestionRepository())->select($idQuestion);
         if (!$question) {
-            static::error("afficherAccueil", "La question n'existe pas");
+            static::error("frontController.php", "La question n'existe pas");
             return;
         }
 
@@ -38,16 +38,16 @@ class PropositionController extends MainController
         if ($phase !== Phase::Redaction) {
             switch ($phase) {
                 case Phase::NonRemplie:
-                    QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore écrire de proposition.");
+                    QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore écrire de proposition.");
                     break;
                 case Phase::Attente:
-                    QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore écrire de proposition.");
+                    QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore écrire de proposition.");
                     break;
                 case Phase::Vote:
-                    QuestionController::error("afficherAccueil", "La question est en cours de vote. Vous ne pouvez plus écrire de proposition.");
+                    QuestionController::error("frontController.php", "La question est en cours de vote. Vous ne pouvez plus écrire de proposition.");
                     break;
                 case Phase::Resultat:
-                    QuestionController::error("afficherAccueil", "La question est terminée. Vous ne pouvez plus écrire de proposition.");
+                    QuestionController::error("frontController.php", "La question est terminée. Vous ne pouvez plus écrire de proposition.");
                     break;
             }
             return;
@@ -63,17 +63,17 @@ class PropositionController extends MainController
     public static function ecrireProposition()
     {
         if (!isset($_POST['idQuestion']) || !is_numeric($_POST['idQuestion'])) {
-            static::error("afficherAccueil", "Veuillez sélectionner la question pour laquelle vous souhaitez écrire une proposition.");
+            static::error("frontController.php", "Veuillez sélectionner la question pour laquelle vous souhaitez écrire une proposition.");
             return;
         }
 
         $question = Question::toQuestion((new QuestionRepository())->select($_POST['idQuestion']));
 
         if (!$question) {
-            static::error("afficherAccueil", "La question n'existe pas");
+            static::error("frontController.php", "La question n'existe pas");
             return;
         } else if (!isset($_POST['titreProposition'])) {
-            static::error("afficherAccueil", "Veuillez saisir un titre pour votre proposition.");
+            static::error("frontController.php", "Veuillez saisir un titre pour votre proposition.");
             return;
         }
         $titreProposition = $_POST['titreProposition'];
@@ -82,13 +82,9 @@ class PropositionController extends MainController
         $responsable = (new UtilisateurRepository())->select($idResponsable);
 
         if (!$responsable) {
-            static::error("afficherAccueil", "Le responsable n'existe pas");
+            static::error("frontController.php", "Le responsable n'existe pas");
             return;
         }
-
-        /*
-        TODO : vérifier si l'utilisateur n'a pas déjà écrit une proposition pour cette question
-        */
 
         $phase = $question->getPhase();
         switch ($phase) {
@@ -107,10 +103,10 @@ class PropositionController extends MainController
         }
 
         if ($titreProposition == "") {
-            static::error("afficherAccueil", "Veuillez saisir un titre pour votre proposition.");
+            static::error("frontController.php", "Veuillez saisir un titre pour votre proposition.");
             return;
         } else if (strlen($titreProposition) > 100) {
-            static::error("afficherAccueil", "Le titre de votre proposition ne doit pas dépasser 100 caractères.");
+            static::error("frontController.php", "Le titre de votre proposition ne doit pas dépasser 100 caractères.");
             return;
         }
 
@@ -128,7 +124,7 @@ class PropositionController extends MainController
 
             $nom_paragraphe = 'section_' . $i;
             if (!isset($_POST[$nom_paragraphe]) || $_POST[$nom_paragraphe] == "") {
-                static::error("afficherAccueil", "Veuillez saisir un contenu pour votre proposition.");
+                static::error("frontController.php", "Veuillez saisir un contenu pour votre proposition.");
                 return;
             }
 
@@ -147,25 +143,25 @@ class PropositionController extends MainController
 
         $estRedacteur = (new QuestionRepository())->estRedacteur($question->getIdQuestion(), $idResponsable);
         if (!$estRedacteur) {
-            static::error("afficherAccueil", "Vous ne faites pas partie des rédacteurs de cette question.");
+            static::error("frontController.php", "Vous ne faites pas partie des rédacteurs de cette question.");
             return;
         }
 
         $propositionExiste = (new PropositionRepository())->selectByQuestionEtRedacteur($question->getIdQuestion(), $idResponsable) == null ? false : true;
         if ($propositionExiste) {
-            static::error("afficherAccueil", "Vous avez déjà écrit une proposition pour cette question.");
+            static::error("frontController.php", "Vous avez déjà écrit une proposition pour cette question.");
             return;
         }
 
         (new PropositionRepository())->insert($proposition);
 
-        static::message("afficherAccueil", "La proposition a bien été enregistrée.");
+        static::message("frontController.php", "La proposition a bien été enregistrée.");
     }
 
     public static function afficherFormulaireContribuerProposition()
     {
         if (!isset($_GET['idProposition']) || !is_numeric($_GET['idProposition'])) {
-            static::error("afficherAccueil", "Aucune proposition n'a été sélectionnée");
+            static::error("frontController.php", "Aucune proposition n'a été sélectionnée");
             return;
         }
 
@@ -173,7 +169,7 @@ class PropositionController extends MainController
 
         $proposition = (new PropositionRepository())->select($idProposition);
         if (!$proposition) {
-            static::error("afficherAccueil", "La proposition n'existe pas");
+            static::error("frontController.php", "La proposition n'existe pas");
             return;
         }
         $proposition = Proposition::toProposition($proposition);
@@ -182,16 +178,16 @@ class PropositionController extends MainController
         if ($phase !== Phase::Redaction) {
             switch ($phase) {
                 case Phase::NonRemplie:
-                    QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer à une proposition.");
+                    QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer à une proposition.");
                     break;
                 case Phase::Attente:
-                    QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer à une proposition.");
+                    QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer à une proposition.");
                     break;
                 case Phase::Vote:
-                    QuestionController::error("afficherAccueil", "La question est en cours de vote. Vous ne pouvez plus contribuer à une proposition.");
+                    QuestionController::error("frontController.php", "La question est en cours de vote. Vous ne pouvez plus contribuer à une proposition.");
                     break;
                 case Phase::Resultat:
-                    QuestionController::error("afficherAccueil", "La question est terminée. Vous ne pouvez plus contribuer à une proposition.");
+                    QuestionController::error("frontController.php", "La question est terminée. Vous ne pouvez plus contribuer à une proposition.");
                     break;
             }
             return;
@@ -207,37 +203,34 @@ class PropositionController extends MainController
     public static function contribuerProposition()
     {
         if (!isset($_POST['idProposition']) || !is_numeric($_POST['idProposition'])) {
-            static::error("afficherAccueil", "Veuillez sélectionner la proposition pour laquelle vous souhaitez contribuer");
+            static::error("frontController.php", "Veuillez sélectionner la proposition pour laquelle vous souhaitez contribuer");
             return;
         }
 
         $proposition = Proposition::toProposition((new PropositionRepository())->select($_POST['idProposition']));
 
         if (!$proposition) {
-            static::error("afficherAccueil", "La proposition n'existe pas");
+            static::error("frontController.php", "La proposition n'existe pas");
             return;
         } else if (!isset($_POST['titreProposition'])) {
-            static::error("afficherAccueil", "Veuillez saisir un titre pour votre proposition.");
+            static::error("frontController.php", "Veuillez saisir un titre pour votre proposition.");
         }
-
 
         $phase = $proposition->getQuestion()->getPhase();
         switch ($phase) {
             case Phase::NonRemplie:
-                QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer pour la proposition.");
+                QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer pour la proposition.");
                 break;
             case Phase::Attente:
-                QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer pour la proposition.");
+                QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer pour la proposition.");
                 break;
             case Phase::Vote:
-                QuestionController::error("afficherAccueil", "La question est en cours de vote. Vous ne pouvez plus contribuer pour la proposition.");
+                QuestionController::error("frontController.php", "La question est en cours de vote. Vous ne pouvez plus contribuer pour la proposition.");
                 break;
             case Phase::Resultat:
-                QuestionController::error("afficherAccueil", "La question est terminée. Vous ne pouvez plus contribuer pour la proposition.");
+                QuestionController::error("frontController.php", "La question est terminée. Vous ne pouvez plus contribuer pour la proposition.");
                 break;
         }
-
-
 
         $paragraphes = [];
         $sections = $proposition->getQuestion()->getSections();
@@ -248,7 +241,7 @@ class PropositionController extends MainController
 
             $nom_paragraphe = 'section_' . $i;
             if (!isset($_POST[$nom_paragraphe]) || $_POST[$nom_paragraphe] == "") {
-                static::error("afficherAccueil", "Veuillez saisir un contenu pour votre proposition.");
+                static::error("frontController.php", "Veuillez saisir un contenu pour votre proposition.");
                 return;
             }
 
@@ -264,7 +257,7 @@ class PropositionController extends MainController
         }
 
         if (!$estCoAuteur) {
-            static::error("afficherAccueil", "Vous ne faites pas partie des co-auteurs ou des rédacteurs de cette proposition.");
+            static::error("frontController.php", "Vous ne faites pas partie des co-auteurs ou des rédacteurs de cette proposition.");
             return;
         }
 
@@ -276,21 +269,21 @@ class PropositionController extends MainController
         foreach ($paragraphes as $paragraphe) {
             (new ParagrapheRepository())->update($paragraphe);
         }
-        static::message("afficherAccueil", "La proposition a bien été enregistrée.");
+        static::message("frontController.php", "La proposition a bien été enregistrée.");
     }
 
     public
     static function afficherFormulaireGererCoAuteurs()
     {
         if (!isset($_GET['idProposition']) || !is_numeric($_GET['idProposition'])) {
-            static::error("afficherAccueil", "Aucune proposition n'a été sélectionnée.");
+            static::error("frontController.php", "Aucune proposition n'a été sélectionnée.");
             return;
         }
         $idProposition = intval($_GET['idProposition']);
 
         $proposition = Proposition::toProposition((new PropositionRepository())->select($idProposition));
         if (!$proposition) {
-            static::error("afficherAccueil", "La proposition n'existe pas.");
+            static::error("frontController.php", "La proposition n'existe pas.");
             return;
         }
 
@@ -298,16 +291,16 @@ class PropositionController extends MainController
         $phase = $question->getPhase();
         switch ($phase) {
             case Phase::NonRemplie:
-                QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
+                QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
                 break;
             case Phase::Attente:
-                QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
+                QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
                 break;
             case Phase::Vote:
-                QuestionController::error("afficherAccueil", "La question est en cours de vote. Vous ne pouvez plus gérer les co-auteurs.");
+                QuestionController::error("frontController.php", "La question est en cours de vote. Vous ne pouvez plus gérer les co-auteurs.");
                 break;
             case Phase::Resultat:
-                QuestionController::error("afficherAccueil", "La question est terminée. Vous ne pouvez plus gérer les co-auteurs.");
+                QuestionController::error("frontController.php", "La question est terminée. Vous ne pouvez plus gérer les co-auteurs.");
                 break;
         }
 
@@ -330,14 +323,14 @@ class PropositionController extends MainController
     static function gererCoAuteurs()
     {
         if (!isset($_POST['idProposition']) || !is_numeric($_POST['idProposition'])) {
-            static::error("afficherAccueil", "Aucune proposition n'a été sélectionnée.");
+            static::error("frontController.php", "Aucune proposition n'a été sélectionnée.");
             return;
         }
         $idProposition = intval($_POST['idProposition']);
 
         $proposition = Proposition::toProposition((new PropositionRepository())->select($idProposition));
         if (!$proposition) {
-            DemandeQuestionController::error("afficherAccueil", "La proposition n'existe pas.");
+            static::error("frontController.php", "La proposition n'existe pas.");
             return;
         }
 
@@ -345,16 +338,16 @@ class PropositionController extends MainController
         $phase = $question->getPhase();
         switch ($phase) {
             case Phase::NonRemplie:
-                QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
+                QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
                 break;
             case Phase::Attente:
-                QuestionController::error("afficherAccueil", "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
+                QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
                 break;
             case Phase::Vote:
-                QuestionController::error("afficherAccueil", "La question est en cours de vote. Vous ne pouvez plus gérer les co-auteurs.");
+                QuestionController::error("frontController.php", "La question est en cours de vote. Vous ne pouvez plus gérer les co-auteurs.");
                 break;
             case Phase::Resultat:
-                QuestionController::error("afficherAccueil", "La question est terminée. Vous ne pouvez plus gérer les co-auteurs.");
+                QuestionController::error("frontController.php", "La question est terminée. Vous ne pouvez plus gérer les co-auteurs.");
                 break;
         }
 
@@ -370,8 +363,8 @@ class PropositionController extends MainController
         }
 
         if (in_array($proposition->getRedacteur(), $coAuteurs)) {
-            $_GET['idProposition'] = $idProposition;
-            static::error("afficherFormulaireGererCoAuteurs", "Vous ne pouvez pas être co-auteur de votre propre proposition.");
+            static::error("frontController.php?controller=proposition&action=afficherFormulaireGererCoAuteurs&idProposition=$idProposition", "Vous ne pouvez pas être co-auteur de votre propre proposition.");
+            return;
         }
 
         (new PropositionRepository)->deleteCoAuteurs($proposition->getIdProposition());
@@ -379,12 +372,12 @@ class PropositionController extends MainController
             (new PropositionRepository)->addCoAuteurGlobal($proposition->getIdProposition(), $coAuteur->getIdUtilisateur());
         }
 
-        static::message("afficherAccueil", "Les co-auteurs ont bien été modifiés.");
+        static::message("frontController.php", "Les co-auteurs ont bien été modifiés.");
     }
 
     public static function afficherPropositions(){
         if (!isset($_GET['idQuestion']) || !is_numeric($_GET['idQuestion'])) {
-            static::error("afficherAccueil", "Aucune question n'a été sélectionnée");
+            static::error("frontController.php", "Aucune question n'a été sélectionnée");
             return;
         }
 
@@ -392,7 +385,7 @@ class PropositionController extends MainController
 
         $question = (new QuestionRepository())->select($idQuestion);
         if (!$question) {
-            static::error("afficherAccueil", "La question n'existe pas");
+            static::error("frontController.php", "La question n'existe pas");
             return;
         }
 
@@ -404,8 +397,11 @@ class PropositionController extends MainController
         }
 
         $question = Question::toQuestion($question);
-
         $propositions = (new PropositionRepository())->selectAllByQuestion($idQuestion);
+        if(count($propositions) == 0){
+            static::error("frontController.php", "Il n'y a aucune proposition pour cette question");
+            return;
+        }
 
         static::afficherVue("view.php", [
             "titrePage" => "Propositions",
