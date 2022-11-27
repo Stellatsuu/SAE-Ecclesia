@@ -6,6 +6,7 @@ use App\SAE\Model\DataObject\Paragraphe;
 use App\SAE\Model\DataObject\Proposition;
 use App\SAE\Model\DataObject\Question;
 use App\SAE\Model\DataObject\Utilisateur;
+use App\SAE\Model\HTTP\Session;
 use App\SAE\Model\Repository\ParagrapheRepository;
 use App\SAE\Model\Repository\PropositionRepository;
 use App\SAE\Model\Repository\QuestionRepository;
@@ -364,6 +365,8 @@ class PropositionController extends MainController
     }
 
     public static function afficherPropositions(){
+        $session = Session::getInstance();
+
         //Vérification si une question est contenue dans l'URL
         if (!isset($_GET['idQuestion']) || !is_numeric($_GET['idQuestion'])) {
             static::error("frontController.php?controller=question&action=listerMesQuestions", "Aucune question n'a été sélectionnée");
@@ -381,13 +384,13 @@ class PropositionController extends MainController
 
         $question = Question::toQuestion($question);
 
-        //Vérification si l'utilisateur peut avoir accès aux propositions
-        if(!isset($_GET['idUtilisateur']) || !is_numeric($_GET['idUtilisateur'])) {
-            static::error("frontController.php?controller=question&action=listerMesQuestions", "Vous n'avez pas accès aux propositions");
+
+        if(!$session->contient("idUtilisateur")){
+            static::error("frontController.php?controller=question&action=listerMesQuestions", "Vous devez être identifié");
             return;
         }
 
-        $idUtilisateur = $_GET['idUtilisateur'];
+        $idUtilisateur = $session->lire("idUtilisateur");
         if(!(((new QuestionRepository)->estCoAuteur($idQuestion, $idUtilisateur) || (new QuestionRepository)->estVotant($idQuestion, $idUtilisateur) || ((new QuestionRepository)->estRedacteur($idQuestion, $idUtilisateur)) || ($question->getOrganisateur()->getIdUtilisateur() == $idUtilisateur)))){
             static::error("frontController.php?controller=question&action=listerMesQuestions", "Vous n'avez pas accès aux propositions");
             return;
