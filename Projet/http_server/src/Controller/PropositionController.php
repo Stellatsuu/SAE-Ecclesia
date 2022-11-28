@@ -265,8 +265,7 @@ class PropositionController extends MainController
         static::message("frontController.php?controller=question&action=listerMesQuestions", "La proposition a bien été enregistrée.");
     }
 
-    public
-    static function afficherFormulaireGererCoAuteurs()
+    public static function afficherFormulaireGererCoAuteurs()
     {
         if (!isset($_GET['idProposition']) || !is_numeric($_GET['idProposition'])) {
             static::error("frontController.php", "Aucune proposition n'a été sélectionnée.");
@@ -310,8 +309,7 @@ class PropositionController extends MainController
         ]);
     }
 
-    public
-    static function gererCoAuteurs()
+    public static function gererCoAuteurs()
     {
         if (!isset($_POST['idProposition']) || !is_numeric($_POST['idProposition'])) {
             static::error("frontController.php", "Aucune proposition n'a été sélectionnée.");
@@ -421,5 +419,45 @@ class PropositionController extends MainController
         ]);
     }
 
+    public static function supprimerProposition(){
+        if (!isset($_POST['idProposition']) || !is_numeric($_POST['idProposition'])) {
+            static::error("frontController.php", "Aucune proposition n'a été sélectionnée.");
+            return;
+        }
+        $idProposition = intval($_POST['idProposition']);
+
+        $proposition = Proposition::toProposition((new PropositionRepository())->select($idProposition));
+        if (!$proposition) {
+            static::error("frontController.php", "La proposition n'existe pas.");
+            return;
+        }
+
+        $question = $proposition->getQuestion();
+        $phase = $question->getPhase();
+        switch ($phase) {
+            case Phase::Attente:
+                QuestionController::error("frontController.php", "La question n'existe pas encore. Vous ne pouvez pas encore supprimer de proposition.");
+                break;
+            case Phase::NonRemplie:
+                QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore supprimer de proposition.");
+                break;
+            case Phase::Vote:
+                QuestionController::error("frontController.php", "La question est en cours de vote. Vous ne pouvez plus supprimer de proposition.");
+                break;
+            case Phase::Resultat:
+                QuestionController::error("frontController.php", "La question est terminée. Vous ne pouvez plus supprimer de proposition.");
+                break;
+        }
+
+        $idUtilisateur = $_GET['idUtilisateur'];
+        if(!($question->getOrganisateur()->getIdUtilisateur() == $idUtilisateur||(new QuestionRepository)->estRedacteur($question->getIdQuestion(), $idUtilisateur))){
+            static::error("frontController.php?controller=question&action=afficherPropositions", "Vous n'avez pas accès aux propositions");
+            return;
+        }
+
+        (new PropositionRepository)->delete();
+        static::message("frontController.php?controller=demandeQuestion&action=afficherPropositions", "La proposition a été supprimé");
+
+    }
     
 }
