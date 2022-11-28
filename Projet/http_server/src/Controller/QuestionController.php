@@ -18,12 +18,7 @@ class QuestionController extends MainController
 
     public static function afficherFormulairePoserQuestion(): void
     {
-        if (!isset($_GET['idQuestion']) || !is_numeric($_GET['idQuestion'])) {
-            static::error("frontController.php", "Aucune question n'a été sélectionnée");
-            return;
-        }
-
-        $idQuestion = intval($_GET['idQuestion']);
+        $idQuestion = static::getIfSetAndNumeric("idQuestion");
         $question = Question::toQuestion((new QuestionRepository)->select($idQuestion));
         $utilisateurs = (new UtilisateurRepository)->selectAll();
 
