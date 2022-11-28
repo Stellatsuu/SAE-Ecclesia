@@ -21,6 +21,8 @@ DROP TABLE Paragraphe CASCADE;
 
 DROP TABLE Vote CASCADE;
 
+DROP TABLE Demande_Co_Auteur CASCADE;
+
 -- CREATION DES TABLES
 CREATE TABLE Utilisateur (
     id_utilisateur serial,
@@ -120,6 +122,15 @@ CREATE TABLE Vote (
     CONSTRAINT pk_Vote PRIMARY KEY (id_votant, id_proposition),
     CONSTRAINT fk_Vote_Votant FOREIGN KEY (id_votant) REFERENCES Utilisateur (id_utilisateur),
     CONSTRAINT fk_Vote_Proposition FOREIGN KEY (id_proposition) REFERENCES Proposition (id_proposition)
+);
+
+CREATE TABLE Demande_Co_Auteur (
+    id_demandeur serial,
+    id_proposition serial,
+    message VARCHAR(1000),
+    CONSTRAINT pk_Demande_Co_Auteur PRIMARY KEY (id_demandeur, id_proposition),
+    CONSTRAINT fk_Demande_Co_Auteur_Demandeur FOREIGN KEY (id_demandeur) REFERENCES Utilisateur (id_utilisateur),
+    CONSTRAINT fk_Demande_Co_Auteur_Proposition FOREIGN KEY (id_proposition) REFERENCES Proposition (id_proposition)
 );
 
 -- FONCTIONS, PROCEDURES ET TRIGGERS
