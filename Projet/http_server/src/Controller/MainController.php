@@ -59,10 +59,50 @@ class MainController
     {
         $session = Session::getInstance();
 
-        $idUtilisateur = $_GET['idUtilisateur'];
+        $idUtilisateur = static::getIfSetAndNumeric("idUtilisateur");
 
         $session->enregistrer("idUtilisateur", $idUtilisateur);
 
         static::message("frontController.php", "Désormais connecté en tant que $idUtilisateur");
+    }
+
+    protected static function checkEstConnecte(): void
+    {
+        $session = Session::getInstance();
+        if (!$session->contient("idUtilisateur")) {
+            static::error("frontController.php", "Vous devez être connecté pour accéder à cette page");
+        }
+    }
+
+    protected static function getIfSet(string $parametre, string $errorUrl = "frontController.php", string $errorMessage = "[PARAMETRE] non rempli"): string
+    {
+        $errorMessage = str_replace("[PARAMETRE]", $parametre, $errorMessage);
+        if (!isset($_GET[$parametre])) {
+            if (!isset($_POST[$parametre])) {
+                static::error($errorUrl, $errorMessage);
+            } else {
+                return $_POST[$parametre];
+            }
+        } else {
+            return $_GET[$parametre];
+        }
+    }
+
+    protected static function getIfSetAndNumeric(string $parametre, string $errorUrl = "frontController.php", string $errorMessage = "[PARAMETRE] non rempli"): int
+    {
+        $valeur = static::getIfSet($parametre, $errorUrl, $errorMessage);
+        if (!is_numeric($valeur)) {
+            static::error($errorUrl, "$parametre doit être un nombre");
+        }
+        return (int) $valeur;
+    }
+
+    protected static function getIfSetAndNotEmpty(string $parametre, string $errorUrl = "frontController.php", string $errorMessage = "[PARAMETRE] non rempli"): string
+    {
+        $valeur = static::getIfSet($parametre, $errorUrl, $errorMessage);
+        if (empty($valeur)) {
+            static::error($errorUrl, "$parametre ne peut pas être vide");
+        }
+        return $valeur;
     }
 }
