@@ -11,6 +11,7 @@
 
     <a class="button" href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=10002">Afficher les propositions (question id 10002, orga id 10002, Mythes SQL)</a>
     <a class="button" href="frontController.php?controller=question&action=afficherResultats&idQuestion=10002">Afficher les résultats (question id 10002, Mythes SQL)</a>
+    <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireDemanderCoAuteur&idProposition=20001">Demander à être co-auteur pour la proposition id 20001</a>
 
     <a class="button validerBtn" href="frontController.php?controller=main&action=seConnecter&idUtilisateur=10000">Se connecter en tant que 10000 (P. Valicov)</a>
     <a class="button validerBtn" href="frontController.php?controller=main&action=seConnecter&idUtilisateur=10001">Se connecter en tant que 10001 (A. Chollet)</a>

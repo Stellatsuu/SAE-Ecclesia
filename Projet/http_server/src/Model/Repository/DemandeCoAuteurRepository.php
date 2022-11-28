@@ -1,0 +1,55 @@
+<?php
+
+namespace App\SAE\Model\Repository;
+
+use App\SAE\Model\DataObject\AbstractDataObject;
+use App\SAE\Model\DataObject\DemandeCoAuteur;
+
+class DemandeCoAuteurRepository extends AbstractRepository
+{
+
+    protected function getNomTable(): string
+    {
+        return "demande_co_auteur";
+    }
+
+    protected function getNomClePrimaire(): string
+    {
+        return "id_demandeur, id_proposition";
+    }
+
+    protected function getNomsColonnes(): array
+    {
+        return [
+            "id_demandeur",
+            "id_proposition",
+            "message"
+        ];
+    }
+
+    protected function construire(array $objetFormatTableau): DemandeCoAuteur
+    {
+        return new DemandeCoAuteur(
+            $objetFormatTableau['id_demandeur'],
+            $objetFormatTableau['id_proposition'],
+            $objetFormatTableau['message']
+        );
+    }
+
+    public function selectAllByProposition(int $idProposition) {
+        $sql = "SELECT * FROM demande_co_auteur WHERE id_proposition = :id_proposition";
+        $pdo = DatabaseConnection::getPdo();
+        $values = [
+            'id_proposition' => $idProposition
+        ];
+
+        $pdoStatement = $pdo->prepare($sql);
+        $pdoStatement->execute($values);
+
+        $resultat = [];
+        foreach ($pdoStatement as $ligne) {
+            $resultat[] = $this->construire($ligne);
+        }
+        return $resultat;
+    }
+}

@@ -12,6 +12,7 @@ use App\SAE\Model\Repository\PropositionRepository;
 use App\SAE\Model\Repository\QuestionRepository;
 use App\SAE\Model\Repository\UtilisateurRepository;
 use App\SAE\Lib\PhaseQuestion as Phase;
+use App\SAE\Model\Repository\DemandeCoAuteurRepository;
 
 class PropositionController extends MainController
 {
@@ -300,12 +301,15 @@ class PropositionController extends MainController
             return $utilisateur->getIdUtilisateur() != $proposition->getResponsable()->getIdUtilisateur();
         }));
 
+        $demandesCoAuteurs = (new DemandeCoAuteurRepository)->selectAllByProposition($proposition->getIdProposition());
+
         static::afficherVue('view.php', [
             "titrePage" => "Gérer les co-auteurs",
             "contenuPage" => "formulaireGererCoAuteurs.php",
             "proposition" => $proposition,
             "utilisateursAutorises" => $utilisateursAutorises,
-            "coAuteurs" => $proposition->getCoAuteurs()
+            "coAuteurs" => $proposition->getCoAuteurs(),
+            "demandesCoAuteurs" => $demandesCoAuteurs
         ]);
     }
 
@@ -360,6 +364,43 @@ class PropositionController extends MainController
         }
 
         static::message("frontController.php?controller=question&action=listerMesQuestions", "Les co-auteurs ont bien été modifiés.");
+    }
+
+    public static function afficherFormulaireDemanderCoAuteur() {
+        if (!isset($_GET['idProposition']) || !is_numeric($_GET['idProposition'])) {
+            static::error("frontController.php", "Aucune proposition n'a été sélectionnée.");
+            return;
+        }
+        $idProposition = intval($_GET['idProposition']);
+
+        $proposition = Proposition::toProposition((new PropositionRepository())->select($idProposition));
+        if (!$proposition) {
+            static::error("frontController.php", "La proposition n'existe pas.");
+            return;
+        }
+
+        static::afficherVue('view.php', [
+            "titrePage" => "Demander à être co-auteur",
+            "contenuPage" => "formulaireDemanderCoAuteur.php",
+            "proposition" => $proposition
+        ]);
+    }
+
+    public static function demanderCoAuteur() {
+        $session = Session::getInstance();
+
+        if(!$session->contient('idUtilisateur')) {
+            static::error("frontController.php", "Vous devez être connecté pour demander à être co-auteur.");
+            return;
+        }
+        $idUtilisateur = $session->lire('idUtilisateur');
+
+        if (!isset($_POST['idProposition']) || !is_numeric($_POST['idProposition'])) {
+            static::error("frontController.php", "Aucune proposition n'a été sélectionnée.");
+            return;
+        }
+        $idProposition = intval($_POST['idProposition']);
+
     }
 
     public static function afficherPropositions(){
