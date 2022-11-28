@@ -270,4 +270,20 @@ class QuestionRepository extends AbstractRepository
 
         return $pdo->fetch()['a_vote'] > 0;
     }
+    
+    public function selectAllQuestionsFinies() : array{
+        $sql = "SELECT *
+                FROM question
+                WHERE date_fermeture_votes <= CURRENT_TIMESTAMP";
+
+        $pdo = DatabaseConnection::getPdo();
+
+        $pdoStatement = $pdo->query($sql);
+
+        $resultat = [];
+        foreach ($pdoStatement as $ligne) {
+            $resultat[] = $this->construire($ligne);
+        }
+        return $resultat;
+    }
 }
