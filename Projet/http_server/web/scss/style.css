@@ -299,7 +299,7 @@ header #mobileMenu {
     height: auto;
     margin: 0;
     position: fixed;
-    width: calc(100% - 85px);
+    width: calc(100% - 105px);
     border: none;
     top: 45px;
     background-color: transparent;
