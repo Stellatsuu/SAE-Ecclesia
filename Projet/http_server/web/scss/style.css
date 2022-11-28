@@ -373,7 +373,7 @@ input[type=time]::-webkit-calendar-picker-indicator {
 }
 @media screen and (max-width: 1000px) {
   #roles_input #votants_input,
-#roles_input #redacteurs_input {
+  #roles_input #redacteurs_input {
     width: 100%;
   }
 }
@@ -432,38 +432,38 @@ input[type=time]::-webkit-calendar-picker-indicator {
   }
 }
 
-.demandeQuestion {
+#listeDemandesQuestions .demandeQuestion {
   width: 100%;
   margin: 10px 0;
 }
-.demandeQuestion .boite:last-child {
+#listeDemandesQuestions .demandeQuestion .boite:last-child {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-.demandeQuestion .boite:first-child {
+#listeDemandesQuestions .demandeQuestion .boite:first-child {
   width: calc(100% - 26px);
 }
-.demandeQuestion .button {
+#listeDemandesQuestions .demandeQuestion .button {
   margin: 5px;
   width: calc(100% - 60px);
 }
-
 @media screen and (min-width: 500px) {
-  .demandeQuestion {
+  #listeDemandesQuestions .demandeQuestion {
     display: flex;
   }
-  .demandeQuestion .boite:last-child {
+  #listeDemandesQuestions .demandeQuestion .boite:last-child {
     border-left: 0;
   }
 }
 @media screen and (max-width: 499px) {
-  .demandeQuestion .boite:last-child {
+  #listeDemandesQuestions .demandeQuestion .boite:last-child {
     border-top: 0;
     width: calc(100% - 26px);
   }
 }
+
 .message, .errorMessage {
   /* glassmorphism */
   background: rgba(255, 255, 255, 0.2);
@@ -545,25 +545,25 @@ input[type=time]::-webkit-calendar-picker-indicator {
   }
 }
 
-.question {
+#listeMesQuestions .question {
   text-align: justify;
   width: 100%;
   margin: 10px 0;
 }
-.question .boite {
+#listeMesQuestions .question .boite {
   height: 160px;
   overflow: hidden;
   display: flex;
   flex-direction: row;
   width: calc(100% - 26px);
 }
-.question .boite div:first-child {
+#listeMesQuestions .question .boite div:first-child {
   width: 80%;
 }
-.question .boite div:first-child p {
+#listeMesQuestions .question .boite div:first-child p {
   margin: 0;
 }
-.question .boite div:last-child {
+#listeMesQuestions .question .boite div:last-child {
   width: 20%;
   display: flex;
   flex-direction: column;
@@ -571,8 +571,8 @@ input[type=time]::-webkit-calendar-picker-indicator {
   justify-content: center;
   gap: 10px;
 }
-.question .boite div:last-child .button,
-.question .boite div:last-child button {
+#listeMesQuestions .question .boite div:last-child .button,
+#listeMesQuestions .question .boite div:last-child button {
   margin: 0;
 }
 
@@ -681,40 +681,40 @@ input[type=time]::-webkit-calendar-picker-indicator {
   }
 }
 
-#afficherPropositions #propositionTitle {
+#afficherResultats #propositionTitle {
   width: 100%;
 }
-#afficherPropositions #description {
+#afficherResultats #description {
   text-align: justify;
 }
-#afficherPropositions #propositionSelector {
+#afficherResultats #propositionSelector {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 30px;
   width: 100%;
 }
-#afficherPropositions #propositionSelector a:first-child {
+#afficherResultats #propositionSelector a:first-child {
   margin-right: 20px;
 }
-#afficherPropositions #propositionSelector a:last-child {
+#afficherResultats #propositionSelector a:last-child {
   margin-left: 20px;
 }
-#afficherPropositions #propositionSelector .boite {
+#afficherResultats #propositionSelector .boite {
   min-width: calc(50% - 90px);
   text-align: center;
 }
-#afficherPropositions #proposition {
+#afficherResultats #proposition {
   width: 80%;
 }
-#afficherPropositions #proposition h2 {
+#afficherResultats #proposition h2 {
   margin: 0 0 4px 0;
 }
-#afficherPropositions #proposition p {
+#afficherResultats #proposition p {
   text-align: justify;
   margin: 0 0 4px 0;
 }
-#afficherPropositions #proposition p + h2 {
+#afficherResultats #proposition p + h2 {
   margin-top: 8px;
 }
 
@@ -766,9 +766,37 @@ input[type=time]::-webkit-calendar-picker-indicator {
   background: linear-gradient(to right, #E1603C 0%, #E1603C var(--percentage), #1B1B1B var(--percentage), #1B1B1B 100%);
 }
 
+#listeQuestionsFinies .question {
+  text-align: justify;
+  width: 100%;
+  margin: 10px 0;
+}
+#listeQuestionsFinies .question .boite {
+  height: 160px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  width: calc(100% - 26px);
+  position: relative;
+}
+#listeQuestionsFinies .question .boite #date {
+  font-size: 0.8rem;
+  position: absolute;
+  top: 0;
+  right: 15px;
+  color: rgb(168, 168, 168);
+}
+#listeQuestionsFinies .question .boite #organisateur {
+  font-size: 0.8rem;
+}
+
 h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset, body {
   color: white;
   font-family: Raleway, serif;
+}
+
+a {
+  text-decoration-color: white;
 }
 
 .unselectable {
