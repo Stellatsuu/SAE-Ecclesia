@@ -11,7 +11,7 @@ $propositions = array_map(function ($p) {
 
 ?>
 
-<div class="panel" id="afficherPropositions">
+<div class="panel" id="afficherResultats">
     <h1><?= $question->getTitre() ?> - Résultats</h1>
     <p id="description"><?= $question->getDescription() ?></p>
 
