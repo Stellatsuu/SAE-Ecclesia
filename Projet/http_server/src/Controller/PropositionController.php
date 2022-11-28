@@ -324,12 +324,14 @@ class PropositionController extends MainController
         ]);
     }
 
+
     public static function supprimerProposition(){
-        if (!isset($_POST['idProposition']) || !is_numeric($_POST['idProposition'])) {
+        $session = Session::getInstance();
+        if (!isset($_GET['idProposition']) || !is_numeric($_GET['idProposition'])) {
             static::error("frontController.php", "Aucune proposition n'a été sélectionnée.");
             return;
         }
-        $idProposition = intval($_POST['idProposition']);
+        $idProposition = intval($_GET['idProposition']);
 
         $proposition = Proposition::toProposition((new PropositionRepository())->select($idProposition));
         if (!$proposition) {
@@ -341,8 +343,6 @@ class PropositionController extends MainController
         $phase = $question->getPhase();
         switch ($phase) {
             case Phase::Attente:
-                QuestionController::error("frontController.php", "La question n'existe pas encore. Vous ne pouvez pas encore supprimer de proposition.");
-                break;
             case Phase::NonRemplie:
                 QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore supprimer de proposition.");
                 break;
@@ -354,14 +354,20 @@ class PropositionController extends MainController
                 break;
         }
 
-        $idUtilisateur = $_GET['idUtilisateur'];
+        $idUtilisateur = $session->lire("idUtilisateur");
         if(!($question->getOrganisateur()->getIdUtilisateur() == $idUtilisateur||(new QuestionRepository)->estRedacteur($question->getIdQuestion(), $idUtilisateur))){
-            static::error("frontController.php?controller=question&action=afficherPropositions", "Vous n'avez pas accès aux propositions");
+            static::error("frontController.php?controller=proposition&action=afficherPropositions".$question->getValeurClePrimaire(), "Vous n'avez pas accès aux propositions");
             return;
         }
 
-        (new PropositionRepository)->delete();
-        static::message("frontController.php?controller=demandeQuestion&action=afficherPropositions", "La proposition a été supprimé");
+
+        (new PropositionRepository)->deleteCoAuteurs($idProposition);
+        $idPragraphes = (new ParagrapheRepository())->selectAllByProposition($idProposition);
+        foreach ($idPragraphes as $paragraphe){
+            (new ParagrapheRepository())->delete($paragraphe->getIdParagraphe());
+        }
+        (new PropositionRepository)->delete($idProposition);
+        static::message("frontController.php?controller=proposition&action=afficherPropositions&idQuestion=".$question->getValeurClePrimaire(), "La proposition a bien été supprimé.");
 
     }
     
