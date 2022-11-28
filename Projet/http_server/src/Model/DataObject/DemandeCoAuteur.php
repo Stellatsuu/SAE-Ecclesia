@@ -85,4 +85,11 @@ class DemandeCoAuteur extends AbstractDataObject
         return $this->proposition;
     }
 
+    //Caster
+
+    public static function toDemandeCoAuteur($object): DemandeCoAuteur
+    {
+        return $object;
+    }
+
 }

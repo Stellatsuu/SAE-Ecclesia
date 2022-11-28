@@ -1,4 +1,4 @@
-<form method="post" action="frontController.php?action=gererCoAuteurs&controller=proposition" class="panel" id="gererCoAuteursForm">
+<form method="post" action="frontController.php?action=gererCoAuteurs&controller=coAuteur" class="panel" id="gererCoAuteursForm">
     <h1>Co-auteurs de la proposition "<?= htmlspecialchars($proposition->getTitreProposition()) ?>" :</h1>
     <fieldset>
 
@@ -13,6 +13,39 @@
     </fieldset>
 
     <input type="submit" value="Valider">
+
+    <h2>Demandes de participation:</h2>
+
+    <?php
+
+    use App\SAE\Model\DataObject\DemandeCoAuteur;
+
+    foreach ($demandesCoAuteur as $demande) {
+
+        $demande = DemandeCoAuteur::toDemandeCoAuteur($demande);
+        $idDemandeur = $demande->getIdDemandeur();
+        $demandeur = $demande->getDemandeur();
+        $nomComplet = $demandeur->getPrenom() . " " . strtoupper($demandeur->getNom());
+        $message = $demande->getMessage();
+        $idProposition = $demande->getIdProposition();
+
+        $html = <<<HTML
+        <div class="boite demandeCoAuteur">
+            <p>$message</p>
+            <p>$nomComplet</p>
+            <div>
+                <a href="frontController.php?action=accepterDemandeCoAuteur&controller=coAuteur&idDemandeur=$idDemandeur&idProposition=$idProposition" class="button validerBtn">Accepter</a>
+                <a href="frontController.php?action=refuserDemandeCoAuteur&controller=coAuteur&idDemandeur=$idDemandeur&idProposition=$idProposition" class="button refuserBtn">Refuser</a>
+            </div>
+        </div>
+        HTML;
+
+        echo $html;
+    }
+
+    ?>
+
+
 </form>
 
 
@@ -21,6 +54,5 @@
     const coAuteurs = <?= json_encode($coAuteurs) ?>;
     console.log(utilisateurs);
     const options = '<option value="" selected disabled>---</option>' + utilisateurs.map(utilisateur => `<option value="${utilisateur.idUtilisateur}">${(utilisateur.nom).toUpperCase()} ${utilisateur.prenom}</option>`).join("\n");
-
 </script>
 <script type="module" src="js/co_auteurs.js"></script>
