@@ -3,6 +3,8 @@
     <h2>Bienvenue sur le site de E:cclesia</h2>
 
     <a class="button" href="frontController.php?controller=demandeQuestion&action=listerDemandesQuestion">Lister les demandes de questions</a>
+    <a class="button" href="frontController.php?controller=question&action=afficherQuestionsFinies">Lister les questions finies</a>
+
     <a class="button" href="frontController.php?controller=demandeQuestion&action=afficherFormulaireDemandeQuestion">Demande question</a>
     <a class="button" href="frontController.php?controller=question&action=listerMesQuestions">Mes questions (id session)</a>
     <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireEcrireProposition&idQuestion=1">Ecrire nouvelle proposition (question id 1, "Blind Test")</a>

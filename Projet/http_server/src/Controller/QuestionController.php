@@ -193,7 +193,7 @@ class QuestionController extends MainController
         } else if ($description == "") {
             static::error("frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion", "Veuillez remplir tous les champs");
             return;
-        } else if(strlen($description) > 4000) {
+        } else if (strlen($description) > 4000) {
             static::error("frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion", "La description de la question ne doit pas dépasser 4000 caractères");
             return;
         } else if (count($sections) == 0) {
@@ -281,7 +281,8 @@ class QuestionController extends MainController
         static::message("frontController.php?controller=question&action=listerMesQuestions", "La question est maintenant en phase de vote");
     }
 
-    public static function passagePhaseResultats() {
+    public static function passagePhaseResultats()
+    {
         if (!isset($_GET['idQuestion']) || !is_numeric($_GET['idQuestion'])) {
             static::error("frontController.php", "Veuillez entrer un identifiant de question valide");
             return;
@@ -313,7 +314,7 @@ class QuestionController extends MainController
     {
         $session = Session::getInstance();
 
-        if(!$session->contient("idUtilisateur")) {
+        if (!$session->contient("idUtilisateur")) {
             static::error("frontController.php", "Vous devez être connecté pour accéder à cette page");
             return;
         }
@@ -328,7 +329,8 @@ class QuestionController extends MainController
         ]);
     }
 
-    public static function afficherResultats() {
+    public static function afficherResultats()
+    {
         if (!isset($_GET['idQuestion']) || !is_numeric($_GET['idQuestion'])) {
             static::error("frontController.php", "Aucune question n'a été sélectionnée");
             return;
@@ -345,13 +347,13 @@ class QuestionController extends MainController
         $question = Question::toQuestion($question);
 
         $phase = $question->getPhase();
-        if($phase != Phase::Resultat){
+        if ($phase != Phase::Resultat) {
             static::error("frontController.php", "La question n'est pas terminée. Vous ne pouvez pas encore voir les résultats");
             return;
         }
 
         $propositions = (new PropositionRepository())->selectAllByQuestion($idQuestion);
-        if(count($propositions) == 0){
+        if (count($propositions) == 0) {
             static::error("frontController.php", "Il n'y a aucune proposition pour cette question");
             return;
         }
@@ -363,8 +365,8 @@ class QuestionController extends MainController
 
         $idPropositionsGagnantes = array_keys($resultats, max($resultats));
 
-        $propositionsGagnantes = array_reduce($propositions, function($carry, $item) use ($idPropositionsGagnantes) {
-            if(in_array($item->getIdProposition(), $idPropositionsGagnantes))
+        $propositionsGagnantes = array_reduce($propositions, function ($carry, $item) use ($idPropositionsGagnantes) {
+            if (in_array($item->getIdProposition(), $idPropositionsGagnantes))
                 $carry[] = $item;
             return $carry;
         }, []);
@@ -380,6 +382,17 @@ class QuestionController extends MainController
             "propositionGagnante" => $propositionsGagnante,
             "resultats" => $resultats,
             "nbTotalVotes" => $nbTotalVotes
+        ]);
+    }
+
+    public static function afficherQuestionsFinies()
+    {
+        $questions = (new QuestionRepository())->selectAllQuestionsFinies();
+
+        static::afficherVue("view.php", [
+            "titrePage" => "Résultats",
+            "contenuPage" => "listeQuestionsFinies.php",
+            "questions" => $questions
         ]);
     }
 }
