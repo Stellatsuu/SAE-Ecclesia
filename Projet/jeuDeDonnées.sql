@@ -21,7 +21,7 @@ INSERT INTO Demande_Question(titre_demande_question, description_demande_questio
 
 -- Question
 INSERT INTO Question(id_question, titre_question, description_question, id_organisateur) VALUES(10001, 'Cryptographie', 'Est-ce que le chiffrement symétrique est un bon chiffrement ?', 10004); --MJ
-INSERT INTO Question(id_question, titre_question, description_question, id_organisateur) VALUES(10002, 'Mythes SQL', 'Les SQL Ninjas : Mythologie ou réalité ?', 10002); --Palleja X
+INSERT INTO Question(id_question, titre_question, description_question, id_organisateur, date_debut_redaction, date_fin_redaction, date_ouverture_votes, date_fermeture_votes) VALUES(10002, 'Mythes SQL', 'Les SQL Ninjas : Mythologie ou réalité ?', 10002, '2020-01-01 00:00:00', '2024-01-01 00:00:00', '2024-01-01 00:00:00', '2024-01-01 00:00:00'); --X Palleja
 
 -- Section
 INSERT INTO Section(id_section, id_question, nom_section, description_section) VALUES (4001, 10002, 'Section n°1', 'Ceci est la section n°1');
