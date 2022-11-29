@@ -27,9 +27,7 @@ class DemandeQuestionController extends MainController
     public static function refuserDemandeQuestion(): void
     {
         $idQuestion = static::getIfSetAndNumeric("idQuestion", LDQ_URL);
-
         (new DemandeQuestionRepository)->delete($idQuestion);
-
         static::message("frontController.php?controller=demandeQuestion&action=listerDemandesQuestion", "La demande a été refusée");
     }
 
@@ -38,6 +36,7 @@ class DemandeQuestionController extends MainController
         $idQuestion = static::getIfSetAndNumeric("idQuestion", LDQ_URL);
 
         $demande = DemandeQuestion::castIfNotNull((new DemandeQuestionRepository)->select($idQuestion));
+
         $question = new Question(
             -1,
             $demande->getTitre(),
@@ -48,7 +47,7 @@ class DemandeQuestionController extends MainController
         (new QuestionRepository)->insertEbauche($question);
         (new DemandeQuestionRepository)->delete($idQuestion);
 
-        static::message("frontController.php?controller=demandeQuestion&action=listerDemandesQuestion", "La question a été acceptée");
+        static::message(LDQ_URL, "La question a été acceptée");
     }
 
     public static function afficherFormulaireDemandeQuestion(): void
@@ -76,6 +75,6 @@ class DemandeQuestionController extends MainController
         $demande = new DemandeQuestion(-1, $titre, $description, $idUtilisateur);
         (new DemandeQuestionRepository)->insert($demande);
 
-        static::message("frontController.php?controller=question&action=listerMesQuestions", "Votre demande a été envoyée");
+        static::message(LMQ_URL, "Votre demande a été envoyée");
     }
 }
