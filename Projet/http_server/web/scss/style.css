@@ -267,6 +267,9 @@ header #mobileMenu {
   display: none;
 }
 @media screen and (max-width: 600px) {
+  header {
+    margin-bottom: 90px;
+  }
   header #mobileMenu {
     height: 45px;
     width: 100%;
