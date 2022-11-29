@@ -8,8 +8,7 @@ use App\SAE\Model\Repository\DemandeQuestionRepository as DemandeQuestionReposit
 use App\SAE\Model\DataObject\DemandeQuestion as DemandeQuestion;
 use App\SAE\Model\Repository\UtilisateurRepository as UtilisateurRepository;
 
-const LDQ_URL = "frontController.php?controller=demandeQuestion&action=listerDemandesQuestion";
-const AFDQ_URL = "frontController.php?controller=demandeQuestion&action=afficherFormulaireDemandeQuestion";
+
 
 class DemandeQuestionController extends MainController
 {
@@ -60,9 +59,11 @@ class DemandeQuestionController extends MainController
 
     public static function demanderCreationQuestion(): void
     {
+        $session = static::getSessionSiConnecte();
+        $idUtilisateur = $session->lire("idUtilisateur");
+
         $titre = static::getIfSetAndNotEmpty("titre", AFDQ_URL);
         $description = static::getIfSetAndNotEmpty("description", AFDQ_URL);
-        $idUtilisateur = static::getIfSetAndNumeric("idUtilisateur", AFDQ_URL);
 
         if (strlen($titre) > 100) {
             static::error(AFDQ_URL, "Le titre ne doit pas dépasser 100 caractères");

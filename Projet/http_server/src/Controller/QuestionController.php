@@ -13,7 +13,6 @@ use App\SAE\Model\HTTP\Session;
 use DateTime;
 use DateInterval;
 
-const LMQ_URL = "frontController.php?controller=question&action=listerMesQuestions";
 
 class QuestionController extends MainController
 {

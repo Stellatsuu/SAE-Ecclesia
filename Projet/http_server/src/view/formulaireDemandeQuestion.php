@@ -16,7 +16,5 @@
 
     </fieldset>
 
-    <label for="idUtilisateur_id"></label>
-    <input type="number" name="idUtilisateur" id="idUtilisateur_id" required>
     <input type="submit" value="Valider">
 </form>

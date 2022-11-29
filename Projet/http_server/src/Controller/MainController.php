@@ -7,6 +7,9 @@ use App\SAE\Model\HTTP\Session;
 use App\SAE\Model\Repository\DatabaseConnection;
 
 const ACCUEIL_URL = "frontController.php";
+const LDQ_URL = "frontController.php?controller=demandeQuestion&action=listerDemandesQuestion";
+const AFDQ_URL = "frontController.php?controller=demandeQuestion&action=afficherFormulaireDemandeQuestion";
+const LMQ_URL = "frontController.php?controller=question&action=listerMesQuestions";
 
 class MainController
 {
