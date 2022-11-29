@@ -30,10 +30,12 @@
         $idProposition = $demande->getIdProposition();
 
         $html = <<<HTML
-        <div class="boite demandeCoAuteur">
-            <p>$message</p>
-            <p>$nomComplet</p>
-            <div>
+        <div class="demandeCoAuteur acceptOrDeny">
+            <div class="boite">
+                <p>$nomComplet</p>
+                <p>$message</p>
+            </div>
+            <div class="boite">
                 <a href="frontController.php?action=accepterDemandeCoAuteur&controller=coAuteur&idDemandeur=$idDemandeur&idProposition=$idProposition" class="button validerBtn">Accepter</a>
                 <a href="frontController.php?action=refuserDemandeCoAuteur&controller=coAuteur&idDemandeur=$idDemandeur&idProposition=$idProposition" class="button refuserBtn">Refuser</a>
             </div>
