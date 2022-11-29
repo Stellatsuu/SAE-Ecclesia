@@ -52,10 +52,12 @@ class PropositionController extends MainController
 
     public static function ecrireProposition()
     {
+        $session = static::getSessionSiConnecte();
+
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
         $question = Question::castIfNotNull((new QuestionRepository())->select($idQuestion));
 
-        $idResponsable = static::getIfSetAndNumeric("idResponsable");
+        $idResponsable = $session->lire("idUtilisateur");
         $responsable = Utilisateur::castIfNotNull((new UtilisateurRepository())->select($idResponsable));
 
         $titreProposition = static::getIfSetAndNotEmpty("titreProposition");
@@ -189,7 +191,7 @@ class PropositionController extends MainController
             $paragraphe->setContenuParagraphe($contenu);
             $paragraphes[] = $paragraphe;
 
-            if ((new ParagrapheRepository())->estCoAuteur($paragraphe->getIdParagraphe(), $_POST['idCoAuteur'])) {
+            if ((new ParagrapheRepository())->estCoAuteur($paragraphe->getIdParagraphe(), $idUtilisateur)) {
                 $estCoAuteur = true;
             }
         }

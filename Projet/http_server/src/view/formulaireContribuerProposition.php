@@ -44,7 +44,6 @@
         ?>
     </fieldset>
 
-    <input type="number" name="idCoAuteur" required/>
     <input type="hidden" name="idProposition" value="<?= htmlspecialchars($proposition->getidProposition()) ?>"/>
     <input type="submit" value="Enregistrer"/>
 </form>

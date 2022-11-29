@@ -57,12 +57,12 @@ INSERT INTO Paragraphe(id_paragraphe, id_proposition, id_section, contenu_paragr
 INSERT INTO Paragraphe(id_paragraphe, id_proposition, id_section, contenu_paragraphe) VALUES (3009, 20003, 4003, 'Ceci est le paragraphe n°3 de la proposition n°3');
 
 -- Co_Auteur
-INSERT INTO Co_Auteur(id_utilisateur, id_paragraphe) VALUES (10008,3001); --Rouchon
-INSERT INTO Co_Auteur(id_utilisateur, id_paragraphe) VALUES (10000, 3001); --Petru
+INSERT INTO Co_Auteur(id_utilisateur, id_paragraphe) VALUES (10000, 3007); --Valicov pour la prop de MJ
+INSERT INTO Co_Auteur(id_utilisateur, id_paragraphe) VALUES (10000, 3008); --Valicov pour la prop de MJ
+INSERT INTO Co_Auteur(id_utilisateur, id_paragraphe) VALUES (10000, 3009); --Valicov pour la prop de MJ
 
 -- Vote
 INSERT INTO Vote(id_votant, id_proposition, valeur) VALUES (10000, 20001, 1); --Valicov
 INSERT INTO Vote(id_votant, id_proposition, valeur) VALUES (10001, 20002, 1); --Chollet
 INSERT INTO Vote(id_votant, id_proposition, valeur) VALUES (10002, 20003, 1); --Palleja X
 INSERT INTO Vote(id_votant, id_proposition, valeur) VALUES (10003, 20003, 1); --Palleja N
-INSERT INTO Vote(id_votant, id_proposition, valeur) VALUES (10004, 20003, 1); --MJ

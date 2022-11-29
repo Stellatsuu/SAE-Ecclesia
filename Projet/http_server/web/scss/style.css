@@ -846,7 +846,9 @@ input[type=time]::-webkit-calendar-picker-indicator {
 #resultats_vote div div span {
   margin-right: 10px;
 }
-#resultats_vote div div label, #resultats_vote div div span {
+#resultats_vote div div label,
+#resultats_vote div div span {
+  z-index: 1;
   font-size: 1.2rem;
 }
 #resultats_vote div div .percentage_bar {
@@ -873,7 +875,19 @@ input[type=time]::-webkit-calendar-picker-indicator {
 #listeQuestionsFinies .question .boite div {
   width: 100%;
 }
-#listeQuestionsFinies .question .boite #date {
+#listeQuestionsFinies .question .boite div div {
+  display: flex;
+  justify-content: space-between;
+}
+#listeQuestionsFinies .question .boite div p {
+  margin-top: 0;
+}
+#listeQuestionsFinies .question .boite div {
+  width: 100%;
+}
+#listeQuestionsFinies .question .boite .date {
+  text-align: right;
+  margin: 0;
   font-size: 0.8rem;
   color: rgb(168, 168, 168);
 }

@@ -54,7 +54,7 @@ $estOrganisateur = $question->getIdOrganisateur() === $idUtilisateur;
         $modalHtml = <<<HTML
         <div id="modalSupprimer" class="modal">
             <div class="modal-content boite">
-                <p>Êtes vous sûr(e) de vouloir supprimer la proposition</p>
+                <p>Êtes vous sûr(e) de vouloir supprimer la proposition ?</p>
                 <div>
                     <a class="button refuserBtn" href="#">Non</a>
                     <a class="button validerBtn" href="frontController.php?controller=proposition&action=supprimerProposition&idProposition={$propositionActuelle->getIdProposition()}">Oui</a>
