@@ -2,19 +2,26 @@
 
 
 use App\SAE\Lib\PhaseQuestion;
+use App\SAE\Model\DataObject\Proposition;
 use App\SAE\Model\DataObject\Question;
 
-$propositionActuelle = $propositions[$index];
+$propositionActuelle = Proposition::castIfNotNull($propositions[$index]);
 $nbPropopositions = count($propositions);
-$question = Question::toQuestion($question);
+$question = Question::castIfNotNull($question);
+$phase = $question->getPhase();
+$responsable = $propositionActuelle->getResponsable();
+$nomResponsable = $responsable->getPrenom() . " " . strtoupper($responsable->getNom());
+
+$estResponsable = $responsable->getIdUtilisateur() === $idUtilisateur;
+$estOrganisateur = $question->getIdOrganisateur() === $idUtilisateur;
 ?>
 
 <div class="panel" id="afficherPropositions">
-    <input type="checkbox" id="questionDescription" class="texteDepliantTrigger"/>
+    <input type="checkbox" id="questionDescription" class="texteDepliantTrigger" />
     <div id="propositionTitle">
         <h1 class="title"><?= $question->getTitre() ?></h1>
         <label for="questionDescription">
-            <img src='./assets/images/arrow.svg' class='arrow' alt='open and close arrow'/>
+            <img src='./assets/images/arrow.svg' class='arrow' alt='open and close arrow' />
         </label>
     </div>
     <p id="description"><?= $question->getDescription() ?></p>
@@ -39,20 +46,24 @@ $question = Question::toQuestion($question);
         }
         ?>
     </div>
+    <p id="nomResponsable"><?= $nomResponsable ?></p>
     <div id="btns">
-    <?php
-        if($question->getPhase() == PhaseQuestion::Lecture)
+        <?php
+        if (($estResponsable || $estOrganisateur) && ($phase == PhaseQuestion::Lecture || $phase == PhaseQuestion::Redaction)) {
             echo <<<HTML
-            <a class="button" href="frontController.php?controller=proposition&action=supprimerProposition&idProposition=<?= $propositionActuelle->getIdProposition() ?>">Supprimer</a>
+            <a class="button" href="frontController.php?controller=proposition&action=supprimerProposition&idProposition={$propositionActuelle->getIdProposition()}">Supprimer</a>
             HTML;
-        if($question->getPhase() == PhaseQuestion::Redaction)
+        }
+
+        if ($estResponsable && $phase == PhaseQuestion::Redaction) {
             echo <<<HTML
             <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireContribuerProposition&idProposition={$propositionActuelle->getIdProposition()}">Modifier</a>
             HTML;
+        }
         ?>
     </div>
 
-    <form id="formulaire_vote" action="frontController.php?controller=vote&action=voter" method="post" style="<?= $question->getPhase() != PhaseQuestion::Vote ? 'display: none;' : '' ?>">
+    <form id="formulaire_vote" action="frontController.php?controller=vote&action=voter" method="post" style="<?= $phase != PhaseQuestion::Vote ? 'display: none;' : '' ?>">
 
         <h2>Vote</h2>
         <p>Le vote se déroule en 1 tour. Choisissez une unique proposition parmi les suivantes</p>

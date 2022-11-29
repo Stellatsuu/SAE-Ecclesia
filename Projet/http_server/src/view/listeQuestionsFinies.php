@@ -5,7 +5,7 @@
     use App\SAE\Model\DataObject\Question;
 
     foreach ($questions as $q) {
-        $q = Question::toQuestion($q);
+        $q = Question::castIfNotNull($q);
 
         $titre = htmlspecialchars($q->getTitre());
         $description = htmlspecialchars($q->getDescription());

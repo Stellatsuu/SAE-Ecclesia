@@ -16,7 +16,7 @@ $loader->register();
 class PropositionTest extends TestCase
 {
     public function testAfficherProposition(){
-        $proposition = Proposition::toProposition((new PropositionRepository())->select("20001"));
+        $proposition = Proposition::castIfNotNull((new PropositionRepository())->select("20001"));
 
         $this->assertEquals(20001, $proposition->getIdProposition());
         $this->assertEquals(10003, $proposition->getRedacteur());

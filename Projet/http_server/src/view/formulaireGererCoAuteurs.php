@@ -22,7 +22,7 @@
 
     foreach ($demandesCoAuteur as $demande) {
 
-        $demande = DemandeCoAuteur::toDemandeCoAuteur($demande);
+        $demande = DemandeCoAuteur::castIfNotNull($demande);
         $idDemandeur = $demande->getIdDemandeur();
         $demandeur = $demande->getDemandeur();
         $nomComplet = $demandeur->getPrenom() . " " . strtoupper($demandeur->getNom());

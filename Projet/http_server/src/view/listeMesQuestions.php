@@ -11,7 +11,7 @@ $i = 0;
     <?php
     foreach ($questions as $q) {
         $i++;
-        $q = Question::toQuestion($q);
+        $q = Question::castIfNotNull($q);
 
         $titre = htmlspecialchars($q->getTitre());
         $description = htmlspecialchars($q->getDescription());

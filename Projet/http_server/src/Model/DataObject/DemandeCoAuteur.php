@@ -2,6 +2,7 @@
 
 namespace App\SAE\Model\DataObject;
 
+use App\SAE\Controller\MainController;
 use App\SAE\Model\Repository\PropositionRepository;
 use App\SAE\Model\Repository\UtilisateurRepository;
 
@@ -87,9 +88,8 @@ class DemandeCoAuteur extends AbstractDataObject
 
     //Caster
 
-    public static function toDemandeCoAuteur($object): DemandeCoAuteur
+    public static function castIfNotNull($object, $errorUrl = "frontController.php", $errorMessage = "[OBJECT] n'existe pas") : DemandeCoAuteur
     {
-        return $object;
+        return static::castToClassIfNotNull($object, DemandeCoAuteur::class, $errorUrl, $errorMessage);
     }
-
 }

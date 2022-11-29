@@ -2,6 +2,7 @@
 
 namespace App\SAE\Model\DataObject;
 
+use App\SAE\Controller\MainController;
 use App\SAE\Model\Repository\UtilisateurRepository;
 
 class DemandeQuestion extends AbstractDataObject
@@ -79,9 +80,9 @@ class DemandeQuestion extends AbstractDataObject
 
     // Caster
 
-    public static function toDemandeQuestion($object): DemandeQuestion
+    public static function castIfNotNull($object, $errorUrl = "frontController.php", $errorMessage = "[OBJECT] n'existe pas") : DemandeQuestion
     {
-        return $object;
+        return static::castToClassIfNotNull($object, DemandeQuestion::class, $errorUrl, $errorMessage);
     }
     
 }

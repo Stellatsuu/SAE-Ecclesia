@@ -15,7 +15,7 @@ $loader->register();
     class QuestionTest extends TestCase{
 
         public function testAfficherQuestion(){
-            $question = Question::toQuestion((new QuestionRepository)->select(10001));
+            $question = Question::castIfNotNull((new QuestionRepository)->select(10001));
 
             $this->assertEquals("10001", $question->getIdQuestion());
             $this->assertEquals("Cryptographie", $question->getTitre());

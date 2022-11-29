@@ -2,6 +2,7 @@
 
 namespace App\SAE\Model\DataObject;
 
+use App\SAE\Controller\MainController;
 use App\SAE\Model\Repository\ParagrapheRepository;
 use App\SAE\Model\Repository\PropositionRepository;
 use App\SAE\Model\Repository\SectionRepository;
@@ -113,5 +114,12 @@ class Paragraphe extends AbstractDataObject
     public function setContenuParagraphe(string $contenuParagraphe): void
     {
         $this->contenuParagraphe = $contenuParagraphe;
+    }
+
+    //Caster
+
+    public static function castIfNotNull($object, $errorUrl = "frontController.php", $errorMessage = "[OBJECT] n'existe pas") : Paragraphe
+    {
+        return static::castToClassIfNotNull($object, Paragraphe::class, $errorUrl, $errorMessage);
     }
 }

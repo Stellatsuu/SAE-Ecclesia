@@ -47,10 +47,20 @@
     }
   }
 
+  #nomResponsable {
+    width: 80%;
+    text-align: right;
+    margin: 5px;
+  }
+
   #btns{
     width:80%;
     display:flex;
     justify-content: flex-end;
+
+    button, .button{
+      margin: 5px;
+    }
   }
 }
 

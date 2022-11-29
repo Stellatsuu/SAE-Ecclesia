@@ -60,9 +60,9 @@ class Utilisateur extends AbstractDataObject implements JsonSerializable
         ];
     }
 
-    public static function toUtilisateur($object): Utilisateur
+    public static function castIfNotNull($object, $errorUrl = "frontController.php", $errorMessage = "[OBJECT] n'existe pas"): Utilisateur
     {
-        return $object;
+        return static::castToClassIfNotNull($object, Utilisateur::class, $errorUrl, $errorMessage);
     }
     
 }

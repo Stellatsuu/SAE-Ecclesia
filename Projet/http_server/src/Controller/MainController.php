@@ -6,6 +6,8 @@ use App\SAE\Lib\MessageFlash;
 use App\SAE\Model\HTTP\Session;
 use App\SAE\Model\Repository\DatabaseConnection;
 
+const ACCUEIL_URL = "frontController.php";
+
 class MainController
 {
     public static function afficherVue(string $cheminVue, array $parametres): void
@@ -52,7 +54,7 @@ class MainController
         $pdo->exec($query1);
         $pdo->exec($query2);
 
-        static::message("frontController.php", "La base de données a été réinitialisée");
+        static::message(ACCUEIL_URL, "La base de données a été réinitialisée");
     }
 
     public static function seConnecter(): void
@@ -63,18 +65,19 @@ class MainController
 
         $session->enregistrer("idUtilisateur", $idUtilisateur);
 
-        static::message("frontController.php", "Désormais connecté en tant que $idUtilisateur");
+        static::message(ACCUEIL_URL, "Désormais connecté en tant que $idUtilisateur");
     }
 
-    protected static function checkEstConnecte(): void
+    protected static function getSessionSiConnecte($errorUrl = ACCUEIL_URL): Session
     {
         $session = Session::getInstance();
         if (!$session->contient("idUtilisateur")) {
-            static::error("frontController.php", "Vous devez être connecté pour accéder à cette page");
+            static::error($errorUrl, "Vous devez être connecté pour accéder à cette page");
         }
+        return $session;
     }
 
-    protected static function getIfSet(string $parametre, string $errorUrl = "frontController.php", string $errorMessage = "[PARAMETRE] non rempli"): string
+    protected static function getIfSet(string $parametre, string $errorUrl = ACCUEIL_URL, string $errorMessage = "[PARAMETRE] non rempli"): string
     {
         $errorMessage = str_replace("[PARAMETRE]", $parametre, $errorMessage);
         if (!isset($_GET[$parametre])) {
@@ -88,7 +91,7 @@ class MainController
         }
     }
 
-    protected static function getIfSetAndNumeric(string $parametre, string $errorUrl = "frontController.php", string $errorMessage = "[PARAMETRE] non rempli"): int
+    protected static function getIfSetAndNumeric(string $parametre, string $errorUrl = ACCUEIL_URL, string $errorMessage = "[PARAMETRE] non rempli"): int
     {
         $valeur = static::getIfSet($parametre, $errorUrl, $errorMessage);
         if (!is_numeric($valeur)) {
@@ -97,7 +100,7 @@ class MainController
         return (int) $valeur;
     }
 
-    protected static function getIfSetAndNotEmpty(string $parametre, string $errorUrl = "frontController.php", string $errorMessage = "[PARAMETRE] non rempli"): string
+    protected static function getIfSetAndNotEmpty(string $parametre, string $errorUrl = ACCUEIL_URL, string $errorMessage = "[PARAMETRE] non rempli"): string
     {
         $valeur = static::getIfSet($parametre, $errorUrl, $errorMessage);
         if (empty($valeur)) {

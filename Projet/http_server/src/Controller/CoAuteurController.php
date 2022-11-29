@@ -31,7 +31,7 @@ class CoAuteurController extends MainController
             static::error("frontController.php?controller=question&action=listerMesQuestions", "La proposition n'existe pas.");
             return;
         }
-        $proposition = Proposition::toProposition($proposition);
+        $proposition = Proposition::castIfNotNull($proposition);
 
         $question = $proposition->getQuestion();
         $phase = $question->getPhase();
@@ -79,7 +79,7 @@ class CoAuteurController extends MainController
             static::error("frontController.php", "La proposition n'existe pas.");
             return;
         }
-        $proposition = Proposition::toProposition($proposition);
+        $proposition = Proposition::castIfNotNull($proposition);
 
         $question = $proposition->getQuestion();
         $phase = $question->getPhase();
@@ -100,7 +100,7 @@ class CoAuteurController extends MainController
         foreach ($_POST as $key => $value) {
             if (substr($key, 0, 9) == "co_auteur") {
                 $idCoAuteur = intval($value);
-                $coAuteur = Utilisateur::toUtilisateur((new UtilisateurRepository())->select($idCoAuteur));
+                $coAuteur = Utilisateur::castIfNotNull((new UtilisateurRepository())->select($idCoAuteur));
                 if ($coAuteur && !in_array($coAuteur, $coAuteurs)) {
                     $coAuteurs[] = $coAuteur;
                 }
@@ -128,7 +128,7 @@ class CoAuteurController extends MainController
         }
         $idProposition = intval($_GET['idProposition']);
 
-        $proposition = Proposition::toProposition((new PropositionRepository())->select($idProposition));
+        $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
         if (!$proposition) {
             static::error("frontController.php", "La proposition n'existe pas.");
             return;
@@ -164,7 +164,7 @@ class CoAuteurController extends MainController
         }
 
         $idProposition = intval($_POST['idProposition']);
-        $proposition = Proposition::toProposition((new PropositionRepository())->select($idProposition));
+        $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
         if (!$proposition) {
             static::error("frontController.php", "La proposition n'existe pas.");
             return;
@@ -220,7 +220,7 @@ class CoAuteurController extends MainController
             return;
         }
 
-        $proposition = Proposition::toProposition((new PropositionRepository())->select($idProposition));
+        $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
         if (!$proposition) {
             static::error("frontController.php", "La proposition n'existe pas.");
             return;
@@ -269,7 +269,7 @@ class CoAuteurController extends MainController
             return;
         }
 
-        $proposition = Proposition::toProposition((new PropositionRepository())->select($idProposition));
+        $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
         if (!$proposition) {
             static::error("frontController.php", "La proposition n'existe pas.");
             return;

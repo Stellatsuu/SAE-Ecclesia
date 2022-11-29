@@ -85,4 +85,11 @@ class Section extends AbstractDataObject implements JsonSerializable {
             'description_section' => $this->descriptionSection
         ];
     }
+
+    //Caster
+
+    public static function castIfNotNull($object, $errorUrl = "frontController.php", $errorMessage = "[OBJECT] n'existe pas"): Section
+    {
+        return static::castToClassIfNotNull($object, Section::class, $errorUrl, $errorMessage);
+    }
 }
