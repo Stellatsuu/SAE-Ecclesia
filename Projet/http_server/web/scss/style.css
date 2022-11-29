@@ -842,7 +842,6 @@ input[type=time]::-webkit-calendar-picker-indicator {
   margin-right: 10px;
 }
 #resultats_vote div div label, #resultats_vote div div span {
-  z-index: 1;
   font-size: 1.2rem;
 }
 #resultats_vote div div .percentage_bar {
@@ -866,6 +865,9 @@ input[type=time]::-webkit-calendar-picker-indicator {
   flex-direction: row;
   width: calc(100% - 26px);
   position: relative;
+}
+#listeQuestionsFinies .question .boite div {
+  width: 100%;
 }
 #listeQuestionsFinies .question .boite #date {
   font-size: 0.8rem;

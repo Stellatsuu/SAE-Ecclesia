@@ -4,6 +4,7 @@
 use App\SAE\Lib\PhaseQuestion;
 use App\SAE\Model\DataObject\Proposition;
 use App\SAE\Model\DataObject\Question;
+use App\SAE\Model\Repository\PropositionRepository;
 
 $propositionActuelle = Proposition::castIfNotNull($propositions[$index]);
 $nbPropopositions = count($propositions);
@@ -49,10 +50,27 @@ $estOrganisateur = $question->getIdOrganisateur() === $idUtilisateur;
     <p id="nomResponsable"><?= $nomResponsable ?></p>
     <div id="btns">
         <?php
+
+        $modalHtml = <<<HTML
+        <div id="modalSupprimer" class="modal">
+            <div class="modal-content boite">
+                <p>Êtes vous sûr(e) de vouloir supprimer la proposition</p>
+                <div>
+                    <a class="button refuserBtn" href="#">Non</a>
+                    <a class="button validerBtn" href="frontController.php?controller=proposition&action=supprimerProposition&idProposition={$propositionActuelle->getIdProposition()}">Oui</a>
+                </div>
+                <a href="#" class="modal-close">
+                    <img src="assets/images/close-icon.svg" alt="bouton fermer">
+                </a>
+            </div>
+         </div>
+        HTML;
+
         if (($estResponsable || $estOrganisateur) && ($phase == PhaseQuestion::Lecture || $phase == PhaseQuestion::Redaction)) {
             echo <<<HTML
-            <a class="button" href="frontController.php?controller=proposition&action=supprimerProposition&idProposition={$propositionActuelle->getIdProposition()}">Supprimer</a>
+                <a class="button" href="#modalSupprimer">Supprimer</a>
             HTML;
+            echo $modalHtml;
         }
 
         if ($estResponsable && $phase == PhaseQuestion::Redaction) {
@@ -60,6 +78,8 @@ $estOrganisateur = $question->getIdOrganisateur() === $idUtilisateur;
             <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireContribuerProposition&idProposition={$propositionActuelle->getIdProposition()}">Modifier</a>
             HTML;
         }
+
+
         ?>
     </div>
 
