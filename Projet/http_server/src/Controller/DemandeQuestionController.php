@@ -37,7 +37,7 @@ class DemandeQuestionController extends MainController
     {
         $idQuestion = static::getIfSetAndNumeric("idQuestion", LDQ_URL);
 
-        $demande = DemandeQuestion::toDemandeQuestion((new DemandeQuestionRepository)->select($idQuestion));
+        $demande = DemandeQuestion::castIfNotNull((new DemandeQuestionRepository)->select($idQuestion));
         $question = new Question(
             -1,
             $demande->getTitre(),

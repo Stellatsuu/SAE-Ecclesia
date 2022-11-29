@@ -6,7 +6,7 @@ use App\SAE\Model\DataObject\Question;
 
 $propositionActuelle = $propositions[$index];
 $nbPropopositions = count($propositions);
-$question = Question::toQuestion($question);
+$question = Question::castIfNotNull($question);
 ?>
 
 <div class="panel" id="afficherPropositions">

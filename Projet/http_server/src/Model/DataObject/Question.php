@@ -185,8 +185,9 @@ class Question extends DemandeQuestion implements JsonSerializable
 
     //Caster
 
-    public static function toQuestion($object) : Question {
-        return $object;
+    public static function castIfNotNull($object, $errorUrl = "frontController.php", $errorMessage = "[OBJECT] n'existe pas"): Question
+    {
+        return static::castToClassIfNotNull($object, Question::class, $errorUrl, $errorMessage);
     }
 
     //Serialisation

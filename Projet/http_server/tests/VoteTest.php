@@ -22,8 +22,8 @@ $loader->register();
 
         public function testInsertionEtSelectVote(){
 
-            $proposition = Proposition::toProposition((new PropositionRepository())->select(1));
-            $votant = Utilisateur::toUtilisateur((new UtilisateurRepository())->select(10000));
+            $proposition = Proposition::castIfNotNull((new PropositionRepository())->select(1));
+            $votant = Utilisateur::castIfNotNull((new UtilisateurRepository())->select(10000));
             $valeur = 1;
 
             $vote = new Vote($proposition, $votant, $valeur);
@@ -34,8 +34,8 @@ $loader->register();
         }
 
         public function testDeleteVote(){
-            $proposition = Proposition::toProposition((new PropositionRepository())->select(1));
-            $votant = Utilisateur::toUtilisateur((new UtilisateurRepository())->select(10000));
+            $proposition = Proposition::castIfNotNull((new PropositionRepository())->select(1));
+            $votant = Utilisateur::castIfNotNull((new UtilisateurRepository())->select(10000));
             $valeur = 1;
 
             $vote = new Vote($proposition, $votant, $valeur);

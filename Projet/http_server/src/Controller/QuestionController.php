@@ -19,7 +19,7 @@ class QuestionController extends MainController
     public static function afficherFormulairePoserQuestion(): void
     {
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
-        $question = Question::toQuestion((new QuestionRepository)->select($idQuestion));
+        $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
         $utilisateurs = (new UtilisateurRepository)->selectAll();
 
         if ($question == null) {
@@ -95,7 +95,7 @@ class QuestionController extends MainController
         $idQuestion = intval($_POST['idQuestion']);
         $description = $_POST['description'];
 
-        $question = Question::toQuestion((new QuestionRepository)->select($idQuestion));
+        $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
 
         $phase = $question->getPhase();
         switch ($phase) {
@@ -144,13 +144,13 @@ class QuestionController extends MainController
         foreach ($_POST as $key => $value) {
             if (substr($key, 0, 9) == "redacteur" && is_numeric($value)) {
                 $idResponsable = intval($value);
-                $responsable = Utilisateur::toUtilisateur((new UtilisateurRepository)->select($idResponsable));
+                $responsable = Utilisateur::castIfNotNull((new UtilisateurRepository)->select($idResponsable));
                 if ($responsable && !in_array($responsable, $responsables)) {
                     $responsables[] = $responsable;
                 }
             } else if (substr($key, 0, 6) == "votant" && is_numeric($value)) {
                 $idVotant = intval($value);
-                $votant = Utilisateur::toUtilisateur((new UtilisateurRepository)->select($idVotant));
+                $votant = Utilisateur::castIfNotNull((new UtilisateurRepository)->select($idVotant));
                 if ($votant && !in_array($votant, $votants)) {
                     $votants[] = $votant;
                 }
@@ -225,7 +225,7 @@ class QuestionController extends MainController
         }
 
         $idQuestion = intval($_GET['idQuestion']);
-        $question = Question::toQuestion((new QuestionRepository)->select($idQuestion));
+        $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
 
         if (!$question) {
             static::error("frontController.php", "La question n'existe pas");
@@ -252,7 +252,7 @@ class QuestionController extends MainController
         }
 
         $idQuestion = intval($_GET['idQuestion']);
-        $question = Question::toQuestion((new QuestionRepository)->select($idQuestion));
+        $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
 
         if (!$question) {
             static::error("frontController.php", "La question n'existe pas");
@@ -284,7 +284,7 @@ class QuestionController extends MainController
         }
 
         $idQuestion = intval($_GET['idQuestion']);
-        $question = Question::toQuestion((new QuestionRepository)->select($idQuestion));
+        $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
 
         if (!$question) {
             static::error("frontController.php", "La question n'existe pas");
@@ -339,7 +339,7 @@ class QuestionController extends MainController
             return;
         }
 
-        $question = Question::toQuestion($question);
+        $question = Question::castIfNotNull($question);
 
         $phase = $question->getPhase();
         if ($phase != Phase::Resultat) {

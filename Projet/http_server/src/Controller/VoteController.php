@@ -28,7 +28,7 @@ class VoteController extends MainController
         }
         $idProposition = intval($_POST['idProposition']);
 
-        $proposition = Proposition::toProposition((new PropositionRepository)->select($idProposition));
+        $proposition = Proposition::castIfNotNull((new PropositionRepository)->select($idProposition));
         if(!$proposition) {
             static::error("frontController.php", "La proposition n'existe pas");
             return;

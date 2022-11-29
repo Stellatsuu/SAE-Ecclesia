@@ -137,8 +137,8 @@ class Proposition extends AbstractDataObject
 
     //Caster
 
-    public static function toProposition($object): Proposition
+    public static function castIfNotNull($object, $errorUrl = "frontController.php", $errorMessage = "[OBJECT] n'existe pas") : Proposition
     {
-        return $object;
+        return static::castToClassIfNotNull($object, Proposition::class, $errorUrl, $errorMessage);
     }
 }

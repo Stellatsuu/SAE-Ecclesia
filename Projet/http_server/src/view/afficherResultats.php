@@ -3,10 +3,10 @@
 use App\SAE\Model\DataObject\Proposition;
 use App\SAE\Model\DataObject\Question;
 
-$question = Question::toQuestion($question);
-$propositionGagnante = Proposition::toProposition($propositionGagnante);
+$question = Question::castIfNotNull($question);
+$propositionGagnante = Proposition::castIfNotNull($propositionGagnante);
 $propositions = array_map(function ($p) {
-    return Proposition::toProposition($p);
+    return Proposition::castIfNotNull($p);
 }, $propositions);
 
 ?>

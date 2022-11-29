@@ -79,4 +79,11 @@ class Vote extends AbstractDataObject
     {
         return $this->valeur;
     }
+
+    //Caster
+
+    public static function castIfNotNull($object, $errorUrl = "frontController.php", $errorMessage = "[OBJECT] n'existe pas"): Vote
+    {
+        return static::castToClassIfNotNull($object, Vote::class, $errorUrl, $errorMessage);
+    }
 }

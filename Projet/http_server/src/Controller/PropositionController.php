@@ -36,7 +36,7 @@ class PropositionController extends MainController
             return;
         }
 
-        $question = Question::toQuestion($question);
+        $question = Question::castIfNotNull($question);
         $phase = $question->getPhase();
         if ($phase !== Phase::Redaction) {
             switch ($phase) {
@@ -68,7 +68,7 @@ class PropositionController extends MainController
             return;
         }
 
-        $question = Question::toQuestion((new QuestionRepository())->select($_POST['idQuestion']));
+        $question = Question::castIfNotNull((new QuestionRepository())->select($_POST['idQuestion']));
 
         if (!$question) {
             static::error("frontController.php", "La question n'existe pas");
@@ -171,7 +171,7 @@ class PropositionController extends MainController
             static::error("frontController.php", "La proposition n'existe pas");
             return;
         }
-        $proposition = Proposition::toProposition($proposition);
+        $proposition = Proposition::castIfNotNull($proposition);
 
         $phase = $proposition->getQuestion()->getPhase();
         if ($phase !== Phase::Redaction) {
@@ -204,7 +204,7 @@ class PropositionController extends MainController
             return;
         }
 
-        $proposition = Proposition::toProposition((new PropositionRepository())->select($_POST['idProposition']));
+        $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($_POST['idProposition']));
 
         if (!$proposition) {
             static::error("frontController.php", "La proposition n'existe pas");
@@ -256,7 +256,7 @@ class PropositionController extends MainController
             return;
         }
 
-        if($estRedacteur){
+        if ($estRedacteur) {
             $proposition->setTitreProposition($_POST['titreProposition']);
             (new PropositionRepository())->update($proposition);
         }
@@ -267,7 +267,8 @@ class PropositionController extends MainController
         static::message("frontController.php?controller=question&action=listerMesQuestions", "La proposition a bien été enregistrée.");
     }
 
-    public static function afficherPropositions(){
+    public static function afficherPropositions()
+    {
         $session = Session::getInstance();
 
         //Vérification si une question est contenue dans l'URL
@@ -285,23 +286,23 @@ class PropositionController extends MainController
             return;
         }
 
-        $question = Question::toQuestion($question);
+        $question = Question::castIfNotNull($question);
 
 
-        if(!$session->contient("idUtilisateur")){
+        if (!$session->contient("idUtilisateur")) {
             static::error("frontController.php?controller=question&action=listerMesQuestions", "Vous devez être identifié");
             return;
         }
 
         $idUtilisateur = $session->lire("idUtilisateur");
-        if(!(((new QuestionRepository)->estCoAuteur($idQuestion, $idUtilisateur) || (new QuestionRepository)->estVotant($idQuestion, $idUtilisateur) || ((new QuestionRepository)->estRedacteur($idQuestion, $idUtilisateur)) || ($question->getOrganisateur()->getIdUtilisateur() == $idUtilisateur)))){
+        if (!(((new QuestionRepository)->estCoAuteur($idQuestion, $idUtilisateur) || (new QuestionRepository)->estVotant($idQuestion, $idUtilisateur) || ((new QuestionRepository)->estRedacteur($idQuestion, $idUtilisateur)) || ($question->getOrganisateur()->getIdUtilisateur() == $idUtilisateur)))) {
             static::error("frontController.php?controller=question&action=listerMesQuestions", "Vous n'avez pas accès aux propositions");
             return;
         }
 
         //Vérification si la question contient des propositions
         $propositions = (new PropositionRepository())->selectAllByQuestion($idQuestion);
-        if(count($propositions) == 0){
+        if (count($propositions) == 0) {
             static::error("frontController.php?controller=question&action=listerMesQuestions", "Il n'y a aucune proposition pour cette question");
             return;
         }
@@ -309,8 +310,7 @@ class PropositionController extends MainController
         //Index pour le tableau de propositions (prop1 = index0)
         if (!isset($_GET['index'])) {
             $index = 0;
-        }
-        else {
+        } else {
             $index = $_GET['index'];
         }
 
@@ -324,14 +324,11 @@ class PropositionController extends MainController
         ]);
     }
 
-    public static function supprimerProposition(){
-        if (!isset($_POST['idProposition']) || !is_numeric($_POST['idProposition'])) {
-            static::error("frontController.php", "Aucune proposition n'a été sélectionnée.");
-            return;
-        }
-        $idProposition = intval($_POST['idProposition']);
+    public static function supprimerProposition()
+    {
+        $idProposition = static::getIfSetAndNumeric("idProposition");
 
-        $proposition = Proposition::toProposition((new PropositionRepository())->select($idProposition));
+        $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
         if (!$proposition) {
             static::error("frontController.php", "La proposition n'existe pas.");
             return;
@@ -355,14 +352,12 @@ class PropositionController extends MainController
         }
 
         $idUtilisateur = $_GET['idUtilisateur'];
-        if(!($question->getOrganisateur()->getIdUtilisateur() == $idUtilisateur||(new QuestionRepository)->estRedacteur($question->getIdQuestion(), $idUtilisateur))){
+        if (!($question->getOrganisateur()->getIdUtilisateur() == $idUtilisateur || (new QuestionRepository)->estRedacteur($question->getIdQuestion(), $idUtilisateur))) {
             static::error("frontController.php?controller=question&action=afficherPropositions", "Vous n'avez pas accès aux propositions");
             return;
         }
 
         (new PropositionRepository)->delete();
         static::message("frontController.php?controller=demandeQuestion&action=afficherPropositions", "La proposition a été supprimé");
-
     }
-    
 }

@@ -119,7 +119,7 @@ class PropositionRepository extends AbstractRepository
     public function insert(AbstractDataObject $object) : void {
         parent::insert($object);
 
-        $object = Proposition::toProposition($object);
+        $object = Proposition::castIfNotNull($object);
         $proposition = $this->selectByQuestionEtRedacteur($object->getQuestion()->getIdQuestion(), $object->getResponsable()->getIdUtilisateur());
 
         foreach ($object->getParagraphes() as $paragraphe) {

@@ -59,7 +59,7 @@ class ParagrapheRepository extends AbstractRepository{
 
         $coAuteurs = [];
         foreach($pdo->fetchAll() as $auteur){
-            $coAuteurs[] = Utilisateur::toUtilisateur((new UtilisateurRepository())->select($auteur['id_utilisateur']));
+            $coAuteurs[] = Utilisateur::castIfNotNull((new UtilisateurRepository())->select($auteur['id_utilisateur']));
         }
 
         return $coAuteurs;
