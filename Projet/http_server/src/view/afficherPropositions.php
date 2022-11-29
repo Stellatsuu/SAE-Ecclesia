@@ -41,9 +41,9 @@ $question = Question::castIfNotNull($question);
     </div>
     <div id="btns">
     <?php
-        if($question->getPhase() == PhaseQuestion::Lecture)
+        if($question->getPhase() == PhaseQuestion::Lecture||$question->getPhase()==PhaseQuestion::Redaction)
             echo <<<HTML
-            <a class="button" href="frontController.php?controller=proposition&action=supprimerProposition&idProposition=<?= $propositionActuelle->getIdProposition() ?>">Supprimer</a>
+            <a class="button" href="frontController.php?controller=proposition&action=supprimerProposition&idProposition={$propositionActuelle->getIdProposition()}">Supprimer</a>
             HTML;
         if($question->getPhase() == PhaseQuestion::Redaction)
             echo <<<HTML
