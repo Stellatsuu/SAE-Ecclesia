@@ -112,7 +112,7 @@ CREATE TABLE Co_Auteur (
     id_paragraphe serial,
     CONSTRAINT pk_Co_Auteur PRIMARY KEY (id_utilisateur, id_paragraphe),
     CONSTRAINT fk_Co_Auteur FOREIGN KEY (id_utilisateur) REFERENCES Utilisateur (id_utilisateur),
-    CONSTRAINT fk_Co_Auteur_Paragraphe FOREIGN KEY (id_paragraphe) REFERENCES Paragraphe (id_paragraphe)
+    CONSTRAINT fk_Co_Auteur_Paragraphe FOREIGN KEY (id_paragraphe) REFERENCES Paragraphe (id_paragraphe) ON DELETE CASCADE
 );
 
 CREATE TABLE Vote (
