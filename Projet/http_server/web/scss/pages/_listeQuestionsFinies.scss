@@ -5,22 +5,33 @@
     margin: 10px 0;
 
     .boite {
-      height: 160px;
+      min-height: 160px;
       overflow: hidden;
       display: flex;
       flex-direction: row;
       width: calc(100% - 26px);
-      position: relative;
 
-      #date{
+      div {
+        width: 100%;
+
+        div{
+          display: flex;
+          justify-content: space-between;
+        }
+
+        p{
+          margin-top:0;
+        }
+      }
+
+      .date{
+        text-align:right;
+        margin:0;
         font-size: 0.8rem;
-        position: absolute;
-        top: 0;
-        right: 15px;
         color: rgb(168, 168, 168);
       }
 
-      #organisateur{
+      .organisateur{
         font-size: 0.8rem;
       }
     }

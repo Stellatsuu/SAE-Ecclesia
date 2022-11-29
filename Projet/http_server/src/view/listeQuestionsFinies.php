@@ -1,4 +1,5 @@
 <div class="panel" id="listeQuestionsFinies">
+    <h1>Questions terminées</h1>
     <?php
 
     use App\SAE\Model\DataObject\Question;
@@ -14,12 +15,14 @@
 
         $html = <<<HTML
         <div class="question">
-            <div class="boite" id="questionFinie">
+            <div class="boite">
                 <div>
-                    <a href="frontController.php?controller=question&action=afficherResultats&idQuestion=$idQuestion"><h2>$titre</h2></a>    
+                    <div>
+                        <a href="frontController.php?controller=question&action=afficherResultats&idQuestion=$idQuestion"><h2>$titre</h2></a> 
+                        <p class="date">$dateFinVotes</p>
+                    </div>   
                     <p>$description</p>
-                    <p id="organisateur">$organisateur</p>
-                    <p id="date">$dateFinVotes</p>
+                    <p class="organisateur">$organisateur</p>
                 </div>
             </div>
         </div>

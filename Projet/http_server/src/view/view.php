@@ -22,7 +22,7 @@
         <ul>
             <li><a href="frontController.php">Accueil</a></li>
             <li><a href="frontController.php?controller=question&action=listerMesQuestions">Questions</a></li>
-            <li><a href="frontController.php?controller=demandeQuestion&action=afficherFormulaireDemandeQuestion">Résultats</a></li>
+            <li><a href="frontController.php?controller=question&action=afficherQuestionsFinies">Résultats</a></li>
             <li><a href="frontController.php?controller=demandeQuestion&action=listerDemandesQuestion">Demandes</a></li>
         </ul>
         <div></div>

@@ -835,21 +835,29 @@ input[type=time]::-webkit-calendar-picker-indicator {
   margin: 10px 0;
 }
 #listeQuestionsFinies .question .boite {
-  height: 160px;
+  min-height: 160px;
   overflow: hidden;
   display: flex;
   flex-direction: row;
   width: calc(100% - 26px);
-  position: relative;
 }
-#listeQuestionsFinies .question .boite #date {
+#listeQuestionsFinies .question .boite div {
+  width: 100%;
+}
+#listeQuestionsFinies .question .boite div div {
+  display: flex;
+  justify-content: space-between;
+}
+#listeQuestionsFinies .question .boite div p {
+  margin-top: 0;
+}
+#listeQuestionsFinies .question .boite .date {
+  text-align: right;
+  margin: 0;
   font-size: 0.8rem;
-  position: absolute;
-  top: 0;
-  right: 15px;
   color: rgb(168, 168, 168);
 }
-#listeQuestionsFinies .question .boite #organisateur {
+#listeQuestionsFinies .question .boite .organisateur {
   font-size: 0.8rem;
 }
 
