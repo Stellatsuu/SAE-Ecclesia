@@ -13,7 +13,10 @@ use App\SAE\Model\Repository\QuestionRepository;
 use App\SAE\Model\Repository\UtilisateurRepository;
 use App\SAE\Lib\PhaseQuestion as Phase;
 use App\SAE\Model\DataObject\DemandeCoAuteur;
+use App\SAE\Model\Repository\CoAuteurRepository;
 use App\SAE\Model\Repository\DemandeCoAuteurRepository;
+use App\SAE\Model\Repository\RedacteurRepository;
+use App\SAE\Model\Repository\VotantRepository;
 
 class PropositionController extends MainController
 {
@@ -107,7 +110,7 @@ class PropositionController extends MainController
 
         $proposition->setParagraphes($paragraphes);
 
-        $estRedacteur = (new QuestionRepository())->estRedacteur($question->getIdQuestion(), $idResponsable);
+        $estRedacteur = (new RedacteurRepository())->existeRedacteur($question->getIdQuestion(), $idResponsable);
         if (!$estRedacteur) {
             static::error(ACCUEIL_URL, "Vous ne faites pas partie des rédacteurs de cette question.");
             return;
@@ -179,7 +182,7 @@ class PropositionController extends MainController
 
         $paragraphes = [];
         $sections = $proposition->getQuestion()->getSections();
-        $estRedacteur = (new QuestionRepository())->estRedacteur($proposition->getIdQuestion(), $idUtilisateur);
+        $estRedacteur = (new RedacteurRepository())->existeRedacteur($proposition->getIdQuestion(), $idUtilisateur);
         $estCoAuteur = $estRedacteur; // si l'utilisateur est rédacteur, il a les droits d'édition
 
         for ($i = 0; $i < count($sections); $i++) {
@@ -222,9 +225,9 @@ class PropositionController extends MainController
         //Vérification si la question existe
         $question = Question::castIfNotNull((new QuestionRepository())->select($idQuestion));
 
-        $estCoAuteur = (new QuestionRepository())->estCoAuteur($idQuestion, $idUtilisateur);
-        $estRedacteur = (new QuestionRepository())->estRedacteur($idQuestion, $idUtilisateur);
-        $estVotant = (new QuestionRepository())->estVotant($idQuestion, $idUtilisateur);
+        $estCoAuteur = (new CoAuteurRepository())->existeCoAuteur($idQuestion, $idUtilisateur);
+        $estRedacteur = (new RedacteurRepository())->existeRedacteur($idQuestion, $idUtilisateur);
+        $estVotant = (new VotantRepository())->existeVotant($idQuestion, $idUtilisateur);
         $estOrganisateur = $question->getIdOrganisateur() == $idUtilisateur;
 
         if (!$estCoAuteur && !$estRedacteur && !$estVotant && !$estOrganisateur)
@@ -275,7 +278,7 @@ class PropositionController extends MainController
                 break;
         }
 
-        $estRedacteur = (new QuestionRepository())->estRedacteur($question->getIdQuestion(), $idUtilisateur);
+        $estRedacteur = (new RedacteurRepository())->existeRedacteur($question->getIdQuestion(), $idUtilisateur);
         $estOrganisateur = $question->getIdOrganisateur() == $idUtilisateur;
 
         $AP_URL = "frontController.php?controller=proposition&action=afficherPropositions&idQuestion=" . $question->getIdQuestion();

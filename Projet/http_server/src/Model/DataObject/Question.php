@@ -5,8 +5,10 @@ namespace App\SAE\Model\DataObject;
 use App\SAE\Model\Repository\DatabaseConnection;
 use App\SAE\Lib\PhaseQuestion as Phase;
 use App\SAE\Model\Repository\QuestionRepository;
+use App\SAE\Model\Repository\RedacteurRepository;
 use App\SAE\Model\Repository\SectionRepository;
 use App\SAE\Model\Repository\UtilisateurRepository;
+use App\SAE\Model\Repository\VotantRepository;
 use App\SAE\Model\SystemeVote\AbstractSystemeVote;
 use DateTime;
 use JsonSerializable;
@@ -35,6 +37,7 @@ class Question extends DemandeQuestion implements JsonSerializable
         $this->dateFinRedaction = null;
         $this->dateOuvertureVotes = null;
         $this->dateFermetureVotes = null;
+        $this->systemeVote = null;
     }
 
     //Respect du contrat
@@ -45,10 +48,10 @@ class Question extends DemandeQuestion implements JsonSerializable
             'titre_question' => $this->getTitre(),
             'description_question' => $this->getDescription(),
             'id_organisateur' => $this->getIdOrganisateur(),
-            'date_debut_redaction' => $this->dateDebutRedaction == null ? "" : $this->dateDebutRedaction->format('Y-m-d H:i:s'),
-            'date_fin_redaction' => $this->dateFinRedaction == null ? "" : $this->dateFinRedaction ->format('Y-m-d H:i:s'),
-            'date_ouverture_votes' => $this->dateOuvertureVotes == null ? "" : $this->dateOuvertureVotes->format('Y-m-d H:i:s'),
-            'date_fermeture_votes' => $this->dateOuvertureVotes == null ? "" : $this->dateFermetureVotes->format('Y-m-d H:i:s'),
+            'date_debut_redaction' => $this->dateDebutRedaction == null ? null : $this->dateDebutRedaction->format('Y-m-d H:i:s'),
+            'date_fin_redaction' => $this->dateFinRedaction == null ? null : $this->dateFinRedaction ->format('Y-m-d H:i:s'),
+            'date_ouverture_votes' => $this->dateOuvertureVotes == null ? null : $this->dateOuvertureVotes->format('Y-m-d H:i:s'),
+            'date_fermeture_votes' => $this->dateOuvertureVotes == null ? null : $this->dateFermetureVotes->format('Y-m-d H:i:s'),
             'systeme_vote' => $this->systemeVote == null ? "" : $this->systemeVote->getNom()
         ];
     }
@@ -71,7 +74,7 @@ class Question extends DemandeQuestion implements JsonSerializable
     public function getRedacteurs(): ?array
     {
         if($this->redacteurs == null) {
-            $this->redacteurs = (new QuestionRepository)->getRedacteurs($this->getIdQuestion());
+            $this->redacteurs = (new RedacteurRepository)->selectRedacteursParQuestion($this->getIdQuestion());
         }
         return $this->redacteurs;
     }
@@ -79,7 +82,7 @@ class Question extends DemandeQuestion implements JsonSerializable
     public function getVotants(): ?array
     {
         if($this->votants == null) {
-            $this->votants = (new QuestionRepository)->getVotants($this->getIdQuestion());
+            $this->votants = (new VotantRepository)->selectVotantsParQuestion($this->getIdQuestion());
         }
         return $this->votants;
     }

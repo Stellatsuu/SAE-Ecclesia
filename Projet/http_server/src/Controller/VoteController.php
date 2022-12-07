@@ -11,6 +11,7 @@ use App\SAE\Model\Repository\PropositionRepository;
 use App\SAE\Model\Repository\QuestionRepository;
 use App\SAE\Model\Repository\VoteRepository;
 use App\SAE\Model\Repository\UtilisateurRepository;
+use App\SAE\Model\Repository\VotantRepository;
 
 class VoteController extends MainController
 {
@@ -43,13 +44,13 @@ class VoteController extends MainController
 
         $idUtilisateur = $session->lire("idUtilisateur");
 
-        $estVotant = (new QuestionRepository)->estVotant($proposition->getQuestion()->getIdQuestion(), $idUtilisateur);
+        $estVotant = (new VotantRepository)->existeVotant($proposition->getQuestion()->getIdQuestion(), $idUtilisateur);
         if(!$estVotant) {
             static::error("frontController.php?controller=proposition&action=afficherPropositions&idQuestion={$question->getIdQuestion()}&idUtilisateur={$idUtilisateur}", "Vous n'êtes pas votant pour cette question");
             return;
         }
 
-        $aDejaVote = (new QuestionRepository)->aVote($proposition->getQuestion()->getIdQuestion(), $idUtilisateur);
+        $aDejaVote = (new VoteRepository)->existeVoteSurQuestion($proposition->getQuestion()->getIdQuestion(), $idUtilisateur);
         if($aDejaVote) {
             static::error("frontController.php?controller=proposition&action=afficherPropositions&idQuestion={$question->getIdQuestion()}&idUtilisateur={$idUtilisateur}", "Vous avez déjà voté sur cette question");
             return;

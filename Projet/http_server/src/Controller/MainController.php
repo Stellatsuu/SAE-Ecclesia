@@ -54,10 +54,31 @@ class MainController
         $query1 = file_get_contents(__DIR__ . "/../../../scriptCreationTables.sql");
         $query2 = file_get_contents(__DIR__ . "/../../../jeuDeDonnées.sql");
 
+        //set the pdo in warning mode
+        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_WARNING);
+
+
+        //get the drop statements from $query1
+        $dropStatements = [];
+        $statements = explode(";", $query1);
+        foreach ($statements as $statement) {
+            if (strpos($statement, "DROP") !== false) {
+                $dropStatements[] = $statement;
+            }
+        }
+
+        //remove the drop statements from $query1
+        $query1 = str_replace($dropStatements, "", $query1);
+
+        //execute the drop statements
+        foreach ($dropStatements as $dropStatement) {
+            $pdo->exec($dropStatement);
+        }
+
         $pdo->exec($query1);
         $pdo->exec($query2);
 
-        static::message(ACCUEIL_URL, "La base de données a été réinitialisée");
+        //static::message(ACCUEIL_URL, "La base de données a été réinitialisée");
     }
 
     public static function seConnecter(): void

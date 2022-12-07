@@ -252,7 +252,7 @@ class QuestionController extends MainController
     {
         $session = static::getSessionSiConnecte();
         $idUtilisateur = $session->lire("idUtilisateur");
-        $questions = (new QuestionRepository)->getQuestionsParOrganisateur($idUtilisateur);
+        $questions = (new QuestionRepository)->selectAllQuestionsParOrganisateur($idUtilisateur);
 
         static::afficherVue("view.php", [
             "titrePage" => "Mes questions",

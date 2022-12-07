@@ -6,7 +6,6 @@ use App\SAE\Model\DataObject\DemandeQuestion;
 
 class DemandeQuestionRepository extends AbstractRepository
 {
-
     protected function getNomTable(): string
     {
         return 'demande_question';

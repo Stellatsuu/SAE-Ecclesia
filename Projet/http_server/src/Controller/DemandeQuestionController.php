@@ -43,7 +43,7 @@ class DemandeQuestionController extends MainController
             $demande->getOrganisateur()
         );
 
-        (new QuestionRepository)->insertEbauche($question);
+        (new QuestionRepository)->insert($question);
         (new DemandeQuestionRepository)->delete($idQuestion);
 
         static::message(LDQ_URL, "La question a été acceptée");

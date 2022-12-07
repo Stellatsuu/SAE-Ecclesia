@@ -8,7 +8,6 @@ use JsonSerializable;
 class Section extends AbstractDataObject implements JsonSerializable {
 
     private int $idSection;
-
     private int $idQuestion;
 
     private ?Question $question;
