@@ -7,11 +7,14 @@ use App\SAE\Model\DataObject\Utilisateur;
 
 class VotantRepository
 {
-    public function deleteVotantsParQuestion(int $idQuestion): void
+    public function deleteAllByQuestion(int $idQuestion): void
     {
-        $pdo = DatabaseConnection::getPdo();
+        $sql = <<<SQL
+        DELETE FROM votant
+            WHERE id_question = :id_question
+        SQL;
 
-        $sql = "DELETE FROM votant WHERE id_question = :id_question";
+        $pdo = DatabaseConnection::getPdo();
         $pdoStatement = $pdo->prepare($sql);
         $values = [
             'id_question' => $idQuestion
@@ -22,9 +25,12 @@ class VotantRepository
 
     public function insert(int $idQuestion, int $idUtilisateur): void
     {
-        $pdo = DatabaseConnection::getPdo();
+        $sql = <<<SQL
+        INSERT INTO votant (id_question, id_votant)
+            VALUES (:id_question, :id_votant)
+        SQL;
 
-        $sql = "INSERT INTO votant (id_question, id_votant) VALUES (:id_question, :id_votant)";
+        $pdo = DatabaseConnection::getPdo();
         $pdoStatement = $pdo->prepare($sql);
         $values = [
             'id_question' => $idQuestion,
@@ -34,11 +40,15 @@ class VotantRepository
         $pdoStatement->execute($values);
     }
 
-    public function selectVotantsParQuestion(int $idQuestion): array
+    public function selectAllByQuestion(int $idQuestion): array
     {
-        $pdo = DatabaseConnection::getPdo();
+        $sql = <<<SQL
+        SELECT id_votant
+            FROM votant
+            WHERE id_question = :id_question
+        SQL;
 
-        $sql = "SELECT id_votant FROM votant WHERE id_question = :id_question";
+        $pdo = DatabaseConnection::getPdo();
         $pdoStatement = $pdo->prepare($sql);
         $values = [
             'id_question' => $idQuestion
@@ -53,9 +63,15 @@ class VotantRepository
         return $votants;
     }
 
-    public function existeVotant(int $idQuestion, int $idUtilisateur): bool
+    public function existsOnQuestion(int $idQuestion, int $idUtilisateur): bool
     {
-        $sql = "SELECT COUNT(*) AS est_votant FROM votant WHERE id_question = :idQuestion AND id_votant = :idUtilisateur";
+        $sql = <<<SQL
+        SELECT COUNT(*) AS est_votant
+            FROM votant
+            WHERE id_question = :id_question
+            AND id_votant = :id_votant
+        SQL;
+
         $pdo = DatabaseConnection::getPdo()->prepare($sql);
         $pdo->execute([
             "idQuestion" => $idQuestion,

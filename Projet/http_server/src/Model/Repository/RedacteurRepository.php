@@ -7,11 +7,14 @@ use App\SAE\Model\DataObject\Utilisateur;
 
 class RedacteurRepository
 {
-    public function deleteRedacteursParQuestion(int $idQuestion): void
+    public function deleteAllByQuestion(int $idQuestion): void
     {
-        $pdo = DatabaseConnection::getPdo();
+        $sql = <<<SQL
+        DELETE FROM redacteur
+            WHERE id_question = :id_question
+        SQL;
 
-        $sql = "DELETE FROM redacteur WHERE id_question = :id_question";
+        $pdo = DatabaseConnection::getPdo();
         $pdoStatement = $pdo->prepare($sql);
         $values = [
             'id_question' => $idQuestion
@@ -22,9 +25,12 @@ class RedacteurRepository
 
     public function insert(int $idQuestion, int $idUtilisateur): void
     {
-        $pdo = DatabaseConnection::getPdo();
+        $sql = <<<SQL
+        INSERT INTO redacteur (id_question, id_redacteur)
+            VALUES (:id_question, :id_redacteur)
+        SQL;
 
-        $sql = "INSERT INTO redacteur (id_question, id_redacteur) VALUES (:id_question, :id_redacteur)";
+        $pdo = DatabaseConnection::getPdo();
         $pdoStatement = $pdo->prepare($sql);
         $values = [
             'id_question' => $idQuestion,
@@ -34,11 +40,15 @@ class RedacteurRepository
         $pdoStatement->execute($values);
     }
 
-    public function selectRedacteursParQuestion(int $idQuestion): array
+    public function selectAllByQuestion(int $idQuestion): array
     {
-        $pdo = DatabaseConnection::getPdo();
+        $sql = <<<SQL
+        SELECT id_redacteur
+            FROM redacteur
+            WHERE id_question = :id_question
+        SQL;
 
-        $sql = "SELECT id_redacteur FROM redacteur WHERE id_question = :id_question";
+        $pdo = DatabaseConnection::getPdo();
         $pdoStatement = $pdo->prepare($sql);
         $values = [
             'id_question' => $idQuestion
@@ -53,9 +63,15 @@ class RedacteurRepository
         return $redacteurs;
     }
 
-    public function existeRedacteur(int $idQuestion, int $idUtilisateur): bool
+    public function existsOnQuestion(int $idQuestion, int $idUtilisateur): bool
     {
-        $sql = "SELECT COUNT(*) AS est_redacteur FROM redacteur WHERE id_question = :idQuestion AND id_redacteur = :idUtilisateur";
+        $sql = <<<SQL
+        SELECT COUNT(*) AS est_redacteur
+            FROM redacteur
+            WHERE id_question = :idQuestion
+            AND id_redacteur = :idUtilisateur
+        SQL;
+        
         $pdo = DatabaseConnection::getPdo()->prepare($sql);
         $pdo->execute([
             "idQuestion" => $idQuestion,

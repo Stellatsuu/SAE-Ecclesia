@@ -194,7 +194,7 @@ class PropositionController extends MainController
             $paragraphe->setContenuParagraphe($contenu);
             $paragraphes[] = $paragraphe;
 
-            if ((new ParagrapheRepository())->estCoAuteur($paragraphe->getIdParagraphe(), $idUtilisateur)) {
+            if ((new ParagrapheRepository())->existeCoAuteur($paragraphe->getIdParagraphe(), $idUtilisateur)) {
                 $estCoAuteur = true;
             }
         }

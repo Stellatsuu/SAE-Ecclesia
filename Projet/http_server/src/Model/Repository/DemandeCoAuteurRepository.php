@@ -36,8 +36,14 @@ class DemandeCoAuteurRepository extends AbstractRepository
         );
     }
 
-    public function selectAllByProposition(int $idProposition) {
-        $sql = "SELECT * FROM demande_co_auteur WHERE id_proposition = :id_proposition";
+    public function selectAllByProposition(int $idProposition)
+    {
+        $sql = <<<SQL
+        SELECT * 
+            FROM demande_co_auteur 
+            WHERE id_proposition = :id_proposition
+        SQL;
+
         $pdo = DatabaseConnection::getPdo();
         $values = [
             'id_proposition' => $idProposition

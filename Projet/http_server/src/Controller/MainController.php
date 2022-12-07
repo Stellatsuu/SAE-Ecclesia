@@ -78,7 +78,7 @@ class MainController
         $pdo->exec($query1);
         $pdo->exec($query2);
 
-        //static::message(ACCUEIL_URL, "La base de données a été réinitialisée");
+        static::message(ACCUEIL_URL, "La base de données a été réinitialisée");
     }
 
     public static function seConnecter(): void

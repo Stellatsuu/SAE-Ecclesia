@@ -9,30 +9,39 @@ use App\SAE\Model\DataObject\Proposition;
 
 class VoteRepository extends AbstractRepository
 {
-    protected function getNomTable(): string {
+    protected function getNomTable(): string
+    {
         return "vote";
     }
-    protected function getNomClePrimaire(): string {
+    protected function getNomClePrimaire(): string
+    {
         return "id_votant,id_proposition";
     }
-    protected function getNomsColonnes(): array {
+    protected function getNomsColonnes(): array
+    {
         return [
             "id_votant",
             "id_proposition",
             "valeur"
         ];
     }
-    protected function construire(array $objetFormatTableau) : Vote {
-        $proposition = (new PropositionRepository())->select($objetFormatTableau["id_proposition"]);
-        $votant = (new UtilisateurRepository())->select($objetFormatTableau["id_votant"]);
-        return new Vote($proposition, $votant, $objetFormatTableau["valeur"]);
+    protected function construire(array $objetFormatTableau): Vote
+    {
+        return new Vote(
+            $objetFormatTableau['id_proposition'],
+            $objetFormatTableau['id_votant'],
+            $objetFormatTableau['valeur']
+        );
     }
 
-    public function selectAllByQuestion(Question $question) : array {
-        $nomTable = $this->getNomTable();
-        $idQuestion = $question->getIdQuestion();
+    public function selectAllByQuestion(int $idQuestion): array
+    {
+        $sql = <<<SQL
+        SELECT * 
+            FROM vote v JOIN proposition p ON v.id_proposition = p.id_proposition
+            WHERE p.id_question = :id_question
+        SQL;
 
-        $sql = "SELECT * FROM $nomTable v JOIN proposition p ON v.id_proposition = p.id_proposition WHERE p.id_question = :idQuestion";
         $pdo = DatabaseConnection::getPdo();
         $values = [
             'idQuestion' => $idQuestion
@@ -48,11 +57,13 @@ class VoteRepository extends AbstractRepository
         return $resultat;
     }
 
-    public function selectAllByProposition(Proposition $proposition) : array {
-        $nomTable = $this->getNomTable();
-        $idProposition = $proposition->getIdProposition();
+    public function selectAllByProposition(int $idProposition): array
+    {
+        $sql = <<<SQL
+        SELECT * 
+            FROM vote JOIN WHERE id_proposition = :id_proposition
+        SQL;
 
-        $sql = "SELECT * FROM $nomTable WHERE id_proposition = :idProposition";
         $pdo = DatabaseConnection::getPdo();
         $values = [
             'idProposition' => $idProposition
@@ -68,14 +79,16 @@ class VoteRepository extends AbstractRepository
         return $resultat;
     }
 
-    public function existeVoteSurQuestion(int $idQuestion, int $idUtilisateur): bool
+    public function existsOnQuestion(int $idQuestion, int $idUtilisateur): bool
     {
-        $sql = "SELECT COUNT(*) AS a_vote 
-                    FROM vote v JOIN proposition p 
-                    ON v.id_proposition = p.id_proposition 
-                WHERE p.id_question = :idQuestion 
-                    AND v.id_votant = :idUtilisateur";
-        
+        $sql = <<<SQL
+        SELECT COUNT(*) AS a_vote 
+            FROM vote v JOIN proposition p 
+                ON v.id_proposition = p.id_proposition 
+            WHERE p.id_question = :idQuestion 
+            AND v.id_votant = :idUtilisateur
+        SQL;
+
         $pdo = DatabaseConnection::getPdo()->prepare($sql);
         $pdo->execute([
             "idQuestion" => $idQuestion,

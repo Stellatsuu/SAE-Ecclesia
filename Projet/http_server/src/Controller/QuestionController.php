@@ -189,7 +189,7 @@ class QuestionController extends MainController
         $question->setDateOuvertureVotes($dateOuvertureVotes);
         $question->setDateFermetureVotes($dateFermetureVotes);
 
-        (new QuestionRepository)->updateEbauche($question);
+        (new QuestionRepository)->update($question);
         static::message(LMQ_URL, "La question a été posée");
     }
 
@@ -252,7 +252,7 @@ class QuestionController extends MainController
     {
         $session = static::getSessionSiConnecte();
         $idUtilisateur = $session->lire("idUtilisateur");
-        $questions = (new QuestionRepository)->selectAllQuestionsParOrganisateur($idUtilisateur);
+        $questions = (new QuestionRepository)->selectAllByOrganisateur($idUtilisateur);
 
         static::afficherVue("view.php", [
             "titrePage" => "Mes questions",
@@ -308,7 +308,7 @@ class QuestionController extends MainController
 
     public static function afficherQuestionsFinies()
     {
-        $questions = (new QuestionRepository())->selectAllQuestionsFinies();
+        $questions = (new QuestionRepository())->selectAllFinies();
 
         static::afficherVue("view.php", [
             "titrePage" => "Résultats",

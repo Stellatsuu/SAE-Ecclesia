@@ -78,6 +78,13 @@ class DemandeQuestion extends AbstractDataObject
         return $this->idOrganisateur;
     }
 
+    // Setters
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
     // Caster
 
     public static function castIfNotNull($object, $errorUrl = "frontController.php", $errorMessage = "[OBJECT] n'existe pas") : DemandeQuestion

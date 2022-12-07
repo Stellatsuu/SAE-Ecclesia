@@ -4,7 +4,6 @@ namespace App\SAE\Model\Repository;
 
 use App\SAE\Model\DataObject\Section;
 
-
 class SectionRepository extends AbstractRepository
 {
     protected function getNomTable(): string
@@ -35,7 +34,12 @@ class SectionRepository extends AbstractRepository
 
     public function selectAllByQuestion(int $idQuestion): array
     {
-        $sql = "SELECT * FROM section WHERE id_question = :id_question";
+        $sql = <<<SQL
+        SELECT * 
+            FROM section 
+            WHERE id_question = :id_question
+        SQL;
+
         $pdo = DatabaseConnection::getPdo();
         $values = [
             'id_question' => $idQuestion
@@ -53,7 +57,11 @@ class SectionRepository extends AbstractRepository
 
     public function deleteAllByQuestion(int $idQuestion): void
     {
-        $sql = "DELETE FROM section WHERE id_question = :id_question";
+        $sql = <<<SQL
+        DELETE FROM section 
+            WHERE id_question = :id_question
+        SQL;
+
         $pdo = DatabaseConnection::getPdo();
         $values = [
             'id_question' => $idQuestion

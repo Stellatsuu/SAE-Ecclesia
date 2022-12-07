@@ -13,7 +13,7 @@ class PropositionRepository extends AbstractRepository
 
     protected function getNomTable(): string
     {
-        return "Proposition";
+        return "proposition";
     }
 
     protected function getNomClePrimaire(): string
@@ -43,7 +43,13 @@ class PropositionRepository extends AbstractRepository
 
     public function selectByQuestionEtRedacteur(int $idQuestion, int $idRedacteur): ?Proposition
     {
-        $sql = "SELECT * FROM {$this->getNomTable()} WHERE id_redacteur = :id_redacteur AND id_question = :id_question";
+        $sql = <<<SQL
+        SELECT * 
+            FROM proposition 
+            WHERE id_redacteur = :id_redacteur 
+            AND id_question = :id_question
+        SQL;
+
         $values = [
             "id_redacteur" => $idRedacteur,
             "id_question" => $idQuestion
@@ -59,68 +65,12 @@ class PropositionRepository extends AbstractRepository
         return $this->construire($ligne);
     }
 
-    public function deleteCoAuteurs($idProposition)
+    public function insert(AbstractDataObject $object): void
     {
-        $sql = "CALL supprimer_co_auteurs(:id_proposition)";
-        $values = [
-            "id_proposition" => $idProposition
-        ];
-
-        $pdo = DatabaseConnection::getPdo()->prepare($sql);
-        $pdo->execute($values);
-    }
-
-    public function addCoAuteur($idParagraphe, $idUtilisateur)
-    {
-        $sql = "INSERT INTO co_auteur (id_paragraphe, id_utilisateur) VALUES (:id_paragraphe, :id_utilisateur)";
-        $values = [
-            "id_paragraphe" => $idParagraphe,
-            "id_utilisateur" => $idUtilisateur
-        ];
-
-        $pdo = DatabaseConnection::getPdo()->prepare($sql);
-        $pdo->execute($values);
-    }
-
-    public function addCoAuteurGlobal($idProposition, $idUtilisateur)
-    {
-        $sql = "INSERT INTO co_auteur (id_paragraphe, id_utilisateur) SELECT p.id_paragraphe, :id_utilisateur FROM paragraphe p WHERE p.id_proposition = :id_proposition";
-        $values = [
-            "id_proposition" => $idProposition,
-            "id_utilisateur" => $idUtilisateur
-        ];
-
-        $pdo = DatabaseConnection::getPdo()->prepare($sql);
-        $pdo->execute($values);
-    }
-
-    public function selectCoAuteurs($idProposition)
-    {
-        $sql = "SELECT 
-                    DISTINCT id_utilisateur 
-                FROM co_auteur ca 
-                    JOIN paragraphe p 
-                    ON p.id_paragraphe = ca.id_paragraphe 
-                WHERE p.id_proposition = :id_proposition";
-        $values = [
-            "id_proposition" => $idProposition
-        ];
-
-        $pdo = DatabaseConnection::getPdo()->prepare($sql);
-        $pdo->execute($values);
-
-        $resultat = [];
-        foreach($pdo as $row) {
-            $resultat[] = (new UtilisateurRepository)->select($row['id_utilisateur']);
-        }
-        return $resultat;
-    }
-
-    public function insert(AbstractDataObject $object) : void {
         parent::insert($object);
 
         $object = Proposition::castIfNotNull($object);
-        $proposition = $this->selectByQuestionEtRedacteur($object->getQuestion()->getIdQuestion(), $object->getResponsable()->getIdUtilisateur());
+        $proposition = $this->selectByQuestionEtRedacteur($object->getIdQuestion(), $object->getIdResponsable());
 
         foreach ($object->getParagraphes() as $paragraphe) {
             $paragraphe->setIdProposition($proposition->getIdProposition());
@@ -128,8 +78,14 @@ class PropositionRepository extends AbstractRepository
         }
     }
 
-    public function selectAllByQuestion(int $idQuestion) : array{
-        $sql = "SELECT * FROM proposition WHERE id_question = :id_question";
+    public function selectAllByQuestion(int $idQuestion): array
+    {
+        $sql = <<<SQL
+        SELECT * 
+            FROM proposition 
+            WHERE id_question = :id_question
+        SQL;
+
         $pdo = DatabaseConnection::getPdo();
         $values = [
             'id_question' => $idQuestion

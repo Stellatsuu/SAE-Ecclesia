@@ -3,6 +3,7 @@
 namespace App\SAE\Model\DataObject;
 
 use App\SAE\Controller\MainController;
+use App\SAE\Model\Repository\CoAuteurRepository;
 use App\SAE\Model\Repository\ParagrapheRepository;
 use App\SAE\Model\Repository\PropositionRepository;
 use App\SAE\Model\Repository\SectionRepository;
@@ -99,7 +100,7 @@ class Paragraphe extends AbstractDataObject
     public function getCoAuteurs(): array
     {
         if ($this->coAuteurs == null) {
-            $this->coAuteurs = (new ParagrapheRepository())->getCoAuteurs($this->idParagraphe);
+            $this->coAuteurs = (new CoAuteurRepository())->selectAllByParagraphe($this->idParagraphe);
         }
         return $this->coAuteurs;
     }

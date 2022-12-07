@@ -74,7 +74,7 @@ class Question extends DemandeQuestion implements JsonSerializable
     public function getRedacteurs(): ?array
     {
         if($this->redacteurs == null) {
-            $this->redacteurs = (new RedacteurRepository)->selectRedacteursParQuestion($this->getIdQuestion());
+            $this->redacteurs = (new RedacteurRepository)->selectAllByQuestion($this->getIdQuestion());
         }
         return $this->redacteurs;
     }
@@ -82,7 +82,7 @@ class Question extends DemandeQuestion implements JsonSerializable
     public function getVotants(): ?array
     {
         if($this->votants == null) {
-            $this->votants = (new VotantRepository)->selectVotantsParQuestion($this->getIdQuestion());
+            $this->votants = (new VotantRepository)->selectAllByQuestion($this->getIdQuestion());
         }
         return $this->votants;
     }
@@ -140,11 +140,6 @@ class Question extends DemandeQuestion implements JsonSerializable
     }
 
     //Setters
-
-    public function setDescription(string $description): void
-    {
-        $this->description = $description;
-    }
 
     public function setSections(array $sections): void
     {

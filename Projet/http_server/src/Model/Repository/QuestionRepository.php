@@ -2,6 +2,7 @@
 
 namespace App\SAE\Model\Repository;
 
+use App\SAE\Model\DataObject\AbstractDataObject;
 use App\SAE\Model\DataObject\Question;
 use App\SAE\Model\SystemeVote\SystemeVoteFactory;
 use DateTime;
@@ -41,7 +42,7 @@ class QuestionRepository extends AbstractRepository
             $row['description_question'],
             $row['id_organisateur']
         );
-        $question->setDateDebutRedaction($row['date_debut_redaction'] == NULL ? NULL : new DateTime($row['date_debut_redaction'])); 
+        $question->setDateDebutRedaction($row['date_debut_redaction'] == NULL ? NULL : new DateTime($row['date_debut_redaction']));
         $question->setDateFinRedaction($row['date_fin_redaction'] == NULL ? NULL : new DateTime($row['date_fin_redaction']));
         $question->setDateOuvertureVotes($row['date_ouverture_votes'] == NULL ? NULL : new DateTime($row['date_ouverture_votes']));
         $question->setDateFermetureVotes($row['date_fermeture_votes'] == NULL ? NULL : new DateTime($row['date_fermeture_votes']));
@@ -49,23 +50,11 @@ class QuestionRepository extends AbstractRepository
         return $question;
     }
 
-    public function updateEbauche(Question $question): void
+    public function update(AbstractDataObject $question): void
     {
-        $pdo = DatabaseConnection::getPdo();
+        parent::update($question);
 
-        $sql = "UPDATE question SET description_question = :description_question, date_debut_redaction = :date_debut_redaction, date_fin_redaction = :date_fin_redaction, date_ouverture_votes = :date_ouverture_votes, date_fermeture_votes = :date_fermeture_votes, systeme_vote = :systeme_vote WHERE id_question = :id_question";
-        $pdoStatement = $pdo->prepare($sql);
-        $values = [
-            'description_question' => $question->getDescription(),
-            'date_debut_redaction' => $question->getDateDebutRedaction()->format('Y-m-d H:i:s'),
-            'date_fin_redaction' => $question->getDateFinRedaction()->format('Y-m-d H:i:s'),
-            'date_ouverture_votes' => $question->getDateOuvertureVotes()->format('Y-m-d H:i:s'),
-            'date_fermeture_votes' => $question->getDateFermetureVotes()->format('Y-m-d H:i:s'),
-            'id_question' => $question->getIdQuestion(),
-            'systeme_vote' => $question->getSystemeVote()->getNom()
-        ];
-
-        $pdoStatement->execute($values);
+        $question = Question::castIfNotNull($question);
 
         (new SectionRepository)->deleteAllByQuestion($question->getIdQuestion());
         foreach ($question->getSections() as $section) {
@@ -73,22 +62,26 @@ class QuestionRepository extends AbstractRepository
             (new SectionRepository)->insert($section);
         }
 
-        (new RedacteurRepository)->deleteRedacteursParQuestion($question->getIdQuestion());
+        (new RedacteurRepository)->deleteAllByQuestion($question->getIdQuestion());
         foreach ($question->getRedacteurs() as $redacteur) {
             (new RedacteurRepository)->insert($question->getIdQuestion(), $redacteur->getIdUtilisateur());
         }
 
-        (new VotantRepository)->deleteVotantsParQuestion($question->getIdQuestion());
+        (new VotantRepository)->deleteAllByQuestion($question->getIdQuestion());
         foreach ($question->getVotants() as $votant) {
             (new VotantRepository)->insert($question->getIdQuestion(), $votant->getIdUtilisateur());
         }
     }
 
-    public function selectAllQuestionsParOrganisateur(int $idUtilisateur): array
+    public function selectAllByOrganisateur(int $idUtilisateur): array
     {
-        $pdo = DatabaseConnection::getPdo();
+        $sql = <<<SQL
+            SELECT *
+                FROM question
+                WHERE id_organisateur = :id_organisateur
+        SQL;
 
-        $sql = "SELECT * FROM question WHERE id_organisateur = :id_organisateur";
+        $pdo = DatabaseConnection::getPdo();
         $pdoStatement = $pdo->prepare($sql);
         $values = [
             'id_organisateur' => $idUtilisateur
@@ -103,13 +96,15 @@ class QuestionRepository extends AbstractRepository
         return $questions;
     }
 
-    public function selectAllQuestionsFinies() : array{
-        $sql = "SELECT *
+    public function selectAllFinies(): array
+    {
+        $sql = <<<SQL
+            SELECT *
                 FROM question
-                WHERE date_fermeture_votes <= CURRENT_TIMESTAMP";
+                WHERE date_fermeture_votes <= CURRENT_TIMESTAMP
+        SQL;
 
         $pdo = DatabaseConnection::getPdo();
-
         $pdoStatement = $pdo->query($sql);
 
         $resultat = [];

@@ -34,5 +34,5 @@ class DemandeQuestionRepository extends AbstractRepository
             (new UtilisateurRepository)->select($row['id_organisateur'])
         );
         return $question;
-    }
+    } 
 }
