@@ -549,8 +549,8 @@ input[type=time]::-webkit-calendar-picker-indicator {
   /* animation */
   -webkit-animation: disappear 500ms forwards;
           animation: disappear 500ms forwards;
-  -webkit-animation-delay: 2s;
-          animation-delay: 2s;
+  -webkit-animation-delay: 4s;
+          animation-delay: 4s;
 }
 
 .errorMessage {

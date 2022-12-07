@@ -2,7 +2,7 @@
 INSERT INTO Utilisateur(id_utilisateur, nom_utilisateur, prenom_utilisateur, mot_de_passe) VALUES(10000, 'Valicov', 'Petru', '1234');
 INSERT INTO Utilisateur(id_utilisateur, nom_utilisateur, prenom_utilisateur, mot_de_passe) VALUES(10001, 'Chollet', 'Antoine', '1234');
 INSERT INTO Utilisateur(id_utilisateur, nom_utilisateur, prenom_utilisateur, mot_de_passe) VALUES(10002, 'Palleja', 'Xavier', '1234');
-INSERT INTO Utilisateur(id_utilisateur, nom_utilisateur, prenom_utilisateur, mot_de_passe) VALUES(10003, 'Palleja', 'Natalie', '1234');
+INSERT INTO Utilisateur(id_utilisateur, nom_utilisateur, prenom_utilisateur, mot_de_passe) VALUES(10003, 'Palleja', 'Nathalie', '1234');
 INSERT INTO Utilisateur(id_utilisateur, nom_utilisateur, prenom_utilisateur, mot_de_passe) VALUES(10004, 'Marie-Jeanne', 'Alain', '1234');
 INSERT INTO Utilisateur(id_utilisateur, nom_utilisateur, prenom_utilisateur, mot_de_passe) VALUES(10005, 'Trombettoni', 'Gilles', '1234');
 INSERT INTO Utilisateur(id_utilisateur, nom_utilisateur, prenom_utilisateur, mot_de_passe) VALUES(10006, 'Poupet', 'Victor', '1234');
