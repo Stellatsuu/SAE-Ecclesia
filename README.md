@@ -1,1 +1,0 @@
-# SAE-systeme-de-vote
