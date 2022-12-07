@@ -1,0 +1,43 @@
+#listeQuestionsFinies{
+  .question {
+    text-align: justify;
+    width: 100%;
+    margin: 10px 0;
+
+    .boite {
+      min-height: 160px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: row;
+      width: calc(100% - 26px);
+
+      div {
+        width: 100%;
+
+        div{
+          display: flex;
+          justify-content: space-between;
+        }
+
+        p{
+          margin-top:0;
+        }
+      }
+
+      div {
+        width: 100%;
+      }
+
+      .date{
+        text-align:right;
+        margin:0;
+        font-size: 0.8rem;
+        color: rgb(168, 168, 168);
+      }
+
+      .organisateur{
+        font-size: 0.8rem;
+      }
+    }
+  }
+}

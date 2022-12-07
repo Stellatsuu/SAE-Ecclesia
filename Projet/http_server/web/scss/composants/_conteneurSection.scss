@@ -1,0 +1,29 @@
+.conteneur_section {
+  padding: 0 20px 20px;
+  border: $couleurFond3 1px solid;
+
+  div {
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  label {
+    display: block;
+    font-size: 1em;
+    margin: 4px 0;
+  }
+
+  .remove_section {
+    padding: 3px 6px;
+  }
+
+  textarea {
+    resize: none;
+  }
+
+  input[type="text"] {
+    width: calc(100% - 14px);
+  }
+}

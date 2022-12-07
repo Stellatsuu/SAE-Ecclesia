@@ -1,0 +1,23 @@
+#ecrirePropositionForm {
+
+  .sectionTitle {
+    margin-top: 25px;
+
+    h2 {
+      margin: 0;
+      font-weight: normal;
+    }
+  }
+
+  .descriptionProposition {
+    width: calc(100% - 10px);
+    margin: 0;
+    background-color: #3C3C3C;
+    padding: 5px;
+
+    + textarea{
+      margin-top: 10px;
+    }
+  }
+}
+

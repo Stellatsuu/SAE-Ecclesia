@@ -1,0 +1,38 @@
+.texteDepliantTrigger{
+  display: none;
+
+  &:not(:checked) {
+    + div img {
+      transform: rotate(180deg);
+    }
+
+    + div + p {
+      display: none;
+    }
+  }
+
+  + div{
+    display: flex;
+    align-items: center;
+
+    label{
+      margin: 0;
+    }
+
+    img {
+      transition: transform 150ms ease-in-out;
+      cursor: pointer;
+      margin: 0 10px;
+      height: 13px;
+    }
+  }
+}
+
+/* STRUCTURE:
+
+  input
+  div
+    label
+      img (flèche)
+  texte à cacher/afficher
+*/

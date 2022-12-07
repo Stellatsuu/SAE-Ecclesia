@@ -1,0 +1,1 @@
+    <p class="<?=$messageType?>"> <?= $message; ?></p>

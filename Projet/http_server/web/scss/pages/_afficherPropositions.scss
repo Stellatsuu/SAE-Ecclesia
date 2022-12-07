@@ -1,0 +1,139 @@
+#afficherPropositions {
+  #propositionTitle {
+    width: 100%;
+  }
+
+  #description {
+    text-align: justify;
+  }
+
+  #propositionSelector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+    width: 100%;
+
+    a {
+      &:first-child {
+        margin-right: 20px;
+      }
+
+      &:last-child {
+        margin-left: 20px;
+      }
+    }
+
+    .boite {
+      min-width: calc(50% - 90px);
+      text-align: center;
+    }
+  }
+
+  #proposition {
+    width: 80%;
+
+    h2 {
+      margin: 0 0 4px 0;
+    }
+
+    p {
+      text-align: justify;
+      margin: 0 0 4px 0;
+
+      + h2 {
+        margin-top: 8px;
+      }
+    }
+  }
+
+  #nomResponsable {
+    width: 80%;
+    text-align: right;
+    margin: 5px;
+  }
+
+  #btns{
+    width:80%;
+    display:flex;
+    justify-content: flex-end;
+
+    button, .button{
+      margin: 5px;
+    }
+  }
+}
+
+#formulaire_vote {
+
+  h2 {
+    margin-bottom: 0;
+  }
+
+  p {
+    margin-top: 5px;
+  }
+
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+
+  input[type="submit"] {
+    margin-top: 20px;
+    align-self: center;
+  }
+
+  input[type="radio"] {
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    font: inherit;
+    color: currentColor;
+    width: 1.5em;
+    height: 1.5em;
+    border: 0.15em solid $couleurPrincipale;
+
+    display: grid;
+    place-items: center;
+    place-content: center;
+
+    &::before {
+      content: "";
+      width: 0.75em;
+      height: 0.75em;
+      transform: scale(0);
+      transition: 120ms transform ease-in-out;
+      box-shadow: inset 1em 1em $couleurPrincipale;
+      background-color: CanvasText;
+    }
+
+    &:checked::before {
+      transform: scale(1);
+    }
+  }
+
+  div {
+    width: fit-content;
+
+    div {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      & + div {
+        margin-top: 20px;
+      }
+
+      label {
+        font-size: 1.2rem;
+        margin: 0;
+        padding-right: 60px;
+
+        @media screen and (max-width: 700px) {
+          padding-right: 20px;
+        }
+      }
+    }
+  }
+}

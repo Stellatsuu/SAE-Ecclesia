@@ -1,0 +1,37 @@
+.message, .errorMessage{
+  /* glassmorphism */
+  background: rgba($couleurMessage, 20%);
+  border-radius: 7px;
+  box-shadow: 0 4px 30px rgba($couleurMessage, 10%);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba($couleurMessage, 30%);
+  padding: 10px 20px;
+
+  /* positionnement */
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* animation */
+  animation: disappear 500ms forwards;
+  animation-delay: 4s;
+}
+
+.errorMessage{
+  background: rgba($couleurRefuserSurvol, 20%);
+  border: 1px solid rgba($couleurRefuserSurvol, 30%);
+  box-shadow: 0 4px 30px rgba($couleurRefuserSurvol, 10%);
+  color: $couleurRefuser;
+}
+
+@keyframes disappear {
+  0% {
+      opacity: 1;
+  }
+  100% {
+      opacity: 0;
+      visibility: hidden;
+  }
+}

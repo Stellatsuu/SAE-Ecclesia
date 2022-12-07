@@ -1,0 +1,41 @@
+#gererCoAuteursForm {
+  #co_auteurs_input{
+    select{
+      width: calc(100% - 55px);
+
+      + button{
+        margin-right: 0;
+      }
+    }
+
+    #add_co_auteur{
+      grid-column: span 2;
+      margin: 20px auto 0 auto;
+    }
+
+    .conteneur_co_auteur{
+      width:100%;
+    }
+
+    @media screen and (min-width: 1000px){
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+
+      .conteneur_co_auteur{
+        select{
+          width: calc(100% - 80px);
+        }
+
+        &:nth-child(2n) {
+          justify-self: end;
+
+          select{
+            margin-left:25px;
+          }
+        }
+      }
+    }
+  }
+
+
+}
