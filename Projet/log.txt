@@ -1,8 +1,3 @@
-2022-12-08 08:01:04 : Début des tests
-2022-12-08 08:01:04 : info: La base de données a été réinitialisée
-2022-12-08 08:01:04 : début de demanderCreationQuestion
-2022-12-08 08:01:04 : Lecture de la session
-2022-12-08 08:01:04 : Récupération des données dans le formulaire
-2022-12-08 08:01:04 : Gestion des erreurs
-2022-12-08 08:01:04 : Insertion de la demande de question
-2022-12-08 08:01:04 : info: Votre demande a été envoyée
+2022-12-08 16:45:39 : Début des tests
+2022-12-08 16:45:39 : info: La base de données a été réinitialisée
+2022-12-08 16:45:39 : error: Le titre ne doit pas dépasser 100 caractères

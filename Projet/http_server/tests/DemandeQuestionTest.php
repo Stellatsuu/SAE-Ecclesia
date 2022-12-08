@@ -42,7 +42,7 @@ class DemandeQuestionTest extends TestCase
         $_POST = json_decode(file_get_contents(__DIR__ . "/savedForms/demande_question/demande_question_valide.json"), true);
         DemandeQuestionController::demanderCreationQuestion();
 
-        
+
         $sql = <<<SQL
         SELECT * 
             FROM demande_question 
@@ -59,5 +59,41 @@ class DemandeQuestionTest extends TestCase
         ]);
 
         $this->assertEquals(1, $stmt->rowCount());
+    }
+
+    public function testDemandeQuestionInvalide1()
+    {
+        $_POST = json_decode(file_get_contents(__DIR__ . "/savedForms/demande_question/demande_question_invalide_1.json"), true);
+        
+        $this->expectException(\Exception::class);
+        
+        DemandeQuestionController::demanderCreationQuestion();
+    }
+
+    public function testDemandeQuestionInvalide2()
+    {
+        $_POST = json_decode(file_get_contents(__DIR__ . "/savedForms/demande_question/demande_question_invalide_2.json"), true);
+        
+        $this->expectException(\Exception::class);
+        
+        DemandeQuestionController::demanderCreationQuestion();
+    }
+
+    public function testDemandeQuestionInvalide3()
+    {
+        $_POST = json_decode(file_get_contents(__DIR__ . "/savedForms/demande_question/demande_question_invalide_3.json"), true);
+        
+        $this->expectException(\Exception::class);
+        
+        DemandeQuestionController::demanderCreationQuestion();
+    }
+
+    public function testDemandeQuestionInvalide4()
+    {
+        $_POST = json_decode(file_get_contents(__DIR__ . "/savedForms/demande_question/demande_question_invalide_4.json"), true);
+        
+        $this->expectException(\Exception::class);
+        
+        DemandeQuestionController::demanderCreationQuestion();
     }
 }

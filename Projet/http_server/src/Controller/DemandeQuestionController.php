@@ -59,16 +59,11 @@ class DemandeQuestionController extends MainController
 
     public static function demanderCreationQuestion(): void
     {
-        MainController::logToFile("début de demanderCreationQuestion");
         $session = static::getSessionSiConnecte();
         $idUtilisateur = $session->lire("idUtilisateur");
 
-        MainController::logToFile("Lecture de la session");
-
         $titre = static::getIfSetAndNotEmpty("titre", AFDQ_URL);
         $description = static::getIfSetAndNotEmpty("description", AFDQ_URL);
-
-        MainController::logToFile("Récupération des données dans le formulaire");
 
         if (strlen($titre) > 100) {
             static::error(AFDQ_URL, "Le titre ne doit pas dépasser 100 caractères");
@@ -78,8 +73,6 @@ class DemandeQuestionController extends MainController
             static::error(AFDQ_URL, "La description ne doit pas dépasser 4000 caractères");
         }
 
-        MainController::logToFile("Gestion des erreurs");
-
         $demande = new DemandeQuestion(
             -1,
             $titre,
@@ -87,8 +80,6 @@ class DemandeQuestionController extends MainController
             $idUtilisateur
         );
         (new DemandeQuestionRepository)->insert($demande);
-
-        MainController::logToFile("Insertion de la demande de question");
 
         static::message(LMQ_URL, "Votre demande a été envoyée");
     }

@@ -61,6 +61,7 @@ class MainController
             static::redirect($url);
         } else {
             static::logToFile("error: " . $message);
+            throw new \Exception($message);
         }
     }
 

@@ -1,1 +1,1 @@
-{"version":1,"defects":{"DemandeQuestionTest::testDemandeQuestionValide":4},"times":{"DemandeQuestionTest::testDemandeQuestionValide":0.074}}
+{"version":1,"defects":{"DemandeQuestionTest::testDemandeQuestionValide":4,"DemandeQuestionTest::testDemandeQuestionInvalide1":4},"times":{"DemandeQuestionTest::testDemandeQuestionValide":0.074,"DemandeQuestionTest::testDemandeQuestionInvalide1":0.065,"DemandeQuestionTest::testDemandeQuestionInvalide2":0.088,"DemandeQuestionTest::testDemandeQuestionInvalide3":0.068,"DemandeQuestionTest::testDemandeQuestionInvalide4":0.072}}
