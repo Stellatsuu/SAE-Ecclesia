@@ -13,6 +13,7 @@ use App\SAE\Model\Repository\QuestionRepository;
 use App\SAE\Model\Repository\UtilisateurRepository;
 use App\SAE\Lib\PhaseQuestion as Phase;
 use App\SAE\Model\DataObject\DemandeCoAuteur;
+use App\SAE\Model\Repository\CoAuteurRepository;
 use App\SAE\Model\Repository\DemandeCoAuteurRepository;
 
 class CoAuteurController extends MainController
@@ -112,9 +113,9 @@ class CoAuteurController extends MainController
             return;
         }
 
-        (new PropositionRepository)->deleteCoAuteurs($proposition->getIdProposition());
+        (new CoAuteurRepository)->deleteAllByProposition($proposition->getIdProposition());
         foreach ($coAuteurs as $coAuteur) {
-            (new PropositionRepository)->addCoAuteurGlobal($proposition->getIdProposition(), $coAuteur->getIdUtilisateur());
+            (new CoAuteurRepository)->insertGlobal($proposition->getIdProposition(), $coAuteur->getIdUtilisateur());
         }
 
         static::message("frontController.php?controller=question&action=listerMesQuestions", "Les co-auteurs ont bien été modifiés.");
@@ -170,7 +171,7 @@ class CoAuteurController extends MainController
             return;
         }
 
-        $coAuteurs = (new PropositionRepository)->selectCoAuteurs($proposition->getIdProposition());
+        $coAuteurs = (new CoAuteurRepository)->selectAllByProposition($proposition->getIdProposition());
         if (in_array($utilisateur, $coAuteurs)) {
             static::error("frontController.php", "Vous êtes déjà co-auteur de cette proposition.");
             return;
@@ -238,7 +239,7 @@ class CoAuteurController extends MainController
         }
 
         (new DemandeCoAuteurRepository)->delete($idDemandeur, $idProposition);
-        (new PropositionRepository)->addCoAuteurGlobal($idProposition, $idDemandeur);
+        (new CoAuteurRepository)->insertGlobal($idProposition, $idDemandeur);
         static::message("frontController.php?controller=coAuteur&action=afficherFormulaireGererCoAuteurs&idProposition=$idProposition", "La demande de co-auteur a bien été acceptée.");
     }
 

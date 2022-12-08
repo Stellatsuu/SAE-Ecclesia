@@ -7,7 +7,7 @@ use App\SAE\Model\DataObject\Utilisateur;
 
 class CoAuteurRepository
 {
-    public function existsOnQuestion(int $idQuestion, int $idUtilisateur): bool
+    public function existsForQuestion(int $idQuestion, int $idUtilisateur): bool
     {
         $sql = <<<SQL
         SELECT COUNT(*) AS est_coauteur 
@@ -31,7 +31,7 @@ class CoAuteurRepository
         return $pdo->fetch()['est_coauteur'] > 0;
     }
 
-    public function existsOnParagraphe(int $idParagraphe, int $idUtilisateur): bool
+    public function existsForParagraphe(int $idParagraphe, int $idUtilisateur): bool
     {
         $sql = <<<SQL
         SELECT COUNT(*) AS est_coauteur 

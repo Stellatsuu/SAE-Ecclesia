@@ -6,13 +6,35 @@ use App\SAE\Lib\MessageFlash;
 use App\SAE\Model\HTTP\Session;
 use App\SAE\Model\Repository\DatabaseConnection;
 
+/**
+ * @var string URL de l'accueil
+ */
 const ACCUEIL_URL = "frontController.php";
+
+/**
+ * @var string URL de la liste des demandes de question
+ */
 const LDQ_URL = "frontController.php?controller=demandeQuestion&action=listerDemandesQuestion";
+
+/**
+ * @var string URL du formulaire de demande de question
+ */
 const AFDQ_URL = "frontController.php?controller=demandeQuestion&action=afficherFormulaireDemandeQuestion";
+/**
+ * @var string URL de la page "Lister mes questions"
+ */
 const LMQ_URL = "frontController.php?controller=question&action=listerMesQuestions";
 
 class MainController
 {
+
+    private static bool $isTesting = false;
+
+    public static function setTesting(bool $isTesting): void
+    {
+        static::$isTesting = $isTesting;
+    }
+
     public static function afficherVue(string $cheminVue, array $parametres): void
     {
         extract($parametres); // Crée des variables à partir du tableau $parametres
@@ -24,14 +46,22 @@ class MainController
      */
     public static function message(string $url, string $message): void
     {
-        MessageFlash::ajouter("info", $message);
-        static::redirect($url);
+        if (!static::$isTesting) {
+            MessageFlash::ajouter("info", $message);
+            static::redirect($url);
+        } else {
+            static::logToFile("info: " . $message);
+        }
     }
 
     public static function error(string $url, string $message): void
     {
-        MessageFlash::ajouter("error", $message);
-        static::redirect($url);
+        if (!static::$isTesting) {
+            MessageFlash::ajouter("error", $message);
+            static::redirect($url);
+        } else {
+            static::logToFile("error: " . $message);
+        }
     }
 
     public static function redirect(string $url): void
@@ -131,5 +161,17 @@ class MainController
             static::error($errorUrl, "$parametre ne peut pas être vide");
         }
         return $valeur;
+    }
+
+    public static function logToFile(string $message): void
+    {
+        $date = date("Y-m-d H:i:s");
+        $message = "$date : $message";
+        file_put_contents(__DIR__ . "/../../../log.txt", $message . PHP_EOL, FILE_APPEND);
+    }
+
+    public static function clearLogFile(): void
+    {
+        file_put_contents(__DIR__ . "/../../../log.txt", "");
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\SAE\Model\DataObject;
 
+use App\SAE\Model\Repository\CoAuteurRepository;
 use App\SAE\Model\Repository\ParagrapheRepository;
 use App\SAE\Model\Repository\PropositionRepository;
 use App\SAE\Model\Repository\QuestionRepository;
@@ -109,7 +110,7 @@ class Proposition extends AbstractDataObject
 
     public function getCoAuteurs(): array
     {
-        return (new PropositionRepository())->selectCoAuteurs($this->idProposition);
+        return (new CoAuteurRepository())->selectAllByProposition($this->idProposition);
     }
 
     // Setters

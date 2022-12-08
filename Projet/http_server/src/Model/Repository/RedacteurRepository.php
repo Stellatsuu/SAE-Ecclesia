@@ -63,7 +63,7 @@ class RedacteurRepository
         return $redacteurs;
     }
 
-    public function existsOnQuestion(int $idQuestion, int $idUtilisateur): bool
+    public function existsForQuestion(int $idQuestion, int $idUtilisateur): bool
     {
         $sql = <<<SQL
         SELECT COUNT(*) AS est_redacteur

@@ -44,13 +44,13 @@ class VoteController extends MainController
 
         $idUtilisateur = $session->lire("idUtilisateur");
 
-        $estVotant = (new VotantRepository)->existeVotant($proposition->getQuestion()->getIdQuestion(), $idUtilisateur);
+        $estVotant = (new VotantRepository)->existsForQuestion($proposition->getQuestion()->getIdQuestion(), $idUtilisateur);
         if(!$estVotant) {
             static::error("frontController.php?controller=proposition&action=afficherPropositions&idQuestion={$question->getIdQuestion()}&idUtilisateur={$idUtilisateur}", "Vous n'êtes pas votant pour cette question");
             return;
         }
 
-        $aDejaVote = (new VoteRepository)->existeVoteSurQuestion($proposition->getQuestion()->getIdQuestion(), $idUtilisateur);
+        $aDejaVote = (new VoteRepository)->existsForQuestion($proposition->getQuestion()->getIdQuestion(), $idUtilisateur);
         if($aDejaVote) {
             static::error("frontController.php?controller=proposition&action=afficherPropositions&idQuestion={$question->getIdQuestion()}&idUtilisateur={$idUtilisateur}", "Vous avez déjà voté sur cette question");
             return;

@@ -31,7 +31,7 @@ class DemandeQuestionRepository extends AbstractRepository
             $row['id_demande_question'],
             $row['titre_demande_question'],
             $row['description_demande_question'],
-            (new UtilisateurRepository)->select($row['id_organisateur'])
+            $row['id_organisateur']
         );
         return $question;
     } 

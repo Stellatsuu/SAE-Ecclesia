@@ -36,8 +36,7 @@ class PropositionRepository extends AbstractRepository
             $objetFormatTableau['id_proposition'],
             $objetFormatTableau['titre_proposition'],
             $objetFormatTableau['id_redacteur'],
-            $objetFormatTableau['id_question'],
-            (new ParagrapheRepository())->selectAllByProposition($objetFormatTableau['id_proposition'])
+            $objetFormatTableau['id_question']
         );
     }
 

@@ -14,9 +14,14 @@ class Session
      */
     private function __construct()
     {
-        if (session_start() === false) {
-            throw new Exception("La session n'a pas réussi à démarrer.");
+        if(!headers_sent()) {
+            if(session_start() === false) {
+                throw new Exception("Impossible de démarrer la session");
+            }
+        } else {
+            $_SESSION = array();
         }
+
     }
 
     public static function getInstance(): Session

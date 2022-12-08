@@ -27,20 +27,12 @@ class QuestionController extends MainController
         switch ($phase) {
             case Phase::Redaction:
                 static::error(LMQ_URL, "La question est en phase de rédaction. Vous ne pouvez plus la modifier.");
-                return;
-                break;
             case Phase::Lecture:
                 static::error(LMQ_URL, "La question est en phase de lecture. Vous ne pouvez plus la modifier.");
-                return;
-                break;
             case Phase::Vote:
                 static::error(LMQ_URL, "La question est en phase de vote. Vous ne pouvez plus la modifier.");
-                return;
-                break;
             case Phase::Resultat:
                 static::error(LMQ_URL, "La question est terminée. Vous ne pouvez plus la modifier.");
-                return;
-                break;
             case Phase::NonRemplie:
                 $question->setDateDebutRedaction((new DateTime())->add(new DateInterval('P1D'))->setTime(16, 0, 0));
                 $question->setDateFinRedaction((new DateTime())->add(new DateInterval('P8D'))->setTime(16, 0, 0));
@@ -78,6 +70,9 @@ class QuestionController extends MainController
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
         $description = static::getIfSetAndNotEmpty("description");
 
+        /**
+         * @var string URL du formulaire "Poser une Question"
+         */
         $AFPQ_URL = "frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion";
 
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
@@ -140,14 +135,14 @@ class QuestionController extends MainController
 
         foreach (['dateDebutRedaction', 'dateFinRedaction', 'dateOuvertureVotes', 'dateFermetureVotes'] as $date) {
             if (!isset($_POST[$date]) || !preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/", $_POST[$date])) {
-                static::error("frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion", "Veuillez entrer des dates valides");
+                static::error($AFPQ_URL, "Veuillez entrer des dates valides");
                 return;
             }
         }
 
         foreach (['heureDebutRedaction', 'heureFinRedaction', 'heureOuvertureVotes', 'heureFermetureVotes'] as $heure) {
             if (!isset($_POST[$heure]) || !preg_match("/^[0-9]{2}:[0-9]{2}$/", $_POST[$heure])) {
-                static::error("frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion", "Veuillez entrer des heures valides");
+                static::error($AFPQ_URL, "Veuillez entrer des heures valides");
                 return;
             }
         }
@@ -164,19 +159,19 @@ class QuestionController extends MainController
             && $dateDebutRedaction > (new DateTime("now"));
 
         if (!$dateCoherentes) {
-            static::error("frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion", "Les dates ne sont pas cohérentes");
+            static::error($AFPQ_URL, "Les dates ne sont pas cohérentes");
             return;
         } else if (strlen($description) > 4000) {
-            static::error("frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion", "La description de la question ne doit pas dépasser 4000 caractères");
+            static::error($AFPQ_URL, "La description de la question ne doit pas dépasser 4000 caractères");
             return;
         } else if (count($sections) == 0) {
-            static::error("frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion", "Au moins une section est requise");
+            static::error($AFPQ_URL, "Au moins une section est requise");
             return;
         } else if (count($responsables) == 0) {
-            static::error("frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion", "Veuillez sélectionner au moins un responsable");
+            static::error($AFPQ_URL, "Veuillez sélectionner au moins un responsable");
             return;
         } else if (count($votants) == 0) {
-            static::error("frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion", "Veuillez sélectionner au moins un votant");
+            static::error($AFPQ_URL, "Veuillez sélectionner au moins un votant");
             return;
         }
 

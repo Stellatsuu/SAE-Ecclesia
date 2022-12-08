@@ -10,6 +10,7 @@ INSERT INTO Utilisateur(id_utilisateur, nom_utilisateur, prenom_utilisateur, mot
 INSERT INTO Utilisateur(id_utilisateur, nom_utilisateur, prenom_utilisateur, mot_de_passe) VALUES(10008, 'Rouchon', 'Bruno', '1234');
 INSERT INTO Utilisateur(id_utilisateur, nom_utilisateur, prenom_utilisateur, mot_de_passe) VALUES(10009, 'Rice', 'Lorraine', '1234');
 INSERT INTO Utilisateur(id_utilisateur, nom_utilisateur, prenom_utilisateur, mot_de_passe) VALUES(10010, 'Troll', 'Face', '1234');
+INSERT INTO Utilisateur(id_utilisateur, nom_utilisateur, prenom_utilisateur, mot_de_passe) VALUES(77777, 'Test', 'Test', '1234');
 
 -- Administrateur
 INSERT INTO Administrateur(id_administrateur) VALUES(10005); --Trombettoni

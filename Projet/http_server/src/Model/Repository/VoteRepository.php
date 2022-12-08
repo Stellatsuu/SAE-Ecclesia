@@ -79,7 +79,7 @@ class VoteRepository extends AbstractRepository
         return $resultat;
     }
 
-    public function existsOnQuestion(int $idQuestion, int $idUtilisateur): bool
+    public function existsForQuestion(int $idQuestion, int $idUtilisateur): bool
     {
         $sql = <<<SQL
         SELECT COUNT(*) AS a_vote 
