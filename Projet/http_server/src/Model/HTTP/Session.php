@@ -21,7 +21,6 @@ class Session
         } else {
             $_SESSION = array();
         }
-
     }
 
     public static function getInstance(): Session

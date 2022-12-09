@@ -41,9 +41,6 @@ class MainController
         require __DIR__ . '/../view/' . $cheminVue;
     }
 
-    /**
-     * Affiche le message $message sur la page associée à $action
-     */
     public static function message(string $url, string $message): void
     {
         if (!static::$isTesting) {
@@ -119,17 +116,17 @@ class MainController
     {
         $session = Session::getInstance();
 
-        $idUtilisateur = static::getIfSetAndNumeric("idUtilisateur");
+        $username = static::getIfSet("username");
 
-        $session->enregistrer("idUtilisateur", $idUtilisateur);
+        $session->enregistrer("username", $username);
 
-        static::message(ACCUEIL_URL, "Désormais connecté en tant que $idUtilisateur");
+        static::message(ACCUEIL_URL, "Désormais connecté en tant que $username");
     }
 
     protected static function getSessionSiConnecte($errorUrl = ACCUEIL_URL): Session
     {
         $session = Session::getInstance();
-        if (!$session->contient("idUtilisateur")) {
+        if (!$session->contient("username")) {
             static::error($errorUrl, "Vous devez être connecté pour accéder à cette page");
         }
         return $session;

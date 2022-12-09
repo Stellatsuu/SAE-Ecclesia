@@ -40,7 +40,7 @@ class DemandeQuestionController extends MainController
             -1,
             $demande->getTitre(),
             $demande->getDescription(),
-            $demande->getOrganisateur()
+            $demande->getUsernameOrganisateur()
         );
 
         (new QuestionRepository)->insert($question);
@@ -60,7 +60,7 @@ class DemandeQuestionController extends MainController
     public static function demanderCreationQuestion(): void
     {
         $session = static::getSessionSiConnecte();
-        $idUtilisateur = $session->lire("idUtilisateur");
+        $username = $session->lire("username");
 
         $titre = static::getIfSetAndNotEmpty("titre", AFDQ_URL);
         $description = static::getIfSetAndNotEmpty("description", AFDQ_URL);
@@ -77,7 +77,7 @@ class DemandeQuestionController extends MainController
             -1,
             $titre,
             $description,
-            $idUtilisateur
+            $username
         );
         (new DemandeQuestionRepository)->insert($demande);
 

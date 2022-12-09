@@ -15,43 +15,41 @@ use App\SAE\Model\Repository\VotantRepository;
 
 class VoteController extends MainController
 {
-    public static function voter() {
+    public static function voter()
+    {
 
         $session = static::getSessionSiConnecte();
+        $username = $session->lire("username");
 
         $idProposition = static::getIfSetAndNumeric("idProposition");
-
         $proposition = Proposition::castIfNotNull((new PropositionRepository)->select($idProposition));
 
         $question = $proposition->getQuestion();
+        $idQuestion = $question->getIdQuestion();
         $phase = $question->getPhase();
-        if($phase !== PhaseQuestion::Vote) {
+        if ($phase !== PhaseQuestion::Vote) {
             static::error("frontController.php", "La question n'est pas en phase de vote");
             return;
         }
-
-        $idUtilisateur = $session->lire("idUtilisateur");
-        $idQuestion = $question->getIdQuestion();
 
         /**
          * @var string URL de afficherPropositions
          */
         $AP_URL = "frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion";
 
-        $estVotant = (new VotantRepository)->existsForQuestion($question->getIdQuestion(), $idUtilisateur);
-        if(!$estVotant) {
+        $estVotant = (new VotantRepository)->existsForQuestion($question->getIdQuestion(), $username);
+        if (!$estVotant) {
             static::error(LMQ_URL, "Vous n'êtes pas votant pour cette question");
         }
 
-        $aDejaVote = (new VoteRepository)->existsForQuestion($proposition->getQuestion()->getIdQuestion(), $idUtilisateur);
-        if($aDejaVote) {
+        $aDejaVote = (new VoteRepository)->existsForQuestion($proposition->getIdQuestion(), $username);
+        if ($aDejaVote) {
             static::error($AP_URL, "Vous avez déjà voté sur cette question");
         }
 
-        $votant = (new UtilisateurRepository())->select($idUtilisateur);
-        $vote = new Vote($proposition, $votant, 1);
+        $vote = new Vote($proposition, $username, 1);
         (new VoteRepository)->insert($vote);
 
-    static::message($AP_URL, "Votre vote a bien été pris en compte");
+        static::message($AP_URL, "Votre vote a bien été pris en compte");
     }
 }

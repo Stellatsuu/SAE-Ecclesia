@@ -25,7 +25,7 @@ class QuestionRepository extends AbstractRepository
         return [
             'titre_question',
             'description_question',
-            'id_organisateur',
+            'username_organisateur',
             'date_debut_redaction',
             'date_fin_redaction',
             'date_ouverture_votes',
@@ -40,7 +40,7 @@ class QuestionRepository extends AbstractRepository
             $row['id_question'],
             $row['titre_question'],
             $row['description_question'],
-            $row['id_organisateur']
+            $row['username_organisateur']
         );
         $question->setDateDebutRedaction($row['date_debut_redaction'] == NULL ? NULL : new DateTime($row['date_debut_redaction']));
         $question->setDateFinRedaction($row['date_fin_redaction'] == NULL ? NULL : new DateTime($row['date_fin_redaction']));
@@ -67,12 +67,12 @@ class QuestionRepository extends AbstractRepository
 
         (new RedacteurRepository)->deleteAllByQuestion($question->getIdQuestion());
         foreach ($redacteurs as $redacteur) {
-            (new RedacteurRepository)->insert($question->getIdQuestion(), $redacteur->getIdUtilisateur());
+            (new RedacteurRepository)->insert($question->getIdQuestion(), $redacteur->getUsername());
         }
 
         (new VotantRepository)->deleteAllByQuestion($question->getIdQuestion());
         foreach ($votants as $votant) {
-            (new VotantRepository)->insert($question->getIdQuestion(), $votant->getIdUtilisateur());
+            (new VotantRepository)->insert($question->getIdQuestion(), $votant->getUsername());
         }
     }
 
@@ -81,18 +81,18 @@ class QuestionRepository extends AbstractRepository
         parent::update($question);
     }
 
-    public function selectAllByOrganisateur(int $idUtilisateur): array
+    public function selectAllByOrganisateur(string $username): array
     {
         $sql = <<<SQL
             SELECT *
                 FROM question
-                WHERE id_organisateur = :id_organisateur
+                WHERE username_organisateur = :username_organisateur
         SQL;
 
         $pdo = DatabaseConnection::getPdo();
         $pdoStatement = $pdo->prepare($sql);
         $values = [
-            'id_organisateur' => $idUtilisateur
+            'username_organisateur' => $username
         ];
 
         $pdoStatement->execute($values);

@@ -21,7 +21,7 @@ class DemandeQuestionRepository extends AbstractRepository
         return [
             'titre_demande_question',
             'description_demande_question',
-            'id_organisateur'
+            'username_organisateur'
         ];
     }
 
@@ -31,7 +31,7 @@ class DemandeQuestionRepository extends AbstractRepository
             $row['id_demande_question'],
             $row['titre_demande_question'],
             $row['description_demande_question'],
-            $row['id_organisateur']
+            $row['username_organisateur']
         );
         return $question;
     } 

@@ -88,7 +88,6 @@
 
         </div>
 
-        <input type="hidden" name="idUtilisateur" value="<?= htmlspecialchars($question->getOrganisateur()->getIdUtilisateur()) ?>">
         <input type="hidden" name="idQuestion" value="<?= htmlspecialchars($question->getIdQuestion()) ?>">
 
     </fieldset>
@@ -101,7 +100,7 @@
     const question = <?= json_encode($question) ?>;
     const utilisateurs = <?= json_encode($utilisateurs) ?>;
     console.log(utilisateurs);
-    const allUtilisateurOptions = '<option value="" selected disabled>---</option>' + utilisateurs.map(utilisateur => `<option value="${utilisateur.idUtilisateur}">${(utilisateur.nom).toUpperCase()} ${utilisateur.prenom}</option>`).join("\n");
+    const allUtilisateurOptions = '<option value="" selected disabled>---</option>' + utilisateurs.map(utilisateur => `<option value="${utilisateur.username}">${(utilisateur.nom).toUpperCase()} ${utilisateur.prenom}</option>`).join("\n");
 </script>
 
 <script src="js/sections.js"></script>

@@ -15,13 +15,13 @@ class DemandeCoAuteurRepository extends AbstractRepository
 
     protected function getNomClePrimaire(): string
     {
-        return "id_demandeur, id_proposition";
+        return "username_demandeur, id_proposition";
     }
 
     protected function getNomsColonnes(): array
     {
         return [
-            "id_demandeur",
+            "username_demandeur",
             "id_proposition",
             "message"
         ];
@@ -30,7 +30,7 @@ class DemandeCoAuteurRepository extends AbstractRepository
     protected function construire(array $objetFormatTableau): DemandeCoAuteur
     {
         return new DemandeCoAuteur(
-            $objetFormatTableau['id_demandeur'],
+            $objetFormatTableau['username_demandeur'],
             $objetFormatTableau['id_proposition'],
             $objetFormatTableau['message']
         );

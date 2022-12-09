@@ -23,7 +23,7 @@
     foreach ($demandesCoAuteur as $demande) {
 
         $demande = DemandeCoAuteur::castIfNotNull($demande);
-        $idDemandeur = $demande->getIdDemandeur();
+        $usernameDemandeur = $demande->getUsernameDemandeur();
         $demandeur = $demande->getDemandeur();
         $nomComplet = $demandeur->getPrenom() . " " . strtoupper($demandeur->getNom());
         $message = $demande->getMessage();
@@ -36,8 +36,8 @@
                 <p>$message</p>
             </div>
             <div class="boite">
-                <a href="frontController.php?action=accepterDemandeCoAuteur&controller=coAuteur&idDemandeur=$idDemandeur&idProposition=$idProposition" class="button validerBtn">Accepter</a>
-                <a href="frontController.php?action=refuserDemandeCoAuteur&controller=coAuteur&idDemandeur=$idDemandeur&idProposition=$idProposition" class="button refuserBtn">Refuser</a>
+                <a href="frontController.php?action=accepterDemandeCoAuteur&controller=coAuteur&usernameDemandeur=$usernameDemandeur&idProposition=$idProposition" class="button validerBtn">Accepter</a>
+                <a href="frontController.php?action=refuserDemandeCoAuteur&controller=coAuteur&usernameDemandeur=$usernameDemandeur&idProposition=$idProposition" class="button refuserBtn">Refuser</a>
             </div>
         </div>
         HTML;
@@ -55,6 +55,6 @@
     const utilisateurs = <?= json_encode($utilisateursAutorises) ?>;
     const coAuteurs = <?= json_encode($coAuteurs) ?>;
     console.log(utilisateurs);
-    const options = '<option value="" selected disabled>---</option>' + utilisateurs.map(utilisateur => `<option value="${utilisateur.idUtilisateur}">${(utilisateur.nom).toUpperCase()} ${utilisateur.prenom}</option>`).join("\n");
+    const options = '<option value="" selected disabled>---</option>' + utilisateurs.map(utilisateur => `<option value="${utilisateur.username}">${(utilisateur.nom).toUpperCase()} ${utilisateur.prenom}</option>`).join("\n");
 </script>
 <script type="module" src="js/co_auteurs.js"></script>

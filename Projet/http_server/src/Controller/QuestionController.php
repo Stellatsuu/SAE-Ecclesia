@@ -19,8 +19,16 @@ class QuestionController extends MainController
 
     public static function afficherFormulairePoserQuestion(): void
     {
+        $session = static::getSessionSiConnecte();
+        $username = $session->lire("username");
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
+
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
+
+        if ($question->getUsernameOrganisateur() != $username) {
+            static::error(LMQ_URL, "Vous n'êtes pas l'organisateur de cette question. Vous ne pouvez pas la modifier.");
+        }
+
         $utilisateurs = (new UtilisateurRepository)->selectAll();
 
         $phase = $question->getPhase();
@@ -67,6 +75,8 @@ class QuestionController extends MainController
 
     public static function poserQuestion(): void
     {
+        $session = static::getSessionSiConnecte();
+        $username = $session->lire("username");
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
         $description = static::getIfSetAndNotEmpty("description");
 
@@ -76,6 +86,11 @@ class QuestionController extends MainController
         $AFPQ_URL = "frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion";
 
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
+        
+        if ($question->getUsernameOrganisateur() != $username) {
+            static::error(LMQ_URL, "Vous n'êtes pas l'organisateur de cette question. Vous ne pouvez pas la modifier.");
+        }
+        
         $phase = $question->getPhase();
         switch ($phase) {
             case Phase::Redaction:
@@ -118,15 +133,15 @@ class QuestionController extends MainController
         $redacteurs = [];
         $votants = [];
         foreach ($_POST as $key => $value) {
-            if (substr($key, 0, 9) == "redacteur" && is_numeric($value)) {
-                $idRedacteur = intval($value);
-                $redacteur = Utilisateur::castIfNotNull((new UtilisateurRepository)->select($idRedacteur));
+            if (substr($key, 0, 9) == "redacteur") {
+                $usernameRedacteur = $value;
+                $redacteur = Utilisateur::castIfNotNull((new UtilisateurRepository)->select($usernameRedacteur));
                 if ($redacteur && !in_array($redacteur, $redacteurs)) {
                     $redacteurs[] = $redacteur;
                 }
-            } else if (substr($key, 0, 6) == "votant" && is_numeric($value)) {
-                $idVotant = intval($value);
-                $votant = Utilisateur::castIfNotNull((new UtilisateurRepository)->select($idVotant));
+            } else if (substr($key, 0, 6) == "votant") {
+                $usernameVotant = $value;
+                $votant = Utilisateur::castIfNotNull((new UtilisateurRepository)->select($usernameVotant));
                 if ($votant && !in_array($votant, $votants)) {
                     $votants[] = $votant;
                 }
@@ -160,19 +175,14 @@ class QuestionController extends MainController
 
         if (!$dateCoherentes) {
             static::error($AFPQ_URL, "Les dates ne sont pas cohérentes");
-            return;
         } else if (strlen($description) > 4000) {
             static::error($AFPQ_URL, "La description de la question ne doit pas dépasser 4000 caractères");
-            return;
         } else if (count($sections) == 0) {
             static::error($AFPQ_URL, "Au moins une section est requise");
-            return;
         } else if (count($redacteurs) == 0) {
             static::error($AFPQ_URL, "Veuillez sélectionner au moins un rédacteur");
-            return;
         } else if (count($votants) == 0) {
             static::error($AFPQ_URL, "Veuillez sélectionner au moins un votant");
-            return;
         }
 
         $question->setDescription($description);
@@ -190,9 +200,16 @@ class QuestionController extends MainController
 
     public static function passagePhaseRedaction()
     {
+        $session = static::getSessionSiConnecte();
+        $username = $session->lire("username");
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
 
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
+
+        if($question->getUsernameOrganisateur() != $username) {
+            static::error(ACCUEIL_URL, "Vous n'êtes pas l'organisateur de cette question");
+            return;
+        }
 
         $phase = $question->getPhase();
         if ($phase != Phase::Attente) {
@@ -207,9 +224,16 @@ class QuestionController extends MainController
 
     public static function passagePhaseVote()
     {
+        $session = static::getSessionSiConnecte();
+        $username = $session->lire("username");
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
 
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
+
+        if($question->getUsernameOrganisateur() != $username) {
+            static::error(ACCUEIL_URL, "Vous n'êtes pas l'organisateur de cette question");
+            return;
+        }
 
         $phase = $question->getPhase();
         if ($phase != Phase::Redaction && $phase != Phase::Lecture) {
@@ -228,9 +252,16 @@ class QuestionController extends MainController
 
     public static function passagePhaseResultats()
     {
+        $session = static::getSessionSiConnecte();
+        $username = $session->lire("username");
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
 
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
+
+        if($question->getUsernameOrganisateur() != $username) {
+            static::error(ACCUEIL_URL, "Vous n'êtes pas l'organisateur de cette question");
+            return;
+        }
 
         $phase = $question->getPhase();
         if ($phase != Phase::Vote) {
@@ -246,8 +277,8 @@ class QuestionController extends MainController
     public static function listerMesQuestions()
     {
         $session = static::getSessionSiConnecte();
-        $idUtilisateur = $session->lire("idUtilisateur");
-        $questions = (new QuestionRepository)->selectAllByOrganisateur($idUtilisateur);
+        $username = $session->lire("username");
+        $questions = (new QuestionRepository)->selectAllByOrganisateur($username);
 
         static::afficherVue("view.php", [
             "titrePage" => "Mes questions",

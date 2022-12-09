@@ -13,8 +13,8 @@ $phase = $question->getPhase();
 $responsable = $propositionActuelle->getResponsable();
 $nomResponsable = $responsable->getPrenom() . " " . strtoupper($responsable->getNom());
 
-$estResponsable = $responsable->getIdUtilisateur() === $idUtilisateur;
-$estOrganisateur = $question->getIdOrganisateur() === $idUtilisateur;
+$estResponsable = $responsable->getUsername() === $username;
+$estOrganisateur = $question->getUsernameOrganisateur() === $username;
 ?>
 
 <div class="panel" id="afficherPropositions">

@@ -26,7 +26,7 @@ class DemandeQuestionTest extends TestCase
     public function setUp(): void
     {
         MainController::setTesting(true);
-        $_POST['idUtilisateur'] = 77777;
+        $_POST['username'] = "test";
         MainController::seConnecter();
 
         MainController::clearLogFile();

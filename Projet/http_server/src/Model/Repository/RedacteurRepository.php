@@ -23,18 +23,18 @@ class RedacteurRepository
         $pdoStatement->execute($values);
     }
 
-    public function insert(int $idQuestion, int $idUtilisateur): void
+    public function insert(int $idQuestion, string $username): void
     {
         $sql = <<<SQL
-        INSERT INTO redacteur (id_question, id_redacteur)
-            VALUES (:id_question, :id_redacteur)
+        INSERT INTO redacteur (id_question, username_redacteur)
+            VALUES (:id_question, :username_redacteur)
         SQL;
 
         $pdo = DatabaseConnection::getPdo();
         $pdoStatement = $pdo->prepare($sql);
         $values = [
             'id_question' => $idQuestion,
-            'id_redacteur' => $idUtilisateur
+            'username_redacteur' => $username
         ];
 
         $pdoStatement->execute($values);
@@ -43,7 +43,7 @@ class RedacteurRepository
     public function selectAllByQuestion(int $idQuestion): array
     {
         $sql = <<<SQL
-        SELECT id_redacteur
+        SELECT username_redacteur
             FROM redacteur
             WHERE id_question = :id_question
         SQL;
@@ -58,24 +58,24 @@ class RedacteurRepository
 
         $redacteurs = [];
         foreach ($pdoStatement as $row) {
-            $redacteurs[] = (new UtilisateurRepository)->select($row['id_redacteur']);
+            $redacteurs[] = (new UtilisateurRepository)->select($row['username_redacteur']);
         }
         return $redacteurs;
     }
 
-    public function existsForQuestion(int $idQuestion, int $idUtilisateur): bool
+    public function existsForQuestion(int $idQuestion, string $username): bool
     {
         $sql = <<<SQL
         SELECT COUNT(*) AS est_redacteur
             FROM redacteur
             WHERE id_question = :idQuestion
-            AND id_redacteur = :idUtilisateur
+            AND username_redacteur = :username_redacteur
         SQL;
         
         $pdo = DatabaseConnection::getPdo()->prepare($sql);
         $pdo->execute([
             "idQuestion" => $idQuestion,
-            "idUtilisateur" => $idUtilisateur
+            "username_redacteur" => $username
         ]);
 
         return $pdo->fetch()['est_redacteur'] > 0;

@@ -8,14 +8,14 @@ use App\SAE\Model\Repository\UtilisateurRepository;
 class Vote extends AbstractDataObject
 {
     private int $idProposition;
-    private int $idVotant;
+    private string $usernameVotant;
 
     private ?Proposition $proposition;
     private ?Utilisateur $votant;
     
     private ?int $valeur;
 
-    public function __construct(Proposition|int $proposition, Utilisateur|int $votant, ?int $valeur)
+    public function __construct(Proposition|int $proposition, Utilisateur|string $votant, ?int $valeur)
     {
         $this->valeur = $valeur;
 
@@ -29,23 +29,23 @@ class Vote extends AbstractDataObject
 
         if ($votant instanceof Utilisateur) {
             $this->votant = $votant;
-            $this->idVotant = $votant->getIdUtilisateur();
+            $this->usernameVotant = $votant->getUsername();
         } else {
             $this->votant = null;
-            $this->idVotant = $votant;
+            $this->usernameVotant = $votant;
         }
     }
     
     public function formatTableau(): array {
         return [
             "id_proposition" => $this->idProposition,
-            "id_votant" => $this->idVotant,
+            "username_votant" => $this->usernameVotant,
             'valeur' => $this->valeur
         ];
     }
 
-    public function getValeurClePrimaire() {
-        return $this->idVotant . ", " . $this->idProposition;
+    public function getValeurClePrimaire() : string {
+        return $this->usernameVotant . ", " . $this->idProposition;
     }
 
     //getters
@@ -60,7 +60,7 @@ class Vote extends AbstractDataObject
     public function getVotant(): Utilisateur
     {
         if($this->votant == null) {
-            $this->votant = (new UtilisateurRepository())->select($this->idVotant);
+            $this->votant = (new UtilisateurRepository())->select($this->usernameVotant);
         }
         return $this->votant;
     }
@@ -70,9 +70,9 @@ class Vote extends AbstractDataObject
         return $this->idProposition;
     }
 
-    public function getIdVotant(): int
+    public function getUsernameVotant(): string
     {
-        return $this->idVotant;
+        return $this->usernameVotant;
     }
 
     public function getValeur(): ?int

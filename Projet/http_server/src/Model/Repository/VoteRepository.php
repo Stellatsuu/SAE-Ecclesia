@@ -15,12 +15,12 @@ class VoteRepository extends AbstractRepository
     }
     protected function getNomClePrimaire(): string
     {
-        return "id_votant,id_proposition";
+        return "username_votant,id_proposition";
     }
     protected function getNomsColonnes(): array
     {
         return [
-            "id_votant",
+            "username_votant",
             "id_proposition",
             "valeur"
         ];
@@ -29,7 +29,7 @@ class VoteRepository extends AbstractRepository
     {
         return new Vote(
             $objetFormatTableau['id_proposition'],
-            $objetFormatTableau['id_votant'],
+            $objetFormatTableau['username_votant'],
             $objetFormatTableau['valeur']
         );
     }
@@ -79,20 +79,20 @@ class VoteRepository extends AbstractRepository
         return $resultat;
     }
 
-    public function existsForQuestion(int $idQuestion, int $idUtilisateur): bool
+    public function existsForQuestion(int $idQuestion, string $username): bool
     {
         $sql = <<<SQL
         SELECT COUNT(*) AS a_vote 
             FROM vote v JOIN proposition p 
                 ON v.id_proposition = p.id_proposition 
             WHERE p.id_question = :idQuestion 
-            AND v.id_votant = :idUtilisateur
+            AND v.username_votant = :username
         SQL;
 
         $pdo = DatabaseConnection::getPdo()->prepare($sql);
         $pdo->execute([
             "idQuestion" => $idQuestion,
-            "idUtilisateur" => $idUtilisateur
+            "username" => $username
         ]);
 
         return $pdo->fetch()['a_vote'] > 0;

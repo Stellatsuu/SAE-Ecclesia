@@ -13,7 +13,7 @@ class Proposition extends AbstractDataObject
 
     private int $idProposition;
 
-    private int $idResponsable;
+    private string $usernameResponsable;
     private int $idQuestion;
 
     private ?Utilisateur $responsable;
@@ -23,7 +23,7 @@ class Proposition extends AbstractDataObject
     private array $paragraphes;
 
 
-    public function __construct(int $idProposition, string $titreProposition, Utilisateur|int $responsable, Question|int $question)
+    public function __construct(int $idProposition, string $titreProposition, Utilisateur|string $responsable, Question|int $question)
     {
         $this->idProposition = $idProposition;
         $this->titreProposition = $titreProposition;
@@ -31,10 +31,10 @@ class Proposition extends AbstractDataObject
 
         if ($responsable instanceof Utilisateur) {
             $this->responsable = $responsable;
-            $this->idResponsable = $responsable->getIdUtilisateur();
+            $this->usernameResponsable = $responsable->getUsername();
         } else {
             $this->responsable = null;
-            $this->idResponsable = $responsable;
+            $this->usernameResponsable = $responsable;
         }
 
         if ($question instanceof Question) {
@@ -52,7 +52,7 @@ class Proposition extends AbstractDataObject
     {
         return [
             "titre_proposition" => $this->titreProposition,
-            "id_responsable" => $this->idResponsable,
+            "username_responsable" => $this->usernameResponsable,
             "id_question" => $this->idQuestion
         ];
     }
@@ -69,9 +69,9 @@ class Proposition extends AbstractDataObject
         return $this->idProposition;
     }
 
-    public function getIdResponsable(): int
+    public function getUsernameResponsable(): string
     {
-        return $this->idResponsable;
+        return $this->usernameResponsable;
     }
 
     public function getIdQuestion(): int
@@ -82,7 +82,7 @@ class Proposition extends AbstractDataObject
     public function getResponsable(): ?Utilisateur
     {
         if ($this->responsable == null) {
-            $this->responsable = (new UtilisateurRepository)->select($this->idResponsable);
+            $this->responsable = (new UtilisateurRepository)->select($this->usernameResponsable);
         }
         return $this->responsable;
     }
@@ -106,11 +106,6 @@ class Proposition extends AbstractDataObject
             $this->paragraphes = (new ParagrapheRepository)->selectAllByProposition($this->idProposition);
         }
         return $this->paragraphes;
-    }
-
-    public function getCoAuteurs(): array
-    {
-        return (new CoAuteurRepository())->selectAllByProposition($this->idProposition);
     }
 
     // Setters

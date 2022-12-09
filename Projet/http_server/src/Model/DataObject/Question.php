@@ -25,7 +25,7 @@ class Question extends DemandeQuestion implements JsonSerializable
     private ?DateTime $dateFermetureVotes;
     private ?AbstractSystemeVote $systemeVote;
 
-    public function __construct(int $idQuestion, string $titre, string $description, Utilisateur|int $organisateur)
+    public function __construct(int $idQuestion, string $titre, string $description, Utilisateur|string $organisateur)
     {
         parent::__construct($idQuestion, $titre, $description, $organisateur);
 
@@ -47,7 +47,7 @@ class Question extends DemandeQuestion implements JsonSerializable
         return [
             'titre_question' => $this->getTitre(),
             'description_question' => $this->getDescription(),
-            'id_organisateur' => $this->getIdOrganisateur(),
+            'username_organisateur' => $this->getUsernameOrganisateur(),
             'date_debut_redaction' => $this->dateDebutRedaction == null ? null : $this->dateDebutRedaction->format('Y-m-d H:i:s'),
             'date_fin_redaction' => $this->dateFinRedaction == null ? null : $this->dateFinRedaction ->format('Y-m-d H:i:s'),
             'date_ouverture_votes' => $this->dateOuvertureVotes == null ? null : $this->dateOuvertureVotes->format('Y-m-d H:i:s'),

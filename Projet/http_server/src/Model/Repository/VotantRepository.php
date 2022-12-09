@@ -23,18 +23,18 @@ class VotantRepository
         $pdoStatement->execute($values);
     }
 
-    public function insert(int $idQuestion, int $idUtilisateur): void
+    public function insert(int $idQuestion, string $username): void
     {
         $sql = <<<SQL
-        INSERT INTO votant (id_question, id_votant)
-            VALUES (:id_question, :id_votant)
+        INSERT INTO votant (id_question, username_votant)
+            VALUES (:id_question, :username_votant)
         SQL;
 
         $pdo = DatabaseConnection::getPdo();
         $pdoStatement = $pdo->prepare($sql);
         $values = [
             'id_question' => $idQuestion,
-            'id_votant' => $idUtilisateur
+            'username_votant' => $username
         ];
 
         $pdoStatement->execute($values);
@@ -43,7 +43,7 @@ class VotantRepository
     public function selectAllByQuestion(int $idQuestion): array
     {
         $sql = <<<SQL
-        SELECT id_votant
+        SELECT username_votant
             FROM votant
             WHERE id_question = :id_question
         SQL;
@@ -58,24 +58,24 @@ class VotantRepository
 
         $votants = [];
         foreach ($pdoStatement as $row) {
-            $votants[] = (new UtilisateurRepository)->select($row['id_votant']);
+            $votants[] = (new UtilisateurRepository)->select($row['username_votant']);
         }
         return $votants;
     }
 
-    public function existsForQuestion(int $idQuestion, int $idUtilisateur): bool
+    public function existsForQuestion(int $idQuestion, string $username): bool
     {
         $sql = <<<SQL
         SELECT COUNT(*) AS est_votant
             FROM votant
             WHERE id_question = :id_question
-            AND id_votant = :id_votant
+            AND username_votant = :username_votant
         SQL;
 
         $pdo = DatabaseConnection::getPdo()->prepare($sql);
         $pdo->execute([
             "id_question" => $idQuestion,
-            "id_votant" => $idUtilisateur
+            "username_votant" => $username
         ]);
 
         return $pdo->fetch()['est_votant'] > 0;

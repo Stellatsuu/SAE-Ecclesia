@@ -8,7 +8,7 @@ use App\SAE\Model\Repository\UtilisateurRepository;
 
 class DemandeCoAuteur extends AbstractDataObject
 {
-    private int $idDemandeur;
+    private string $usernameDemandeur;
     private int $idProposition;
 
     private ?Utilisateur $demandeur;
@@ -16,16 +16,16 @@ class DemandeCoAuteur extends AbstractDataObject
 
     private string $message;
 
-    public function __construct(Utilisateur|int $demandeur, Proposition|int $proposition, string $message)
+    public function __construct(Utilisateur|string $demandeur, Proposition|int $proposition, string $message)
     {
         $this->message = $message;
 
         if ($demandeur instanceof Utilisateur) {
             $this->demandeur = $demandeur;
-            $this->idDemandeur = $demandeur->getIdUtilisateur();
+            $this->usernameDemandeur = $demandeur->getUsername();
         } else {
             $this->demandeur = null;
-            $this->idDemandeur = $demandeur;
+            $this->usernameDemandeur = $demandeur;
         }
 
         if ($proposition instanceof Proposition) {
@@ -42,22 +42,22 @@ class DemandeCoAuteur extends AbstractDataObject
     public function formatTableau(): array
     {
         return [
-            'id_demandeur' => $this->idDemandeur,
+            'username_demandeur' => $this->usernameDemandeur,
             'id_proposition' => $this->idProposition,
             'message' => $this->message
         ];
     }
 
-    public function getValeurClePrimaire(): int
+    public function getValeurClePrimaire(): string
     {
-        return $this->idDemandeur . ", " . $this->idProposition;
+        return $this->usernameDemandeur . ", " . $this->idProposition;
     }
 
     //getters
 
-    public function getIdDemandeur(): int
+    public function getUsernameDemandeur(): string
     {
-        return $this->idDemandeur;
+        return $this->usernameDemandeur;
     }
 
     public function getIdProposition(): int
@@ -73,7 +73,7 @@ class DemandeCoAuteur extends AbstractDataObject
     public function getDemandeur(): Utilisateur
     {
         if ($this->demandeur == null) {
-            $this->demandeur = (new UtilisateurRepository())->select($this->idDemandeur);
+            $this->demandeur = (new UtilisateurRepository())->select($this->usernameDemandeur);
         }
         return $this->demandeur;
     }

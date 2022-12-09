@@ -23,13 +23,17 @@ class PropositionController extends MainController
 
     public static function afficherFormulaireEcrireProposition()
     {
-
-        /* TODO: vérifier si l'utilisateur est co-auteur ou rédacteur (si co-auteur, pas le droit de toucher au titre) --> need authentification*/
+        $session = static::getSessionSiConnecte();
+        $username = $session->lire("username");
 
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
 
-        $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
+        $estRedacteur = (new RedacteurRepository())->existsForQuestion($idQuestion, $username);
+        if (!$estRedacteur) {
+            static::error(ACCUEIL_URL, "Vous ne faites pas partie des rédacteurs de cette question.");
+        }
 
+        $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
         $phase = $question->getPhase();
         if ($phase !== Phase::Redaction) {
             switch ($phase) {
@@ -60,8 +64,8 @@ class PropositionController extends MainController
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
         $question = Question::castIfNotNull((new QuestionRepository())->select($idQuestion));
 
-        $idResponsable = $session->lire("idUtilisateur");
-        $responsable = Utilisateur::castIfNotNull((new UtilisateurRepository())->select($idResponsable));
+        $username = $session->lire("username");
+        $responsable = Utilisateur::castIfNotNull((new UtilisateurRepository())->select($username));
 
         $titreProposition = static::getIfSetAndNotEmpty("titreProposition");
 
@@ -110,15 +114,14 @@ class PropositionController extends MainController
 
         $proposition->setParagraphes($paragraphes);
 
-        $estRedacteur = (new RedacteurRepository())->existsForQuestion($question->getIdQuestion(), $idResponsable);
+        $estRedacteur = (new RedacteurRepository())->existsForQuestion($question->getIdQuestion(), $username);
         if (!$estRedacteur) {
             static::error(ACCUEIL_URL, "Vous ne faites pas partie des rédacteurs de cette question.");
         }
 
-        $propositionExiste = (new PropositionRepository())->selectByQuestionEtResponsable($question->getIdQuestion(), $idResponsable) == null ? false : true;
+        $propositionExiste = (new PropositionRepository())->selectByQuestionEtResponsable($question->getIdQuestion(), $username) == null ? false : true;
         if ($propositionExiste) {
             static::error(ACCUEIL_URL, "Vous avez déjà écrit une proposition pour cette question.");
-            return;
         }
 
         (new PropositionRepository())->insert($proposition);
@@ -128,9 +131,18 @@ class PropositionController extends MainController
 
     public static function afficherFormulaireContribuerProposition()
     {
-        $idProposition = static::getIfSetAndNumeric("idProposition");
+        $session = static::getSessionSiConnecte();
+        $username = $session->lire("username");
 
+        $idProposition = static::getIfSetAndNumeric("idProposition");
         $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
+
+        $estResponsable = $proposition->getUsernameResponsable() == $username;
+        $estCoAuteur = (new CoAuteurRepository())->existsForProposition($idProposition, $username);
+
+        if (!$estResponsable && !$estCoAuteur) {
+            static::error(ACCUEIL_URL, "Vous n'êtes pas autorisé à contribuer à cette proposition.");
+        }
 
         $phase = $proposition->getQuestion()->getPhase();
         if ($phase !== Phase::Redaction) {
@@ -159,10 +171,9 @@ class PropositionController extends MainController
     public static function contribuerProposition()
     {
         $session = static::getSessionSiConnecte();
-        $idUtilisateur = $session->lire("idUtilisateur");
+        $username = $session->lire("username");
 
         $idProposition = static::getIfSetAndNumeric("idProposition");
-
         $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
 
         $phase = $proposition->getQuestion()->getPhase();
@@ -181,8 +192,8 @@ class PropositionController extends MainController
 
         $paragraphes = [];
         $sections = $proposition->getQuestion()->getSections();
-        $estResponsable = $proposition->getIdResponsable() == $idUtilisateur;
-        $estCoAuteur = $estResponsable; // si l'utilisateur est rédacteur, il a les droits d'édition
+        $estResponsable = $proposition->getUsernameResponsable() == $username;
+        $estCoAuteur = (new CoAuteurRepository())->existsForProposition($idProposition, $username);
 
         for ($i = 0; $i < count($sections); $i++) {
 
@@ -192,15 +203,10 @@ class PropositionController extends MainController
             $paragraphe = (new ParagrapheRepository())->selectByPropositionEtSection($proposition->getIdProposition(), $sections[$i]->getIdSection());
             $paragraphe->setContenuParagraphe($contenu);
             $paragraphes[] = $paragraphe;
-
-            if ((new CoAuteurRepository())->existsForParagraphe($paragraphe->getIdParagraphe(), $idUtilisateur)) {
-                $estCoAuteur = true;
-            }
         }
 
-        if (!$estCoAuteur) {
+        if (!$estCoAuteur && !$estResponsable) {
             static::error(LMQ_URL, "Vous n'êtes pas un des co-auteurs ou le responsable de cette proposition.");
-            return;
         }
 
         if ($estResponsable) {
@@ -217,24 +223,20 @@ class PropositionController extends MainController
     public static function afficherPropositions()
     {
         $session = static::getSessionSiConnecte();
-        $idUtilisateur = $session->lire("idUtilisateur");
+        $username = $session->lire("username");
 
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
 
         //Vérification si la question existe
         $question = Question::castIfNotNull((new QuestionRepository())->select($idQuestion));
 
-        $estLieAQuestion = (new UtilisateurRepository)->estLieAQuestion($idUtilisateur, $idQuestion);
+        $estLieAQuestion = (new UtilisateurRepository)->estLieAQuestion($username, $idQuestion);
 
         if (!$estLieAQuestion)
             static::error(LMQ_URL, "Vous n'avez pas accès aux propositions");
 
-
         //Vérification si la question contient des propositions
         $propositions = (new PropositionRepository())->selectAllByQuestion($idQuestion);
-        if (count($propositions) == 0)
-            static::error(LMQ_URL, "Il n'y a aucune proposition pour cette question");
-
 
         //Index pour le tableau de propositions (prop1 = index0)
         $index = isset($_GET['index']) ? $_GET['index'] : 0;
@@ -246,14 +248,14 @@ class PropositionController extends MainController
             "question" => $question,
             "propositions" => $propositions,
             "index" => $index,
-            "idUtilisateur" => $idUtilisateur,
+            "username" => $username,
         ]);
     }
 
     public static function supprimerProposition()
     {
         $session = static::getSessionSiConnecte();
-        $idUtilisateur = $session->lire("idUtilisateur");
+        $username = $session->lire("username");
 
         $idProposition = static::getIfSetAndNumeric("idProposition");
 
@@ -274,8 +276,8 @@ class PropositionController extends MainController
                 break;
         }
 
-        $estResponsable = $proposition->getIdResponsable() == $idUtilisateur;
-        $estOrganisateur = $question->getIdOrganisateur() == $idUtilisateur;
+        $estResponsable = $proposition->getUsernameResponsable() == $username;
+        $estOrganisateur = $question->getUsernameOrganisateur() == $username;
 
         /**
          * @var string URL de afficherPropositions

@@ -7,7 +7,7 @@ use App\SAE\Model\DataObject\Utilisateur;
 
 class CoAuteurRepository
 {
-    public function existsForQuestion(int $idQuestion, int $idUtilisateur): bool
+    public function existsForQuestion(int $idQuestion, string $username): bool
     {
         $sql = <<<SQL
         SELECT COUNT(*) AS est_coauteur 
@@ -19,31 +19,50 @@ class CoAuteurRepository
                     JOIN question q
                     ON q.id_question = pr.id_question
                 WHERE q.id_question = :idQuestion)
-                AND id_utilisateur = :idUtilisateur;
+                AND username_co_auteur = :username;
         SQL;
 
         $pdo = DatabaseConnection::getPdo()->prepare($sql);
         $pdo->execute([
             "idQuestion" => $idQuestion,
-            "idUtilisateur" => $idUtilisateur
+            "username" => $username
         ]);
 
         return $pdo->fetch()['est_coauteur'] > 0;
     }
 
-    public function existsForParagraphe(int $idParagraphe, int $idUtilisateur): bool
+    public function existsForProposition(int $idProposition, string $username): bool
+    {
+        $sql = <<<SQL
+        SELECT COUNT(*) AS est_coauteur 
+            FROM co_auteur ca JOIN paragraphe p
+                ON ca.id_paragraphe = p.id_paragraphe
+            WHERE p.id_proposition = :id_proposition
+            AND ca.username_co_auteur = :username;
+        SQL;
+
+        $pdo = DatabaseConnection::getPdo()->prepare($sql);
+        $pdo->execute([
+            "id_proposition" => $idProposition,
+            "username" => $username
+        ]);
+
+        return $pdo->fetch()['est_coauteur'] > 0;
+    }
+
+    public function existsForParagraphe(int $idParagraphe, string $username): bool
     {
         $sql = <<<SQL
         SELECT COUNT(*) AS est_coauteur 
             FROM co_auteur
             WHERE id_paragraphe = :idParagraphe
-            AND id_utilisateur = :idUtilisateur;
+            AND username_co_auteur = :username;
         SQL;
 
         $pdo = DatabaseConnection::getPdo()->prepare($sql);
         $pdo->execute([
             "idParagraphe" => $idParagraphe,
-            "idUtilisateur" => $idUtilisateur
+            "username" => $username
         ]);
 
         return $pdo->fetch()['est_coauteur'] > 0;
@@ -66,34 +85,34 @@ class CoAuteurRepository
         $pdo->execute($values);
     }
 
-    public function insert($idParagraphe, $idUtilisateur)
+    public function insert(int $idParagraphe, string $username)
     {
         $sql = <<<SQL
-        INSERT INTO co_auteur (id_paragraphe, id_utilisateur) 
-            VALUES (:id_paragraphe, :id_utilisateur);
+        INSERT INTO co_auteur (id_paragraphe, username_co_auteur)
+            VALUES (:id_paragraphe, :username_co_auteur)
         SQL;
 
         $values = [
             "id_paragraphe" => $idParagraphe,
-            "id_utilisateur" => $idUtilisateur
+            "username_co_auteur" => $username
         ];
 
         $pdo = DatabaseConnection::getPdo()->prepare($sql);
         $pdo->execute($values);
     }
 
-    public function insertGlobal($idProposition, $idUtilisateur)
+    public function insertGlobal(int $idProposition, string $username)
     {
         $sql = <<<SQL
-        INSERT INTO co_auteur (id_paragraphe, id_utilisateur) 
-            SELECT p.id_paragraphe, :id_utilisateur 
+        INSERT INTO co_auteur (id_paragraphe, username_co_auteur)
+            SELECT p.id_paragraphe, :username_co_auteur
                 FROM paragraphe p 
                 WHERE p.id_proposition = :id_proposition;
         SQL;
 
         $values = [
             "id_proposition" => $idProposition,
-            "id_utilisateur" => $idUtilisateur
+            "username_co_auteur" => $username
         ];
 
         $pdo = DatabaseConnection::getPdo()->prepare($sql);
@@ -103,7 +122,7 @@ class CoAuteurRepository
     public function selectAllByProposition($idProposition)
     {
         $sql = <<<SQL
-        SELECT DISTINCT id_utilisateur 
+        SELECT DISTINCT username_co_auteur
             FROM co_auteur ca 
                 JOIN paragraphe p 
                 ON p.id_paragraphe = ca.id_paragraphe 
@@ -119,7 +138,7 @@ class CoAuteurRepository
 
         $resultat = [];
         foreach ($pdo as $row) {
-            $resultat[] = (new UtilisateurRepository)->select($row['id_utilisateur']);
+            $resultat[] = (new UtilisateurRepository)->select($row['username_co_auteur']);
         }
         return $resultat;
     }
@@ -127,7 +146,7 @@ class CoAuteurRepository
     public function selectAllByParagraphe(int $idParagraphe): array
     {
         $sql = <<<SQL
-        SELECT * 
+        SELECT username_co_auteur
             FROM co_auteur 
             WHERE id_paragraphe = :idParagraphe
         SQL;
@@ -137,7 +156,7 @@ class CoAuteurRepository
 
         $coAuteurs = [];
         foreach ($pdo->fetchAll() as $auteur) {
-            $coAuteurs[] = Utilisateur::castIfNotNull((new UtilisateurRepository())->select($auteur['id_utilisateur']));
+            $coAuteurs[] = Utilisateur::castIfNotNull((new UtilisateurRepository())->select($auteur['username_co_auteur']));
         }
 
         return $coAuteurs;

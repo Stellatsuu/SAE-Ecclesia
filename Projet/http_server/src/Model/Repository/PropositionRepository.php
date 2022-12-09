@@ -25,7 +25,7 @@ class PropositionRepository extends AbstractRepository
     {
         return [
             "titre_proposition",
-            "id_responsable",
+            "username_responsable",
             "id_question"
         ];
     }
@@ -35,22 +35,22 @@ class PropositionRepository extends AbstractRepository
         return new Proposition(
             $objetFormatTableau['id_proposition'],
             $objetFormatTableau['titre_proposition'],
-            $objetFormatTableau['id_responsable'],
+            $objetFormatTableau['username_responsable'],
             $objetFormatTableau['id_question']
         );
     }
 
-    public function selectByQuestionEtResponsable(int $idQuestion, int $idResponsable): ?Proposition
+    public function selectByQuestionEtResponsable(int $idQuestion, string $username): ?Proposition
     {
         $sql = <<<SQL
         SELECT * 
             FROM proposition 
-            WHERE id_responsable = :id_responsable
+            WHERE username_responsable = :username
             AND id_question = :id_question
         SQL;
 
         $values = [
-            "id_responsable" => $idResponsable,
+            "username" => $username,
             "id_question" => $idQuestion
         ];
 
@@ -69,7 +69,7 @@ class PropositionRepository extends AbstractRepository
         parent::insert($object);
 
         $object = Proposition::castIfNotNull($object);
-        $proposition = $this->selectByQuestionEtResponsable($object->getIdQuestion(), $object->getIdResponsable());
+        $proposition = $this->selectByQuestionEtResponsable($object->getIdQuestion(), $object->getUsernameResponsable());
 
         foreach ($object->getParagraphes() as $paragraphe) {
             $paragraphe->setIdProposition($proposition->getIdProposition());
