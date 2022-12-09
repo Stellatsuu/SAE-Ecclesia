@@ -41,7 +41,7 @@ $estOrganisateur = $question->getUsernameOrganisateur() === $username;
         <?php
         foreach ($propositionActuelle->getParagraphes() as $paragraphe) {
             $nomSection = $paragraphe->getSection()->getNomSection();
-            $contenu = $paragraphe->getContenuParagraphe();
+            $contenu = \App\SAE\Lib\Markdown::toHtml($paragraphe->getContenuParagraphe());
             echo "<h2>$nomSection</h2>";
             echo "<p>$contenu</p>";
         }

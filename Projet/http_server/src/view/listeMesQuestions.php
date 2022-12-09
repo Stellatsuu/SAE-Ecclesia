@@ -14,7 +14,7 @@ $i = 0;
         $q = Question::castIfNotNull($q);
 
         $titre = htmlspecialchars($q->getTitre());
-        $description = htmlspecialchars($q->getDescription());
+        $description = \App\SAE\Lib\Markdown::toHtml($q->getDescription());
         $idQuestion = rawurlencode($q->getIdQuestion());
 
         $phase = $q->getPhase();
