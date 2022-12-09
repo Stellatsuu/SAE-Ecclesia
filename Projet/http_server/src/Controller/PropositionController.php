@@ -113,10 +113,9 @@ class PropositionController extends MainController
         $estRedacteur = (new RedacteurRepository())->existsForQuestion($question->getIdQuestion(), $idResponsable);
         if (!$estRedacteur) {
             static::error(ACCUEIL_URL, "Vous ne faites pas partie des rédacteurs de cette question.");
-            return;
         }
 
-        $propositionExiste = (new PropositionRepository())->selectByQuestionEtRedacteur($question->getIdQuestion(), $idResponsable) == null ? false : true;
+        $propositionExiste = (new PropositionRepository())->selectByQuestionEtResponsable($question->getIdQuestion(), $idResponsable) == null ? false : true;
         if ($propositionExiste) {
             static::error(ACCUEIL_URL, "Vous avez déjà écrit une proposition pour cette question.");
             return;
@@ -182,8 +181,8 @@ class PropositionController extends MainController
 
         $paragraphes = [];
         $sections = $proposition->getQuestion()->getSections();
-        $estRedacteur = (new RedacteurRepository())->existsForQuestion($proposition->getIdQuestion(), $idUtilisateur);
-        $estCoAuteur = $estRedacteur; // si l'utilisateur est rédacteur, il a les droits d'édition
+        $estResponsable = $proposition->getIdResponsable() == $idUtilisateur;
+        $estCoAuteur = $estResponsable; // si l'utilisateur est rédacteur, il a les droits d'édition
 
         for ($i = 0; $i < count($sections); $i++) {
 
@@ -200,11 +199,11 @@ class PropositionController extends MainController
         }
 
         if (!$estCoAuteur) {
-            static::error(LMQ_URL, "Vous ne faites pas partie des co-auteurs ou des rédacteurs de cette proposition.");
+            static::error(LMQ_URL, "Vous n'êtes pas un des co-auteurs ou le responsable de cette proposition.");
             return;
         }
 
-        if ($estRedacteur) {
+        if ($estResponsable) {
             $proposition->setTitreProposition($_POST['titreProposition']);
             (new PropositionRepository())->update($proposition);
         }
@@ -225,12 +224,9 @@ class PropositionController extends MainController
         //Vérification si la question existe
         $question = Question::castIfNotNull((new QuestionRepository())->select($idQuestion));
 
-        $estCoAuteur = (new CoAuteurRepository())->existsForQuestion($idQuestion, $idUtilisateur);
-        $estRedacteur = (new RedacteurRepository())->existsForQuestion($idQuestion, $idUtilisateur);
-        $estVotant = (new VotantRepository())->existsForQuestion($idQuestion, $idUtilisateur);
-        $estOrganisateur = $question->getIdOrganisateur() == $idUtilisateur;
+        $estLieAQuestion = (new UtilisateurRepository)->estLieAQuestion($idUtilisateur, $idQuestion);
 
-        if (!$estCoAuteur && !$estRedacteur && !$estVotant && !$estOrganisateur)
+        if (!$estLieAQuestion)
             static::error(LMQ_URL, "Vous n'avez pas accès aux propositions");
 
 
@@ -278,21 +274,19 @@ class PropositionController extends MainController
                 break;
         }
 
-        $estRedacteur = (new RedacteurRepository())->existsForQuestion($question->getIdQuestion(), $idUtilisateur);
+        $estResponsable = $proposition->getIdResponsable() == $idUtilisateur;
         $estOrganisateur = $question->getIdOrganisateur() == $idUtilisateur;
 
+        /**
+         * @var string URL de afficherPropositions
+         */
         $AP_URL = "frontController.php?controller=proposition&action=afficherPropositions&idQuestion=" . $question->getIdQuestion();
 
-        if (!$estRedacteur && !$estOrganisateur) {
-            
+        if (!$estResponsable && !$estOrganisateur) {
+
             static::error($AP_URL, "Vous n'avez pas les droits pour supprimer cette proposition");
         }
 
-        /* (new PropositionRepository)->deleteCoAuteurs($idProposition);
-        $idPragraphes = (new ParagrapheRepository())->selectAllByProposition($idProposition);
-        foreach ($idPragraphes as $paragraphe) {
-            (new ParagrapheRepository())->delete($paragraphe->getIdParagraphe());
-        } */
         (new PropositionRepository)->delete($idProposition);
         static::message($AP_URL, "La proposition a bien été supprimée.");
     }

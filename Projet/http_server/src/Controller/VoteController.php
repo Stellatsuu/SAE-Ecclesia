@@ -17,23 +17,11 @@ class VoteController extends MainController
 {
     public static function voter() {
 
-        $session = Session::getInstance();
+        $session = static::getSessionSiConnecte();
 
-        if(!$session->contient("idUtilisateur")) {
-            static::error("frontController.php", "Vous devez être connecté pour voter");
-        }
-
-        if(!isset($_POST['idProposition']) || !is_numeric($_POST['idProposition'])) {
-            static::error("frontController.php", "Aucune proposition n'a été sélectionnée");
-            return;
-        }
-        $idProposition = intval($_POST['idProposition']);
+        $idProposition = static::getIfSetAndNumeric("idProposition");
 
         $proposition = Proposition::castIfNotNull((new PropositionRepository)->select($idProposition));
-        if(!$proposition) {
-            static::error("frontController.php", "La proposition n'existe pas");
-            return;
-        }
 
         $question = $proposition->getQuestion();
         $phase = $question->getPhase();
@@ -43,23 +31,27 @@ class VoteController extends MainController
         }
 
         $idUtilisateur = $session->lire("idUtilisateur");
+        $idQuestion = $question->getIdQuestion();
 
-        $estVotant = (new VotantRepository)->existsForQuestion($proposition->getQuestion()->getIdQuestion(), $idUtilisateur);
+        /**
+         * @var string URL de afficherPropositions
+         */
+        $AP_URL = "frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion";
+
+        $estVotant = (new VotantRepository)->existsForQuestion($question->getIdQuestion(), $idUtilisateur);
         if(!$estVotant) {
-            static::error("frontController.php?controller=proposition&action=afficherPropositions&idQuestion={$question->getIdQuestion()}&idUtilisateur={$idUtilisateur}", "Vous n'êtes pas votant pour cette question");
-            return;
+            static::error($AP_URL, "Vous n'êtes pas votant pour cette question");
         }
 
         $aDejaVote = (new VoteRepository)->existsForQuestion($proposition->getQuestion()->getIdQuestion(), $idUtilisateur);
         if($aDejaVote) {
-            static::error("frontController.php?controller=proposition&action=afficherPropositions&idQuestion={$question->getIdQuestion()}&idUtilisateur={$idUtilisateur}", "Vous avez déjà voté sur cette question");
-            return;
+            static::error($AP_URL, "Vous avez déjà voté sur cette question");
         }
 
         $votant = (new UtilisateurRepository())->select($idUtilisateur);
         $vote = new Vote($proposition, $votant, 1);
         (new VoteRepository)->insert($vote);
 
-    static::message("frontController.php?controller=proposition&action=afficherPropositions&idQuestion={$question->getIdQuestion()}&idUtilisateur={$idUtilisateur}", "Votre vote a bien été pris en compte");
+    static::message($AP_URL, "Votre vote a bien été pris en compte");
     }
 }

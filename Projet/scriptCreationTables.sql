@@ -89,12 +89,12 @@ CREATE TABLE Votant (
 CREATE TABLE Proposition (
     id_proposition serial,
     titre_proposition varchar(100) NOT NULL,
-    id_redacteur serial NOT NULL,
+    id_responsable serial NOT NULL,
     id_question serial NOT NULL,
     CONSTRAINT pk_Proposition PRIMARY KEY (id_proposition),
-    CONSTRAINT fk_Proposition_Redacteur FOREIGN KEY (id_redacteur) REFERENCES Utilisateur (id_utilisateur),
+    CONSTRAINT fk_Proposition_Responsable FOREIGN KEY (id_responsable) REFERENCES Utilisateur (id_utilisateur),
     CONSTRAINT fk_Proposition_Question FOREIGN KEY (id_question) REFERENCES Question (id_question),
-    CONSTRAINT fk_Proposition_Redacteur_Question FOREIGN KEY (id_redacteur, id_question) REFERENCES Redacteur (id_redacteur, id_question)
+    CONSTRAINT fk_Proposition_Redacteur_Question FOREIGN KEY (id_responsable, id_question) REFERENCES Redacteur (id_responsable, id_question)
 );
 
 CREATE TABLE Paragraphe (
@@ -127,13 +127,52 @@ CREATE TABLE Vote (
 CREATE TABLE Demande_Co_Auteur (
     id_demandeur serial,
     id_proposition serial,
-    message VARCHAR(1000),
+    message varchar(1000),
     CONSTRAINT pk_Demande_Co_Auteur PRIMARY KEY (id_demandeur, id_proposition),
     CONSTRAINT fk_Demande_Co_Auteur_Demandeur FOREIGN KEY (id_demandeur) REFERENCES Utilisateur (id_utilisateur),
     CONSTRAINT fk_Demande_Co_Auteur_Proposition FOREIGN KEY (id_proposition) REFERENCES Proposition (id_proposition) ON DELETE CASCADE
 );
 
 -- FONCTIONS, PROCEDURES ET TRIGGERS
+CREATE OR REPLACE FUNCTION utilisateur_est_lie_a_question (p_id_utilisateur integer, p_id_question integer)
+    RETURNS boolean
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    RETURN EXISTS (
+        SELECT
+            1
+        FROM
+            Question q
+        WHERE
+            q.id_question = p_id_question
+            AND q.id_organisateur = p_id_utilisateur)
+        OR (
+            SELECT
+                1
+            FROM
+                Redacteur r
+            WHERE
+                r.id_question = p_id_question)
+        OR (
+            SELECT
+                1
+            FROM
+                Votant v
+            WHERE
+                v.id_question = p_id_question)
+        OR (
+            SELECT
+                1
+            FROM
+                Co_Auteur c
+                JOIN Paragraphe p ON c.id_paragraphe = p.id_paragraphe
+                JOIN Proposition pr ON p.id_proposition = pr.id_proposition
+            WHERE
+                pr.id_question = p_id_question);
+END;
+$$;
+
 CREATE OR REPLACE PROCEDURE supprimer_co_auteurs (p_id_proposition integer)
 LANGUAGE plpgsql
 AS $$
@@ -183,25 +222,24 @@ CREATE OR REPLACE FUNCTION check_est_votant ()
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    IF(
+    IF (
         SELECT
             id_votant
         FROM
             Votant
         WHERE
             id_votant = NEW.id_votant AND id_question = (
-                SELECT
-                    id_question
-                FROM
-                    Proposition
-                WHERE
-                    id_proposition = NEW.id_proposition)) IS NULL THEN
+            SELECT
+                id_question
+            FROM
+                Proposition
+            WHERE
+                id_proposition = NEW.id_proposition)) IS NULL THEN
         RAISE EXCEPTION 'L''utilisateur n''est pas votant pour cette question';
     END IF;
     RETURN NEW;
 END;
 $$;
-
 
 CREATE TRIGGER check_question_proposition_section
     BEFORE INSERT OR UPDATE ON Paragraphe
@@ -212,3 +250,4 @@ CREATE TRIGGER check_est_votant
     BEFORE INSERT OR UPDATE ON Vote
     FOR EACH ROW
     EXECUTE PROCEDURE check_est_votant ();
+

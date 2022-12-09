@@ -44,7 +44,7 @@ class VoteRepository extends AbstractRepository
 
         $pdo = DatabaseConnection::getPdo();
         $values = [
-            'idQuestion' => $idQuestion
+            'id_question' => $idQuestion
         ];
 
         $pdoStatement = $pdo->prepare($sql);

@@ -52,7 +52,7 @@ class Proposition extends AbstractDataObject
     {
         return [
             "titre_proposition" => $this->titreProposition,
-            "id_redacteur" => $this->idResponsable,
+            "id_responsable" => $this->idResponsable,
             "id_question" => $this->idQuestion
         ];
     }

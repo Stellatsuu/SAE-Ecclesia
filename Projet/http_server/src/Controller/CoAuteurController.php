@@ -21,38 +21,29 @@ class CoAuteurController extends MainController
 
     public static function afficherFormulaireGererCoAuteurs()
     {
-        if (!isset($_GET['idProposition']) || !is_numeric($_GET['idProposition'])) {
-            static::error("frontController.php", "Aucune proposition n'a été sélectionnée.");
-            return;
-        }
-        $idProposition = intval($_GET['idProposition']);
+        $idProposition = static::getIfSetAndNumeric("idProposition");
 
-        $proposition = (new PropositionRepository())->select($idProposition);
-        if (!$proposition) {
-            static::error("frontController.php?controller=question&action=listerMesQuestions", "La proposition n'existe pas.");
-            return;
-        }
-        $proposition = Proposition::castIfNotNull($proposition);
+        $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
 
         $question = $proposition->getQuestion();
         $phase = $question->getPhase();
         switch ($phase) {
             case Phase::Attente:
             case Phase::NonRemplie:
-                QuestionController::error("frontController.php?controller=question&action=listerMesQuestions", "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
+                QuestionController::error(LMQ_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
                 break;
             case Phase::Vote:
-                QuestionController::error("frontController.php?controller=question&action=listerMesQuestions", "La question est en cours de vote. Vous ne pouvez plus gérer les co-auteurs.");
+                QuestionController::error(LMQ_URL, "La question est en cours de vote. Vous ne pouvez plus gérer les co-auteurs.");
                 break;
             case Phase::Resultat:
-                QuestionController::error("frontController.php?controller=question&action=listerMesQuestions", "La question est terminée. Vous ne pouvez plus gérer les co-auteurs.");
+                QuestionController::error(LMQ_URL, "La question est terminée. Vous ne pouvez plus gérer les co-auteurs.");
                 break;
         }
 
         $utilisateurs = (new UtilisateurRepository())->selectAll();
 
         $utilisateursAutorises = array_values(array_filter($utilisateurs, function ($utilisateur) use ($proposition) {
-            return $utilisateur->getIdUtilisateur() != $proposition->getResponsable()->getIdUtilisateur();
+            return $utilisateur->getIdUtilisateur() != $proposition->getIdResponsable();
         }));
 
         $demandesCoAuteur = (new DemandeCoAuteurRepository)->selectAllByProposition($proposition->getIdProposition());
@@ -69,31 +60,22 @@ class CoAuteurController extends MainController
 
     public static function gererCoAuteurs()
     {
-        if (!isset($_POST['idProposition']) || !is_numeric($_POST['idProposition'])) {
-            static::error("frontController.php", "Aucune proposition n'a été sélectionnée.");
-            return;
-        }
-        $idProposition = intval($_POST['idProposition']);
+        $idProposition = static::getIfSetAndNumeric("idProposition");
 
-        $proposition = (new PropositionRepository())->select($idProposition);
-        if (!$proposition) {
-            static::error("frontController.php", "La proposition n'existe pas.");
-            return;
-        }
-        $proposition = Proposition::castIfNotNull($proposition);
+        $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
 
         $question = $proposition->getQuestion();
         $phase = $question->getPhase();
         switch ($phase) {
             case Phase::Attente:
             case Phase::NonRemplie:
-                QuestionController::error("frontController.php", "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
+                QuestionController::error(ACCUEIL_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
                 break;
             case Phase::Vote:
-                QuestionController::error("frontController.php", "La question est en cours de vote. Vous ne pouvez plus gérer les co-auteurs.");
+                QuestionController::error(ACCUEIL_URL, "La question est en cours de vote. Vous ne pouvez plus gérer les co-auteurs.");
                 break;
             case Phase::Resultat:
-                QuestionController::error("frontController.php", "La question est terminée. Vous ne pouvez plus gérer les co-auteurs.");
+                QuestionController::error(ACCUEIL_URL, "La question est terminée. Vous ne pouvez plus gérer les co-auteurs.");
                 break;
         }
 
@@ -118,22 +100,14 @@ class CoAuteurController extends MainController
             (new CoAuteurRepository)->insertGlobal($proposition->getIdProposition(), $coAuteur->getIdUtilisateur());
         }
 
-        static::message("frontController.php?controller=question&action=listerMesQuestions", "Les co-auteurs ont bien été modifiés.");
+        static::message(LMQ_URL, "Les co-auteurs ont bien été modifiés.");
     }
 
     public static function afficherFormulaireDemanderCoAuteur()
     {
-        if (!isset($_GET['idProposition']) || !is_numeric($_GET['idProposition'])) {
-            static::error("frontController.php", "Aucune proposition n'a été sélectionnée.");
-            return;
-        }
-        $idProposition = intval($_GET['idProposition']);
+        $idProposition = static::getIfSetAndNumeric("idProposition");
 
         $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
-        if (!$proposition) {
-            static::error("frontController.php", "La proposition n'existe pas.");
-            return;
-        }
 
         static::afficherVue('view.php', [
             "titrePage" => "Demander à être co-auteur",
@@ -145,98 +119,53 @@ class CoAuteurController extends MainController
     public static function demanderCoAuteur()
     {
         $message = isset($_POST['message']) ? $_POST['message'] : "";
-        $session = Session::getInstance();
-
-        if (!$session->contient('idUtilisateur')) {
-            static::error("frontController.php", "Vous devez être connecté pour demander à être co-auteur.");
-            return;
-        }
+        $session = static::getSessionSiConnecte();
 
         $idUtilisateur = $session->lire('idUtilisateur');
-        if (!isset($_POST['idProposition']) || !is_numeric($_POST['idProposition'])) {
-            static::error("frontController.php", "Aucune proposition n'a été sélectionnée.");
-            return;
-        }
+        $utilisateur = Utilisateur::castIfNotNull((new UtilisateurRepository())->select($idUtilisateur));
 
-        $utilisateur = (new UtilisateurRepository())->select($idUtilisateur);
-        if (!$utilisateur) {
-            static::error("frontController.php", "L'utilisateur n'existe pas.");
-            return;
-        }
-
-        $idProposition = intval($_POST['idProposition']);
+        $idProposition = static::getIfSetAndNumeric("idProposition");
         $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
-        if (!$proposition) {
-            static::error("frontController.php", "La proposition n'existe pas.");
-            return;
-        }
+
 
         $coAuteurs = (new CoAuteurRepository)->selectAllByProposition($proposition->getIdProposition());
         if (in_array($utilisateur, $coAuteurs)) {
-            static::error("frontController.php", "Vous êtes déjà co-auteur de cette proposition.");
-            return;
+            static::error(ACCUEIL_URL, "Vous êtes déjà co-auteur de cette proposition.");
         }
 
-        if ($proposition->getResponsable()->getIdUtilisateur() == $idUtilisateur) {
-            static::error("frontController.php", "Vous êtes déjà responsable de cette proposition.");
-            return;
+        if ($proposition->getIdResponsable() == $idUtilisateur) {
+            static::error(ACCUEIL_URL, "Vous êtes le responsable de cette proposition.");
         }
 
         $exists = (new DemandeCoAuteurRepository)->select($idUtilisateur, $idProposition);
         if ($exists) {
-            static::error("frontController.php", "Vous avez déjà demandé à être co-auteur de cette proposition.");
-            return;
+            static::error(ACCUEIL_URL, "Vous avez déjà demandé à être co-auteur de cette proposition.");
         }
 
         $demandeCoAuteur = new DemandeCoAuteur($idUtilisateur, $idProposition, $message);
         (new DemandeCoAuteurRepository)->insert($demandeCoAuteur);
-        static::message("frontController.php", "Votre demande a bien été envoyée.");
+        static::message(ACCUEIL_URL, "Votre demande a bien été envoyée.");
     }
 
     public static function accepterDemandeCoAuteur()
     {
-        $session = Session::getInstance();
+        $session = static::getSessionSiConnecte();
 
-        if (!$session->contient('idUtilisateur')) {
-            static::error("frontController.php", "Vous devez être connecté pour accepter une demande de co-auteur.");
-            return;
-        }
         $idUtilisateur = $session->lire('idUtilisateur');
 
-        if (!isset($_GET['idProposition']) || !is_numeric($_GET['idProposition'])) {
-            static::error("frontController.php", "Aucune proposition n'a été sélectionnée.");
-            return;
-        }
-        $idProposition = intval($_GET['idProposition']);
+        $idDemandeur = static::getIfSetAndNumeric("idDemandeur");
+        $demandeur = Utilisateur::castIfNotNull((new UtilisateurRepository())->select($idDemandeur));
 
-        if(!isset($_GET['idDemandeur']) || !is_numeric($_GET['idDemandeur'])) {
-            static::error("frontController.php", "Aucun demandeur n'a été sélectionné.");
-            return;
-        }
-        $idDemandeur = intval($_GET['idDemandeur']);
-
-        $demandeur = (new UtilisateurRepository())->select($idDemandeur);
-        if (!$demandeur) {
-            static::error("frontController.php", "Le demandeur n'existe pas.");
-            return;
-        }
-
+        $idProposition = static::getIfSetAndNumeric("idProposition");
         $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
-        if (!$proposition) {
-            static::error("frontController.php", "La proposition n'existe pas.");
-            return;
-        }
+
 
         if ($proposition->getResponsable()->getIdUtilisateur() != $idUtilisateur) {
-            static::error("frontController.php", "Vous n'êtes pas le responsable de cette proposition.");
+            static::error(ACCUEIL_URL, "Vous n'êtes pas le responsable de cette proposition.");
             return;
         }
 
-        $demandeCoAuteur = (new DemandeCoAuteurRepository)->select($idDemandeur, $idProposition);
-        if (!$demandeCoAuteur) {
-            static::error("frontController.php", "La demande de co-auteur n'existe pas.");
-            return;
-        }
+        $demandeCoAuteur = DemandeCoAuteur::castIfNotNull((new DemandeCoAuteurRepository)->select($idDemandeur, $idProposition));
 
         (new DemandeCoAuteurRepository)->delete($idDemandeur, $idProposition);
         (new CoAuteurRepository)->insertGlobal($idProposition, $idDemandeur);
@@ -244,48 +173,23 @@ class CoAuteurController extends MainController
     }
 
     public static function refuserDemandeCoAuteur() {
-        $session = Session::getInstance();
+        $session = static::getSessionSiConnecte();
 
-        if (!$session->contient('idUtilisateur')) {
-            static::error("frontController.php", "Vous devez être connecté pour refuser une demande de co-auteur.");
-            return;
-        }
         $idUtilisateur = $session->lire('idUtilisateur');
 
-        if (!isset($_GET['idProposition']) || !is_numeric($_GET['idProposition'])) {
-            static::error("frontController.php", "Aucune proposition n'a été sélectionnée.");
-            return;
-        }
-        $idProposition = intval($_GET['idProposition']);
+        $idDemandeur = static::getIfSetAndNumeric("idDemandeur");
+        $demandeur = Utilisateur::castIfNotNull((new UtilisateurRepository())->select($idDemandeur));
 
-        if(!isset($_GET['idDemandeur']) || !is_numeric($_GET['idDemandeur'])) {
-            static::error("frontController.php", "Aucun demandeur n'a été sélectionné.");
-            return;
-        }
-        $idDemandeur = intval($_GET['idDemandeur']);
-
-        $demandeur = (new UtilisateurRepository())->select($idDemandeur);
-        if (!$demandeur) {
-            static::error("frontController.php", "Le demandeur n'existe pas.");
-            return;
-        }
-
+        $idProposition = static::getIfSetAndNumeric("idProposition");
         $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
-        if (!$proposition) {
-            static::error("frontController.php", "La proposition n'existe pas.");
-            return;
-        }
+
 
         if ($proposition->getResponsable()->getIdUtilisateur() != $idUtilisateur) {
-            static::error("frontController.php", "Vous n'êtes pas le responsable de cette proposition.");
+            static::error(ACCUEIL_URL, "Vous n'êtes pas le responsable de cette proposition.");
             return;
         }
 
-        $demandeCoAuteur = (new DemandeCoAuteurRepository)->select($idDemandeur, $idProposition);
-        if (!$demandeCoAuteur) {
-            static::error("frontController.php", "La demande de co-auteur n'existe pas.");
-            return;
-        }
+        $demandeCoAuteur = DemandeCoAuteur::castIfNotNull((new DemandeCoAuteurRepository)->select($idDemandeur, $idProposition));
 
         (new DemandeCoAuteurRepository)->delete($idDemandeur, $idProposition);
         static::message("frontController.php?controller=coAuteur&action=afficherFormulaireGererCoAuteurs&idProposition=$idProposition", "La demande de co-auteur a bien été refusée.");

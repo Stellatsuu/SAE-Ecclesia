@@ -115,14 +115,14 @@ class QuestionController extends MainController
             $nbSections++;
         }
 
-        $responsables = [];
+        $redacteurs = [];
         $votants = [];
         foreach ($_POST as $key => $value) {
             if (substr($key, 0, 9) == "redacteur" && is_numeric($value)) {
-                $idResponsable = intval($value);
-                $responsable = Utilisateur::castIfNotNull((new UtilisateurRepository)->select($idResponsable));
-                if ($responsable && !in_array($responsable, $responsables)) {
-                    $responsables[] = $responsable;
+                $idRedacteur = intval($value);
+                $redacteur = Utilisateur::castIfNotNull((new UtilisateurRepository)->select($idRedacteur));
+                if ($redacteur && !in_array($redacteur, $redacteurs)) {
+                    $redacteurs[] = $redacteur;
                 }
             } else if (substr($key, 0, 6) == "votant" && is_numeric($value)) {
                 $idVotant = intval($value);
@@ -167,8 +167,8 @@ class QuestionController extends MainController
         } else if (count($sections) == 0) {
             static::error($AFPQ_URL, "Au moins une section est requise");
             return;
-        } else if (count($responsables) == 0) {
-            static::error($AFPQ_URL, "Veuillez sélectionner au moins un responsable");
+        } else if (count($redacteurs) == 0) {
+            static::error($AFPQ_URL, "Veuillez sélectionner au moins un rédacteur");
             return;
         } else if (count($votants) == 0) {
             static::error($AFPQ_URL, "Veuillez sélectionner au moins un votant");
@@ -177,7 +177,7 @@ class QuestionController extends MainController
 
         $question->setDescription($description);
         $question->setSections($sections);
-        $question->setRedacteurs($responsables);
+        $question->setRedacteurs($redacteurs);
         $question->setVotants($votants);
         $question->setDateDebutRedaction($dateDebutRedaction);
         $question->setDateFinRedaction($dateFinRedaction);
@@ -201,7 +201,7 @@ class QuestionController extends MainController
         }
 
         $question->setDateDebutRedaction(new DateTime("now"));
-        (new QuestionRepository)->update($question);
+        (new QuestionRepository)->updateSansTablesAssociees($question);
         static::message(LMQ_URL, "La question est maintenant en phase de rédaction");
     }
 
@@ -222,7 +222,7 @@ class QuestionController extends MainController
 
         $question->setDateOuvertureVotes(new DateTime("now"));
 
-        (new QuestionRepository)->update($question);
+        (new QuestionRepository)->updateSansTablesAssociees($question);
         static::message(LMQ_URL, "La question est maintenant en phase de vote");
     }
 
@@ -239,7 +239,7 @@ class QuestionController extends MainController
         }
 
         $question->setDateFermetureVotes(new DateTime("now"));
-        (new QuestionRepository)->update($question);
+        (new QuestionRepository)->updateSansTablesAssociees($question);
         static::message(LMQ_URL, "La question est terminée. Vous pouvez maintenant voir les résultats");
     }
 

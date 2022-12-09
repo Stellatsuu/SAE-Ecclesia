@@ -18,7 +18,7 @@ class MajoritaireAUnTour extends AbstractSystemeVote
         $resultats = [];
 
         $propositions = (new PropositionRepository())->selectAllByQuestion($this->getQuestion()->getIdQuestion());
-        $votes = (new VoteRepository())->selectAllByQuestion($this->getQuestion());
+        $votes = (new VoteRepository())->selectAllByQuestion($this->getQuestion()->getIdQuestion());
 
         foreach ($propositions as $proposition) {
             $resultats[$proposition->getIdProposition()] = 0;

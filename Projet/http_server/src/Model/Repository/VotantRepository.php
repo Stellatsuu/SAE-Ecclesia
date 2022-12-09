@@ -74,8 +74,8 @@ class VotantRepository
 
         $pdo = DatabaseConnection::getPdo()->prepare($sql);
         $pdo->execute([
-            "idQuestion" => $idQuestion,
-            "idUtilisateur" => $idUtilisateur
+            "id_question" => $idQuestion,
+            "id_votant" => $idUtilisateur
         ]);
 
         return $pdo->fetch()['est_votant'] > 0;

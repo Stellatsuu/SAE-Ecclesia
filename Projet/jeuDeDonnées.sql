@@ -29,7 +29,7 @@ INSERT INTO Section(id_section, id_question, nom_section, description_section) V
 INSERT INTO Section(id_section, id_question, nom_section, description_section) VALUES (4002, 10002, 'Section n°2', 'Ceci est la section n°2');
 INSERT INTO Section(id_section, id_question, nom_section, description_section) VALUES (4003, 10002, 'Section n°3', 'Ceci est la section n°3');
 
--- Responsable/Redacteur
+-- Redacteur
 INSERT INTO Redacteur(id_redacteur, id_question) VALUES(10002, 10002); --Palleja X
 INSERT INTO Redacteur(id_redacteur, id_question) VALUES(10003, 10002); --Palleja N
 INSERT INTO Redacteur(id_redacteur, id_question) VALUES(10004, 10002); --MJ
@@ -42,9 +42,9 @@ INSERT INTO Votant(id_votant, id_question) VALUES(10003, 10002); --Palleja N
 INSERT INTO Votant(id_votant, id_question) VALUES(10004, 10002); --MJ
 
 -- Proposition
-INSERT INTO Proposition(id_proposition, titre_proposition, id_redacteur, id_question) VALUES (20001, 'Proposition n°1', 10002, 10002); --Palleja X
-INSERT INTO Proposition(id_proposition, titre_proposition, id_redacteur, id_question) VALUES (20002, 'Proposition n°2', 10003, 10002); --Palleja N
-INSERT INTO Proposition(id_proposition, titre_proposition, id_redacteur, id_question) VALUES (20003, 'Proposition n°3', 10004, 10002); --MJ
+INSERT INTO Proposition(id_proposition, titre_proposition, id_responsable, id_question) VALUES (20001, 'Proposition n°1', 10002, 10002); --Palleja X
+INSERT INTO Proposition(id_proposition, titre_proposition, id_responsable, id_question) VALUES (20002, 'Proposition n°2', 10003, 10002); --Palleja N
+INSERT INTO Proposition(id_proposition, titre_proposition, id_responsable, id_question) VALUES (20003, 'Proposition n°3', 10004, 10002); --MJ
 
 -- Paragraphe
 INSERT INTO Paragraphe(id_paragraphe, id_proposition, id_section, contenu_paragraphe) VALUES (3001, 20001, 4001, 'Ceci est le paragraphe n°1 de la proposition n°1');

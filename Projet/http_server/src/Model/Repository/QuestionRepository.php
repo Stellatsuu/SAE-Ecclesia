@@ -55,22 +55,30 @@ class QuestionRepository extends AbstractRepository
         parent::update($question);
 
         $question = Question::castIfNotNull($question);
+        $sections = $question->getSections();
+        $redacteurs = $question->getRedacteurs();
+        $votants = $question->getVotants();
 
         (new SectionRepository)->deleteAllByQuestion($question->getIdQuestion());
-        foreach ($question->getSections() as $section) {
+        foreach ($sections as $section) {
             $section->setIdQuestion($question->getIdQuestion());
             (new SectionRepository)->insert($section);
         }
 
         (new RedacteurRepository)->deleteAllByQuestion($question->getIdQuestion());
-        foreach ($question->getRedacteurs() as $redacteur) {
+        foreach ($redacteurs as $redacteur) {
             (new RedacteurRepository)->insert($question->getIdQuestion(), $redacteur->getIdUtilisateur());
         }
 
         (new VotantRepository)->deleteAllByQuestion($question->getIdQuestion());
-        foreach ($question->getVotants() as $votant) {
+        foreach ($votants as $votant) {
             (new VotantRepository)->insert($question->getIdQuestion(), $votant->getIdUtilisateur());
         }
+    }
+
+    public function updateSansTablesAssociees(AbstractDataObject $question): void
+    {
+        parent::update($question);
     }
 
     public function selectAllByOrganisateur(int $idUtilisateur): array

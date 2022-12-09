@@ -27,7 +27,7 @@ class DemandeQuestionController extends MainController
     {
         $idQuestion = static::getIfSetAndNumeric("idQuestion", LDQ_URL);
         (new DemandeQuestionRepository)->delete($idQuestion);
-        static::message("frontController.php?controller=demandeQuestion&action=listerDemandesQuestion", "La demande a été refusée");
+        static::message(LDQ_URL, "La demande a été refusée");
     }
 
     public static function accepterDemandeQuestion(): void

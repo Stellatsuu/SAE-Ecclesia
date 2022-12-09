@@ -32,4 +32,19 @@ class UtilisateurRepository extends AbstractRepository {
         );
         return $utilisateur;
     }
+
+    //vérification que l'utilisateur est soit l'organisateur, soit un rédacteur, soit un co-auteur, soit un votant de la question
+    public function estLieAQuestion(int $idUtilisateur, int $idQuestion): bool {
+        $sql = <<<SQL
+        SELECT utilisateur_est_lie_a_question(:idUtilisateur, :idQuestion) AS est_lie_a_question;
+        SQL;
+
+        $pdo = DatabaseConnection::getPdo()->prepare($sql);
+        $pdo->execute([
+            "idUtilisateur" => $idUtilisateur,
+            "idQuestion" => $idQuestion
+        ]);
+
+        return $pdo->fetch()['est_lie_a_question'] > 0;
+    }
 } 
