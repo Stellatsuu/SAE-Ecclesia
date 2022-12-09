@@ -106,6 +106,9 @@ class MainController
             $pdo->exec($dropStatement);
         }
 
+        //set the pdo in exception mode
+        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
         $pdo->exec($query1);
         $pdo->exec($query2);
 

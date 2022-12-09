@@ -94,7 +94,7 @@ CREATE TABLE Proposition (
     CONSTRAINT pk_Proposition PRIMARY KEY (id_proposition),
     CONSTRAINT fk_Proposition_Responsable FOREIGN KEY (id_responsable) REFERENCES Utilisateur (id_utilisateur),
     CONSTRAINT fk_Proposition_Question FOREIGN KEY (id_question) REFERENCES Question (id_question),
-    CONSTRAINT fk_Proposition_Redacteur_Question FOREIGN KEY (id_responsable, id_question) REFERENCES Redacteur (id_responsable, id_question)
+    CONSTRAINT fk_Proposition_Redacteur_Question FOREIGN KEY (id_responsable, id_question) REFERENCES Redacteur (id_redacteur, id_question)
 );
 
 CREATE TABLE Paragraphe (
