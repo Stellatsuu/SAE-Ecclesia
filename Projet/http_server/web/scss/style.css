@@ -422,7 +422,7 @@ textarea {
   min-height: 6rem;
 }
 
-label {
+label, .label {
   margin-top: 20px;
   font-size: 1.5em;
 }
@@ -842,6 +842,13 @@ input[type=time]::-webkit-calendar-picker-indicator {
   #resultats_vote div div label {
     padding-right: 20px;
   }
+}
+#resultats_vote div div label a {
+  color: white;
+  text-decoration: none;
+}
+#resultats_vote div div label a:hover {
+  text-decoration: underline;
 }
 #resultats_vote div div span {
   margin-right: 10px;

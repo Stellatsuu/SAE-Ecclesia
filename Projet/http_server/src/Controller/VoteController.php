@@ -40,7 +40,7 @@ class VoteController extends MainController
 
         $estVotant = (new VotantRepository)->existsForQuestion($question->getIdQuestion(), $idUtilisateur);
         if(!$estVotant) {
-            static::error($AP_URL, "Vous n'êtes pas votant pour cette question");
+            static::error(LMQ_URL, "Vous n'êtes pas votant pour cette question");
         }
 
         $aDejaVote = (new VoteRepository)->existsForQuestion($proposition->getQuestion()->getIdQuestion(), $idUtilisateur);

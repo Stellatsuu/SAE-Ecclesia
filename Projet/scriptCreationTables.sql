@@ -147,21 +147,21 @@ BEGIN
         WHERE
             q.id_question = p_id_question
             AND q.id_organisateur = p_id_utilisateur)
-        OR (
+        OR EXISTS (
             SELECT
                 1
             FROM
                 Redacteur r
             WHERE
                 r.id_question = p_id_question)
-        OR (
+        OR EXISTS (
             SELECT
                 1
             FROM
                 Votant v
             WHERE
                 v.id_question = p_id_question)
-        OR (
+        OR EXISTS (
             SELECT
                 1
             FROM
