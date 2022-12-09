@@ -9,18 +9,20 @@ class Markdown {
      * @return string La chaine de caractères en html
      */
     public static function toHtml(string $markdownString):string{
-        $markdownString = self::toBullet($markdownString);
-        $markdownString = self::toBoldHtml($markdownString);
-        $markdownString = self::toUnderlineHtml($markdownString);
-        $markdownString = self::toItalicHtml($markdownString);
-        $markdownString = self::toTitle6Html($markdownString);
-        $markdownString = self::toTitle5Html($markdownString);
-        $markdownString = self::toTitle4Html($markdownString);
-        $markdownString = self::toTitle3Html($markdownString);
-        $markdownString = self::toTitle2Html($markdownString);
-        $markdownString = self::toTitle1Html($markdownString);
+        $markdownString = htmlspecialchars($markdownString);
+        $markdownString = self::toBulletHtml($markdownString); //
+        $markdownString = self::toTitle6Html($markdownString); //
+        $markdownString = self::toTitle5Html($markdownString); //
+        $markdownString = self::toTitle4Html($markdownString); //
+        $markdownString = self::toTitle3Html($markdownString); //
+        $markdownString = self::toTitle2Html($markdownString); //
+        $markdownString = self::toTitle1Html($markdownString); //
         $markdownString = self::toLineBreakHtml($markdownString);
-        $markdownString = self::toLinkHtml($markdownString);
+        $markdownString = self::toBoldHtml($markdownString); //
+        $markdownString = self::toUnderlineHtml($markdownString); //
+        $markdownString = self::toItalicHtml($markdownString); //
+        $markdownString = self::toLinkHtml($markdownString); //
+        $markdownString = self::toCleanHtml($markdownString);
 
         return $markdownString;
     }
@@ -30,7 +32,7 @@ class Markdown {
      * @return string La chaine de caractère avec le texte en <b>gras</b>
      */
     private static function toBoldHtml(string $markdownString): string{
-        return preg_replace("/(?<!\\\\)\*\*([\w\W]*?)[^\\\\]\*\*/m", "<b>$1</b>", $markdownString);
+        return preg_replace("/(?<!\\\\)\*\*([\w\W]*?[^\\\\][*]*)\*\*/m", "<b>$1</b>", $markdownString);
     }
 
     /**
@@ -38,7 +40,7 @@ class Markdown {
      * @return string La chaine de caractère avec le texte en <u>souligné</u>
      */
     private static function toUnderlineHtml(string $markdownString): string{
-        return preg_replace("/(?<!\\\\)__([\w\W]*?)[^\\\\]__/m", "<b>$1</b>", $markdownString);
+        return preg_replace("/(?<!\\\\)__([\w\W]*?[^\\\\])__/m", "<u>$1</u>", $markdownString);
     }
 
     /**
@@ -46,8 +48,15 @@ class Markdown {
      * @return string La chaine de caractère avec les retours à la ligne
      * */
     private static function toLineBreakHtml(string $markdownString): string{
-        $markdownString = preg_replace("/(^|<\/(?:h[1-6]|ul)>)([\w\W]*?)(<(?:h[1-6]|ul)>|$)/", "$1<p>$2</p>$3", $markdownString);
-        return preg_replace("/(?<!<h[1-6]>)(?<!<p>)(\n)(?!<\/h[1-6]>)(?!<\/p>)/", "<br/>", $markdownString);
+        $markdownString = preg_replace("/(^|<\/(?:h[1-6]|ul)>)\n?([^<]{2,}?)\n?(<(?:h[1-6]|ul)>|$)/", "$1<p>$2</p>$3", $markdownString); // crée des paragraphes
+
+        $returnedString = "";
+        while($returnedString != $markdownString){
+            $markdownString = $returnedString == "" ? $markdownString : $returnedString;
+            $returnedString =  preg_replace("/(?<=<h[1-6]>|<p>|\n|<br\/>)([^<]*?)\n([^<]*?)(?=\n|<\/h[1-6]>|<\/p>)/", "$1<br/>$2", $markdownString); //place des retours à la ligne dans des paragraphes ou titres
+        }
+
+        return preg_replace("/\n/", "", $returnedString); //place des retours à la ligne dans des paragraphes ou titres
     }
 
     /**
@@ -112,7 +121,7 @@ class Markdown {
      * @return string La chaine de caractère avec les <a href="">liens</a>
      * */
     private static function toLinkHtml(string $markdownString): string{
-        return preg_replace("/[^\\\\]\[(.*)]\((.*)\)/m", "<a href=\"$2\" alt=\"$1\">$1</a>", $markdownString);
+        return preg_replace("/(?<!\\\\)\[([^\[\]]*)]\(([^()]*)\)/m", "<a href=\"$2\" alt=\"$1\">$1</a>", $markdownString);
     }
 
     /**
@@ -120,16 +129,24 @@ class Markdown {
      * @return string La chaine de caractère avec les textes en <i>italique</i>
      * */
     private static function toItalicHtml(string $markdownString): string{
-        $markdownString = preg_replace("/(?<!\\\\)\*([\w\W]*?[^\\\\])\*/m", "<u>$1</u>", $markdownString);
-        return preg_replace("/(?<!\\\\)_([\w\W]*?[^\\\\])_/m", "<u>$1</u>", $markdownString);
+        $markdownString = preg_replace("/(?<!\\\\)\*([\w\W]*?[^\\\\])\*/m", "<i>$1</i>", $markdownString);
+        return preg_replace("/(?<!\\\\)_([\w\W]*?[^\\\\])_/m", "<i>$1</i>", $markdownString);
     }
 
     /**
      * @param string $markdownString La chaine de caractère en markdown
      * @return string La chaine de caractère avec les listes
      * */
-    private static function toBullet(string $markdownString): string{
-        $markdownString = preg_replace("/^[-*] (.*)/m", "<li>$1</li>", $markdownString);
-        return preg_replace("/^(<li>[\w\W]*<\/li>)$/m", "<ul>$1</ul>", $markdownString);
+    private static function toBulletHtml(string $markdownString): string{
+        $markdownString = preg_replace("/^[-*] (.*)\n?/m", "<li>$1</li>", $markdownString);
+        return preg_replace("/^(<li>[^\n]*<\/li>)/m", "<ul>$1</ul>\n", $markdownString);
+    }
+
+    /**
+     * @param string $markdownString La chaine de caractère en markdown
+     * @return string La chaine de caractère sans le caractère d'échappement (sauf s'il est lui-même échappé)
+     * */
+    private static function toCleanHtml(string $markdownString): string{
+        return preg_replace("/(?<!\\\\)\\\\/m", "", $markdownString);
     }
 }
