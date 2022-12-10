@@ -2,6 +2,7 @@
 
 namespace App\SAE\Controller;
 
+use App\SAE\Lib\ConnexionUtilisateur;
 use App\SAE\Model\DataObject\Paragraphe;
 use App\SAE\Model\DataObject\Proposition;
 use App\SAE\Model\DataObject\Question;
@@ -23,8 +24,7 @@ class PropositionController extends MainController
 
     public static function afficherFormulaireEcrireProposition()
     {
-        $session = static::getSessionSiConnecte();
-        $username = $session->lire("username");
+        $username = ConnexionUtilisateur::getUsernameSiConnecte();
 
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
 
@@ -59,12 +59,11 @@ class PropositionController extends MainController
 
     public static function ecrireProposition()
     {
-        $session = static::getSessionSiConnecte();
+        $username = ConnexionUtilisateur::getUsernameSiConnecte();
 
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
         $question = Question::castIfNotNull((new QuestionRepository())->select($idQuestion));
 
-        $username = $session->lire("username");
         $responsable = Utilisateur::castIfNotNull((new UtilisateurRepository())->select($username));
 
         $titreProposition = static::getIfSetAndNotEmpty("titreProposition");
@@ -131,8 +130,7 @@ class PropositionController extends MainController
 
     public static function afficherFormulaireContribuerProposition()
     {
-        $session = static::getSessionSiConnecte();
-        $username = $session->lire("username");
+        $username = ConnexionUtilisateur::getUsernameSiConnecte();
 
         $idProposition = static::getIfSetAndNumeric("idProposition");
         $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
@@ -170,8 +168,7 @@ class PropositionController extends MainController
 
     public static function contribuerProposition()
     {
-        $session = static::getSessionSiConnecte();
-        $username = $session->lire("username");
+        $username = ConnexionUtilisateur::getUsernameSiConnecte();
 
         $idProposition = static::getIfSetAndNumeric("idProposition");
         $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
@@ -222,8 +219,7 @@ class PropositionController extends MainController
 
     public static function afficherPropositions()
     {
-        $session = static::getSessionSiConnecte();
-        $username = $session->lire("username");
+        $username = ConnexionUtilisateur::getUsernameSiConnecte();
 
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
 
@@ -254,8 +250,7 @@ class PropositionController extends MainController
 
     public static function supprimerProposition()
     {
-        $session = static::getSessionSiConnecte();
-        $username = $session->lire("username");
+        $username = ConnexionUtilisateur::getUsernameSiConnecte();
 
         $idProposition = static::getIfSetAndNumeric("idProposition");
 

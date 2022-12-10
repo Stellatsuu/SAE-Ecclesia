@@ -2,6 +2,7 @@
 
 namespace App\SAE\Controller;
 
+use App\SAE\Lib\ConnexionUtilisateur;
 use App\SAE\Model\Repository\QuestionRepository as QuestionRepository;
 use App\SAE\Model\DataObject\Question as Question;
 use App\SAE\Model\DataObject\Section;
@@ -19,8 +20,8 @@ class QuestionController extends MainController
 
     public static function afficherFormulairePoserQuestion(): void
     {
-        $session = static::getSessionSiConnecte();
-        $username = $session->lire("username");
+        $username = ConnexionUtilisateur::getUsernameSiConnecte();
+
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
 
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
@@ -75,8 +76,8 @@ class QuestionController extends MainController
 
     public static function poserQuestion(): void
     {
-        $session = static::getSessionSiConnecte();
-        $username = $session->lire("username");
+        $username = ConnexionUtilisateur::getUsernameSiConnecte();
+
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
         $description = static::getIfSetAndNotEmpty("description");
 
@@ -200,8 +201,8 @@ class QuestionController extends MainController
 
     public static function passagePhaseRedaction()
     {
-        $session = static::getSessionSiConnecte();
-        $username = $session->lire("username");
+        $username = ConnexionUtilisateur::getUsernameSiConnecte();
+
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
 
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
@@ -224,8 +225,8 @@ class QuestionController extends MainController
 
     public static function passagePhaseVote()
     {
-        $session = static::getSessionSiConnecte();
-        $username = $session->lire("username");
+        $username = ConnexionUtilisateur::getUsernameSiConnecte();
+
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
 
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
@@ -252,8 +253,8 @@ class QuestionController extends MainController
 
     public static function passagePhaseResultats()
     {
-        $session = static::getSessionSiConnecte();
-        $username = $session->lire("username");
+        $username = ConnexionUtilisateur::getUsernameSiConnecte();
+
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
 
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
@@ -276,8 +277,8 @@ class QuestionController extends MainController
 
     public static function listerMesQuestions()
     {
-        $session = static::getSessionSiConnecte();
-        $username = $session->lire("username");
+        $username = ConnexionUtilisateur::getUsernameSiConnecte();
+        
         $questions = (new QuestionRepository)->selectAllByOrganisateur($username);
 
         static::afficherVue("view.php", [

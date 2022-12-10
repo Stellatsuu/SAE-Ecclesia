@@ -2,6 +2,7 @@
 
 namespace App\SAE\Controller;
 
+use App\SAE\Lib\ConnexionUtilisateur;
 use App\SAE\Model\DataObject\Paragraphe;
 use App\SAE\Model\DataObject\Proposition;
 use App\SAE\Model\DataObject\Question;
@@ -21,8 +22,7 @@ class CoAuteurController extends MainController
 
     public static function afficherFormulaireGererCoAuteurs()
     {
-        $session = static::getSessionSiConnecte();
-        $username = $session->lire("username");
+        $username = ConnexionUtilisateur::getUsernameSiConnecte();
         
         $idProposition = static::getIfSetAndNumeric("idProposition");
         $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
@@ -66,8 +66,7 @@ class CoAuteurController extends MainController
 
     public static function gererCoAuteurs()
     {
-        $session = static::getSessionSiConnecte();
-        $username = $session->lire("username");
+        $username = ConnexionUtilisateur::getUsernameSiConnecte();
 
         $idProposition = static::getIfSetAndNumeric("idProposition");
         $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
@@ -117,8 +116,7 @@ class CoAuteurController extends MainController
 
     public static function afficherFormulaireDemanderCoAuteur()
     {
-        $session = static::getSessionSiConnecte();
-        $username = $session->lire("username");
+        $username = ConnexionUtilisateur::getUsernameSiConnecte();
 
         $idProposition = static::getIfSetAndNumeric("idProposition");
 
@@ -139,9 +137,9 @@ class CoAuteurController extends MainController
     public static function demanderCoAuteur()
     {
         $message = isset($_POST['message']) ? $_POST['message'] : "";
-        $session = static::getSessionSiConnecte();
 
-        $username = $session->lire('username');
+        $username = ConnexionUtilisateur::getUsernameSiConnecte();
+
         $utilisateur = Utilisateur::castIfNotNull((new UtilisateurRepository())->select($username));
 
         $idProposition = static::getIfSetAndNumeric("idProposition");
@@ -168,8 +166,7 @@ class CoAuteurController extends MainController
 
     public static function accepterDemandeCoAuteur()
     {
-        $session = static::getSessionSiConnecte();
-        $username = $session->lire('username');
+        $username = ConnexionUtilisateur::getUsernameSiConnecte();
 
         $usernameDemandeur = static::getIfSet("usernameDemandeur");
         $demandeur = Utilisateur::castIfNotNull((new UtilisateurRepository())->select($usernameDemandeur));
@@ -189,8 +186,7 @@ class CoAuteurController extends MainController
     }
 
     public static function refuserDemandeCoAuteur() {
-        $session = static::getSessionSiConnecte();
-        $username = $session->lire('username');
+        $username = ConnexionUtilisateur::getUsernameSiConnecte();
 
         $usernameDemandeur = static::getIfSet("usernameDemandeur");
         $demandeur = Utilisateur::castIfNotNull((new UtilisateurRepository())->select($usernameDemandeur));

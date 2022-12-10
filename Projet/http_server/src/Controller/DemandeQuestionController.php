@@ -2,6 +2,7 @@
 
 namespace App\SAE\Controller;
 
+use App\SAE\Lib\ConnexionUtilisateur;
 use App\SAE\Model\Repository\QuestionRepository as QuestionRepository;
 use App\SAE\Model\DataObject\Question as Question;
 use App\SAE\Model\Repository\DemandeQuestionRepository as DemandeQuestionRepository;
@@ -59,8 +60,7 @@ class DemandeQuestionController extends MainController
 
     public static function demanderCreationQuestion(): void
     {
-        $session = static::getSessionSiConnecte();
-        $username = $session->lire("username");
+        $username = ConnexionUtilisateur::getUsernameSiConnecte();
 
         $titre = static::getIfSetAndNotEmpty("titre", AFDQ_URL);
         $description = static::getIfSetAndNotEmpty("description", AFDQ_URL);

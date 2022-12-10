@@ -2,6 +2,7 @@
 
 namespace App\SAE\Controller;
 
+use App\SAE\Lib\ConnexionUtilisateur;
 use App\SAE\Lib\PhaseQuestion;
 use App\SAE\Model\DataObject\Proposition;
 use App\SAE\Model\DataObject\Question;
@@ -18,8 +19,7 @@ class VoteController extends MainController
     public static function voter()
     {
 
-        $session = static::getSessionSiConnecte();
-        $username = $session->lire("username");
+        $username = ConnexionUtilisateur::getUsernameSiConnecte();
 
         $idProposition = static::getIfSetAndNumeric("idProposition");
         $proposition = Proposition::castIfNotNull((new PropositionRepository)->select($idProposition));
