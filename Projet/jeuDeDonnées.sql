@@ -1,16 +1,16 @@
 -- Utilisateur
-INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('petruv', 'Valicov', 'Petru', NULL, NULL, '1234');
-INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('chatoine', 'Chollet', 'Antoine', NULL, NULL, '1234');
-INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('xavierp', 'Palleja', 'Xavier', NULL, NULL, '1234');
-INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('nathaliep', 'Palleja', 'Nathalie', NULL, NULL, '1234');
-INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('alainmj', 'Marie-Jeanne', 'Alain', NULL, NULL, '1234');
-INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('gillest', 'Trombettoni', 'Gilles', NULL, NULL, '1234');
-INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('poupetv', 'Poupet', 'Victor', NULL, NULL, '1234');
-INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('matthieur', 'Rosenfeld', 'Matthieu', NULL, NULL, '1234');
-INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('brunor', 'Rouchon', 'Bruno', NULL, NULL, '1234');
-INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('lorrainer', 'Rice', 'Lorraine', NULL, NULL, '1234');
-INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('trollface', 'Troll', 'Face', NULL, NULL, '1234');
-INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('test', 'Test', 'Test', NULL, NULL, '1234');
+INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('petruv', 'Valicov', 'Petru', NULL, NULL, '$2y$10$hycjsy4nsBi9Phj/xv8jJ.5AxWoOZA5pxCJn132HV4sWD5teI/2z6'); -- mdp = password
+INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('chatoine', 'Chollet', 'Antoine', NULL, NULL, '$2y$10$EjL9ecGUXLKjnLSrO3gw/uRZu7kclvbmHSoPwzQaRCyxKbWuZCUAW'); -- mdp = 000000
+INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('xavierp', 'Palleja', 'Xavier', NULL, NULL, '$2y$10$KOwva7QldevDePAZORgPtOKLVbe/mTrw.Z456YEZesVZblpLiOWLy'); -- mdp = 123456789
+INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('nathaliep', 'Palleja', 'Nathalie', NULL, NULL, '$2y$10$NWGB5x1/srO5QQKzclXWkON2y6crsW8W/gIpYo83Exi2Lx66WlTAm'); -- mdp = guest
+INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('alainmj', 'Marie-Jeanne', 'Alain', NULL, NULL, '$2y$10$yndQA4abOQr4XH1VT6AO4.Yl3hw17M4lPyrE1wBg4tPTTekRCkz5q'); -- mdp = qwerty
+INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('gillest', 'Trombettoni', 'Gilles', NULL, NULL, '$2y$10$ROOHyexjocM7G8RmFCXH6e7kxd2f0.9LKs3pevEjybZc9FdYLXsb6'); -- mdp = 1q2w3e4r
+INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('poupetv', 'Poupet', 'Victor', NULL, NULL, '$2y$10$FkEIilIgbl.Ls7zM.p4mdOaZrN51HDhn2j4a.ugs74h1MiQ/ik4YG'); -- mdp = 111111
+INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('matthieur', 'Rosenfeld', 'Matthieu', NULL, NULL, '$2y$10$YApoPRxg5GH.gjca8CnZrO0WE0Hg./1g/ZaSRy91ix8Bp0h4Ou3ZK'); -- mdp = pass123
+INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('brunor', 'Rouchon', 'Bruno', NULL, NULL, '$2y$10$vClY2/9AG.NgYSdjgR7glOIxd4tbT1ozxLDSRQVaAU.GZtQuj2NOS'); --mdp = vip
+INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('lorrainer', 'Rice', 'Lorraine', NULL, NULL, '$2y$10$cQ1beCiMnhItBlCbnTLgp.cWrfLtwk/GIXXVcQqmCSsXWC75MW6OS'); --mdp = asdasd
+INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('trollface', 'Troll', 'Face', NULL, NULL, '$2y$10$0zAD/ZqBkeWslaA/WCqy0OKhNkCHxbahu6n7B9WGaZ1F5o7Fj4iG6'); --mdp = iloveyou
+INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed) VALUES('test', 'Test', 'Test', NULL, NULL, '$2y$10$uf6fal4cXpNxxsDMm6X3ie4y/KITT1IDyz9TkdVPuXo2XG/nZStKG'); -- mdp = test
 
 -- Administrateur
 INSERT INTO Administrateur(username_administrateur) VALUES('gillest'); --Trombettoni
