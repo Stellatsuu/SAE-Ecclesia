@@ -10,6 +10,8 @@ abstract class AbstractDataObject {
 
     public abstract function getValeurClePrimaire();
 
+    public static abstract function castIfNotNull($object, $errorUrl = "frontController.php", $errorMessage = "[OBJECT] n'existe pas");
+
     public static function castToClassIfNotNull($object, $className, $errorUrl = "frontController.php", $errorMessage = "[OBJECT] n'existe pas") : ?AbstractDataObject {
         str_replace("[OBJECT]", $className, $errorMessage);
 
@@ -23,5 +25,4 @@ abstract class AbstractDataObject {
         }
         return null;
     }
-
 }
