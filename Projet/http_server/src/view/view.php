@@ -1,6 +1,8 @@
 <?php
 
 use App\SAE\Lib\ConnexionUtilisateur;
+use App\SAE\Model\DataObject\Utilisateur;
+use App\SAE\Model\Repository\UtilisateurRepository;
 
 $estConnecte = ConnexionUtilisateur::estConnecte();
 
@@ -9,12 +11,32 @@ if ($estConnecte) {
     <li><a href="frontController.php?controller=utilisateur&action=afficherProfil">Mon Compte</a></li>
     <li><a href="frontController.php?controller=utilisateur&action=afficherParametres">Paramètres</a></li>
     <li><a href="frontController.php?controller=utilisateur&action=seDeconnecter">Se déconnecter</a></li>
-html;
+    html;
+
+    $utilisateur = (new UtilisateurRepository)->select(ConnexionUtilisateur::getUsername());
+
+    if(!$utilisateur) {
+        ConnexionUtilisateur::deconnecter();
+        header("Location: " . "frontController.php");
+        exit;
+    }
+
+    $utilisateur = Utilisateur::castIfNotNull($utilisateur);
+
+    $b64img = $utilisateur->getPhotoProfil();
+
+    $pfp = <<<html
+    <img src="data:image/png;charset=utf8;base64,$b64img"/>
+    html;
 } else {
     $liensComptes = <<<html
     <li><a href="#modalSeConnecter">Se connecter</a></li>
     <li><a href="#modalCreerCompte">Créer un compte</a></li>
-html;
+    html;
+
+    $pfp = <<<html
+    <img src="assets/images/defaultPFPs/disconnected.jpg"/>
+    html;
 }
 
 $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>", $liensComptes);
@@ -50,7 +72,7 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
                 <?= $liensComptesVersionMobile ?>
             </ul>
             <div class="menu_compte">
-                <a class="bouton_ouvrir_compte" href="#"><img src="assets/images/pfp_ecclesia.jpg" alt="Compte"></a>
+                <a class="bouton_ouvrir_compte" href="#"><?= $pfp ?></a>
                 <ul>
                     <?= $liensComptes ?>
                 </ul>
@@ -83,7 +105,7 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
 
         <div id="modalSeConnecter" class="modal">
 
-            <div id="seConnecterPanel" class="modal-content panel">
+            <div id="seConnecterPanel" class="modal-content panel comptePanel">
                 <form action="frontController.php?controller=utilisateur&action=seConnecter" method="POST">
                     <h2>Se connecter</h2>
                     <div>
@@ -112,16 +134,56 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
 
         </div>
         <div id="modalCreerCompte" class="modal">
-            <form action="">
-                <div id="creerComptePanel" class="modal-content panel">
-                    <h2>Créer un compte</h2>
-                    <!-- TODO: Ajouter le formulaire de création de compte -->
+            <div id="creerComptePanel" class="modal-content panel comptePanel">
+                <form action="frontController.php?controller=utilisateur&action=sInscrire" method="POST">
+                    <h2>S'inscrire</h2>
+
+
+                    <div>
+                        <label for="username">Nom d'utilisateur*</label>
+                        <input type="text" name="username" required>
+                    </div>
+                    <div>
+                        <label for="password">Mot de passe*</label>
+                        <input type="password" name="password" required>
+                    </div>
+                    <div>
+                        <label for="passwordConfirmation">Confirmer le mot de passe*</label>
+                        <input type="password" name="passwordConfirmation" required>
+                    </div>
+
+                    <div>
+                        <label for="nom">Nom</label>
+                        <input type="text" name="nom">
+                    </div>
+
+                    <div>
+                        <label for="prenom">Prénom</label>
+                        <input type="text" name="prenom">
+                    </div>
+
+                    <div>
+                        <label for="email">Email</label>
+                        <input type="email" name="email">
+                    </div>
+
+                    <div>
+                        <input type="hidden" value="<?= $_SERVER['REQUEST_URI'] ?>" name="redirect">
+                    </div>
+
+                    <div>
+                        <input type="submit" value="S'inscrire">
+                    </div>
+
+                    <p>Déjà inscrit ? <a href="#modalSeConnecter">Se connecter</a></p>
+
+
 
                     <a href="#" class="modal-close">
                         <img src="assets/images/close-icon.svg" alt="bouton fermer">
                     </a>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </main>
 

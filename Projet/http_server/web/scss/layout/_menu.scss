@@ -221,12 +221,16 @@ input{
     z-index: 1000;
 
     li {
-      padding: 10px 0;
+      padding: 0;
       text-align: center;
       border-bottom: solid $couleurFond 2px;
       border-radius: 0;
       cursor: pointer;
       transition: all 0.2s ease-in-out;
+
+      a {
+        height: calc(1.1em + 20px);
+      }
 
       &:hover {
         background-color: $couleurPrincipaleSurvol;

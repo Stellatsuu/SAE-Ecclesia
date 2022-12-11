@@ -2,6 +2,7 @@
 
 namespace App\SAE\Model\Repository;
 
+use App\SAE\Model\DataObject\AbstractDataObject;
 use App\SAE\Model\DataObject\Utilisateur;
 
 class UtilisateurRepository extends AbstractRepository {
@@ -53,5 +54,43 @@ class UtilisateurRepository extends AbstractRepository {
         ]);
 
         return $pdo->fetch()['est_lie_a_question'] > 0;
+    }
+
+    public function insert(AbstractDataObject $object): void
+    {
+        $sql = <<<SQL
+        INSERT INTO utilisateur (username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed)
+        VALUES (:username_utilisateur, :nom_utilisateur, :prenom_utilisateur, :email_utilisateur, decode(:photo_profil, 'hex'), :mdp_hashed);
+        SQL;
+
+        $values = $object->formatTableau();
+        $pdo = DatabaseConnection::getPdo()->prepare($sql);
+        $pdo->execute($values);
+    }
+
+    public function select(...$params): ?AbstractDataObject
+    {
+        if(count($params) != 1) {
+            throw new \Exception("Un seul paramètre est requis");
+        }
+
+        $sql = <<<SQL
+        SELECT username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, encode(photo_profil, 'base64') AS photo_profil, mdp_hashed
+        FROM utilisateur
+        WHERE username_utilisateur = :username_utilisateur;
+        SQL;
+
+        $pdo = DatabaseConnection::getPdo()->prepare($sql);
+        $values = [
+            'username_utilisateur' => $params[0]
+        ];
+        $pdo->execute($values);
+
+        $row = $pdo->fetch();
+        if ($row === false) {
+            return null;
+        }
+
+        return $this->construire($row);
     }
 } 

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\SAE\Lib;
 
 class MotDePasse
@@ -25,22 +26,18 @@ class MotDePasse
         $octetsAleatoires = random_bytes(ceil($nbCaracteres * 6 / 8));
         return substr(base64_encode($octetsAleatoires), 0, $nbCaracteres);
     }
-}
 
-$mdps = "password
-000000
-123456789
-guest
-qwerty
-1q2w3e4r
-111111
-pass123
-vip
-asdasd
-iloveyou";
+    public static function verifierForceMotDePasse(string $password): bool
+    {
+        $uppercase = preg_match('@[A-Z]@', $password);
+        $lowercase = preg_match('@[a-z]@', $password);
+        $number    = preg_match('@[0-9]@', $password);
+        $specialChars = preg_match('@[^\w]@', $password);
 
-$mdps = explode("\n", $mdps);
-
-foreach ($mdps as $mdp) {
-    var_dump($mdp . " => " . MotDePasse::hacher($mdp));
+        if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

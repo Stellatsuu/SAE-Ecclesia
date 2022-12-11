@@ -442,12 +442,15 @@ header #mobileMenu {
   z-index: 1000;
 }
 .menu_compte:focus-within ul li {
-  padding: 10px 0;
+  padding: 0;
   text-align: center;
   border-bottom: solid #1B1B1B 2px;
   border-radius: 0;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+}
+.menu_compte:focus-within ul li a {
+  height: calc(1.1em + 20px);
 }
 .menu_compte:focus-within ul li:hover {
   background-color: #B1482C;
@@ -643,29 +646,31 @@ input[type=time]::-webkit-calendar-picker-indicator {
   }
 }
 
-#modalSeConnecter #seConnecterPanel {
+.comptePanel {
   padding: 0 50px;
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
 }
-#modalSeConnecter #seConnecterPanel div {
+.comptePanel div {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   margin: 0;
 }
-#modalSeConnecter #seConnecterPanel div label {
+.comptePanel div label {
   align-self: flex-start;
   margin-bottom: 4px;
 }
-#modalSeConnecter #seConnecterPanel div input[type=text], #modalSeConnecter #seConnecterPanel div input[type=password] {
+.comptePanel div input[type=text],
+.comptePanel div input[type=password],
+.comptePanel div input[type=email] {
   background: none;
   margin: 0;
   width: calc(100% - 14px);
 }
-#modalSeConnecter #seConnecterPanel div input[type=submit] {
+.comptePanel div input[type=submit] {
   margin-top: 20px;
 }
 
