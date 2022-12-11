@@ -1,6 +1,7 @@
 <?php
 
 
+use App\SAE\Lib\Markdown;
 use App\SAE\Lib\PhaseQuestion;
 use App\SAE\Model\DataObject\Proposition;
 use App\SAE\Model\DataObject\Question;
@@ -25,7 +26,7 @@ $estOrganisateur = $question->getUsernameOrganisateur() === $username;
             <img src='./assets/images/arrow.svg' class='arrow' alt='open and close arrow' />
         </label>
     </div>
-    <p id="description"><?= $question->getDescription() ?></p>
+    <span id="description" class="markdown"><?= Markdown::toHtml($question->getDescription()) ?></span>
 
     <div id="propositionSelector">
         <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=<?= rawurlencode($question->getIdQuestion()) ?>&index=<?= $index == 0 ? $nbPropopositions - 1 : $index - 1 ?>">
@@ -41,9 +42,9 @@ $estOrganisateur = $question->getUsernameOrganisateur() === $username;
         <?php
         foreach ($propositionActuelle->getParagraphes() as $paragraphe) {
             $nomSection = $paragraphe->getSection()->getNomSection();
-            $contenu = \App\SAE\Lib\Markdown::toHtml($paragraphe->getContenuParagraphe());
+            $contenu = Markdown::toHtml($paragraphe->getContenuParagraphe());
             echo "<h2>$nomSection</h2>";
-            echo "<p>$contenu</p>";
+            echo "<span class=\"markdown\">$contenu</span>";
         }
         ?>
     </div>

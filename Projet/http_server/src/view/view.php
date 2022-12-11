@@ -71,7 +71,7 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
                 <li><a href="frontController.php?controller=demandeQuestion&action=listerDemandesQuestion">Demandes</a></li>
                 <?= $liensComptesVersionMobile ?>
             </ul>
-            <div class="menu_compte">
+            <div class="menu_compte" tabindex="0">
                 <a class="bouton_ouvrir_compte" href="#"><?= $pfp ?></a>
                 <ul>
                     <?= $liensComptes ?>

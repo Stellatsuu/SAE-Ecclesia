@@ -25,7 +25,7 @@
                         <img src='./assets/images/arrow.svg' class='arrow' alt='open and close arrow'/>
                     </label>
                 </div>
-                <p class='descriptionProposition'>" . htmlspecialchars($section->getDescriptionSection()) . "</p>
+                <span class='descriptionProposition markdown'>" . Markdown::tohtml($section->getDescriptionSection()) . "</span>
                 <textarea name='section_" . $i . "'>";
 
                 $paragraphe = null;

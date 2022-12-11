@@ -1,5 +1,8 @@
 <?php
-    $existeProposition = !empty($proposition);
+
+use App\SAE\Lib\Markdown;
+
+$existeProposition = !empty($proposition);
 
     if($existeProposition){
         $paragraphes = $proposition->getParagraphes();
@@ -27,7 +30,7 @@
                             <img src='./assets/images/arrow.svg' class='arrow' alt='open and close arrow'/>
                         </label>
                     </div>
-                    <p class='descriptionProposition'>" . htmlspecialchars($section->getDescriptionSection()) . "</p>
+                    <span class='descriptionProposition markdown'>" . Markdown::toHtml($section->getDescriptionSection()) . "</span>
                     <textarea name='section_" . $i . "'>";
 
                 if($existeProposition){

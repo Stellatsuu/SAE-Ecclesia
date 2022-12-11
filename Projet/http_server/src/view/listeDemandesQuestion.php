@@ -2,12 +2,15 @@
     <h1>Questions à valider</h1>
 
     <?php
-        $i = 0;
+
+    use App\SAE\Lib\Markdown;
+
+    $i = 0;
         foreach ($demandes as $q) {
             $i++;
             echo "<div class='demandeQuestion acceptOrDeny'><div class='boite' style='--order: " . $i . "'>";
             echo ("<h2>" . htmlspecialchars($q->getTitre()) . "</h2>");
-            echo ("<p>" . \App\SAE\Lib\Markdown::toHtml($q->getDescription()) . "</p>");
+            echo ("<span class=\"markdown\">" . Markdown::toHtml($q->getDescription()) . "</span>");
             echo ("<p>- " . htmlspecialchars($q->getOrganisateur()->getPrenom()) . " " . htmlspecialchars(strtoupper($q->getOrganisateur()->getNom()))) . "</p>";
 
             echo "</div>";
