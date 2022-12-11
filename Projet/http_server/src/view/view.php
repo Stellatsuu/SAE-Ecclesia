@@ -1,11 +1,23 @@
 <?php
 
 use App\SAE\Lib\ConnexionUtilisateur;
-$compteHref = ConnexionUtilisateur::estConnecte() ? "frontController.php?controller=utilisateur&action=afficherProfil" : "#modalSeConnecter";
 
-$seDeconnecterLi = ConnexionUtilisateur::estConnecte() ? "<li><a href='frontController.php?controller=utilisateur&action=seDeconnecter'>
-<img src='assets/images/deconnexion.png' alt='Se déconnecter' style='width: 50px; height: 50px;'>
-</a></li>" : "";
+$estConnecte = ConnexionUtilisateur::estConnecte();
+
+if ($estConnecte) {
+    $liensComptes = <<<html
+    <li><a href="frontController.php?controller=utilisateur&action=afficherProfil">Mon Compte</a></li>
+    <li><a href="frontController.php?controller=utilisateur&action=afficherParametres">Paramètres</a></li>
+    <li><a href="frontController.php?controller=utilisateur&action=seDeconnecter">Se déconnecter</a></li>
+html;
+} else {
+    $liensComptes = <<<html
+    <li><a href="#modalSeConnecter">Se connecter</a></li>
+    <li><a href="#modalCreerCompte">Créer un compte</a></li>
+html;
+}
+
+$liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>", $liensComptes);
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +37,9 @@ $seDeconnecterLi = ConnexionUtilisateur::estConnecte() ? "<li><a href='frontCont
             <label for="mobileOpen">
                 <img src="assets/images/logoSite.svg" />
             </label>
-            <div></div>
+            <div>
+
+            </div>
         </div>
         <nav>
             <ul>
@@ -33,11 +47,16 @@ $seDeconnecterLi = ConnexionUtilisateur::estConnecte() ? "<li><a href='frontCont
                 <li><a href="frontController.php?controller=question&action=listerMesQuestions">Questions</a></li>
                 <li><a href="frontController.php?controller=question&action=afficherQuestionsFinies">Résultats</a></li>
                 <li><a href="frontController.php?controller=demandeQuestion&action=listerDemandesQuestion">Demandes</a></li>
-                <li><a href="<?= $compteHref ?>">Compte</a></li>
-                <?= $seDeconnecterLi ?>
+                <?= $liensComptesVersionMobile ?>
             </ul>
-            <div></div>
+            <div class="menu_compte">
+                <a class="bouton_ouvrir_compte" href="#"><img src="assets/images/pfp_ecclesia.jpg" alt="Compte"></a>
+                <ul>
+                    <?= $liensComptes ?>
+                </ul>
+            </div>
         </nav>
+
     </header>
 
     <main>
@@ -63,8 +82,9 @@ $seDeconnecterLi = ConnexionUtilisateur::estConnecte() ? "<li><a href='frontCont
         ?>
 
         <div id="modalSeConnecter" class="modal">
-            <form action="frontController.php?controller=utilisateur&action=seConnecter" method="POST">
-                <div class="modal-content panel">
+
+            <div id="seConnecterPanel" class="modal-content panel">
+                <form action="frontController.php?controller=utilisateur&action=seConnecter" method="POST">
                     <h2>Se connecter</h2>
                     <div>
                         <label for="username">Nom d'utilisateur</label>
@@ -79,17 +99,29 @@ $seDeconnecterLi = ConnexionUtilisateur::estConnecte() ? "<li><a href='frontCont
                     </div>
 
                     <div>
-                        <input type="submit" value="Se connecter">
+                        <input type="submit" value="Connexion">
                     </div>
+
+                    <p>Pas inscrit? <a href="#modalCreerCompte">Créer un compte</a></p>
+
+                    <a href="#" class="modal-close">
+                        <img src="assets/images/close-icon.svg" alt="bouton fermer">
+                    </a>
+                </form>
+            </div>
+
+        </div>
+        <div id="modalCreerCompte" class="modal">
+            <form action="">
+                <div id="creerComptePanel" class="modal-content panel">
+                    <h2>Créer un compte</h2>
+                    <!-- TODO: Ajouter le formulaire de création de compte -->
 
                     <a href="#" class="modal-close">
                         <img src="assets/images/close-icon.svg" alt="bouton fermer">
                     </a>
                 </div>
             </form>
-        </div>
-        <div id="modalCreerCompte" class="modal">
-            <!-- TODO -->
         </div>
     </main>
 

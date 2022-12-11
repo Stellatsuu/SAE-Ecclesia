@@ -1,10 +1,10 @@
 .panel{
-  background-color: $couleurFond2;
+  background: linear-gradient(145deg, #212121, #1c1c1c);
   width: 80%;
   margin:35px auto;
   padding: 30px 20px;
   border-radius: 10px;
-  box-shadow: -6px -6px 4px #2B2B2B, 6px 6px 4px #1F1F1F;
+  box-shadow: 6px 6px 3px #1a1a1a;
 
   display: flex;
   flex-direction: column;

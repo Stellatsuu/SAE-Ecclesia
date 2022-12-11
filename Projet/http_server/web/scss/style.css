@@ -157,6 +157,7 @@ select {
   justify-content: center;
   align-items: center;
   transition: opacity 0.3s;
+  z-index: 2000;
 }
 
 .modal:target {
@@ -252,15 +253,22 @@ select {
     width: calc(100% - 26px);
   }
 }
+header {
+  padding-top: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
 header input {
   display: none;
 }
 header nav {
-  background-color: #E1603C;
-  width: 70%;
-  height: 45px;
-  margin: 15px auto 0 auto;
+  position: relative;
+  width: 55%;
+  height: 50px;
   border: solid black 1px;
+  border-radius: 10px;
 }
 header nav ul {
   padding: 0;
@@ -270,10 +278,12 @@ header nav ul {
   justify-content: stretch;
 }
 header nav ul li {
+  background-color: #E1603C;
   display: flex;
   align-items: center;
-  padding: 0 10px;
+  padding: 0;
   width: 100%;
+  transition: all 0.2s ease-in-out;
 }
 header nav ul li:not(:nth-last-child(0)) {
   border-right: solid black 1px;
@@ -282,12 +292,22 @@ header nav ul li:hover {
   background-color: #B1482C;
 }
 header nav ul li a {
+  display: flex;
+  align-items: center;
   text-align: center;
+  justify-content: center;
   text-decoration: none;
   color: white;
   width: 100%;
+  height: 100%;
   font-weight: 500;
   font-size: 1.1em;
+}
+header nav ul li:first-child {
+  border-radius: 10px 0 0 10px;
+}
+header nav ul li:nth-child(4) {
+  border-radius: 0 10px 10px 0;
 }
 header nav #activeMenu {
   background-color: #B1482C;
@@ -336,9 +356,11 @@ header #mobileMenu {
     margin: 0;
     position: fixed;
     width: calc(100% - 105px);
-    max-width: 200px;
+    max-width: 250px;
     border: none;
+    border-radius: 0;
     top: 45px;
+    left: 0;
     background-color: transparent;
     overflow: hidden;
   }
@@ -348,8 +370,16 @@ header #mobileMenu {
     padding-bottom: 5px;
   }
   header nav ul li {
-    padding: 10px 0;
+    padding: 0;
     border: none !important;
+    border-radius: 0;
+    background-color: transparent;
+  }
+  header nav ul li:first-child, header nav ul li:last-child {
+    border-radius: 0;
+  }
+  header nav ul li a {
+    height: calc(1.1em + 20px);
   }
   header nav div {
     -webkit-clip-path: polygon(0 0, 50% 100%, 100% 0);
@@ -366,13 +396,94 @@ header #mobileMenu {
   }
 }
 
+.menu_compte .bouton_ouvrir_compte {
+  position: absolute;
+  top: 0;
+  right: -100px;
+  display: flex;
+  content: "";
+  width: 46px;
+  height: 46px;
+  background-color: #E1603C;
+  border: solid #E1603C 2px;
+  border-radius: 50%;
+}
+.menu_compte .bouton_ouvrir_compte img {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+}
+@media screen and (max-width: 600px) {
+  .menu_compte .bouton_ouvrir_compte {
+    display: none;
+  }
+}
+.menu_compte ul {
+  display: none;
+  opacity: 0;
+  transition: all 1s ease-in-out;
+}
+
+.menu_compte:focus-within .bouton_ouvrir_compte {
+  border: solid #B1482C 2px;
+}
+.menu_compte:focus-within ul {
+  display: flex;
+  opacity: 1;
+  flex-direction: column;
+  position: absolute;
+  top: 75px;
+  right: -100px;
+  width: 200px;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  border-radius: 10px;
+  z-index: 1000;
+}
+.menu_compte:focus-within ul li {
+  padding: 10px 0;
+  text-align: center;
+  border-bottom: solid #1B1B1B 2px;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.menu_compte:focus-within ul li:hover {
+  background-color: #B1482C;
+}
+.menu_compte:focus-within ul li:first-child {
+  border-radius: 10px 10px 0 0;
+}
+.menu_compte:focus-within ul li:last-child {
+  border-radius: 0 0 10px 10px;
+}
+.menu_compte:focus-within ul::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  right: 12px;
+  border-width: 15px;
+  border-style: solid;
+  border-color: transparent transparent #E1603C transparent;
+}
+
+.onlyOnMobile {
+  display: none;
+}
+@media screen and (max-width: 600px) {
+  .onlyOnMobile {
+    display: block;
+  }
+}
+
 .panel {
-  background-color: #252525;
+  background: linear-gradient(145deg, #212121, #1c1c1c);
   width: 80%;
   margin: 35px auto;
   padding: 30px 20px;
   border-radius: 10px;
-  box-shadow: -6px -6px 4px #2B2B2B, 6px 6px 4px #1F1F1F;
+  box-shadow: 6px 6px 3px #1a1a1a;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -530,6 +641,32 @@ input[type=time]::-webkit-calendar-picker-indicator {
   #sections_input {
     grid-template-columns: 1fr;
   }
+}
+
+#modalSeConnecter #seConnecterPanel {
+  padding: 0 50px;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+#modalSeConnecter #seConnecterPanel div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+}
+#modalSeConnecter #seConnecterPanel div label {
+  align-self: flex-start;
+  margin-bottom: 4px;
+}
+#modalSeConnecter #seConnecterPanel div input[type=text], #modalSeConnecter #seConnecterPanel div input[type=password] {
+  background: none;
+  margin: 0;
+  width: calc(100% - 14px);
+}
+#modalSeConnecter #seConnecterPanel div input[type=submit] {
+  margin-top: 20px;
 }
 
 .message, .errorMessage {
@@ -908,8 +1045,9 @@ h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset, body {
 }
 
 a {
-  -webkit-text-decoration-color: white;
-          text-decoration-color: white;
+  -webkit-text-decoration-color: #E1603C;
+          text-decoration-color: #E1603C;
+  color: #E1603C;
 }
 
 .unselectable {
