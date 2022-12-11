@@ -687,6 +687,9 @@ input[type=time]::-webkit-calendar-picker-indicator {
 .markdown h6 {
   font-size: 1em;
 }
+.markdown ul {
+  margin: 10px 0;
+}
 .markdown a {
   color: #08D1EC;
   text-decoration-color: #08D1EC;
