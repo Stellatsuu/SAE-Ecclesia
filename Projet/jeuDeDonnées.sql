@@ -16,7 +16,8 @@ INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateu
 INSERT INTO Administrateur(username_administrateur) VALUES('gillest'); --Trombettoni
 
 -- Demande_Question
-INSERT INTO Demande_Question(titre_demande_question, description_demande_question, username_organisateur) VALUES('azertyuiop', 'Lorem ipsum **dolor sit amet, consectetur __adipiscing elit__, sed do eiusmod tempor** incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', 'trollface'); --Troll
+INSERT INTO Demande_Question(titre_demande_question, description_demande_question, username_organisateur) VALUES('azertyuiop', 'Lorem ipsum **dolor sit amet, consectetur __adipiscing elit__, sed do eiusmod tempor** incididunt ut labore et dolore magna aliqua.
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', 'trollface'); --Troll
 INSERT INTO Demande_Question(titre_demande_question, description_demande_question, username_organisateur) VALUES('Barèmes des modules de mathématiques', 'Quels devraient être les barèmes pour les différents **modules de mathématique** cette année?', 'alainmj'); --Marie-Jeanne
 INSERT INTO Demande_Question(titre_demande_question, description_demande_question, username_organisateur) VALUES('Blind Test', 'Quand devrait se dérouler le prochain *blind test*?', 'chatoine'); --Chollet
 
