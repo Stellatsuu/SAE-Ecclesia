@@ -15,7 +15,7 @@ if ($estConnecte) {
 
     $utilisateur = (new UtilisateurRepository)->select(ConnexionUtilisateur::getUsername());
 
-    if(!$utilisateur) {
+    if (!$utilisateur) {
         ConnexionUtilisateur::deconnecter();
         header("Location: " . "frontController.php");
         exit;
@@ -144,7 +144,21 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
                         <input type="text" name="username" required>
                     </div>
                     <div>
-                        <label for="password">Mot de passe*</label>
+                        <label for="password" style="display: flex">Mot de passe*
+                            <span class="tooltip">
+                                <img class="tooltipImage" src="assets/images/info-icon.svg" alt="bouton info">
+                                <div class="tooltiptext">Votre mot de passe doit contenir:
+                                    <ul>
+                                        <li>Au moins 8 caractères</li>
+                                        <li>Au moins une lettre minuscule</li>
+                                        <li>Au moins une lettre majuscule</li>
+                                        <li>Au moins un chiffre</li>
+                                        <li>Au moins un caractère spécial</li>
+                                    </ul>
+                                </div>
+                            </span>
+                        </label>
+
                         <input type="password" name="password" required>
                     </div>
                     <div>
