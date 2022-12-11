@@ -26,7 +26,7 @@ $estOrganisateur = $question->getUsernameOrganisateur() === $username;
             <img src='./assets/images/arrow.svg' class='arrow' alt='open and close arrow' />
         </label>
     </div>
-    <div id="description"><?= \App\SAE\Lib\Markdown::toHtml($question->getDescription()) ?></div>
+    <span id="description" class="markdown"><?= Markdown::toHtml($question->getDescription()) ?></span>
 
     <div id="propositionSelector">
         <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=<?= rawurlencode($question->getIdQuestion()) ?>&index=<?= $index == 0 ? $nbPropopositions - 1 : $index - 1 ?>">
@@ -44,7 +44,7 @@ $estOrganisateur = $question->getUsernameOrganisateur() === $username;
             $nomSection = $paragraphe->getSection()->getNomSection();
             $contenu = Markdown::toHtml($paragraphe->getContenuParagraphe());
             echo "<h2>$nomSection</h2>";
-            echo "<span>$contenu</span>";
+            echo "<span class=\"markdown\">$contenu</span>";
         }
         ?>
     </div>

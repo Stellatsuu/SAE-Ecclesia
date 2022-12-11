@@ -30,7 +30,7 @@ $existeProposition = !empty($proposition);
                             <img src='./assets/images/arrow.svg' class='arrow' alt='open and close arrow'/>
                         </label>
                     </div>
-                    <span class='descriptionProposition'>" . Markdown::toHtml($section->getDescriptionSection()) . "</span>
+                    <span class='descriptionProposition markdown'>" . Markdown::toHtml($section->getDescriptionSection()) . "</span>
                     <textarea name='section_" . $i . "'>";
 
                 if($existeProposition){

@@ -22,7 +22,7 @@
                         <a href="frontController.php?controller=question&action=afficherResultats&idQuestion=$idQuestion"><h2>$titre</h2></a> 
                         <p class="date">$dateFinVotes</p>
                     </div>   
-                    <span>$description</span>
+                    <span class="markdown">$description</span>
                     <p class="organisateur">$organisateur</p>
                 </div>
             </div>
