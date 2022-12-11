@@ -584,7 +584,7 @@ input[type=time]::-webkit-calendar-picker-indicator {
 }
 @media screen and (max-width: 1000px) {
   #roles_input #votants_input,
-#roles_input #redacteurs_input {
+  #roles_input #redacteurs_input {
     width: 100%;
   }
 }
@@ -684,10 +684,8 @@ input[type=time]::-webkit-calendar-picker-indicator {
   left: 50%;
   transform: translate(-50%, -50%);
   /* animation */
-  -webkit-animation: disappear 500ms forwards;
-          animation: disappear 500ms forwards;
-  -webkit-animation-delay: 4s;
-          animation-delay: 4s;
+  animation: disappear 500ms forwards;
+  animation-delay: 4s;
 }
 
 .errorMessage {
@@ -695,16 +693,6 @@ input[type=time]::-webkit-calendar-picker-indicator {
   border: 1px solid rgba(194, 50, 11, 0.3);
   box-shadow: 0 4px 30px rgba(194, 50, 11, 0.1);
   color: #E43C0E;
-}
-
-@-webkit-keyframes disappear {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    visibility: hidden;
-  }
 }
 
 @keyframes disappear {
@@ -861,8 +849,7 @@ input[type=time]::-webkit-calendar-picker-indicator {
 #formulaire_vote input[type=radio] {
   cursor: pointer;
   -webkit-appearance: none;
-  -moz-appearance: none;
-       appearance: none;
+  appearance: none;
   font: inherit;
   color: currentColor;
   width: 1.5em;
@@ -885,8 +872,6 @@ input[type=time]::-webkit-calendar-picker-indicator {
   transform: scale(1);
 }
 #formulaire_vote div {
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
   width: fit-content;
 }
 #formulaire_vote div div {
@@ -956,8 +941,6 @@ input[type=time]::-webkit-calendar-picker-indicator {
   align-self: center;
 }
 #resultats_vote div {
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
   width: fit-content;
   border-radius: 5px;
 }
@@ -1053,13 +1036,10 @@ a {
 .unselectable {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
+  -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-}
-
-input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active {
-  background: none !important;
 }
 
 input:-webkit-autofill,
@@ -1083,4 +1063,6 @@ body {
   font-family: Raleway, serif;
   background-image: url("../assets/images/greek_logo_fond.png");
   background-size: 30%;
-}/*# sourceMappingURL=style.css.map */
+}
+
+/*# sourceMappingURL=style.css.map */
