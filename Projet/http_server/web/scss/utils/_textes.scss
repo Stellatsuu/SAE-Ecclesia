@@ -4,5 +4,6 @@ h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset, body{
 }
 
 a {
-  text-decoration-color: white;
+  text-decoration-color: $couleurPrincipale;
+  color: $couleurPrincipale;
 }
