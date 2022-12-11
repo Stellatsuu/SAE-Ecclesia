@@ -102,7 +102,7 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
                         <input type="submit" value="Connexion">
                     </div>
 
-                    <p>Pas inscrit? <a href="#modalCreerCompte">Créer un compte</a></p>
+                    <p>Pas inscrit ? <a href="#modalCreerCompte">Créer un compte</a></p>
 
                     <a href="#" class="modal-close">
                         <img src="assets/images/close-icon.svg" alt="bouton fermer">
