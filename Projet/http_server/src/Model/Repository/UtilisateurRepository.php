@@ -60,7 +60,7 @@ class UtilisateurRepository extends AbstractRepository {
     {
         $sql = <<<SQL
         INSERT INTO utilisateur (username_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, photo_profil, mdp_hashed)
-        VALUES (:username_utilisateur, :nom_utilisateur, :prenom_utilisateur, :email_utilisateur, decode(:photo_profil, 'hex'), :mdp_hashed);
+        VALUES (:username_utilisateur, :nom_utilisateur, :prenom_utilisateur, :email_utilisateur, decode(:photo_profil, 'base64'), :mdp_hashed);
         SQL;
 
         $values = $object->formatTableau();
@@ -92,5 +92,18 @@ class UtilisateurRepository extends AbstractRepository {
         }
 
         return $this->construire($row);
+    }
+
+    public function update(AbstractDataObject $object): void
+    {
+        $sql = <<<SQL
+        UPDATE utilisateur
+        SET nom_utilisateur = :nom_utilisateur, prenom_utilisateur = :prenom_utilisateur, email_utilisateur = :email_utilisateur, photo_profil = decode(:photo_profil, 'base64'), mdp_hashed = :mdp_hashed
+        WHERE username_utilisateur = :username_utilisateur;
+        SQL;
+
+        $values = $object->formatTableau();
+        $pdo = DatabaseConnection::getPdo()->prepare($sql);
+        $pdo->execute($values);
     }
 } 

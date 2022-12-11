@@ -42,7 +42,7 @@ class Utilisateur extends AbstractDataObject implements JsonSerializable
         ];
     }
 
-    public function getValeurClePrimaire(): int
+    public function getValeurClePrimaire(): string
     {
         return $this->getUsername();
     }
@@ -88,6 +88,33 @@ class Utilisateur extends AbstractDataObject implements JsonSerializable
             'email' => $this->email,
             'photoProfil' => $this->photoProfil,
         ];
+    }
+
+    // Setters
+
+    public function setPhotoProfil(?string $photoProfil): void
+    {
+        $this->photoProfil = $photoProfil;
+    }
+
+    public function setNom(?string $nom): void
+    {
+        $this->nom = $nom;
+    }
+
+    public function setPrenom(?string $prenom): void
+    {
+        $this->prenom = $prenom;
+    }
+
+    public function setEmail(?string $email): void
+    {
+        $this->email = $email;
+    }
+
+    public function setMdpHashed(string $mdpHashed): void
+    {
+        $this->mdpHashed = $mdpHashed;
     }
 
     public static function castIfNotNull($object, $errorUrl = "frontController.php", $errorMessage = "[OBJECT] n'existe pas"): Utilisateur

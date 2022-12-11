@@ -25,7 +25,9 @@ textarea {
 }
 
 textarea,
-input[type="text"] {
+input[type="text"],
+input[type="email"],
+input[type="password"] {
   background-color: $couleurFond3;
   width: calc(100% - 14px);
   resize: vertical;
