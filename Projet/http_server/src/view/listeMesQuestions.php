@@ -105,7 +105,7 @@ $i = 0;
             <div class="boite">
                 <div>
                     $linkPropositions
-                    <p>$description</p>
+                    <span>$description</span>
                 </div>
                 <div>
                     <p>Phase : $phaseStr</p>
