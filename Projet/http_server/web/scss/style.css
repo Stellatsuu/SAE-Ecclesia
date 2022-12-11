@@ -779,7 +779,7 @@ input[type=time]::-webkit-calendar-picker-indicator {
   margin: 10px 0;
 }
 #listeMesQuestions .question .boite {
-  height: 160px;
+  min-height: 160px;
   overflow: hidden;
   display: flex;
   flex-direction: row;
