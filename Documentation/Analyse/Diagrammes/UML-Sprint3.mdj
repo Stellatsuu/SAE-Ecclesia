@@ -71847,13 +71847,31 @@
 											"underline": true,
 											"text": "+modifierEmail()",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGFBf4Mohn+QNE=",
+											"_parent": {
+												"$ref": "AAAAAAGE+68qKUAkYRY="
+											},
+											"model": {
+												"$ref": "AAAAAAGFBf4MjhnRFtk="
+											},
+											"font": "Arial;13;0",
+											"left": 1714,
+											"top": 399,
+											"width": 240.70947265625,
+											"height": 13,
+											"underline": true,
+											"text": "+supprimerCompte()",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 1709,
 									"top": 274,
 									"width": 250.70947265625,
-									"height": 128
+									"height": 143
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -71896,7 +71914,7 @@
 							"left": 1709,
 							"top": 239,
 							"width": 250.70947265625,
-							"height": 163,
+							"height": 178,
 							"nameCompartment": {
 								"$ref": "AAAAAAGE+68qKEAeiNw="
 							},
@@ -72157,13 +72175,49 @@
 											"underline": true,
 											"text": "+convertirRedimensionnerRogner()",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGFBf5p3iRcwGU=",
+											"_parent": {
+												"$ref": "AAAAAAGFAiN+5CMp4IU="
+											},
+											"model": {
+												"$ref": "AAAAAAGFBf5pyCQvV0Y="
+											},
+											"font": "Arial;13;0",
+											"left": 2126,
+											"top": 383,
+											"width": 205.58154296875,
+											"height": 13,
+											"underline": true,
+											"text": "+getPhotoProfilNull()",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGFBf6OZChTl1I=",
+											"_parent": {
+												"$ref": "AAAAAAGFAiN+5CMp4IU="
+											},
+											"model": {
+												"$ref": "AAAAAAGFBf6OVSgmzQg="
+											},
+											"font": "Arial;13;0",
+											"left": 2126,
+											"top": 398,
+											"width": 205.58154296875,
+											"height": 13,
+											"underline": true,
+											"text": "+getPhotoProfilDeleted()",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 2121,
 									"top": 348,
 									"width": 215.58154296875,
-									"height": 38
+									"height": 68
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -72206,7 +72260,7 @@
 							"left": 2121,
 							"top": 313,
 							"width": 215.58154296875,
-							"height": 73,
+							"height": 103,
 							"nameCompartment": {
 								"$ref": "AAAAAAGFAiN+5CMjzhk="
 							},
@@ -72928,6 +72982,15 @@
 										"$ref": "AAAAAAGE+68qKEAb3lQ="
 									},
 									"name": "modifierEmail",
+									"isStatic": true
+								},
+								{
+									"_type": "UMLOperation",
+									"_id": "AAAAAAGFBf4MjhnRFtk=",
+									"_parent": {
+										"$ref": "AAAAAAGE+68qKEAb3lQ="
+									},
+									"name": "supprimerCompte",
 									"isStatic": true
 								}
 							]
@@ -76184,6 +76247,24 @@
 										"$ref": "AAAAAAGFAiN+4yMgN6k="
 									},
 									"name": "convertirRedimensionnerRogner",
+									"isStatic": true
+								},
+								{
+									"_type": "UMLOperation",
+									"_id": "AAAAAAGFBf5pyCQvV0Y=",
+									"_parent": {
+										"$ref": "AAAAAAGFAiN+4yMgN6k="
+									},
+									"name": "getPhotoProfilNull",
+									"isStatic": true
+								},
+								{
+									"_type": "UMLOperation",
+									"_id": "AAAAAAGFBf6OVSgmzQg=",
+									"_parent": {
+										"$ref": "AAAAAAGFAiN+4yMgN6k="
+									},
+									"name": "getPhotoProfilDeleted",
 									"isStatic": true
 								}
 							]
