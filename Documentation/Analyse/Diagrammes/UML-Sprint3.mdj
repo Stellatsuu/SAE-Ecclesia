@@ -72155,7 +72155,7 @@
 											"width": 205.58154296875,
 											"height": 13,
 											"underline": true,
-											"text": "+convertirEtRedimensionner()",
+											"text": "+convertirRedimensionnerRogner()",
 											"horizontalAlignment": 0
 										}
 									],
@@ -76183,7 +76183,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGFAiN+4yMgN6k="
 									},
-									"name": "convertirEtRedimensionner",
+									"name": "convertirRedimensionnerRogner",
 									"isStatic": true
 								}
 							]
