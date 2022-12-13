@@ -13,6 +13,20 @@ class PhotoProfil {
         return base64_encode($photoData);
     }
 
+    public static function getPhotoProfilNull(): string {
+
+        $photoData = file_get_contents(__DIR__ . "/../../web/assets/images/defaultPFPs/null.jpg");
+
+        return base64_encode($photoData);
+    }
+
+    public static function getPhotoProfilDeleted(): string {
+
+        $photoData = file_get_contents(__DIR__ . "/../../web/assets/images/defaultPFPs/deleted.jpg");
+
+        return base64_encode($photoData);
+    }
+
     public static function convertirRedimensionnerRogner(string $photoData, int $longueurCote = 256): string {
 
         $image = imagecreatefromstring(base64_decode($photoData));

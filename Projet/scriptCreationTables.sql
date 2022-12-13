@@ -37,7 +37,7 @@ CREATE TABLE Utilisateur (
 CREATE TABLE Administrateur (
     username_administrateur varchar(50) NOT NULL,
     CONSTRAINT pk_Administrateur PRIMARY KEY (username_administrateur),
-    CONSTRAINT fk_Administrateur FOREIGN KEY (username_administrateur) REFERENCES Utilisateur (username_utilisateur)
+    CONSTRAINT fk_Administrateur FOREIGN KEY (username_administrateur) REFERENCES Utilisateur (username_utilisateur) ON DELETE CASCADE
 );
 
 CREATE TABLE Demande_Question (
@@ -46,7 +46,7 @@ CREATE TABLE Demande_Question (
     description_demande_question varchar(4000) NOT NULL,
     username_organisateur varchar(50) NOT NULL,
     CONSTRAINT pk_Demande_Question PRIMARY KEY (id_demande_question),
-    CONSTRAINT fk_Demande_Question_Utilisateur FOREIGN KEY (username_organisateur) REFERENCES Utilisateur (username_utilisateur)
+    CONSTRAINT fk_Demande_Question_Utilisateur FOREIGN KEY (username_organisateur) REFERENCES Utilisateur (username_utilisateur) ON DELETE CASCADE
 );
 
 CREATE TABLE Question (
@@ -60,7 +60,7 @@ CREATE TABLE Question (
     date_fermeture_votes timestamp,
     systeme_vote varchar(50),
     CONSTRAINT pk_question PRIMARY KEY (id_question),
-    CONSTRAINT fk_question_utilisateur FOREIGN KEY (username_organisateur) REFERENCES Utilisateur (username_utilisateur)
+    CONSTRAINT fk_question_utilisateur FOREIGN KEY (username_organisateur) REFERENCES Utilisateur (username_utilisateur) ON DELETE CASCADE
 );
 
 CREATE TABLE Section (
@@ -69,23 +69,23 @@ CREATE TABLE Section (
     nom_section varchar(50) NOT NULL,
     description_section varchar(2000) NOT NULL,
     CONSTRAINT pk_section PRIMARY KEY (id_section),
-    CONSTRAINT fk_section_question FOREIGN KEY (id_question) REFERENCES Question (id_question)
+    CONSTRAINT fk_section_question FOREIGN KEY (id_question) REFERENCES Question (id_question) ON DELETE CASCADE
 );
 
 CREATE TABLE Redacteur (
     username_redacteur varchar(50),
     id_question serial,
     CONSTRAINT pk_Redacteur PRIMARY KEY (username_redacteur, id_question),
-    CONSTRAINT fk_Redacteur FOREIGN KEY (username_redacteur) REFERENCES Utilisateur (username_utilisateur),
-    CONSTRAINT fk_Redacteur_Question FOREIGN KEY (id_question) REFERENCES Question (id_question)
+    CONSTRAINT fk_Redacteur FOREIGN KEY (username_redacteur) REFERENCES Utilisateur (username_utilisateur) ON DELETE CASCADE,
+    CONSTRAINT fk_Redacteur_Question FOREIGN KEY (id_question) REFERENCES Question (id_question) ON DELETE CASCADE
 );
 
 CREATE TABLE Votant (
     username_votant varchar(50),
     id_question serial,
     CONSTRAINT pk_Votant PRIMARY KEY (username_votant, id_question),
-    CONSTRAINT fk_Votant FOREIGN KEY (username_votant) REFERENCES Utilisateur (username_utilisateur),
-    CONSTRAINT fk_Votant_Question FOREIGN KEY (id_question) REFERENCES Question (id_question)
+    CONSTRAINT fk_Votant FOREIGN KEY (username_votant) REFERENCES Utilisateur (username_utilisateur) ON DELETE CASCADE,
+    CONSTRAINT fk_Votant_Question FOREIGN KEY (id_question) REFERENCES Question (id_question) ON DELETE CASCADE
 );
 
 CREATE TABLE Proposition (
@@ -94,9 +94,9 @@ CREATE TABLE Proposition (
     username_responsable varchar(50) NOT NULL,
     id_question serial NOT NULL,
     CONSTRAINT pk_Proposition PRIMARY KEY (id_proposition),
-    CONSTRAINT fk_Proposition_Responsable FOREIGN KEY (username_responsable) REFERENCES Utilisateur (username_utilisateur),
-    CONSTRAINT fk_Proposition_Question FOREIGN KEY (id_question) REFERENCES Question (id_question),
-    CONSTRAINT fk_Proposition_Redacteur_Question FOREIGN KEY (username_responsable, id_question) REFERENCES Redacteur (username_redacteur, id_question)
+    CONSTRAINT fk_Proposition_Responsable FOREIGN KEY (username_responsable) REFERENCES Utilisateur (username_utilisateur) ON DELETE CASCADE,
+    CONSTRAINT fk_Proposition_Question FOREIGN KEY (id_question) REFERENCES Question (id_question) ON DELETE CASCADE,
+    CONSTRAINT fk_Proposition_Redacteur_Question FOREIGN KEY (username_responsable, id_question) REFERENCES Redacteur (username_redacteur, id_question) ON DELETE CASCADE
 );
 
 CREATE TABLE Paragraphe (
@@ -106,14 +106,14 @@ CREATE TABLE Paragraphe (
     contenu_paragraphe text NOT NULL,
     CONSTRAINT pk_Paragraphe PRIMARY KEY (id_paragraphe),
     CONSTRAINT fk_Paragraphe_Proposition FOREIGN KEY (id_proposition) REFERENCES Proposition (id_proposition) ON DELETE CASCADE,
-    CONSTRAINT fk_Paragraphe_Section FOREIGN KEY (id_section) REFERENCES Section (id_section)
+    CONSTRAINT fk_Paragraphe_Section FOREIGN KEY (id_section) REFERENCES Section (id_section) ON DELETE CASCADE
 );
 
 CREATE TABLE Co_Auteur (
     username_co_auteur varchar(50),
     id_paragraphe serial,
     CONSTRAINT pk_Co_Auteur PRIMARY KEY (username_co_auteur, id_paragraphe),
-    CONSTRAINT fk_Co_Auteur FOREIGN KEY (username_co_auteur) REFERENCES Utilisateur (username_utilisateur),
+    CONSTRAINT fk_Co_Auteur FOREIGN KEY (username_co_auteur) REFERENCES Utilisateur (username_utilisateur) ON DELETE CASCADE,
     CONSTRAINT fk_Co_Auteur_Paragraphe FOREIGN KEY (id_paragraphe) REFERENCES Paragraphe (id_paragraphe) ON DELETE CASCADE
 );
 
@@ -122,7 +122,7 @@ CREATE TABLE Vote (
     id_proposition serial,
     valeur int,
     CONSTRAINT pk_Vote PRIMARY KEY (username_votant, id_proposition),
-    CONSTRAINT fk_Vote_Votant FOREIGN KEY (username_votant) REFERENCES Utilisateur (username_utilisateur),
+    CONSTRAINT fk_Vote_Votant FOREIGN KEY (username_votant) REFERENCES Utilisateur (username_utilisateur) ON DELETE CASCADE,
     CONSTRAINT fk_Vote_Proposition FOREIGN KEY (id_proposition) REFERENCES Proposition (id_proposition) ON DELETE CASCADE
 );
 
@@ -131,7 +131,7 @@ CREATE TABLE Demande_Co_Auteur (
     id_proposition serial,
     message varchar(1000),
     CONSTRAINT pk_Demande_Co_Auteur PRIMARY KEY (username_demandeur, id_proposition),
-    CONSTRAINT fk_Demande_Co_Auteur_Demandeur FOREIGN KEY (username_demandeur) REFERENCES Utilisateur (username_utilisateur),
+    CONSTRAINT fk_Demande_Co_Auteur_Demandeur FOREIGN KEY (username_demandeur) REFERENCES Utilisateur (username_utilisateur) ON DELETE CASCADE,
     CONSTRAINT fk_Demande_Co_Auteur_Proposition FOREIGN KEY (id_proposition) REFERENCES Proposition (id_proposition) ON DELETE CASCADE
 );
 

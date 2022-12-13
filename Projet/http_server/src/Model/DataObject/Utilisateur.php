@@ -2,6 +2,7 @@
 
 namespace App\SAE\Model\DataObject;
 
+use App\SAE\Lib\PhotoProfil;
 use App\SAE\Model\Repository\UtilisateurRepository;
 use JsonSerializable;
 
@@ -71,6 +72,9 @@ class Utilisateur extends AbstractDataObject implements JsonSerializable
 
     public function getPhotoProfil(): string
     {
+        if($this->photoProfil === null) {
+            $this->photoProfil = PhotoProfil::getPhotoProfilNull();
+        }
         return $this->photoProfil;
     }
 

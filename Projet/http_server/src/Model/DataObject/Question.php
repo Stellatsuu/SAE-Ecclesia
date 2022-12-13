@@ -181,6 +181,12 @@ class Question extends DemandeQuestion implements JsonSerializable
         $this->systemeVote = $systemeVote;
     }
 
+    public function setUsernameOrganisateur(string $usernameOrganisateur): void
+    {
+        $this->usernameOrganisateur = $usernameOrganisateur;
+        $this->organisateur = null;
+    }
+
     //Caster
 
     public static function castIfNotNull($object, $errorUrl = "frontController.php", $errorMessage = "[OBJECT] n'existe pas"): Question
