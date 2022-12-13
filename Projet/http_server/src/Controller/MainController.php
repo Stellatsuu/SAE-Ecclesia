@@ -64,6 +64,8 @@ class MainController
 
     public static function redirect(string $url): void
     {
+        if(static::$isTesting) return;
+
         header("Location: $url");
         exit();
     }

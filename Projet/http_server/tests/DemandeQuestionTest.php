@@ -2,6 +2,7 @@
 
 use App\SAE\Controller\DemandeQuestionController;
 use App\SAE\Controller\MainController;
+use App\SAE\Controller\UtilisateurController;
 use PHPUnit\Framework\TestCase;
 use App\SAE\Model\Repository\PropositionRepository as PropositionRepository;
 use App\SAE\Model\DataObject\Proposition as Proposition;
@@ -26,8 +27,10 @@ class DemandeQuestionTest extends TestCase
     public function setUp(): void
     {
         MainController::setTesting(true);
+
         $_POST['username'] = "test";
-        MainController::seConnecter();
+        $_POST['password'] = "test";
+        UtilisateurController::seConnecter();
 
         MainController::clearLogFile();
         MainController::logToFile("Début des tests");
@@ -48,14 +51,14 @@ class DemandeQuestionTest extends TestCase
             FROM demande_question 
             WHERE (titre_demande_question = :titre_demande_question 
             OR description_demande_question = :description_demande_question)
-            AND id_organisateur = :id_utilisateur
+            AND username_organisateur = :username_utilisateur
         SQL;
         $pdo = DatabaseConnection::getPDO();
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             'titre_demande_question' => $_POST['titre'],
             'description_demande_question' => $_POST['description'],
-            'id_utilisateur' => 77777
+            'username_utilisateur' => 'test'
         ]);
 
         $this->assertEquals(1, $stmt->rowCount());
