@@ -23,7 +23,7 @@ $i = 0;
         $linkPropositions = "";
 
         $openModalBoutonTemplate = <<<HTML
-            <a href="#modal$i" class="button">Phase suivante</a>
+            <a class="button modal-open" href="#modal$i">Phase suivante</a>
         HTML;
 
         $editerBoutonTemplate = <<<HTML
@@ -118,7 +118,7 @@ $i = 0;
 
         $modalHtml = <<<HTML
         <div id="modal$i" class="modal">
-            <div class="modal-content boite">
+            <div class="modal-content panel">
                 <p>$messageConfirmation</p>
                 <div>
                     <a class="button refuserBtn" href="#">Non</a>

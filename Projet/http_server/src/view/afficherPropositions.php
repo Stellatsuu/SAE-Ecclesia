@@ -69,7 +69,7 @@ $estOrganisateur = $question->getUsernameOrganisateur() === $username;
 
         if (($estResponsable || $estOrganisateur) && ($phase == PhaseQuestion::Lecture || $phase == PhaseQuestion::Redaction)) {
             echo <<<HTML
-                <a class="button" href="#modalSupprimer">Supprimer</a>
+                <a class="button modal-open"  href="#modalSupprimer">Supprimer</a>
             HTML;
             echo $modalHtml;
         }

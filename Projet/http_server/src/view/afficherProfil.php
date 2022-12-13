@@ -16,7 +16,7 @@ $pfp = <<<html
 
     <h1>Mon compte</h1>
 
-    <a href="#modalModifierPFP">
+    <a class="modal-open" href="#modalModifierPFP">
         <?= $pfp ?>
     </a>
 
@@ -25,19 +25,19 @@ $pfp = <<<html
 
     <label>Nom</label>
     <p><?php echo $utilisateur->getNom(); ?></p>
-    <a href="#modalModifierNomPrenom">Modifier</a>
+    <a class="modal-open" href="#modalModifierNomPrenom">Modifier</a>
 
     <label>Prénom</label>
     <p><?php echo $utilisateur->getPrenom(); ?></p>
-    <a href="#modalModifierNomPrenom">Modifier</a>
+    <a class="modal-open" href="#modalModifierNomPrenom">Modifier</a>
 
     <label>Adresse mail</label>
     <p><?php echo $utilisateur->getEmail(); ?></p>
-    <a href="#modalModifierEmail">Modifier</a>
+    <a class="modal-open" href="#modalModifierEmail">Modifier</a>
 
-    <a href="#modalModifierMDP">Modifier mon mot de passe</a>
+    <a class="modal-open" href="#modalModifierMDP">Modifier mon mot de passe</a>
 
-    <a href="#modalSupprimerCompte">Supprimer mon compte</a>
+    <a class="modal-open" href="#modalSupprimerCompte">Supprimer mon compte</a>
 
 </div>
 

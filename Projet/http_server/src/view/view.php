@@ -30,8 +30,8 @@ if ($estConnecte) {
     html;
 } else {
     $liensComptes = <<<html
-    <li><a href="#modalSeConnecter">Se connecter</a></li>
-    <li><a href="#modalCreerCompte">Créer un compte</a></li>
+    <li><a class="modal-open" href="#modalSeConnecter">Se connecter</a></li>
+    <li><a class="modal-open" href="#modalCreerCompte">Créer un compte</a></li>
     html;
 
     $pfp = <<<html
@@ -124,7 +124,7 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
                         <input type="submit" value="Connexion">
                     </div>
 
-                    <p>Pas inscrit ? <a href="#modalCreerCompte">Créer un compte</a></p>
+                    <p>Pas inscrit ? <a class="modal-open" href="#modalCreerCompte">Créer un compte</a></p>
 
                     <a href="#" class="modal-close">
                         <img src="assets/images/close-icon.svg" alt="bouton fermer">
@@ -189,7 +189,7 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
                         <input type="submit" value="S'inscrire">
                     </div>
 
-                    <p>Déjà inscrit ? <a href="#modalSeConnecter">Se connecter</a></p>
+                    <p>Déjà inscrit ? <a class="modal-open" href="#modalSeConnecter">Se connecter</a></p>
 
 
 
@@ -203,6 +203,31 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
 
     <footer id="">
     </footer>
+
+    <script>
+        const body = document.querySelector("body");
+        const modalCloseList = document.querySelectorAll(".modal-close");
+        const modalOpenList = document.querySelectorAll(".modal-open"); 
+
+        //if url contains #modal, but not just #, add class no-scroll to body
+        if (window.location.hash && window.location.hash !== "#") {
+            body.classList.add("no-scroll");
+        }
+        
+
+        modalOpenList.forEach((modalOpen) => {
+            modalOpen.addEventListener("click", (e) => {
+                body.classList.add("no-scroll");
+            });
+        });
+
+        modalCloseList.forEach((modalClose) => {
+            modalClose.addEventListener("click", (e) => {
+                body.classList.remove("no-scroll");
+            });
+        });
+
+    </script>
 </body>
 
 </html>

@@ -149,15 +149,14 @@ select {
   opacity: 0;
   position: fixed;
   top: 0;
-  bottom: 0;
   left: 0;
   right: 0;
+  bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   transition: opacity 0.3s;
   z-index: 2000;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .modal:target {
@@ -166,11 +165,16 @@ select {
 }
 
 .modal-content {
-  background-color: #252525;
-  padding: 1.5em 2em;
-  width: 500px;
-  max-width: 90%;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  transform: translateY(calc(50vh - 55%));
+}
+@media screen and (max-height: 750px) {
+  .modal-content {
+    transform: translateY(0);
+  }
 }
 .modal-content div {
   display: flex;
@@ -865,6 +869,17 @@ input[type=time]::-webkit-calendar-picker-indicator {
 #listeMesQuestions .question .boite div:last-child button {
   margin: 0;
 }
+#listeMesQuestions .modal-content {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+#listeMesQuestions .modal-content div {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
 
 #afficherPropositions #propositionTitle {
   width: 100%;
@@ -1144,6 +1159,10 @@ input:autofill:hover,
 input:autofill:focus,
 input:autofill:active {
   background: none !important;
+}
+
+.no-scroll {
+  overflow: hidden;
 }
 
 html, body {
