@@ -52,6 +52,8 @@ class DemandeQuestionController extends MainController
 
     public static function afficherFormulaireDemandeQuestion(): void
     {
+        ConnexionUtilisateur::getUsernameSiConnecte();
+
         static::afficherVue("view.php", [
             "titrePage" => "Demande de question",
             "contenuPage" => "formulaireDemandeQuestion.php"

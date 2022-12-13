@@ -37,6 +37,8 @@ class MainController
 
     public static function afficherVue(string $cheminVue, array $parametres): void
     {
+        if(static::$isTesting) return;
+
         extract($parametres); // Crée des variables à partir du tableau $parametres
         require __DIR__ . '/../view/' . $cheminVue;
     }

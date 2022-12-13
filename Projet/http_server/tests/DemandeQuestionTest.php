@@ -38,6 +38,7 @@ class DemandeQuestionTest extends TestCase
         MainController::resetDatabase();
     }
 
+    /* Demander la création d'une question */
 
     public function testDemandeQuestionValide()
     {
@@ -99,4 +100,140 @@ class DemandeQuestionTest extends TestCase
         
         DemandeQuestionController::demanderCreationQuestion();
     }
+
+    /* Accepter une demande de question */
+
+    public function testAccepterDemandeQuestionValide(){
+        $_POST = json_decode(file_get_contents(__DIR__ . "/savedForms/demande_question/demande_question_valide.json"), true);
+        DemandeQuestionController::demanderCreationQuestion();
+
+        $pdo = DatabaseConnection::getPDO();
+        $idDemandeQuestionSql = <<<SQL
+        
+        SELECT id_demande_question 
+        FROM demande_question 
+        WHERE titre_demande_question = :titre_demande_question 
+        AND username_organisateur = :username_utilisateur;
+        SQL;
+
+        $idDemandeQuestionStmt = $pdo->prepare($idDemandeQuestionSql);
+        $idDemandeQuestionStmt->execute([
+            "titre_demande_question" => $_POST['titre'],
+            "username_utilisateur" => 'test'
+        ]);
+        $_POST['idQuestion'] = $idDemandeQuestionStmt->fetch()["id_demande_question"];
+        DemandeQuestionController::accepterDemandeQuestion();
+
+        $existeQuestionSql = <<<SQL
+        SELECT * 
+            FROM question 
+            WHERE (titre_question = :titre_demande_question 
+            AND description_question = :description_demande_question)
+            AND username_organisateur = :username_utilisateur
+        SQL;
+
+        $existeQuestionStmt = $pdo->prepare($existeQuestionSql);
+        $existeQuestionStmt->execute([
+            'titre_demande_question' => $_POST['titre'],
+            'description_demande_question' => $_POST['description'],
+            'username_utilisateur' => 'test'
+        ]);
+
+        $existeDemandeQuestionSql = <<<SQL
+        SELECT * 
+            FROM demande_question 
+            WHERE id_demande_question = :idQuestion
+        SQL;
+
+        $existeDemandeQuestionStmt = $pdo->prepare($existeDemandeQuestionSql);
+        $existeDemandeQuestionStmt->execute([
+            'idQuestion' => $_POST['idQuestion']
+        ]);
+
+        $this->assertEquals(1, $existeQuestionStmt->rowCount());
+        $this->assertEquals(0, $existeDemandeQuestionStmt->rowCount());
+    }
+
+    // TODO: test user est admin
+
+    /* Refuser une demande de question */
+
+    public function testRefuserDemandeQuestionValide(){
+        $_POST = json_decode(file_get_contents(__DIR__ . "/savedForms/demande_question/demande_question_valide.json"), true);
+        DemandeQuestionController::demanderCreationQuestion();
+
+        $pdo = DatabaseConnection::getPDO();
+        $idDemandeQuestionSql = <<<SQL
+        
+        SELECT id_demande_question 
+        FROM demande_question 
+        WHERE titre_demande_question = :titre_demande_question 
+        AND username_organisateur = :username_utilisateur;
+        SQL;
+
+        $idDemandeQuestionStmt = $pdo->prepare($idDemandeQuestionSql);
+        $idDemandeQuestionStmt->execute([
+            "titre_demande_question" => $_POST['titre'],
+            "username_utilisateur" => 'test'
+        ]);
+        $_POST['idQuestion'] = $idDemandeQuestionStmt->fetch()["id_demande_question"];
+        DemandeQuestionController::refuserDemandeQuestion();
+
+        $existeQuestionSql = <<<SQL
+        SELECT * 
+            FROM question 
+            WHERE (titre_question = :titre_demande_question 
+            AND description_question = :description_demande_question)
+            AND username_organisateur = :username_utilisateur
+        SQL;
+
+        $existeQuestionStmt = $pdo->prepare($existeQuestionSql);
+        $existeQuestionStmt->execute([
+            'titre_demande_question' => $_POST['titre'],
+            'description_demande_question' => $_POST['description'],
+            'username_utilisateur' => 'test'
+        ]);
+
+        $existeDemandeQuestionSql = <<<SQL
+        SELECT * 
+            FROM demande_question 
+            WHERE id_demande_question = :idQuestion
+        SQL;
+
+        $existeDemandeQuestionStmt = $pdo->prepare($existeDemandeQuestionSql);
+        $existeDemandeQuestionStmt->execute([
+            'idQuestion' => $_POST['idQuestion']
+        ]);
+
+        $this->assertEquals(0, $existeQuestionStmt->rowCount());
+        $this->assertEquals(0, $existeDemandeQuestionStmt->rowCount());
+    }
+
+    // TODO: test user est admin
+
+    /* Afficher le formulaire demande question */
+
+    public function testAfficherFormulaireDemandeQuestionValide(){
+        $this->expectNotToPerformAssertions();
+
+        DemandeQuestionController::afficherFormulaireDemandeQuestion();
+    }
+
+    public function testAfficherFormulaireDemandeQuestionUtilisateurNonConnecte(){
+        UtilisateurController::seDeconnecter();
+
+        $this->expectException(\Exception::class);
+
+        DemandeQuestionController::afficherFormulaireDemandeQuestion();
+    }
+
+    /* Lister les demandes de question */
+
+    public function testlisterDemandeQuestionValide(){
+        $this->expectNotToPerformAssertions();
+
+        DemandeQuestionController::listerDemandesQuestion();
+    }
+
+    // TODO: test user est admin
 }
