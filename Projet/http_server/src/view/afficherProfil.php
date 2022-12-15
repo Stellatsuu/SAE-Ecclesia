@@ -35,13 +35,10 @@ $pfp = <<<html
 
             <label>Mot de passe</label>
             <a class="modal-open" href="#modalModifierMDP"><img src='./assets/images/pen-ico.svg' class="pen" alt="editPenIcon"/></a>
-
-
-            <a class="button supprimerBtn" href="#modalSupprimerCompte">Supprimer Compte</a>
         </div>
 
     </div>
-
+    <p class="button supprimerBtn"><a href="#modalSupprimerCompte">Supprimer Compte</a></p>
 
 </div>
 

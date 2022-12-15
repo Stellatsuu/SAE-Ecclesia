@@ -204,6 +204,7 @@ select {
   max-width: 100%;
   display: flex;
   flex-direction: column;
+  margin-bottom: 10px;
 }
 
 .modal-close {
@@ -648,7 +649,7 @@ input[type=time]::-webkit-calendar-picker-indicator {
 }
 @media screen and (max-width: 1000px) {
   #roles_input #votants_input,
-#roles_input #redacteurs_input {
+  #roles_input #redacteurs_input {
     width: 100%;
   }
 }
@@ -1125,9 +1126,15 @@ input[type=time]::-webkit-calendar-picker-indicator {
   font-size: 0.8rem;
 }
 
+#afficherProfil {
+  max-width: 50%;
+}
 #afficherProfil #contenuProfil {
   display: flex;
   flex-direction: row-reverse;
+  width: 100%;
+  justify-content: space-around;
+  margin-top: 50px;
 }
 #afficherProfil #contenuProfil .pen {
   width: 20px;
@@ -1163,10 +1170,20 @@ input[type=time]::-webkit-calendar-picker-indicator {
   height: 150px;
   border-radius: 50%;
 }
-@media screen and (max-width: 600px) {
+#afficherProfil .supprimerBtn {
+  margin-top: 20px;
+}
+#afficherProfil .supprimerBtn a {
+  text-decoration: none;
+  color: white;
+}
+@media screen and (max-width: 1000px) {
   #afficherProfil #contenuProfil {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    align-items: center;
+    margin-top: 0;
   }
 }
 

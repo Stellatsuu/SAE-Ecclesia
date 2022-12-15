@@ -1,8 +1,12 @@
 #afficherProfil{
+  max-width: 50%;
 
   #contenuProfil {
     display: flex;
     flex-direction: row-reverse;
+    width: 100%;
+    justify-content: space-around;
+    margin-top: 50px;
 
     .pen {
       width: 20px;
@@ -42,11 +46,24 @@
         }
       }
     }
+
   }
-  @media screen and (max-width: 600px) {
+  .supprimerBtn{
+    margin-top:20px;
+
+    a{
+      text-decoration: none;
+      color:white;
+    }
+  }
+
+  @media screen and (max-width: 1000px) {
     #contenuProfil {
       display: flex;
       flex-direction: column;
-    }
+      width: 100%;
+      align-items: center;
+      margin-top:0;
+      }
   }
 }
