@@ -624,7 +624,7 @@ input[type=time]::-webkit-calendar-picker-indicator {
 }
 @media screen and (max-width: 1000px) {
   #roles_input #votants_input,
-#roles_input #redacteurs_input {
+  #roles_input #redacteurs_input {
     width: 100%;
   }
 }
@@ -1099,6 +1099,47 @@ input[type=time]::-webkit-calendar-picker-indicator {
 }
 #listeQuestionsFinies .question .boite .organisateur {
   font-size: 0.8rem;
+}
+
+#afficherProfil #contenuProfil {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  gap: 50%;
+}
+#afficherProfil #contenuProfil .pen {
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+}
+#afficherProfil #contenuProfil #PPusername {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#afficherProfil #contenuProfil #PPusername #editPP {
+  position: relative;
+  bottom: 90px;
+  left: 50px;
+  width: 30px;
+  height: 30px;
+  background-color: #E1603C;
+  border: solid #E1603C 5px;
+  border-bottom: solid #E1603C 3px;
+  border-right: solid #E1603C 3px;
+  border-radius: 10%;
+}
+#afficherProfil #contenuProfil #PPusername #PP {
+  width: 150px;
+  height: 150px;
+  background-color: #E1603C;
+  border: solid #E1603C 5px;
+  border-radius: 50%;
+}
+#afficherProfil #contenuProfil #PPusername #PP img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
 }
 
 h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset, body {

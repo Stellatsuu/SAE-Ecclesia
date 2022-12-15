@@ -16,26 +16,29 @@ $pfp = <<<html
 
     <h1>Mon compte</h1>
 
-    <a class="modal-open" href="#modalModifierPFP">
-        <?= $pfp ?>
-    </a>
+    <div id="contenuProfil">
+        <div id="PPusername">
+            <a class="modal-open" href="#modalModifierPFP" id="PP">
+                <?= $pfp ?>
+            </a>
+            <p><?php echo $utilisateur->getUsername(); ?></p>
+            <img src='./assets/images/image-icon.svg' id="editPP" alt="editImageIcon"/>
+        </div>
 
-    <label>Username</label>
-    <p><?php echo $utilisateur->getUsername(); ?></p>
+        <div id="informations">
+            <label>Prénom et Nom</label>
+            <a class="modal-open" href="#modalModifierNomPrenom"><img src='./assets/images/pen-ico.svg' class="pen" alt="editPenIcon"/></a>
+            <p><?php echo $utilisateur->getPrenom() . " " . $utilisateur->getNom(); ?></p>
 
-    <label>Nom</label>
-    <p><?php echo $utilisateur->getNom(); ?></p>
-    <a class="modal-open" href="#modalModifierNomPrenom">Modifier</a>
 
-    <label>Prénom</label>
-    <p><?php echo $utilisateur->getPrenom(); ?></p>
-    <a class="modal-open" href="#modalModifierNomPrenom">Modifier</a>
+            <label>Adresse mail</label>
+            <a class="modal-open" href="#modalModifierEmail"><img src='./assets/images/pen-ico.svg' class="pen" alt="editPenIcon"/></a>
+            <p><?php echo $utilisateur->getEmail(); ?></p>
 
-    <label>Adresse mail</label>
-    <p><?php echo $utilisateur->getEmail(); ?></p>
-    <a class="modal-open" href="#modalModifierEmail">Modifier</a>
-
-    <a class="modal-open" href="#modalModifierMDP">Modifier mon mot de passe</a>
+            <label>Mot de passe</label>
+            <a class="modal-open" href="#modalModifierMDP"><img src='./assets/images/pen-ico.svg' class="pen" alt="editPenIcon"/></a>
+        </div>
+    </div>
 
     <a class="modal-open" href="#modalSupprimerCompte">Supprimer mon compte</a>
 
