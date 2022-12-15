@@ -1,42 +1,41 @@
 #afficherProfil{
 
-  #contenuProfil{
+  #contenuProfil {
     display: flex;
     flex-direction: row-reverse;
-    justify-content: flex-start;
-    gap:50%;
 
-    .pen{
+    .pen {
       width: 20px;
       height: 20px;
       margin-left: 5px;
     }
-    #PPusername{
+
+    #PPusername {
       display: flex;
       flex-direction: column;
       align-items: center;
 
-      #editPP{
+      #editPP {
         position: relative;
-        bottom:90px;
-        left: 50px;
+        bottom: 110px;
+        left: 47px;
         width: 30px;
         height: 30px;
         background-color: $couleurPrincipale;
         border: solid $couleurPrincipale 5px;
         border-bottom: solid $couleurPrincipale 3px;
         border-right: solid $couleurPrincipale 3px;
-        border-radius: 10%;
+        border-radius: 10% 0 10% 0;
       }
 
-      #PP{
+      #PP {
         width: 150px;
         height: 150px;
         background-color: $couleurPrincipale;
         border: solid $couleurPrincipale 5px;
         border-radius: 50%;
 
-        img{
+        img {
           width: 150px;
           height: 150px;
           border-radius: 50%;
@@ -44,6 +43,10 @@
       }
     }
   }
-
-
+  @media screen and (max-width: 600px) {
+    #contenuProfil {
+      display: flex;
+      flex-direction: column;
+      }
+  }
 }
