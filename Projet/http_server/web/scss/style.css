@@ -69,6 +69,21 @@ button.refuserBtn:disabled,
 .button.refuserBtn:disabled {
   background-color: #c2320b;
 }
+input[type=button].supprimerBtn,
+input[type=submit].supprimerBtn,
+button.supprimerBtn,
+.button.supprimerBtn {
+  border: solid;
+  border-width: 3px;
+  border-color: #FF2727;
+  background-color: #181818;
+}
+input[type=button].supprimerBtn:hover,
+input[type=submit].supprimerBtn:hover,
+button.supprimerBtn:hover,
+.button.supprimerBtn:hover {
+  background-color: #2b2b2b;
+}
 
 .conteneurDateHeure {
   display: flex;
@@ -180,6 +195,15 @@ select {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+.modal-fit {
+  width: fit-content !important;
+}
+.modal-fit input:not([type=submit]) {
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .modal-close {
@@ -624,7 +648,7 @@ input[type=time]::-webkit-calendar-picker-indicator {
 }
 @media screen and (max-width: 1000px) {
   #roles_input #votants_input,
-  #roles_input #redacteurs_input {
+#roles_input #redacteurs_input {
     width: 100%;
   }
 }

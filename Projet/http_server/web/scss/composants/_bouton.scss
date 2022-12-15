@@ -40,4 +40,14 @@ button,
       background-color: $couleurRefuserSurvol;
     }
   }
+
+  &.supprimerBtn{
+    border: solid;
+    border-width: 3px;
+    border-color :$couleurBordureSupprimer;
+    background-color: $couleurBoutonSupprimer;
+    &:hover{
+      background-color: $couleurBoutonSupprimerSurvol;
+    }
+  }
 }

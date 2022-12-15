@@ -35,15 +35,18 @@ $pfp = <<<html
 
             <label>Mot de passe</label>
             <a class="modal-open" href="#modalModifierMDP"><img src='./assets/images/pen-ico.svg' class="pen" alt="editPenIcon"/></a>
+
+
+            <a class="button supprimerBtn" href="#modalSupprimerCompte">Supprimer Compte</a>
         </div>
+
     </div>
 
-    <a class="modal-open" href="#modalSupprimerCompte">Supprimer mon compte</a>
 
 </div>
 
 <div class="modal" id="modalModifierPFP">
-    <div class="modalContent panel">
+    <div class="modal-content panel modal-fit">
         <form enctype="multipart/form-data" action="frontController.php?controller=utilisateur&action=modifierPFP" method="post" enctype="multipart/form-data">
             <h2>Modifier ma photo de profil</h2>
 
@@ -59,7 +62,7 @@ $pfp = <<<html
 </div>
 
 <div class="modal" id="modalModifierNomPrenom">
-    <div class="modalContent panel">
+    <div class="modal-content panel modal-fit">
         <form action="frontController.php?controller=utilisateur&action=modifierNomPrenom" method="post">
             <h2>Modifier mon nom/prénom</h2>
 
@@ -79,7 +82,7 @@ $pfp = <<<html
 </div>
 
 <div class="modal" id="modalModifierEmail">
-    <div class="modalContent panel">
+    <div class="modal-content panel modal-fit">
         <form action="frontController.php?controller=utilisateur&action=modifierEmail" method="post">
             <h2>Modifier mon adresse mail</h2>
 
@@ -96,7 +99,7 @@ $pfp = <<<html
 </div>
 
 <div class="modal" id="modalModifierMDP">
-    <div class="modalContent panel">
+    <div class="modal-content panel modal-fit">
         <form action="frontController.php?controller=utilisateur&action=modifierMDP" method="post">
             <h2>Modifier mon mot de passe</h2>
 
@@ -120,7 +123,7 @@ $pfp = <<<html
 </div>
 
 <div class="modal" id="modalSupprimerCompte">
-    <div class="modalContent panel">
+    <div class="modal-content panel modal-fit">
         <form action="frontController.php?controller=utilisateur&action=supprimerCompte" method="post" autocomplete="off">
             <h2>Supprimer mon compte</h2>
 
@@ -129,12 +132,10 @@ $pfp = <<<html
 
             <label>Entrez votre mot de passe</label>
             <input type="password" name="mdp_suppression" required>
-
-            <input type="checkbox" name="confirmation" id="confirmation" required>
-            <label>Je comprends que cette action est irréversible</label>
-
-            <input type="submit" value="Supprimer mon compte">
-
+            <div>
+                <a class="button refuserBtn" href="#">Annuler</a>
+                <input class="button validerBtn" type="submit" value="Confirmer">
+            </div>
             <a href="#" class="modal-close">
                 <img src="assets/images/close-icon.svg" alt="bouton fermer">
             </a>
