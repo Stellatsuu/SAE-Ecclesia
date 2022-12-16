@@ -66,4 +66,20 @@
       margin-top:0;
       }
   }
+
+  & ~ .modal {
+    form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      label{
+        margin-top:5px;
+      }
+      input[type="submit"] {
+        width: fit-content;
+        align-self: center;
+      }
+    }
+  }
 }
