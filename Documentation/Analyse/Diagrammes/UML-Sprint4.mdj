@@ -77764,8 +77764,8 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 128,
-											"top": -576,
+											"left": -2912,
+											"top": -912,
 											"height": 13
 										},
 										{
@@ -77775,8 +77775,8 @@
 												"$ref": "AAAAAAGFMLFnTKAuIF0="
 											},
 											"font": "Arial;13;1",
-											"left": 1893,
-											"top": 1135,
+											"left": 373,
+											"top": 967,
 											"width": 160.36083984375,
 											"height": 13,
 											"text": "AdministrateurRepository"
@@ -77789,8 +77789,8 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 128,
-											"top": -576,
+											"left": -2912,
+											"top": -912,
 											"width": 176.9853515625,
 											"height": 13,
 											"text": "(from Repository)"
@@ -77803,15 +77803,15 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 128,
-											"top": -576,
+											"left": -2912,
+											"top": -912,
 											"height": 13,
 											"horizontalAlignment": 1
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 1888,
-									"top": 1128,
+									"left": 368,
+									"top": 960,
 									"width": 170.36083984375,
 									"height": 25,
 									"stereotypeLabel": {
@@ -77837,8 +77837,8 @@
 										"$ref": "AAAAAAGFMLFnS6ArRmk="
 									},
 									"font": "Arial;13;0",
-									"left": 1888,
-									"top": 1153,
+									"left": 368,
+									"top": 985,
 									"width": 170.36083984375,
 									"height": 10
 								},
@@ -77862,8 +77862,8 @@
 												"$ref": "AAAAAAGFMLGuE7ZSmbk="
 											},
 											"font": "Arial;13;0",
-											"left": 1893,
-											"top": 1168,
+											"left": 373,
+											"top": 1000,
 											"width": 160.36083984375,
 											"height": 13,
 											"text": "+existe()",
@@ -77871,8 +77871,8 @@
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 1888,
-									"top": 1163,
+									"left": 368,
+									"top": 995,
 									"width": 170.36083984375,
 									"height": 23
 								},
@@ -77887,8 +77887,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 232,
-									"top": -536,
+									"left": -1288,
+									"top": -704,
 									"width": 10,
 									"height": 10
 								},
@@ -77903,8 +77903,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 232,
-									"top": -536,
+									"left": -1288,
+									"top": -704,
 									"width": 10,
 									"height": 10
 								}
@@ -77914,8 +77914,8 @@
 							},
 							"font": "Arial;13;0",
 							"containerChangeable": true,
-							"left": 1888,
-							"top": 1128,
+							"left": 368,
+							"top": 960,
 							"width": 170.36083984375,
 							"height": 58,
 							"nameCompartment": {
@@ -77932,100 +77932,6 @@
 							},
 							"templateParameterCompartment": {
 								"$ref": "AAAAAAGFMLFnTKA22go="
-							}
-						},
-						{
-							"_type": "UMLGeneralizationView",
-							"_id": "AAAAAAGFMLLWFRWjTqI=",
-							"_parent": {
-								"$ref": "AAAAAAGD9mJK3wRsm6Y="
-							},
-							"model": {
-								"$ref": "AAAAAAGFMLLWFRWh2Po="
-							},
-							"subViews": [
-								{
-									"_type": "EdgeLabelView",
-									"_id": "AAAAAAGFMLLWFRWkTIo=",
-									"_parent": {
-										"$ref": "AAAAAAGFMLLWFRWjTqI="
-									},
-									"model": {
-										"$ref": "AAAAAAGFMLLWFRWh2Po="
-									},
-									"visible": false,
-									"font": "Arial;13;0",
-									"left": 1971,
-									"top": 1065,
-									"height": 13,
-									"alpha": 1.5707963267948966,
-									"distance": 15,
-									"hostEdge": {
-										"$ref": "AAAAAAGFMLLWFRWjTqI="
-									},
-									"edgePosition": 1
-								},
-								{
-									"_type": "EdgeLabelView",
-									"_id": "AAAAAAGFMLLWFRWl1L0=",
-									"_parent": {
-										"$ref": "AAAAAAGFMLLWFRWjTqI="
-									},
-									"model": {
-										"$ref": "AAAAAAGFMLLWFRWh2Po="
-									},
-									"visible": null,
-									"font": "Arial;13;0",
-									"left": 1971,
-									"top": 1080,
-									"height": 13,
-									"alpha": 1.5707963267948966,
-									"distance": 30,
-									"hostEdge": {
-										"$ref": "AAAAAAGFMLLWFRWjTqI="
-									},
-									"edgePosition": 1
-								},
-								{
-									"_type": "EdgeLabelView",
-									"_id": "AAAAAAGFMLLWFRWmz28=",
-									"_parent": {
-										"$ref": "AAAAAAGFMLLWFRWjTqI="
-									},
-									"model": {
-										"$ref": "AAAAAAGFMLLWFRWh2Po="
-									},
-									"visible": false,
-									"font": "Arial;13;0",
-									"left": 1972,
-									"top": 1035,
-									"height": 13,
-									"alpha": -1.5707963267948966,
-									"distance": 15,
-									"hostEdge": {
-										"$ref": "AAAAAAGFMLLWFRWjTqI="
-									},
-									"edgePosition": 1
-								}
-							],
-							"font": "Arial;13;0",
-							"head": {
-								"$ref": "AAAAAAGD/yUgotm9Kp8="
-							},
-							"tail": {
-								"$ref": "AAAAAAGFMLFnTKAtLTo="
-							},
-							"lineStyle": 2,
-							"points": "1972:1128;1972:1056;1861:1056",
-							"showVisibility": true,
-							"nameLabel": {
-								"$ref": "AAAAAAGFMLLWFRWkTIo="
-							},
-							"stereotypeLabel": {
-								"$ref": "AAAAAAGFMLLWFRWl1L0="
-							},
-							"propertyLabel": {
-								"$ref": "AAAAAAGFMLLWFRWmz28="
 							}
 						}
 					]
@@ -80134,21 +80040,6 @@
 										"$ref": "AAAAAAGD9mJK3wTuzhU="
 									},
 									"name": "AdministrateurRepository",
-									"ownedElements": [
-										{
-											"_type": "UMLGeneralization",
-											"_id": "AAAAAAGFMLLWFRWh2Po=",
-											"_parent": {
-												"$ref": "AAAAAAGFMLFnS6ArRmk="
-											},
-											"source": {
-												"$ref": "AAAAAAGFMLFnS6ArRmk="
-											},
-											"target": {
-												"$ref": "AAAAAAGD/yUgodm7PyQ="
-											}
-										}
-									],
 									"operations": [
 										{
 											"_type": "UMLOperation",
