@@ -23,7 +23,7 @@ if ($estConnecte) {
 
     $utilisateur = Utilisateur::castIfNotNull($utilisateur);
 
-    $b64img = $utilisateur->getPhotoProfil();
+    $b64img = $utilisateur->getPhotoProfil(64);
 
     $pfp = <<<html
     <img src="data:image/png;charset=utf8;base64,$b64img"/>
@@ -66,7 +66,7 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
         <nav>
             <ul>
                 <li><a href="frontController.php">Accueil</a></li>
-                <li><a href="frontController.php?controller=question&action=listerMesQuestions">Questions</a></li>
+                <li><a href="frontController.php?controller=question&action=listerQuestions">Questions</a></li>
                 <li><a href="frontController.php?controller=question&action=afficherQuestionsFinies">Résultats</a></li>
                 <li><a href="frontController.php?controller=demandeQuestion&action=listerDemandesQuestion">Demandes</a></li>
                 <?= $liensComptesVersionMobile ?>

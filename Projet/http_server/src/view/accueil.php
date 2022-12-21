@@ -43,5 +43,6 @@ use App\SAE\Model\Repository\UtilisateurRepository;
     <a class="button validerBtn" href="frontController.php?controller=main&action=seConnecter&username=trollface">Se connecter en tant que trollface (Troll)</a>
 
     <a class="button refuserBtn" href="frontController.php?controller=main&action=resetDatabase">Réinitialiser la base de données</a>
+    <a class="button refuserBtn" href="frontController.php?controller=main&action=resetDatabase&randomFakeUsers=20&randomFakeQuestions=100">Réinitialiser la base de données<br> + 20 utilisateurs et 100 questions random</a>
 
 </div>

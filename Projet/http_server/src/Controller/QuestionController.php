@@ -11,6 +11,7 @@ use App\SAE\Model\Repository\UtilisateurRepository as UtilisateurRepository;
 use App\SAE\Lib\PhaseQuestion as Phase;
 use App\SAE\Model\Repository\PropositionRepository as PropositionRepository;
 use App\SAE\Model\HTTP\Session;
+use App\SAE\Model\Repository\RedacteurRepository;
 use DateTime;
 use DateInterval;
 
@@ -341,6 +342,47 @@ class QuestionController extends MainController
             "titrePage" => "Résultats",
             "contenuPage" => "listeQuestionsFinies.php",
             "questions" => $questions
+        ]);
+    }
+
+    public static function listerQuestions() {
+        $nbQuestionsParPage = 12;
+        $nbPages = ceil((new QuestionRepository())->countAllPhaseRedactionOuPlus() / $nbQuestionsParPage);
+
+        $page = isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] > 0 && $_GET["page"] <= $nbPages ? $_GET["page"] : 1;
+        $offset = ($page - 1) * $nbQuestionsParPage;
+
+        $questions = (new QuestionRepository())->selectAllLimitOffset($nbQuestionsParPage, $offset);
+
+        static::afficherVue("view.php", [
+            "titrePage" => "Liste des questions",
+            "contenuPage" => "listeQuestions.php",
+            "questions" => $questions,
+            "page" => $page,
+            "nbPages" => $nbPages
+        ]);
+    }
+
+    public static function afficherQuestion() {
+        $idQuestion = static::getIfSetAndNumeric("idQuestion");
+        $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
+        $propositions = (new PropositionRepository())->selectAllByQuestion($idQuestion);
+
+        if(ConnexionUtilisateur::estConnecte()) {
+            $username = ConnexionUtilisateur::getUsername();
+            $estRedacteur = (new RedacteurRepository)->existsForQuestion($idQuestion, $username);
+            $propositionExiste = (new PropositionRepository())->selectByQuestionEtResponsable($idQuestion, $username) != null;
+            $peutEcrireProposition = $question->getPhase() == Phase::Redaction && $estRedacteur && !$propositionExiste;
+        } else {
+            $peutEcrireProposition = false;
+        }
+
+        static::afficherVue("view.php", [
+            "titrePage" => "Question",
+            "contenuPage" => "afficherQuestion.php",
+            "question" => $question,
+            "propositions" => $propositions,
+            "peutEcrireProposition" => $peutEcrireProposition
         ]);
     }
 }

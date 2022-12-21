@@ -121,4 +121,47 @@ class QuestionRepository extends AbstractRepository
         }
         return $resultat;
     }
+
+    public function selectAllLimitOffset(int $limit, int $offset): array
+    {
+        $sql = <<<SQL
+            SELECT *
+                FROM question 
+                WHERE date_debut_redaction IS NOT NULL
+                AND date_debut_redaction <= CURRENT_TIMESTAMP
+                ORDER BY date_debut_redaction DESC
+                LIMIT :limit
+                OFFSET :offset
+        SQL;
+
+        $pdo = DatabaseConnection::getPdo();
+        $pdoStatement = $pdo->prepare($sql);
+        $values = [
+            'limit' => $limit,
+            'offset' => $offset
+        ];
+
+        $pdoStatement->execute($values);
+
+        $resultat = [];
+        foreach ($pdoStatement as $ligne) {
+            $resultat[] = $this->construire($ligne);
+        }
+        return $resultat;
+    }
+
+    public function countAllPhaseRedactionOuPlus() : int
+    {
+        $sql = <<<SQL
+            SELECT COUNT(*)
+                FROM question
+                WHERE date_debut_redaction IS NOT NULL
+                AND date_debut_redaction <= CURRENT_TIMESTAMP
+        SQL;
+
+        $pdo = DatabaseConnection::getPdo();
+        $pdoStatement = $pdo->query($sql);
+
+        return $pdoStatement->fetchColumn();
+    }
 }

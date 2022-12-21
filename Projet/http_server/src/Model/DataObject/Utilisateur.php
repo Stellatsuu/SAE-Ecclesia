@@ -65,17 +65,32 @@ class Utilisateur extends AbstractDataObject implements JsonSerializable
         return $this->prenom;
     }
 
+    public function getNomUsuel(): string
+    {
+        if($this->nom == "" || $this->prenom == "") {
+            return $this->username;
+        } else {
+            return $this->prenom . " " . $this->nom . " (" . $this->username . ")";
+        }
+    }
+
     public function getEmail(): string
     {
         return $this->email;
     }
 
-    public function getPhotoProfil(): string
+    public function getPhotoProfil($resolution = 256): string
     {
         if($this->photoProfil === null) {
             $this->photoProfil = PhotoProfil::getPhotoProfilNull();
         }
-        return $this->photoProfil;
+
+        if($resolution == 256) {
+            return $this->photoProfil;
+        } else {
+            return PhotoProfil::convertirRedimensionnerRogner($this->photoProfil, $resolution);
+        }
+        
     }
 
     public function getMdpHashed(): string
