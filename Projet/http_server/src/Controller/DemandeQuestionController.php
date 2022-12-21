@@ -15,6 +15,11 @@ class DemandeQuestionController extends MainController
 {
     public static function listerDemandesQuestion(): void
     {
+        $est_admin = ConnexionUtilisateur::estAdmin();
+        if (!$est_admin) {
+            static::error(ACCUEIL_URL, "Vous devez être administrateur pour accéder à cette page");
+        }
+
         $demandes = (new DemandeQuestionRepository)->selectAll();
 
         static::afficherVue("view.php", [
@@ -26,6 +31,12 @@ class DemandeQuestionController extends MainController
 
     public static function refuserDemandeQuestion(): void
     {
+        $est_admin = ConnexionUtilisateur::estAdmin();
+        if (!$est_admin) {
+            static::error(ACCUEIL_URL, "Vous devez être administrateur pour effectuer cette action");
+        }
+
+
         $idQuestion = static::getIfSetAndNumeric("idQuestion", LDQ_URL);
         (new DemandeQuestionRepository)->delete($idQuestion);
         static::message(LDQ_URL, "La demande a été refusée");
@@ -33,6 +44,11 @@ class DemandeQuestionController extends MainController
 
     public static function accepterDemandeQuestion(): void
     {
+        $est_admin = ConnexionUtilisateur::estAdmin();
+        if (!$est_admin) {
+            static::error(ACCUEIL_URL, "Vous devez être administrateur pour effectuer cette action");
+        }
+
         $idQuestion = static::getIfSetAndNumeric("idQuestion", LDQ_URL);
 
         $demande = DemandeQuestion::castIfNotNull((new DemandeQuestionRepository)->select($idQuestion));

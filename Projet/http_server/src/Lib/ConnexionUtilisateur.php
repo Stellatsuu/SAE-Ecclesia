@@ -4,6 +4,7 @@ namespace App\SAE\Lib;
 
 use App\SAE\Controller\MainController;
 use App\SAE\Model\HTTP\Session;
+use App\SAE\Model\Repository\AdministrateurRepository;
 
 use const App\SAE\Controller\ACCUEIL_URL;
 
@@ -16,6 +17,9 @@ class ConnexionUtilisateur
     {
         $session = Session::getInstance();
         $session->enregistrer(self::$cleConnexion, $username);
+
+        $est_admin = (new AdministrateurRepository())->existe($username);
+        $session->enregistrer("est_admin", $est_admin);
     }
 
     public static function estConnecte(): bool
@@ -24,10 +28,17 @@ class ConnexionUtilisateur
         return $session->contient(self::$cleConnexion);
     }
 
+    public static function estAdmin(): bool
+    {
+        $session = Session::getInstance();
+        return $session->contient("est_admin") && $session->lire("est_admin");
+    }
+
     public static function deconnecter(): void
     {
         $session = Session::getInstance();
         $session->supprimer(self::$cleConnexion);
+        $session->supprimer("est_admin");
     }
 
     public static function getUsername(): ?string
