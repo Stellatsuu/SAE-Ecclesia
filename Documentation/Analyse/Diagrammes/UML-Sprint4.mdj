@@ -64416,7 +64416,7 @@
 											"font": "Arial;13;1",
 											"left": 1421,
 											"top": 663,
-											"width": 199,
+											"width": 200.94140625,
 											"height": 13,
 											"text": "QuestionRepository"
 										},
@@ -64451,7 +64451,7 @@
 									"font": "Arial;13;0",
 									"left": 1416,
 									"top": 656,
-									"width": 209,
+									"width": 210.94140625,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGEBTGZunoO8ZA="
@@ -64498,7 +64498,7 @@
 									"font": "Arial;13;0",
 									"left": 1416,
 									"top": 681,
-									"width": 209,
+									"width": 210.94140625,
 									"height": 10
 								},
 								{
@@ -64811,7 +64811,7 @@
 											"font": "Arial;13;0",
 											"left": 1421,
 											"top": 698,
-											"width": 199,
+											"width": 200.94140625,
 											"height": 13,
 											"text": "+update()",
 											"horizontalAlignment": 0
@@ -64828,7 +64828,7 @@
 											"font": "Arial;13;0",
 											"left": 1421,
 											"top": 713,
-											"width": 199,
+											"width": 200.94140625,
 											"height": 13,
 											"text": "+selectAllByOrganisateur()",
 											"horizontalAlignment": 0
@@ -64845,7 +64845,7 @@
 											"font": "Arial;13;0",
 											"left": 1421,
 											"top": 728,
-											"width": 199,
+											"width": 200.94140625,
 											"height": 13,
 											"text": "+selectAllFinies()",
 											"horizontalAlignment": 0
@@ -64862,16 +64862,16 @@
 											"font": "Arial;13;0",
 											"left": 1421,
 											"top": 743,
-											"width": 199,
+											"width": 200.94140625,
 											"height": 13,
-											"text": "+selectAllWithWord(words: Array)",
+											"text": "+selectAllWithWords(words: Array)",
 											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 1416,
 									"top": 691,
-									"width": 209,
+									"width": 210.94140625,
 									"height": 70
 								},
 								{
@@ -64914,7 +64914,7 @@
 							"containerChangeable": true,
 							"left": 1416,
 							"top": 656,
-							"width": 209,
+							"width": 210.94140625,
 							"height": 105,
 							"nameCompartment": {
 								"$ref": "AAAAAAGEBTGZunoN5Lc="
@@ -81003,7 +81003,7 @@
 											"_parent": {
 												"$ref": "AAAAAAGEBTGZuXoKb1M="
 											},
-											"name": "selectAllWithWord",
+											"name": "selectAllWithWords",
 											"parameters": [
 												{
 													"_type": "UMLParameter",
