@@ -18,16 +18,15 @@ $estResponsable = $responsable->getUsername() === $username;
 $estOrganisateur = $question->getUsernameOrganisateur() === $username;
 ?>
 
-<div class="panel" id="afficherPropositions">
-    <input type="checkbox" id="questionDescription" class="texteDepliantTrigger" />
-    <div id="propositionTitle">
-        <h1 class="title"><?= $question->getTitre() ?></h1>
-        <label for="questionDescription">
-            <img src='./assets/images/arrow.svg' class='arrow' alt='open and close arrow' />
-        </label>
-    </div>
-    <span id="description" class="markdown"><?= Markdown::toHtml($question->getDescription()) ?></span>
+<div class="panel" id="afficher-propositions">
 
+    <h1 class="title"><?= $question->getTitre() ?></h1>
+
+    <details class="panel2">
+        <summary class="titre-description">Description</summary>
+        <span class="description markdown"><?= Markdown::toHtml($question->getDescription()) ?></span>
+    </details>
+    
     <div id="propositionSelector">
         <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=<?= rawurlencode($question->getIdQuestion()) ?>&index=<?= $index == 0 ? $nbPropopositions - 1 : $index - 1 ?>">
             <img src="assets/images/arrow.svg" style="transform: rotate(90deg)">

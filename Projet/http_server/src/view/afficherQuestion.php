@@ -91,17 +91,18 @@ for ($i = 0; $i < count($propositions); $i++) {
             if ($propositionHTMLs == []) {
                 echo "Aucune proposition n'a encore été écrite.";
             }
-
-            $boutonEcrireProposition = <<<HTML
-            <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireEcrireProposition&idQuestion=$idQuestion">Ecrire une proposition</a>
-        HTML;
-
-            if ($peutEcrireProposition) {
-                echo $boutonEcrireProposition;
-            }
-
             ?>
         </div>
+
+        <?php
+        $boutonEcrireProposition = <<<HTML
+        <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireEcrireProposition&idQuestion=$idQuestion">Ecrire une proposition</a>
+        HTML;
+
+        if ($peutEcrireProposition) {
+            echo $boutonEcrireProposition;
+        }
+        ?>
 
     </div>
 

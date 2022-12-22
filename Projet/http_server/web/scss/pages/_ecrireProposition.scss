@@ -1,5 +1,4 @@
 #ecrirePropositionForm {
-
   .sectionTitle {
     margin-top: 25px;
 
@@ -9,15 +8,21 @@
     }
   }
 
-  .descriptionProposition {
-    width: calc(100% - 10px);
-    margin: 0;
-    background-color: #3C3C3C;
-    padding: 5px;
+  details {
 
-    + textarea{
-      margin-top: 10px;
+    .titre-section {
+      font-size: 1.3rem;
+      font-weight: normal;
+      margin: 5px 0;
     }
+
+    .description-section p {
+      margin: 5px 0;
+      text-align: justify;
+      background-color: $couleurFond3;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    
   }
 }
-

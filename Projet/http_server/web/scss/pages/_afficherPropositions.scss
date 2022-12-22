@@ -1,10 +1,23 @@
-#afficherPropositions {
+#afficher-propositions {
   #propositionTitle {
     width: 100%;
   }
 
-  #description {
-    text-align: justify;
+  details {
+    width: 80%;
+    padding: 10px;
+    margin: 20px auto;
+
+    .titre-description {
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin: 5px 20px;
+    }
+
+    .description p {
+      margin: 0 20px;
+      text-align: justify;
+    }
   }
 
   #propositionSelector {
@@ -53,19 +66,19 @@
     margin: 5px;
   }
 
-  #btns{
-    width:80%;
-    display:flex;
+  #btns {
+    width: 80%;
+    display: flex;
     justify-content: flex-end;
 
-    button, .button{
+    button,
+    .button {
       margin: 5px;
     }
   }
 }
 
 #formulaire_vote {
-
   h2 {
     margin-bottom: 0;
   }

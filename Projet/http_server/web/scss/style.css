@@ -964,14 +964,17 @@ input[type=time]::-webkit-calendar-picker-indicator {
   margin: 0;
   font-weight: normal;
 }
-#ecrirePropositionForm .descriptionProposition {
-  width: calc(100% - 10px);
-  margin: 0;
-  background-color: #3C3C3C;
-  padding: 5px;
+#ecrirePropositionForm details .titre-section {
+  font-size: 1.3rem;
+  font-weight: normal;
+  margin: 5px 0;
 }
-#ecrirePropositionForm .descriptionProposition + textarea {
-  margin-top: 10px;
+#ecrirePropositionForm details .description-section p {
+  margin: 5px 0;
+  text-align: justify;
+  background-color: #353535;
+  padding: 10px;
+  border-radius: 10px;
 }
 
 #gererCoAuteursForm #co_auteurs_input select {
@@ -1045,53 +1048,65 @@ input[type=time]::-webkit-calendar-picker-indicator {
   justify-content: space-around;
 }
 
-#afficherPropositions #propositionTitle {
+#afficher-propositions #propositionTitle {
   width: 100%;
 }
-#afficherPropositions #description {
+#afficher-propositions details {
+  width: 80%;
+  padding: 10px;
+  margin: 20px auto;
+}
+#afficher-propositions details .titre-description {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin: 5px 20px;
+}
+#afficher-propositions details .description p {
+  margin: 0 20px;
   text-align: justify;
 }
-#afficherPropositions #propositionSelector {
+#afficher-propositions #propositionSelector {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 30px;
   width: 100%;
 }
-#afficherPropositions #propositionSelector a:first-child {
+#afficher-propositions #propositionSelector a:first-child {
   margin-right: 20px;
 }
-#afficherPropositions #propositionSelector a:last-child {
+#afficher-propositions #propositionSelector a:last-child {
   margin-left: 20px;
 }
-#afficherPropositions #propositionSelector .boite {
+#afficher-propositions #propositionSelector .boite {
   min-width: calc(50% - 90px);
   text-align: center;
 }
-#afficherPropositions #proposition {
+#afficher-propositions #proposition {
   width: 80%;
 }
-#afficherPropositions #proposition h2 {
+#afficher-propositions #proposition h2 {
   margin: 0 0 4px 0;
 }
-#afficherPropositions #proposition p {
+#afficher-propositions #proposition p {
   text-align: justify;
   margin: 0 0 4px 0;
 }
-#afficherPropositions #proposition p + h2 {
+#afficher-propositions #proposition p + h2 {
   margin-top: 8px;
 }
-#afficherPropositions #nomResponsable {
+#afficher-propositions #nomResponsable {
   width: 80%;
   text-align: right;
   margin: 5px;
 }
-#afficherPropositions #btns {
+#afficher-propositions #btns {
   width: 80%;
   display: flex;
   justify-content: flex-end;
 }
-#afficherPropositions #btns button, #afficherPropositions #btns .button {
+#afficher-propositions #btns button,
+#afficher-propositions #btns .button {
   margin: 5px;
 }
 
@@ -1413,6 +1428,14 @@ input[type=time]::-webkit-calendar-picker-indicator {
 }
 #afficher-question .panel2 {
   padding: 0 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+}
+#afficher-question .panel2 .button {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  align-self: center;
 }
 #afficher-question #afficher-question__top {
   display: flex;
