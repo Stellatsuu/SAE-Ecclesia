@@ -36,11 +36,17 @@
 
     #afficher-question__sections {
 
-        .titre-section h2 {
-            margin-left: 20px;
+        .titre-section {
             font-size: 1.3rem;
             font-weight: bold;
+            margin: 10px 20px;
         }
+
+        .description-section p {
+            margin: 0 20px;
+            text-align: justify;
+        }
+        
     }
 
 

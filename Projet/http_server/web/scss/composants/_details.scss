@@ -1,0 +1,26 @@
+details summary {
+    list-style-type: none;
+
+    &::marker {
+        display: none;
+    }
+
+    &::-webkit-details-marker {
+        display: none;
+    }
+
+    &::after {
+        content: url("../assets/images/arrow.svg");
+
+        display: inline-block;
+
+        transform: rotate(-90deg) scale(0.8);
+        transition: transform 0.2s ease-in-out;
+
+        cursor: pointer;
+    }
+}
+
+details[open] summary::after {
+    transform: rotate(0deg) scale(0.8);
+}

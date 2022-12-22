@@ -430,6 +430,27 @@ select {
   text-decoration: underline;
 }
 
+details summary {
+  list-style-type: none;
+}
+details summary::marker {
+  display: none;
+}
+details summary::-webkit-details-marker {
+  display: none;
+}
+details summary::after {
+  content: url("../assets/images/arrow.svg");
+  display: inline-block;
+  transform: rotate(-90deg) scale(0.8);
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+details[open] summary::after {
+  transform: rotate(0deg) scale(0.8);
+}
+
 header {
   padding-top: 15px;
   display: flex;
@@ -1413,10 +1434,14 @@ input[type=time]::-webkit-calendar-picker-indicator {
   grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
 }
-#afficher-question #afficher-question__sections .titre-section h2 {
-  margin-left: 20px;
+#afficher-question #afficher-question__sections .titre-section {
   font-size: 1.3rem;
   font-weight: bold;
+  margin: 10px 20px;
+}
+#afficher-question #afficher-question__sections .description-section p {
+  margin: 0 20px;
+  text-align: justify;
 }
 
 h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset, body {

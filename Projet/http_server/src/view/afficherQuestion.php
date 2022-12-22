@@ -22,14 +22,10 @@ for ($i = 0; $i < count($sections); $i++) {
     $descriptionSection_md = Markdown::toHtml($descriptionSection);
 
     $sectionHTML = <<<HTML
-    <input type='checkbox' id='deploy_$i' class='texteDepliantTrigger'/>
-    <div class='titre-section'>
-        <h2>$nomSection</h2>
-        <label for='deploy_$i'>
-            <img src='./assets/images/arrow.svg' class='arrow' alt='open and close arrow'/>
-        </label>
-    </div>
-    <span class='description-section markdown'>$descriptionSection_md</span>
+    <details>
+        <summary class="titre-section">$nomSection</summary>
+        <span class='description-section markdown'>$descriptionSection_md</span>
+    </details>
     HTML;
 
     $sectionHTMLs[] = $sectionHTML;
