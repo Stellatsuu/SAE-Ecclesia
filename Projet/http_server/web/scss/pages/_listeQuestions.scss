@@ -1,0 +1,49 @@
+#listeQuestions {
+
+  #questions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 25px;
+
+    margin: 20px;
+    width: calc(100% - 40px);
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    .pagination__link {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 35px;
+      height: 35px;
+
+      background-color: $couleurFond3;
+      border-radius: 50%;
+      text-decoration: none;
+      color: $couleurTexte;
+
+      &:hover {
+        background-color: $couleurFond2;
+      }
+
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    .pagination__link--current {
+      background-color: $couleurPrincipale;
+
+      &:hover {
+        background-color: $couleurPrincipale;
+      }
+    }
+
+    .pagination__link--inactive {
+      background-color: $couleurFond2;
+    }
+  }
+}

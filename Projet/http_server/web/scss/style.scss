@@ -11,6 +11,7 @@
 @import "composants/texteDepliant";
 @import "composants/acceptOrDenyComp";
 @import "composants/toolTip";
+@import "composants/questionCompact";
 
 @import "layout/menu";
 @import "layout/panel";
@@ -29,6 +30,7 @@
 @import "pages/afficherResultats";
 @import "pages/listeQuestionsFinies";
 @import "pages/afficherProfil";
+@import "pages/listeQuestions";
 
 @import "utils/textes";
 @import "utils/unselectable";

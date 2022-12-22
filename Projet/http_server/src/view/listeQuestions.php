@@ -9,29 +9,44 @@ foreach ($questions as $q) {
     $titre = $question->getTitre();
     $description = $question->getDescription();
     $datePublication = $question->getDateDebutRedaction()->format("d/m/Y");
+    $phase = $question->getPhase()->toString();
 
     $utilisateur = $question->getOrganisateur();
+    $nomUsuel = $utilisateur->getNomUsuel();
     $b64img = $utilisateur->getPhotoProfil(64);
     $pfp = <<<html
     <img src="data:image/png;charset=utf8;base64,$b64img"/>
     html;
 
-    
+
     $html = <<<html
-        <div class="questionCompact" style="margin-bottom: 1em; padding: 1em; border: 1px solid #ccc;">
-            <span class="questionCompact__top">
-                $pfp
+        <div class="question-compact">
+            <span class="question-compact__top">
+
+                <span class="question-compact__top__pfp">
+                    $pfp
+                    <div class="question-compact__top__pfp__tooltip">
+                        $nomUsuel
+                    </div>
+                </span>
+
+
                 <a href="frontController.php?controller=question&action=afficherQuestion&idQuestion=$idQuestion">
                     $titre
                 </a>
             </span>
 
-            <p class="questionCompact__description">
+            <p class="question-compact__description">
                 $description
             </p>
 
-            <span class="questionCompact__bottom">
+            <span class="question-compact__bottom">
+                <span>
                 $datePublication
+                </span>
+                <span>
+                    Phase : $phase
+                </span>
             </span>
         </div>
     html;
@@ -43,19 +58,19 @@ function pageLink($page, $text, $nbPages, $query, $active = true, $isCurrent = f
 {
     if (!$active) {
         $res = <<<html
-        <span class="pagination__link pagination__link--inactive">
+        <span class="pagination__link pagination__link--inactive unselectable">
             $text
         </span>
         html;
     } else if ($isCurrent) {
         $res = <<<html
-        <span class="pagination__link pagination__link--current">
+        <span class="pagination__link pagination__link--current unselectable">
             $text
         </span>
         html;
     } else {
         $res = <<<html
-        <a href="frontController.php?controller=question&action=listerQuestions&page=$page&query=$query" class="pagination__link">
+        <a href="frontController.php?controller=question&action=listerQuestions&page=$page&query=$query" class="pagination__link unselectable">
             $text
         </a>
         html;
@@ -65,7 +80,7 @@ function pageLink($page, $text, $nbPages, $query, $active = true, $isCurrent = f
 
         if ($page != $text) {
             $res = <<<html
-            <span class="pagination__link pagination__link--inactive">
+            <span class="pagination__link pagination__link--inactive unselectable">
                 $text
             </span>
             html;
@@ -124,12 +139,11 @@ if ($nbPages == 1) {
         <form action="frontController.php" method="get">
             <input type="hidden" name="controller" value="question">
             <input type="hidden" name="action" value="listerQuestions">
-            <input type="text" name="query" value="<?= htmlspecialchars(rawurldecode($query)) ?>"/>
+            <input type="text" name="query" value="<?= htmlspecialchars(rawurldecode($query)) ?>" />
             <input type="submit" value="Rechercher">
         </form>
     </div>
 
-    //TODO: supprimer le style inline
     <div id="questions">
         <?php echo implode("", $questionHTMLs); ?>
     </div>
