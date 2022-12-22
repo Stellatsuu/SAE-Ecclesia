@@ -5,10 +5,12 @@ use App\SAE\Model\DataObject\Utilisateur;
 use App\SAE\Model\Repository\UtilisateurRepository;
 
 $estConnecte = ConnexionUtilisateur::estConnecte();
+$estAdmin = ConnexionUtilisateur::estAdmin();
 
 if ($estConnecte) {
     $liensComptes = <<<html
     <li><a href="frontController.php?controller=utilisateur&action=afficherProfil">Mon Compte</a></li>
+    <li><a href="frontController.php?controller=question&action=listerMesQuestions">Mes Questions</a></li>
     <li><a href="frontController.php?controller=utilisateur&action=afficherParametres">Paramètres</a></li>
     <li><a href="frontController.php?controller=utilisateur&action=seDeconnecter">Se déconnecter</a></li>
     html;
@@ -40,6 +42,20 @@ if ($estConnecte) {
 }
 
 $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>", $liensComptes);
+
+if($estAdmin) {
+    $quatriemeLien = <<<html
+    <li><a href="frontController.php?controller=demandeQuestion&action=listerDemandesQuestion">Demandes</a></li>
+    html;
+} else {
+    $quatriemeLien = <<<html
+    <li><a href="frontController.php?controller=demandeQuestion&action=afficherFormulaireDemandeQuestion">Poser une question</a></li>
+    html;
+}
+
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -68,7 +84,7 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
                 <li><a href="frontController.php">Accueil</a></li>
                 <li><a href="frontController.php?controller=question&action=listerQuestions">Questions</a></li>
                 <li><a href="frontController.php?controller=question&action=afficherQuestionsFinies">Résultats</a></li>
-                <li><a href="frontController.php?controller=demandeQuestion&action=listerDemandesQuestion">Demandes</a></li>
+                <?= $quatriemeLien ?>
                 <?= $liensComptesVersionMobile ?>
             </ul>
             <div class="menu_compte" tabindex="0">

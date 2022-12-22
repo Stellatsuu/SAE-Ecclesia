@@ -21,14 +21,15 @@ class Utilisateur extends AbstractDataObject implements JsonSerializable
 
     private string $mdpHashed;
 
-    public function __construct(string $username, ?string $nom, ?string $prenom, ?string $email, ?string $photoProfil, string $mdpHashed)
+    public function __construct(string $username, ?string $nom, ?string $prenom, ?string $email, string $mdpHashed)
     {
         $this->username = $username;
         $this->nom = $nom;
         $this->prenom = $prenom;
         $this->email = $email;
-        $this->photoProfil = $photoProfil;
         $this->mdpHashed = $mdpHashed;
+
+        $this->photoProfil = null;
     }
 
     public function formatTableau(): array
@@ -38,7 +39,7 @@ class Utilisateur extends AbstractDataObject implements JsonSerializable
             'nom_utilisateur' => $this->nom,
             'prenom_utilisateur' => $this->prenom,
             'email_utilisateur' => $this->email,
-            'photo_profil' => $this->photoProfil,
+            'photo_profil' => $this->getPhotoProfil(),
             'mdp_hashed' => $this->mdpHashed
         ];
     }
@@ -79,10 +80,10 @@ class Utilisateur extends AbstractDataObject implements JsonSerializable
         return $this->email;
     }
 
-    public function getPhotoProfil($resolution = 256): string
+    public function getPhotoProfil($resolution = 256): ?string
     {
-        if($this->photoProfil === null) {
-            $this->photoProfil = PhotoProfil::getPhotoProfilNull();
+        if($this->photoProfil == null) {
+            $this->photoProfil = (new UtilisateurRepository)->selectPhotoProfil($this->username);
         }
 
         if($resolution == 256) {
@@ -90,7 +91,6 @@ class Utilisateur extends AbstractDataObject implements JsonSerializable
         } else {
             return PhotoProfil::convertirRedimensionnerRogner($this->photoProfil, $resolution);
         }
-        
     }
 
     public function getMdpHashed(): string

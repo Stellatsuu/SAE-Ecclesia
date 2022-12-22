@@ -1,5 +1,6 @@
 <?php
 
+use App\SAE\Controller\DebugController;
 use App\SAE\Controller\DemandeQuestionController;
 use App\SAE\Controller\MainController;
 use App\SAE\Controller\UtilisateurController;
@@ -32,10 +33,10 @@ class DemandeQuestionTest extends TestCase
         $_POST['password'] = "test";
         UtilisateurController::seConnecter();
 
-        MainController::clearLogFile();
-        MainController::logToFile("Début des tests");
+        DebugController::clearLogFile();
+        DebugController::logToFile("Début des tests");
 
-        MainController::resetDatabase();
+        DebugController::resetDatabase();
     }
 
     /* Demander la création d'une question */
