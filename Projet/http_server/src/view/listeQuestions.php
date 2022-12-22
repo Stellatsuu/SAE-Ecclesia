@@ -39,7 +39,7 @@ foreach ($questions as $q) {
     $questionHTMLs[] = $html;
 }
 
-function pageLink($page, $text, $nbPages, $active = true, $isCurrent = false): string
+function pageLink($page, $text, $nbPages, $query, $active = true, $isCurrent = false): string
 {
     if (!$active) {
         $res = <<<html
@@ -55,7 +55,7 @@ function pageLink($page, $text, $nbPages, $active = true, $isCurrent = false): s
         html;
     } else {
         $res = <<<html
-        <a href="frontController.php?controller=question&action=listerQuestions&page=$page" class="pagination__link">
+        <a href="frontController.php?controller=question&action=listerQuestions&page=$page&query=$query" class="pagination__link">
             $text
         </a>
         html;
@@ -78,41 +78,41 @@ function pageLink($page, $text, $nbPages, $active = true, $isCurrent = false): s
 }
 if ($nbPages == 1) {
     $paginationLinks = [
-        pageLink(-1, "<<", $nbPages, false),
-        pageLink(-1, "<", $nbPages, false),
-        pageLink(1, "1", $nbPages, true, true),
-        pageLink(-1, ">", $nbPages, false),
-        pageLink(-1, ">>", $nbPages, false)
+        pageLink(-1, "<<", $nbPages, $query, false),
+        pageLink(-1, "<", $nbPages, $query, false),
+        pageLink(1, "1", $nbPages, $query, true, true),
+        pageLink(-1, ">", $nbPages, $query, false),
+        pageLink(-1, ">>", $nbPages, $query, false)
     ];
 } else if ($page == 1) {
     $paginationLinks = [
-        pageLink(-1, "<<", $nbPages, false),
-        pageLink(-1, "<", $nbPages, false),
-        pageLink(1, "1", $nbPages, true, true),
-        pageLink(2, "2", $nbPages),
-        pageLink(3, "3", $nbPages),
-        pageLink(2, ">", $nbPages),
-        pageLink($nbPages, ">>", $nbPages)
+        pageLink(-1, "<<", $nbPages, $query, false),
+        pageLink(-1, "<", $nbPages, $query, false),
+        pageLink(1, "1", $nbPages, $query, true, true),
+        pageLink(2, "2", $nbPages, $query),
+        pageLink(3, "3", $nbPages, $query),
+        pageLink(2, ">", $nbPages, $query),
+        pageLink($nbPages, ">>", $nbPages, $query)
     ];
 } else if ($page >= $nbPages) {
     $paginationLinks = [
-        pageLink(1, "<<", $nbPages),
-        pageLink($page - 1, "<", $nbPages),
-        pageLink($page - 2, $page - 2, $nbPages),
-        pageLink($page - 1, $page - 1, $nbPages),
-        pageLink($page, $page, $nbPages, true, true),
-        pageLink(-1, ">", $nbPages, false),
-        pageLink(-1, ">>", $nbPages, false)
+        pageLink(1, "<<", $nbPages, $query),
+        pageLink($page - 1, "<", $nbPages, $query),
+        pageLink($page - 2, $page - 2, $nbPages, $query),
+        pageLink($page - 1, $page - 1, $nbPages, $query),
+        pageLink($page, $page, $nbPages, $query, true, true),
+        pageLink(-1, ">", $nbPages, $query, false),
+        pageLink(-1, ">>", $nbPages, $query, false)
     ];
 } else {
     $paginationLinks = [
-        pageLink(1, "<<", $nbPages),
-        pageLink($page - 1, "<", $nbPages),
-        pageLink($page - 1, $page - 1, $nbPages),
-        pageLink($page, $page, $nbPages, true, true),
-        pageLink($page + 1, $page + 1, $nbPages),
-        pageLink($page + 1, ">", $nbPages),
-        pageLink($nbPages, ">>", $nbPages)
+        pageLink(1, "<<", $nbPages, $query),
+        pageLink($page - 1, "<", $nbPages, $query),
+        pageLink($page - 1, $page - 1, $nbPages, $query),
+        pageLink($page, $page, $nbPages, $query, true, true),
+        pageLink($page + 1, $page + 1, $nbPages, $query),
+        pageLink($page + 1, ">", $nbPages, $query),
+        pageLink($nbPages, ">>", $nbPages, $query)
     ];
 }
 ?>
@@ -121,8 +121,10 @@ if ($nbPages == 1) {
     <h1>Questions : </h1>
 
     <div class="searchBar">
-        <form action="frontController.php?controller=question&action=listerQuestions" method="post">
-            <input type="text" name="search" placeholder="Rechercher une question">
+        <form action="frontController.php" method="get">
+            <input type="hidden" name="controller" value="question">
+            <input type="hidden" name="action" value="listerQuestions">
+            <input type="text" name="query" value="<?= htmlspecialchars(rawurldecode($query)) ?>"/>
             <input type="submit" value="Rechercher">
         </form>
     </div>

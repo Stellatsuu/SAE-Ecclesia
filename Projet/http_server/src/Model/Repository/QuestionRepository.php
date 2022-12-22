@@ -122,13 +122,20 @@ class QuestionRepository extends AbstractRepository
         return $resultat;
     }
 
-    public function selectAllLimitOffset(int $limit, int $offset): array
+    public function selectAllLimitOffset(int $limit, int $offset, array $motsCles = []): array
     {
+        $conditions = [];
+        for ($i = 0; $i < count($motsCles); $i++) {
+            $conditions[] = "AND (LOWER(titre_question) LIKE :mot_cle_$i OR LOWER(description_question) LIKE :mot_cle_$i)";
+        }
+        $conditions = implode(' ', $conditions);
+
         $sql = <<<SQL
             SELECT *
                 FROM question 
                 WHERE date_debut_redaction IS NOT NULL
                 AND date_debut_redaction <= CURRENT_TIMESTAMP
+                $conditions
                 ORDER BY date_debut_redaction DESC
                 LIMIT :limit
                 OFFSET :offset
@@ -138,11 +145,14 @@ class QuestionRepository extends AbstractRepository
         $pdoStatement = $pdo->prepare($sql);
         $values = [
             'limit' => $limit,
-            'offset' => $offset
+            'offset' => $offset,
         ];
 
-        $pdoStatement->execute($values);
+        for ($i = 0; $i < count($motsCles); $i++) {
+            $values["mot_cle_$i"] = "%$motsCles[$i]%";
+        }
 
+        $pdoStatement->execute($values);
         $resultat = [];
         foreach ($pdoStatement as $ligne) {
             $resultat[] = $this->construire($ligne);
@@ -150,17 +160,31 @@ class QuestionRepository extends AbstractRepository
         return $resultat;
     }
 
-    public function countAllPhaseRedactionOuPlus() : int
+    public function countAllPhaseRedactionOuPlus(array $motsCles = []): int
     {
+        $conditions = [];
+        for ($i = 0; $i < count($motsCles); $i++) {
+            $conditions[] = "AND (titre_question LIKE :mot_cle_$i OR description_question LIKE :mot_cle_$i)";
+        }
+
+        $conditions = implode(' ', $conditions);
+
         $sql = <<<SQL
             SELECT COUNT(*)
                 FROM question
                 WHERE date_debut_redaction IS NOT NULL
                 AND date_debut_redaction <= CURRENT_TIMESTAMP
+                $conditions
         SQL;
 
+        $values = [];
+        for ($i = 0; $i < count($motsCles); $i++) {
+            $values["mot_cle_$i"] = "%$motsCles[$i]%";
+        }
+
         $pdo = DatabaseConnection::getPdo();
-        $pdoStatement = $pdo->query($sql);
+        $pdoStatement = $pdo->prepare($sql);
+        $pdoStatement->execute($values);
 
         return $pdoStatement->fetchColumn();
     }

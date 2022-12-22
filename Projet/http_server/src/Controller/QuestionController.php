@@ -347,19 +347,27 @@ class QuestionController extends MainController
 
     public static function listerQuestions() {
         $nbQuestionsParPage = 12;
-        $nbPages = ceil((new QuestionRepository())->countAllPhaseRedactionOuPlus() / $nbQuestionsParPage);
+        $query = isset($_GET["query"]) ? $_GET["query"] : "";
+        $motsCles = $query == "" ? [] : explode(" ", $query);
+        //Make every word in the query lowercase
+        $motsCles = array_map(function ($mot) {
+            return strtolower($mot);
+        }, $motsCles);
 
+        $nbPages = ceil((new QuestionRepository())->countAllPhaseRedactionOuPlus($motsCles) / $nbQuestionsParPage);
         $page = isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] > 0 && $_GET["page"] <= $nbPages ? $_GET["page"] : 1;
+        
         $offset = ($page - 1) * $nbQuestionsParPage;
 
-        $questions = (new QuestionRepository())->selectAllLimitOffset($nbQuestionsParPage, $offset);
+        $questions = (new QuestionRepository())->selectAllLimitOffset($nbQuestionsParPage, $offset, $motsCles);
 
         static::afficherVue("view.php", [
             "titrePage" => "Liste des questions",
             "contenuPage" => "listeQuestions.php",
             "questions" => $questions,
             "page" => $page,
-            "nbPages" => $nbPages
+            "nbPages" => $nbPages,
+            "query" => $query
         ]);
     }
 
