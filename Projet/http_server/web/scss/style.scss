@@ -12,9 +12,12 @@
 @import "composants/acceptOrDenyComp";
 @import "composants/toolTip";
 @import "composants/questionCompact";
+@import "composants/userTooltip";
+@import "composants/propositionCompact";
 
 @import "layout/menu";
 @import "layout/panel";
+@import "layout/panel2";
 @import "layout/forms";
 @import "layout/roles_input";
 @import "layout/sections_input";
@@ -31,6 +34,7 @@
 @import "pages/listeQuestionsFinies";
 @import "pages/afficherProfil";
 @import "pages/listeQuestions";
+@import "pages/afficherQuestion";
 
 @import "utils/textes";
 @import "utils/unselectable";

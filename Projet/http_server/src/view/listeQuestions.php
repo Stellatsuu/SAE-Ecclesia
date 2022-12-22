@@ -19,13 +19,13 @@ foreach ($questions as $q) {
     html;
 
 
-    $html = <<<html
+    $html = <<<HTML
         <div class="question-compact">
             <span class="question-compact__top">
 
-                <span class="question-compact__top__pfp">
+                <span class="question-compact__top__pfp user-tooltip">
                     $pfp
-                    <div class="question-compact__top__pfp__tooltip">
+                    <div class="user-tooltip__text">
                         $nomUsuel
                     </div>
                 </span>
@@ -49,7 +49,7 @@ foreach ($questions as $q) {
                 </span>
             </span>
         </div>
-    html;
+    HTML;
 
     $questionHTMLs[] = $html;
 }

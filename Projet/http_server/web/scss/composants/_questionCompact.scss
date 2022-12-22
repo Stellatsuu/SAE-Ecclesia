@@ -1,97 +1,54 @@
 .question-compact {
+  display: flex;
+  flex-direction: column;
+  background-color: $couleurFond3;
+
+  border: solid 3px $couleurPrincipale;
+  border-radius: 10px;
+  padding: 20px;
+  width: calc(100% - 40px);
+  height: 250px;
+
+  .question-compact__top {
     display: flex;
-    flex-direction: column;
-    background-color: $couleurFond3;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
 
-    border: solid 3px $couleurPrincipale;
-    border-radius: 10px;
-    padding: 20px;
-    width: calc(100% - 40px);
-    height: 250px;
+    a {
+      text-decoration: none;
+      color: $couleurTexte;
+      font-weight: bold;
+      font-size: 1.3rem;
 
-    .question-compact__top {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 10px;
-
-        a {
-            text-decoration: none;
-            color: $couleurTexte;
-            font-weight: bold;
-            font-size: 1.3rem;
-
-            &:hover {
-                text-decoration: underline;
-            }
-        }
-
-        
-
-        .question-compact__top__pfp {
-
-            position: relative;
-
-            img {
-                width: 48px;
-                height: 48px;
-                border-radius: 50%;
-                border: solid 1px black;
-            }
-
-            // Tooltip appearing on top of the profile picture
-            // with an arrow pointing to the profile picture
-            .question-compact__top__pfp__tooltip {
-                font-size: 1rem;
-                visibility: hidden;
-                opacity: 0;
-                width: fit-content;
-                background-color: #b4b4b4;
-                color: #000;
-                padding: 10px;
-                border-radius: 6px;
-
-                position: absolute;
-                z-index: 1;
-                top: -60px;
-                left: 50%;
-                transform: translateX(-50%);
-
-                transition: opacity 0.3s;
-
-                // Arrow pointing to the profile picture
-                &::after {
-                    content: "";
-                    position: absolute;
-                    top: 100%;
-                    left: 50%;
-                    margin-left: -5px;
-                    border-width: 5px;
-                    border-style: solid;
-                    border-color: #b4b4b4 transparent transparent transparent;
-                }
-            }
-
-            &:hover .question-compact__top__pfp__tooltip {
-                visibility: visible;
-                opacity: 1;
-            }
-        }
-
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
-    .question-compact__description {
-        font-size: 1rem;
-        text-align: justify;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+    .question-compact__top__pfp {
+      position: relative;
 
-    .question-compact__bottom {
-        display: flex;
-        justify-content: space-between;
-        margin-top: auto;
-        color: $couleurTexte2;
+      img {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: solid 1px black;
+      }
     }
+  }
 
+  .question-compact__description {
+    font-size: 1.1rem;
+    text-align: justify;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .question-compact__bottom {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+    color: $couleurTexte2;
+  }
 }

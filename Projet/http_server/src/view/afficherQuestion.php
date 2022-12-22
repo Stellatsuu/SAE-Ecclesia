@@ -2,6 +2,7 @@
 
 use App\SAE\Lib\Markdown;
 use App\SAE\Lib\PhaseQuestion;
+use App\SAE\Model\DataObject\Proposition;
 use App\SAE\Model\DataObject\Question;
 use App\SAE\Model\Repository\PropositionRepository;
 
@@ -36,10 +37,22 @@ for ($i = 0; $i < count($sections); $i++) {
 
 $propositionHTMLs = [];
 for ($i = 0; $i < count($propositions); $i++) {
-    $titreProposition = $propositions[$i]->getTitreProposition();
+    $proposition = Proposition::castIfNotNull($propositions[$i]);
+    $titreProposition = $proposition->getTitreProposition();
+    $pfp = $proposition->getResponsable()->getPhotoProfil(64);
 
     $propositionHTML = <<<HTML
-    <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion&index=$i">$titreProposition</a>
+        <div class="proposition-compact">
+                <span class="proposition-compact__pfp user-tooltip">
+                    <img src="data:image/png;charset=utf8;base64,$pfp"/>
+                    <div class="user-tooltip__text">
+                        {$proposition->getResponsable()->getNomUsuel()}
+                    </div>
+                </span>
+                <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion&index=$i">
+                    $titreProposition
+                </a>
+        </div>
     HTML;
 
     $propositionHTMLs[] = $propositionHTML;
@@ -48,41 +61,55 @@ for ($i = 0; $i < count($propositions); $i++) {
 ?>
 
 <div id="afficher-question" class="panel">
-    <div id="titre-question">
-        <h1><?= $titreQuestion ?></h1>
-        <span>
-            par <?= $organisateur->getNomUsuel() ?>
-        </span>
+    <div id="afficher-question__top">
+        <h1><?= $titreQuestion ?>
+            <span>
+                par&nbsp;<?= $organisateur->getNomUsuel() ?>
+            </span>
+        </h1>
     </div>
 
-    <span id="description" class="markdown"><?= $descriptionQuestion_md ?></span>
-
-    <h2>Sections :</h2>
-
-    <div class="afficher-question__sections">
-        <?php echo implode('', $sectionHTMLs) ?>
+    <div id="afficher-question__description" class="panel2">
+        <h2>Description :</h2>
+        <span id="description" class="markdown"><?= $descriptionQuestion_md ?></span>
     </div>
 
-    <h2>Propositions :</h2>
 
-    <div class="afficher-question__propositions">
-        <?php
-        echo implode('', $propositionHTMLs);
+    <div id="afficher-question__sections" class="panel2">
+        <h2>Sections :</h2>
 
-        if($propositionHTMLs == []){
-            echo "Aucune proposition n'a encore été écrite.";
-        }
+        <?= implode('', $sectionHTMLs) ?>
+    </div>
 
-        $boutonEcrireProposition = <<<HTML
+
+    <div class="panel2">
+
+        <h2>Propositions :</h2>
+
+        <div id="afficher-question__propositions">
+
+
+            <?php
+            echo implode('', $propositionHTMLs);
+
+            if ($propositionHTMLs == []) {
+                echo "Aucune proposition n'a encore été écrite.";
+            }
+
+            $boutonEcrireProposition = <<<HTML
             <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireEcrireProposition&idQuestion=$idQuestion">Ecrire une proposition</a>
         HTML;
 
-        if ($peutEcrireProposition) {
-            echo $boutonEcrireProposition;
-        }
+            if ($peutEcrireProposition) {
+                echo $boutonEcrireProposition;
+            }
 
-        ?>
+            ?>
+        </div>
+
     </div>
+
+
 
 
 
