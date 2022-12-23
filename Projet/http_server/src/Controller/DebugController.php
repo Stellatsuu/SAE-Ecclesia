@@ -17,7 +17,7 @@ use App\SAE\Model\Repository\QuestionRepository;
 use App\SAE\Model\Repository\RedacteurRepository;
 use App\SAE\Model\Repository\SectionRepository;
 use App\SAE\Model\Repository\UtilisateurRepository;
-
+use App\SAE\Model\Repository\VotantRepository;
 
 class DebugController extends MainController
 {
@@ -92,7 +92,7 @@ class DebugController extends MainController
             $imageType = $possiblePhotoTypes[rand(0, count($possiblePhotoTypes) - 1)];
             $image = file_get_contents("https://source.boringavatars.com/" . $imageType . "/256/" . $username);
             $image = base64_encode($image);
-            
+
             $utilisateur = new Utilisateur(
                 $username,
                 $nom,
@@ -120,7 +120,8 @@ class DebugController extends MainController
             date_debut_redaction,
             date_fin_redaction,
             date_ouverture_votes,
-            date_fermeture_votes)
+            date_fermeture_votes,
+            systeme_vote)
         VALUES(
             :titre_question,
             :description_question,
@@ -128,7 +129,8 @@ class DebugController extends MainController
             :date_debut_redaction,
             :date_fin_redaction,
             :date_ouverture_votes,
-            :date_fermeture_votes)
+            :date_fermeture_votes,
+            :systeme_vote)
         SQL;
         $stmt = $pdo->prepare($sql);
 
@@ -144,10 +146,12 @@ class DebugController extends MainController
             $description = ucfirst($description);
 
             $username = $utilisateurs[rand(0, count($utilisateurs) - 1)]->getUsername();
-            $dateDebutRedaction = date("Y-m-d H:i:s", rand(0, time()));
-            $dateFinRedaction = date("Y-m-d H:i:s", strtotime($dateDebutRedaction) + rand(0, 60 * 60 * 24 * 7));
-            $dateOuvertureVotes = date("Y-m-d H:i:s", strtotime($dateFinRedaction) + rand(0, 60 * 60 * 24 * 7));
-            $dateFermetureVotes = date("Y-m-d H:i:s", strtotime($dateOuvertureVotes) + rand(0, 60 * 60 * 24 * 7));
+            $dateDebutRedaction = date("Y-m-d H:i:s", rand(strtotime("2015-01-01"), time()));
+            $dateFinRedaction = date("Y-m-d H:i:s", strtotime($dateDebutRedaction) + rand(60 * 60 * 24 * 30, 60 * 60 * 24 * 365));
+            $dateOuvertureVotes = date("Y-m-d H:i:s", strtotime($dateFinRedaction) + rand(60 * 60 * 24 * 30, 60 * 60 * 24 * 365));
+            $dateFermetureVotes = date("Y-m-d H:i:s", strtotime($dateOuvertureVotes) + rand(60 * 60 * 24 * 30, 60 * 60 * 24 * 365));
+
+            $systemesVote = ["majoritaire_a_un_tour", "approbation"];
 
             $stmt->execute([
                 "titre_question" => $titre,
@@ -156,7 +160,8 @@ class DebugController extends MainController
                 "date_debut_redaction" => $dateDebutRedaction,
                 "date_fin_redaction" => $dateFinRedaction,
                 "date_ouverture_votes" => $dateOuvertureVotes,
-                "date_fermeture_votes" => $dateFermetureVotes
+                "date_fermeture_votes" => $dateFermetureVotes,
+                "systeme_vote" => $systemesVote[rand(0, count($systemesVote) - 1)]
             ]);
         }
     }
@@ -204,11 +209,14 @@ class DebugController extends MainController
         }));
 
         foreach ($questions as $question) {
+            $redacteurs = [];
             $nbRedacteurs = rand($min, $max);
             $question = Question::castIfNotNull($question);
             $idQuestion = $question->getIdQuestion();
 
-            $redacteurs = [];
+            (new RedacteurRepository)->insert($idQuestion, $question->getUsernameOrganisateur());
+            $redacteurs[] = $question->getUsernameOrganisateur();
+
             for ($i = 0; $i < $nbRedacteurs; $i++) {
 
                 do {
@@ -218,6 +226,9 @@ class DebugController extends MainController
                 $redacteurs[] = $username;
                 (new RedacteurRepository())->insert($idQuestion, $username);
             }
+
+            (new RedacteurRepository())->insert($idQuestion, "test");
+            (new VotantRepository())->insert($idQuestion, "test");
         }
     }
 

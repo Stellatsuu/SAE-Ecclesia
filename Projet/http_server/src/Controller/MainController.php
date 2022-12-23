@@ -82,7 +82,7 @@ class MainController
         ]);
     }
 
-    protected static function getIfSet(string $parametre, string $errorUrl = ACCUEIL_URL, string $errorMessage = "[PARAMETRE] non rempli"): string
+    public static function getIfSet(string $parametre, string $errorUrl = ACCUEIL_URL, string $errorMessage = "[PARAMETRE] non rempli"): string
     {
         $errorMessage = str_replace("[PARAMETRE]", $parametre, $errorMessage);
         if (!isset($_GET[$parametre])) {
@@ -96,7 +96,7 @@ class MainController
         }
     }
 
-    protected static function getIfSetAndNumeric(string $parametre, string $errorUrl = ACCUEIL_URL, string $errorMessage = "[PARAMETRE] non rempli"): int
+    public static function getIfSetAndNumeric(string $parametre, string $errorUrl = ACCUEIL_URL, string $errorMessage = "[PARAMETRE] non rempli"): int
     {
         $valeur = static::getIfSet($parametre, $errorUrl, $errorMessage);
         if (!is_numeric($valeur)) {
@@ -105,7 +105,7 @@ class MainController
         return (int) $valeur;
     }
 
-    protected static function getIfSetAndNotEmpty(string $parametre, string $errorUrl = ACCUEIL_URL, string $errorMessage = "[PARAMETRE] non rempli"): string
+    public static function getIfSetAndNotEmpty(string $parametre, string $errorUrl = ACCUEIL_URL, string $errorMessage = "[PARAMETRE] non rempli"): string
     {
         $valeur = static::getIfSet($parametre, $errorUrl, $errorMessage);
         if (empty($valeur)) {

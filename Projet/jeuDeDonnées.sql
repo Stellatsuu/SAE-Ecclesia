@@ -14,6 +14,7 @@ INSERT INTO Utilisateur(username_utilisateur, nom_utilisateur, prenom_utilisateu
 
 -- Administrateur
 INSERT INTO Administrateur(username_administrateur) VALUES('gillest'); --Trombettoni
+INSERT INTO Administrateur(username_administrateur) VALUES('test'); --Test
 
 -- Demande_Question
 INSERT INTO Demande_Question(titre_demande_question, description_demande_question, username_organisateur) VALUES('azertyuiop', 'Lorem ipsum **dolor sit amet, consectetur __adipiscing elit__, sed do eiusmod tempor** incididunt ut labore et dolore magna aliqua.

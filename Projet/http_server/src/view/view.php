@@ -8,10 +8,15 @@ use App\SAE\Model\Repository\UtilisateurRepository;
 $estConnecte = ConnexionUtilisateur::estConnecte();
 $estAdmin = ConnexionUtilisateur::estAdmin();
 
+$lienDemandes = $estAdmin ? <<<HTML
+<li><a href="frontController.php?controller=demandeQuestion&action=listerDemandesQuestion">Demandes</a></li>
+HTML : "";
+
 if ($estConnecte) {
     $liensComptes = <<<html
     <li><a href="frontController.php?controller=utilisateur&action=afficherProfil">Mon Compte</a></li>
     <li><a href="frontController.php?controller=question&action=listerMesQuestions">Mes Questions</a></li>
+    $lienDemandes
     <li><a href="frontController.php?controller=utilisateur&action=afficherParametres">Paramètres</a></li>
     <li><a href="frontController.php?controller=utilisateur&action=seDeconnecter">Se déconnecter</a></li>
     html;
@@ -42,19 +47,6 @@ if ($estConnecte) {
 
 $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>", $liensComptes);
 
-if($estAdmin) {
-    $quatriemeLien = <<<html
-    <li><a href="frontController.php?controller=demandeQuestion&action=listerDemandesQuestion">Demandes</a></li>
-    html;
-} else {
-    $quatriemeLien = <<<html
-    <li><a href="frontController.php?controller=demandeQuestion&action=afficherFormulaireDemandeQuestion">Poser une question</a></li>
-    html;
-}
-
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -83,7 +75,7 @@ if($estAdmin) {
                 <li><a href="frontController.php">Accueil</a></li>
                 <li><a href="frontController.php?controller=question&action=listerQuestions">Questions</a></li>
                 <li><a href="frontController.php?controller=question&action=afficherQuestionsFinies">Résultats</a></li>
-                <?= $quatriemeLien ?>
+                <li><a href="frontController.php?controller=demandeQuestion&action=afficherFormulaireDemandeQuestion">Poser une question</a></li>
                 <?= $liensComptesVersionMobile ?>
             </ul>
             <div class="menu_compte" tabindex="0">
@@ -222,13 +214,13 @@ if($estAdmin) {
     <script>
         const body = document.querySelector("body");
         const modalCloseList = document.querySelectorAll(".modal-close");
-        const modalOpenList = document.querySelectorAll(".modal-open"); 
+        const modalOpenList = document.querySelectorAll(".modal-open");
 
         //if url contains #modal, but not just #, add class no-scroll to body
         if (window.location.hash && window.location.hash !== "#") {
             body.classList.add("no-scroll");
         }
-        
+
 
         modalOpenList.forEach((modalOpen) => {
             modalOpen.addEventListener("click", (e) => {
@@ -241,7 +233,6 @@ if($estAdmin) {
                 body.classList.remove("no-scroll");
             });
         });
-
     </script>
 </body>
 

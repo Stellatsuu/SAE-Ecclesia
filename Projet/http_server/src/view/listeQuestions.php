@@ -92,11 +92,11 @@ function pageLink($page, $text, $nbPages, $query, $active = true, $isCurrent = f
 }
 if ($nbPages == 1) {
     $paginationLinks = [
-        pageLink(-1, "<<", $nbPages, $query, false),
-        pageLink(-1, "<", $nbPages, $query, false),
-        pageLink(1, "1", $nbPages, $query, true, true),
-        pageLink(-1, ">", $nbPages, $query, false),
-        pageLink(-1, ">>", $nbPages, $query, false)
+        pageLink(-1, "<<", 1, $query, false),
+        pageLink(-1, "<", 1, $query, false),
+        pageLink(1, "1", 1, $query, true, true),
+        pageLink(-1, ">", 1, $query, false),
+        pageLink(-1, ">>", 1, $query, false),
     ];
 } else if ($page == 1) {
     $paginationLinks = [

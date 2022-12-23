@@ -11,9 +11,11 @@ class SystemeVoteFactory
         {
             switch ($type) {
                 case "majoritaire_a_un_tour":
-                    return new MajoritaireAUnTour($question);
+                    return new UninominalMajoritaireAUnTour($question);
+                case "approbation":
+                    return new VoteParApprobation($question);
                 default:
-                    return new MajoritaireAUnTour($question);
+                    return new UninominalMajoritaireAUnTour($question);
             }
         }
 
