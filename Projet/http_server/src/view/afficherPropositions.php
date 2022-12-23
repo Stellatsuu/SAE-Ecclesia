@@ -12,7 +12,7 @@ $nbPropopositions = count($propositions);
 $question = Question::castIfNotNull($question);
 $phase = $question->getPhase();
 $responsable = $propositionActuelle->getResponsable();
-$nomResponsable = $responsable->getPrenom() . " " . strtoupper($responsable->getNom());
+$nomResponsable = $responsable->getNomUsuel();
 
 $estResponsable = $responsable->getUsername() === $username;
 $estOrganisateur = $question->getUsernameOrganisateur() === $username;
@@ -92,7 +92,7 @@ $interfaceVote = $systemeVote->afficherInterfaceVote();
         <input type="hidden" name="idQuestion" value="<?= $question->getIdQuestion() ?>">
 
         <?= $interfaceVote ?>
-        
+
     </form>
 
 </div>

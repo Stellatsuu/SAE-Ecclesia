@@ -110,6 +110,7 @@ class QuestionRepository extends AbstractRepository
             SELECT *
                 FROM question
                 WHERE date_fermeture_votes <= CURRENT_TIMESTAMP
+                ORDER BY date_fermeture_votes DESC
         SQL;
 
         $pdo = DatabaseConnection::getPdo();
@@ -164,9 +165,8 @@ class QuestionRepository extends AbstractRepository
     {
         $conditions = [];
         for ($i = 0; $i < count($motsCles); $i++) {
-            $conditions[] = "AND (titre_question LIKE :mot_cle_$i OR description_question LIKE :mot_cle_$i)";
+            $conditions[] = "AND (LOWER(titre_question) LIKE :mot_cle_$i OR LOWER(description_question) LIKE :mot_cle_$i)";
         }
-
         $conditions = implode(' ', $conditions);
 
         $sql = <<<SQL
