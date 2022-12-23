@@ -2,6 +2,7 @@
 
 use App\SAE\Lib\Markdown;
 use App\SAE\Lib\PhaseQuestion;
+use App\SAE\Lib\PhotoProfil;
 use App\SAE\Model\DataObject\Proposition;
 use App\SAE\Model\DataObject\Question;
 use App\SAE\Model\Repository\PropositionRepository;
@@ -35,12 +36,13 @@ $propositionHTMLs = [];
 for ($i = 0; $i < count($propositions); $i++) {
     $proposition = Proposition::castIfNotNull($propositions[$i]);
     $titreProposition = $proposition->getTitreProposition();
-    $pfp = $proposition->getResponsable()->getPhotoProfil(64);
+    $b64img = $proposition->getResponsable()->getPhotoProfil(64);
+    $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
 
     $propositionHTML = <<<HTML
         <div class="proposition-compact">
                 <span class="proposition-compact__pfp user-tooltip">
-                    <img src="data:image/png;charset=utf8;base64,$pfp"/>
+                    $pfp
                     <div class="user-tooltip__text">
                         {$proposition->getResponsable()->getNomUsuel()}
                     </div>

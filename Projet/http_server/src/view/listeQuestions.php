@@ -1,5 +1,6 @@
 <?php
 
+use App\SAE\Lib\PhotoProfil;
 use App\SAE\Model\DataObject\Question;
 
 $questionHTMLs = [];
@@ -14,9 +15,7 @@ foreach ($questions as $q) {
     $utilisateur = $question->getOrganisateur();
     $nomUsuel = $utilisateur->getNomUsuel();
     $b64img = $utilisateur->getPhotoProfil(64);
-    $pfp = <<<html
-    <img src="data:image/png;charset=utf8;base64,$b64img"/>
-    html;
+    $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
 
 
     $html = <<<HTML

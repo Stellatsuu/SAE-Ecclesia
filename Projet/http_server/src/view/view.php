@@ -1,6 +1,7 @@
 <?php
 
 use App\SAE\Lib\ConnexionUtilisateur;
+use App\SAE\Lib\PhotoProfil;
 use App\SAE\Model\DataObject\Utilisateur;
 use App\SAE\Model\Repository\UtilisateurRepository;
 
@@ -27,9 +28,7 @@ if ($estConnecte) {
 
     $b64img = $utilisateur->getPhotoProfil(64);
 
-    $pfp = <<<html
-    <img src="data:image/png;charset=utf8;base64,$b64img"/>
-    html;
+    $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
 } else {
     $liensComptes = <<<html
     <li><a class="modal-open" href="#modalSeConnecter">Se connecter</a></li>

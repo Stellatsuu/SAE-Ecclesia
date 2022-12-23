@@ -80,6 +80,7 @@ class DebugController extends MainController
         if ($number <= 0) return;
 
         $words = static::$words;
+        $possiblePhotoTypes = ["beam", "pixel", "ring", "bauhaus"];
 
         $usedImages = [];
         for ($i = 0; $i < $number; $i++) {
@@ -88,15 +89,10 @@ class DebugController extends MainController
             $username = strtolower($prenom . $nom . rand(0, 1000));
             $email = $username . "@gmail.com";
 
-            $image = null;
-            do {
-                $image = file_get_contents("https://thispersondoesnotexist.com/image");
-            } while (in_array($image, $usedImages));
-            $usedImages[] = $image;
-
-            $b64img = base64_encode($image);
-            $image = PhotoProfil::convertirRedimensionnerRogner($b64img);
-
+            $imageType = $possiblePhotoTypes[rand(0, count($possiblePhotoTypes) - 1)];
+            $image = file_get_contents("https://source.boringavatars.com/" . $imageType . "/256/" . $username);
+            $image = base64_encode($image);
+            
             $utilisateur = new Utilisateur(
                 $username,
                 $nom,
@@ -214,7 +210,7 @@ class DebugController extends MainController
 
             $redacteurs = [];
             for ($i = 0; $i < $nbRedacteurs; $i++) {
-                
+
                 do {
                     $username = $utilisateurs[rand(0, count($utilisateurs) - 1)]->getUsername();
                 } while (in_array($username, $redacteurs));
@@ -235,13 +231,13 @@ class DebugController extends MainController
             return preg_match("/[0-9]+$/", $question->getUsernameOrganisateur());
         }));
 
-        foreach($questions as $question) {
+        foreach ($questions as $question) {
             $question = Question::castIfNotNull($question);
 
             $usernamesRedacteur = (new RedacteurRepository())->selectAllByQuestion($question->getIdQuestion());
 
-            foreach($usernamesRedacteur as $username) {
-                if(rand(0, 100) > $chanceParRedacteur * 100) continue;
+            foreach ($usernamesRedacteur as $username) {
+                if (rand(0, 100) > $chanceParRedacteur * 100) continue;
 
                 $proposition = new Proposition(
                     -1,
@@ -251,7 +247,7 @@ class DebugController extends MainController
                 );
 
                 $paragraphes = [];
-                foreach($question->getSections() as $section) {
+                foreach ($question->getSections() as $section) {
                     $paragraphe = new Paragraphe(
                         -1,
                         -1,
@@ -268,11 +264,12 @@ class DebugController extends MainController
         }
     }
 
-    private static function updatePhotosProfil() {
+    private static function updatePhotosProfil()
+    {
         $utilisateurs = (new UtilisateurRepository())->selectAll();
-        foreach($utilisateurs as $utilisateur) {
+        foreach ($utilisateurs as $utilisateur) {
             $utilisateur = Utilisateur::castIfNotNull($utilisateur);
-            
+
             $image = PhotoProfil::getRandomPhotoProfilParDefaut();
             $utilisateur->setPhotoProfil($image);
             (new UtilisateurRepository())->update($utilisateur);
@@ -282,6 +279,7 @@ class DebugController extends MainController
 
     public static function resetDatabase(): void
     {
+        set_time_limit(0);
         $randomFakeUsers = isset($_GET["randomFakeUsers"]) ? $_GET["randomFakeUsers"] : 0;
         $randomFakeQuestions = isset($_GET["randomFakeQuestions"]) ? $_GET["randomFakeQuestions"] : 0;
 
