@@ -30,7 +30,8 @@ class QuestionRepository extends AbstractRepository
             'date_fin_redaction',
             'date_ouverture_votes',
             'date_fermeture_votes',
-            'systeme_vote'
+            'systeme_vote',
+            'tags'
         ];
     }
 
@@ -47,6 +48,7 @@ class QuestionRepository extends AbstractRepository
         $question->setDateOuvertureVotes($row['date_ouverture_votes'] == NULL ? NULL : new DateTime($row['date_ouverture_votes']));
         $question->setDateFermetureVotes($row['date_fermeture_votes'] == NULL ? NULL : new DateTime($row['date_fermeture_votes']));
         $question->setSystemeVote(SystemeVoteFactory::createSystemeVote($row['systeme_vote'], $question));
+        $question->setTags($row['tags']);
         return $question;
     }
 

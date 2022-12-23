@@ -25,6 +25,8 @@ class Question extends DemandeQuestion implements JsonSerializable
     private ?DateTime $dateFermetureVotes;
     private ?AbstractSystemeVote $systemeVote;
 
+    private ?string $tags;
+
     public function __construct(int $idQuestion, string $titre, string $description, Utilisateur|string $organisateur)
     {
         parent::__construct($idQuestion, $titre, $description, $organisateur);
@@ -38,6 +40,7 @@ class Question extends DemandeQuestion implements JsonSerializable
         $this->dateOuvertureVotes = null;
         $this->dateFermetureVotes = null;
         $this->systemeVote = null;
+        $this->tags = "{}";
     }
 
     //Respect du contrat
@@ -52,7 +55,8 @@ class Question extends DemandeQuestion implements JsonSerializable
             'date_fin_redaction' => $this->dateFinRedaction == null ? null : $this->dateFinRedaction ->format('Y-m-d H:i:s'),
             'date_ouverture_votes' => $this->dateOuvertureVotes == null ? null : $this->dateOuvertureVotes->format('Y-m-d H:i:s'),
             'date_fermeture_votes' => $this->dateOuvertureVotes == null ? null : $this->dateFermetureVotes->format('Y-m-d H:i:s'),
-            'systeme_vote' => $this->systemeVote == null ? "" : $this->systemeVote->getNom()
+            'systeme_vote' => $this->systemeVote == null ? "" : $this->systemeVote->getNom(),
+            'tags' => $this->tags == null ? "{}" : $this->getTags()
         ];
     }
 
@@ -110,6 +114,10 @@ class Question extends DemandeQuestion implements JsonSerializable
     public function getSystemeVote(): AbstractSystemeVote
     {
         return $this->systemeVote;
+    }
+
+    public function getTags() : string{
+        return $this->tags;
     }
 
     public function getPhase() {
@@ -187,6 +195,9 @@ class Question extends DemandeQuestion implements JsonSerializable
         $this->organisateur = null;
     }
 
+    public function setTags(?string $tags) : void{
+        $this->tags = $tags;
+    }
     //Caster
 
     public static function castIfNotNull($object, $errorUrl = "frontController.php", $errorMessage = "[OBJECT] n'existe pas"): Question
@@ -210,7 +221,8 @@ class Question extends DemandeQuestion implements JsonSerializable
             'date_fin_redaction' => $this->getDateFinRedaction(),
             'date_ouverture_votes' => $this->getDateOuvertureVotes(),
             'date_fermeture_votes' => $this->getDateFermetureVotes(),
-            'systeme_vote' => $this->getSystemeVote()
+            'systeme_vote' => $this->getSystemeVote(),
+            'tags' => $this->getTags()
         ];
     }
 }

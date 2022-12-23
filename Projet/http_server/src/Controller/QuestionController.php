@@ -190,6 +190,11 @@ class QuestionController extends MainController
 
         $systemeVote = $_POST["systeme_vote"];
 
+        $tags = "{}";
+        if(isset($_POST["tags"])) {
+            $tags = "{" . $_POST["tags"] . "}";
+        }
+
         $question->setDescription($description);
         $question->setSections($sections);
         $question->setRedacteurs($redacteurs);
@@ -199,6 +204,7 @@ class QuestionController extends MainController
         $question->setDateOuvertureVotes($dateOuvertureVotes);
         $question->setDateFermetureVotes($dateFermetureVotes);
         $question->setSystemeVote(SystemeVoteFactory::createSystemeVote($systemeVote, $question));
+        $question->setTags($tags);
 
         (new QuestionRepository)->update($question);
         static::message(LMQ_URL, "La question a été posée");

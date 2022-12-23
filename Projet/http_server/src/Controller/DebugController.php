@@ -121,7 +121,8 @@ class DebugController extends MainController
             date_fin_redaction,
             date_ouverture_votes,
             date_fermeture_votes,
-            systeme_vote)
+            systeme_vote,
+            tags)
         VALUES(
             :titre_question,
             :description_question,
@@ -130,7 +131,8 @@ class DebugController extends MainController
             :date_fin_redaction,
             :date_ouverture_votes,
             :date_fermeture_votes,
-            :systeme_vote)
+            :systeme_vote,
+            :tags)
         SQL;
         $stmt = $pdo->prepare($sql);
 
@@ -161,7 +163,8 @@ class DebugController extends MainController
                 "date_fin_redaction" => $dateFinRedaction,
                 "date_ouverture_votes" => $dateOuvertureVotes,
                 "date_fermeture_votes" => $dateFermetureVotes,
-                "systeme_vote" => $systemesVote[rand(0, count($systemesVote) - 1)]
+                "systeme_vote" => $systemesVote[rand(0, count($systemesVote) - 1)],
+                "tags" => "{}"
             ]);
         }
     }

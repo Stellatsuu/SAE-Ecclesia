@@ -22,7 +22,6 @@
             <button type="button" id="add_section">+</button>
         </div>
 
-
         <label>Phase de rédaction : </label>
         <div class="conteneurDateHeure">
             <div>
@@ -72,20 +71,14 @@
         </div>
 
         <div id="roles_input">
-
             <div id="redacteurs_input">
                 <label for="redacteurs_input">Rédacteurs : </label>
-
-
                 <button type="button" id="add_redacteur">+</button>
             </div>
-
-
             <div id="votants_input">
                 <label for="votants_input">Votants : </label>
                 <button type="button" id="add_votant">+</button>
             </div>
-
         </div>
 
         <div id="systeme_vote_input">
@@ -95,7 +88,19 @@
                     <option value="approbation">Vote par approbation</option>
                 </select>
             </label>
+        </div>
 
+        <div id="tags_input">
+            <label for="tags_input">Tag(s) :
+                <span class="tooltip">
+                    <img class="tooltipImage" src="assets/images/info-icon.svg" alt="bouton info">
+                    <div class="tooltiptext">Veuillez séparer les tags avec des virgules.</div>
+                </span>
+                <div class="text_input_div">
+                    <textarea rows="2" id="tags_id" name="tags" maxlength="500"></textarea>
+                    <span class="indicateur_max_chars unselectable">500 max</span>
+                </div>
+            </label>
         </div>
 
         <input type="hidden" name="idQuestion" value="<?= htmlspecialchars($question->getIdQuestion()) ?>">
