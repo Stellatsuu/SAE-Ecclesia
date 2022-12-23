@@ -131,22 +131,23 @@ if ($nbPages == 1) {
 }
 ?>
 
-<div class="panel" id="listeQuestions">
-    <h1>Questions : </h1>
+<div class="panel" id="liste-questions">
 
-    <div class="searchBar">
-        <form action="frontController.php" method="get">
-            <input type="hidden" name="controller" value="question">
-            <input type="hidden" name="action" value="listerQuestions">
-            <input type="text" name="query" value="<?= htmlspecialchars(rawurldecode($query)) ?>" />
-            <input type="submit" value="Rechercher">
-        </form>
+    <div id="liste-questions__top">
+        <h1>Questions : </h1>
+        <div class="barre-recherche">
+            <form action="frontController.php" method="get">
+                <input type="hidden" name="controller" value="question">
+                <input type="hidden" name="action" value="listerQuestions">
+                <input type="text" name="query" value="<?= htmlspecialchars(rawurldecode($query)) ?>" />
+                <input type="submit" value="">
+            </form>
+        </div>
     </div>
 
     <div id="questions">
         <?php echo implode("", $questionHTMLs); ?>
     </div>
-
 
     <div class="pagination">
         <?php echo implode("", $paginationLinks); ?>
