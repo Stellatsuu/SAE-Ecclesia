@@ -12,6 +12,7 @@ use App\SAE\Lib\PhaseQuestion as Phase;
 use App\SAE\Model\Repository\PropositionRepository as PropositionRepository;
 use App\SAE\Model\HTTP\Session;
 use App\SAE\Model\Repository\RedacteurRepository;
+use App\SAE\Model\SystemeVote\SystemeVoteFactory;
 use DateTime;
 use DateInterval;
 
@@ -187,6 +188,8 @@ class QuestionController extends MainController
             static::error($AFPQ_URL, "Veuillez sélectionner au moins un votant");
         }
 
+        $systemeVote = $_POST["systeme_vote"];
+
         $question->setDescription($description);
         $question->setSections($sections);
         $question->setRedacteurs($redacteurs);
@@ -195,6 +198,7 @@ class QuestionController extends MainController
         $question->setDateFinRedaction($dateFinRedaction);
         $question->setDateOuvertureVotes($dateOuvertureVotes);
         $question->setDateFermetureVotes($dateFermetureVotes);
+        $question->setSystemeVote(SystemeVoteFactory::createSystemeVote($systemeVote, $question));
 
         (new QuestionRepository)->update($question);
         static::message(LMQ_URL, "La question a été posée");
