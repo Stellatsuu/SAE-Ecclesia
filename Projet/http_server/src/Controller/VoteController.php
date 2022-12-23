@@ -16,40 +16,15 @@ use App\SAE\Model\Repository\VotantRepository;
 
 class VoteController extends MainController
 {
-    public static function voter()
-    {
 
-        $username = ConnexionUtilisateur::getUsernameSiConnecte();
+    public static function voter() {
+        $idQuestion = static::getIfSetAndNumeric("idQuestion");
 
-        $idProposition = static::getIfSetAndNumeric("idProposition");
-        $proposition = Proposition::castIfNotNull((new PropositionRepository)->select($idProposition));
+        $question = Question::castIfNotNull((new QuestionRepository())->select($idQuestion));
 
-        $question = $proposition->getQuestion();
-        $idQuestion = $question->getIdQuestion();
-        $phase = $question->getPhase();
-        if ($phase !== PhaseQuestion::Vote) {
-            static::error("frontController.php", "La question n'est pas en phase de vote");
-            return;
-        }
+        $systemeVote = $question->getSystemeVote();
 
-        /**
-         * @var string URL de afficherPropositions
-         */
-        $AP_URL = "frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion";
-
-        $estVotant = (new VotantRepository)->existsForQuestion($question->getIdQuestion(), $username);
-        if (!$estVotant) {
-            static::error(LMQ_URL, "Vous n'êtes pas votant pour cette question");
-        }
-
-        $aDejaVote = (new VoteRepository)->existsForQuestion($proposition->getIdQuestion(), $username);
-        if ($aDejaVote) {
-            static::error($AP_URL, "Vous avez déjà voté sur cette question");
-        }
-
-        $vote = new Vote($proposition, $username, 1);
-        (new VoteRepository)->insert($vote);
-
-        static::message($AP_URL, "Votre vote a bien été pris en compte");
+        $systemeVote->traiterVote();
     }
+
 }

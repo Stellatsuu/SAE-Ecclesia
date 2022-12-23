@@ -15,6 +15,9 @@ $descriptionQuestion_md = Markdown::toHtml($descriptionQuestion);
 $sections = $question->getSections();
 $organisateur = $question->getOrganisateur();
 
+$systemeVote = $question->getSystemeVote();
+$systemeVoteNomComplet = $systemeVote->getNomComplet();
+
 
 $sectionHTMLs = [];
 for ($i = 0; $i < count($sections); $i++) {
@@ -83,6 +86,7 @@ for ($i = 0; $i < count($propositions); $i++) {
     <div class="panel2">
 
         <h2>Propositions :</h2>
+        <p id="afficher-question__systeme-vote">Le choix se fera par un <?= $systemeVoteNomComplet ?>.</p>
 
         <div id="afficher-question__propositions">
 

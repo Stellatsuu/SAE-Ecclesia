@@ -301,36 +301,10 @@ class QuestionController extends MainController
             return;
         }
 
-        $propositions = (new PropositionRepository())->selectAllByQuestion($idQuestion);
-        if (count($propositions) == 0) {
-            static::error(ACCUEIL_URL, "Il n'y a aucune proposition pour cette question");
-            return;
-        }
-
-        $resultats = $question->getSystemeVote()->getResultats();
-
-        $nbTotalVotes = array_sum($resultats);
-        $nbTotalVotes = $nbTotalVotes == 0 ? 1 : $nbTotalVotes;
-
-        $idPropositionsGagnantes = array_keys($resultats, max($resultats));
-
-        $propositionsGagnantes = array_reduce($propositions, function ($carry, $item) use ($idPropositionsGagnantes) {
-            if (in_array($item->getIdProposition(), $idPropositionsGagnantes))
-                $carry[] = $item;
-            return $carry;
-        }, []);
-
-        //TODO : déterminer quoi faire en cas d'égalité
-        $propositionsGagnante = $propositionsGagnantes[0];
-
         static::afficherVue("view.php", [
             "titrePage" => "Résultats",
             "contenuPage" => "afficherResultats.php",
-            "question" => $question,
-            "propositions" => $propositions,
-            "propositionGagnante" => $propositionsGagnante,
-            "resultats" => $resultats,
-            "nbTotalVotes" => $nbTotalVotes
+            "question" => $question
         ]);
     }
 

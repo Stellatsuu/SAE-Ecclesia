@@ -16,6 +16,9 @@ $nomResponsable = $responsable->getPrenom() . " " . strtoupper($responsable->get
 
 $estResponsable = $responsable->getUsername() === $username;
 $estOrganisateur = $question->getUsernameOrganisateur() === $username;
+
+$systemeVote = $question->getSystemeVote();
+$interfaceVote = $systemeVote->afficherInterfaceVote();
 ?>
 
 <div class="panel" id="afficher-propositions">
@@ -26,7 +29,7 @@ $estOrganisateur = $question->getUsernameOrganisateur() === $username;
         <summary class="titre-description">Description</summary>
         <span class="description markdown"><?= Markdown::toHtml($question->getDescription()) ?></span>
     </details>
-    
+
     <div id="propositionSelector">
         <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=<?= rawurlencode($question->getIdQuestion()) ?>&index=<?= $index == 0 ? $nbPropopositions - 1 : $index - 1 ?>">
             <img src="assets/images/arrow.svg" style="transform: rotate(90deg)">
@@ -84,35 +87,12 @@ $estOrganisateur = $question->getUsernameOrganisateur() === $username;
     </div>
 
     <form id="formulaire_vote" action="frontController.php?controller=vote&action=voter" method="post" style="<?= $phase != PhaseQuestion::Vote ? 'display: none;' : '' ?>">
-
         <h2>Vote</h2>
-        <p>Le vote se déroule en 1 tour. Choisissez une unique proposition parmi les suivantes</p>
-        <div>
-            <?php
 
-            foreach ($propositions as $p) {
-                $idProposition = rawurlencode($p->getIdProposition());
-                $titreProposition = htmlspecialchars($p->getTitreProposition());
+        <input type="hidden" name="idQuestion" value="<?= $question->getIdQuestion() ?>">
 
-                $html = <<<HTML
-                    <div for="choix$idProposition">
-                        <label>$titreProposition</label>
-                        <input type="radio" name="idProposition" id="choix$idProposition" value="$idProposition">
-                    </div>
-                HTML;
-
-                echo $html;
-            }
-            ?>
-        </div>
-        <input type="submit" value="Voter">
+        <?= $interfaceVote ?>
+        
     </form>
-
-
-
-
-
-
-
 
 </div>

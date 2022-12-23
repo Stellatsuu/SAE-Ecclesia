@@ -1494,6 +1494,9 @@ input[type=time]::-webkit-calendar-picker-indicator {
   width: fit-content;
   align-self: center;
 }
+#afficher-question .panel2 p {
+  margin-top: 0;
+}
 #afficher-question #afficher-question__top {
   display: flex;
   flex-direction: row;

@@ -16,6 +16,10 @@
             width: fit-content;
             align-self: center;
         }
+
+        p {
+            margin-top: 0;
+        }
     }
 
     #afficher-question__top {
@@ -64,7 +68,6 @@
             margin: 0 20px;
             text-align: justify;
         }
-        
     }
 
 

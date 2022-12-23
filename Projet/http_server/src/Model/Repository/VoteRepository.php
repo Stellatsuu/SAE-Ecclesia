@@ -97,4 +97,46 @@ class VoteRepository extends AbstractRepository
 
         return $pdo->fetch()['a_vote'] > 0;
     }
+
+    public function deleteAllByQuestionEtVotant(int $idQuestion, string $username): void
+    {
+        $sql = <<<SQL
+        DELETE FROM vote v 
+            WHERE v.id_proposition IN (
+                SELECT p.id_proposition 
+                    FROM proposition p 
+                    WHERE p.id_question = :idQuestion
+            ) 
+            AND v.username_votant = :username
+        SQL;
+
+        $pdo = DatabaseConnection::getPdo()->prepare($sql);
+        $pdo->execute([
+            "idQuestion" => $idQuestion,
+            "username" => $username
+        ]);
+    }
+
+    public function selectAllByQuestionEtVotant(int $idQuestion, string $username): array
+    {
+        $sql = <<<SQL
+        SELECT * 
+            FROM vote v JOIN proposition p 
+                ON v.id_proposition = p.id_proposition 
+            WHERE p.id_question = :idQuestion 
+            AND v.username_votant = :username
+        SQL;
+
+        $pdo = DatabaseConnection::getPdo()->prepare($sql);
+        $pdo->execute([
+            "idQuestion" => $idQuestion,
+            "username" => $username
+        ]);
+
+        $resultat = [];
+        foreach ($pdo as $ligne) {
+            $resultat[] = $this->construire($ligne);
+        }
+        return $resultat;
+    }
 }
