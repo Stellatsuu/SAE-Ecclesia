@@ -88,6 +88,16 @@
 
         </div>
 
+        <div id="systeme_vote_input">
+            <label for="systeme_vote_input">Système de vote :
+                <select name="systeme_vote">
+                    <option value="majoritaire_a_un_tour">Majoritaire à un tour</option>
+                    <option value="approbation">Vote par approbation</option>
+                </select>
+            </label>
+
+        </div>
+
         <input type="hidden" name="idQuestion" value="<?= htmlspecialchars($question->getIdQuestion()) ?>">
 
     </fieldset>
