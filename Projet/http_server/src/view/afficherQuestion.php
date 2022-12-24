@@ -1,34 +1,37 @@
 <?php
 
+use App\SAE\Lib\ConnexionUtilisateur;
 use App\SAE\Lib\Markdown;
 use App\SAE\Lib\PhaseQuestion;
 use App\SAE\Lib\PhotoProfil;
 use App\SAE\Model\DataObject\Proposition;
 use App\SAE\Model\DataObject\Question;
 use App\SAE\Model\Repository\PropositionRepository;
+use App\SAE\Model\Repository\VotantRepository;
 
+$username = ConnexionUtilisateur::getUsername() ?? '';
 $question = Question::castIfNotNull($question);
 $idQuestion = $question->getIdQuestion();
-$titreQuestion = $question->getTitre();
-$descriptionQuestion = $question->getDescription();
-$descriptionQuestion_md = Markdown::toHtml($descriptionQuestion);
+$phase = $question->getPhase();
 $sections = $question->getSections();
 $organisateur = $question->getOrganisateur();
-
 $systemeVote = $question->getSystemeVote();
-$systemeVoteNomComplet = $systemeVote->getNomComplet();
 
+$systemeVoteNomComplet = htmlspecialchars($systemeVote->getNomComplet());
+$titreQuestion = htmlspecialchars($question->getTitre());
+$nomUsuelOrga = htmlspecialchars($organisateur->getNomUsuel());
+$descriptionQuestion = Markdown::toHtml($question->getDescription());
 
 $sectionHTMLs = [];
 for ($i = 0; $i < count($sections); $i++) {
-    $nomSection = $sections[$i]->getNomSection();
-    $descriptionSection = $sections[$i]->getDescriptionSection();
-    $descriptionSection_md = Markdown::toHtml($descriptionSection);
+
+    $nomSection = htmlspecialchars($sections[$i]->getNomSection());
+    $descriptionSection = Markdown::toHtml($sections[$i]->getDescriptionSection());
 
     $sectionHTML = <<<HTML
     <details>
         <summary class="titre-section">$nomSection</summary>
-        <span class='description-section markdown'>$descriptionSection_md</span>
+        <span class='description-section markdown'>$descriptionSection</span>
     </details>
     HTML;
 
@@ -38,8 +41,12 @@ for ($i = 0; $i < count($sections); $i++) {
 $propositionHTMLs = [];
 for ($i = 0; $i < count($propositions); $i++) {
     $proposition = Proposition::castIfNotNull($propositions[$i]);
-    $titreProposition = $proposition->getTitreProposition();
-    $b64img = $proposition->getResponsable()->getPhotoProfil(64);
+    $responsable = $proposition->getResponsable();
+
+    $titreProposition = htmlspecialchars($proposition->getTitreProposition());
+    $b64img = htmlspecialchars($responsable->getPhotoProfil());
+    $nomUsuelResp = htmlspecialchars($responsable->getNomUsuel());
+
     $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
 
     $propositionHTML = <<<HTML
@@ -47,7 +54,7 @@ for ($i = 0; $i < count($propositions); $i++) {
                 <span class="proposition-compact__pfp user-tooltip">
                     $pfp
                     <div class="user-tooltip__text">
-                        {$proposition->getResponsable()->getNomUsuel()}
+                        $nomUsuelResp
                     </div>
                 </span>
                 <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion&index=$i">
@@ -59,20 +66,37 @@ for ($i = 0; $i < count($propositions); $i++) {
     $propositionHTMLs[] = $propositionHTML;
 }
 
+$ligneExplicationSysVote = $phase == PhaseQuestion::Resultat ?
+    "Le choix s'est fait par un $systemeVoteNomComplet." :
+    "Le choix se fera par un $systemeVoteNomComplet.";
+
+$estVotant = (new VotantRepository)->existsForQuestion($idQuestion, $username);
+
+$lienVoirResultats = "<a href='frontController.php?controller=question&action=afficherResultats&idQuestion=$idQuestion'>Voir les résultats</a>";
+$lienVoirPropositions = "<a href='frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion'>Lire les propositions</a>";
+$lienVoterPropositions = "<a href='frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion'>Voter pour une proposition</a>";
+
+if($phase == PhaseQuestion::Vote && $estVotant) {
+   $ligneExplicationSysVote .= " $lienVoterPropositions";
+} else if($phase == PhaseQuestion::Resultat) {
+    $ligneExplicationSysVote .= " $lienVoirResultats";
+} else {
+    $ligneExplicationSysVote .= " $lienVoirPropositions";
+}
 ?>
 
 <div id="afficher-question" class="panel">
     <div id="afficher-question__top">
         <h1><?= $titreQuestion ?>
             <span>
-                par&nbsp;<?= $organisateur->getNomUsuel() ?>
+                par&nbsp;<?= $nomUsuelOrga ?>
             </span>
         </h1>
     </div>
 
     <div id="afficher-question__description" class="panel2">
         <h2>Description :</h2>
-        <span id="description" class="markdown"><?= $descriptionQuestion_md ?></span>
+        <span id="description" class="markdown"><?= $descriptionQuestion ?></span>
     </div>
 
 
@@ -87,17 +111,10 @@ for ($i = 0; $i < count($propositions); $i++) {
 
         <h2>Propositions :</h2>
         <p id="afficher-question__systeme-vote">
-            <?php
-            if ($question->getPhase() == PhaseQuestion::Resultat) {
-                echo "Le choix s'est fait par un $systemeVoteNomComplet. <a href='frontController.php?controller=question&action=afficherResultats&idQuestion=$idQuestion'>Voir les résultats</a>";
-            } else {
-                echo "Le choix se fera par un $systemeVoteNomComplet.";
-            }
-            ?>
+            <?= $ligneExplicationSysVote ?>
         </p>
 
         <div id="afficher-question__propositions">
-
 
             <?php
             echo implode('', $propositionHTMLs);
