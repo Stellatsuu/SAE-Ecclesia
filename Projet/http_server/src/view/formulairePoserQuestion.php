@@ -92,14 +92,7 @@
 
         <div id="tags_input">
             <label for="tags_input">Tag(s) :
-                <span class="tooltip">
-                    <img class="tooltipImage" src="assets/images/info-icon.svg" alt="bouton info">
-                    <div class="tooltiptext">Veuillez séparer les tags avec des virgules.</div>
-                </span>
-                <div class="text_input_div">
-                    <textarea rows="2" id="tags_id" name="tags" maxlength="500"></textarea>
-                    <span class="indicateur_max_chars unselectable">500 max</span>
-                </div>
+                    <input type="text" id="tags_id" name="tags" placeholder="Veuillez séparer les tags avec des espaces.">
             </label>
         </div>
 

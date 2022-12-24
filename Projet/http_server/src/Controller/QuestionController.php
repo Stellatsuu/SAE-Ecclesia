@@ -192,9 +192,16 @@ class QuestionController extends MainController
 
         $tags = "{}";
         if(isset($_POST["tags"])) {
-            $tags = "{" . $_POST["tags"] . "}";
+            $tags = "{" . implode(',', array_unique(explode(',', strtolower(str_replace(" ", ",", preg_replace('//g', "", $_POST["tags"])))))) . "}";
+            //retire toutes les expressions non voulues (/,; etc.)
+            // -> remplace les espaces par des virgules
+            // -> met le string en minuscule
+            // -> transforme le string en tableau en coupant avec les virgules
+            // -> trie le tableau pour enlever les doublons
+            // -> reforme le string en rassemblant avec des virgules
         }
 
+        DebugController::logToFile($tags);
         $question->setDescription($description);
         $question->setSections($sections);
         $question->setRedacteurs($redacteurs);
@@ -204,9 +211,9 @@ class QuestionController extends MainController
         $question->setDateOuvertureVotes($dateOuvertureVotes);
         $question->setDateFermetureVotes($dateFermetureVotes);
         $question->setSystemeVote(SystemeVoteFactory::createSystemeVote($systemeVote, $question));
-        $question->setTags($tags);
+        //$question->setTags($tags);
 
-        (new QuestionRepository)->update($question);
+        //(new QuestionRepository)->update($question);
         static::message(LMQ_URL, "La question a été posée");
     }
 
