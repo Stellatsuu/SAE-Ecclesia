@@ -71,7 +71,7 @@ class Utilisateur extends AbstractDataObject implements JsonSerializable
         if($this->nom == "" || $this->prenom == "") {
             return $this->username;
         } else {
-            return $this->prenom . "&nbsp;" . $this->nom . "&nbsp;(" . $this->username . ")";
+            return "$this->prenom $this->nom ({$this->username})";
         }
     }
 

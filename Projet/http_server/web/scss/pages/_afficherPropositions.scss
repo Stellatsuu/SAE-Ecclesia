@@ -1,84 +1,94 @@
 #afficher-propositions {
-  #propositionTitle {
-    width: 100%;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 30px;
+  gap: 30px;
 
-  details {
-    width: 80%;
-    padding: 10px;
-    margin: 20px auto;
+  .panel2 {
+    padding: 0 20px 20px 20px;
 
-    .titre-description {
-      font-size: 1.3rem;
-      font-weight: bold;
-      margin: 5px 20px;
-    }
-
-    .description p {
-      margin: 0 20px;
-      text-align: justify;
-    }
-  }
-
-  #propositionSelector {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 30px;
-    width: 100%;
+    flex-direction: column;
 
-    a {
-      &:first-child {
-        margin-right: 20px;
-      }
-
-      &:last-child {
-        margin-left: 20px;
-      }
-    }
-
-    .boite {
-      min-width: calc(50% - 90px);
-      text-align: center;
-    }
-  }
-
-  #proposition {
-    width: 80%;
-
-    h2 {
-      margin: 0 0 4px 0;
+    .button {
+      width: fit-content;
+      align-self: center;
     }
 
     p {
-      text-align: justify;
-      margin: 0 0 4px 0;
-
-      + h2 {
-        margin-top: 8px;
-      }
+      margin-top: 0;
     }
   }
 
-  #nomResponsable {
-    width: 80%;
-    text-align: right;
-    margin: 5px;
-  }
-
-  #btns {
-    width: 80%;
+  #afficher-propositions__top {
     display: flex;
-    justify-content: flex-end;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 10px;
 
-    button,
-    .button {
-      margin: 5px;
+    * {
+      margin: 0;
     }
+
+    span {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: $couleurTexte2;
+    }
+  }
+
+  #afficher-propositions__body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #afficher-propositions__selector {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+
+    .boite {
+      min-width: 200px;
+      display: flex;
+      justify-content: center;
+    }
+
+    * {
+      margin: 0;
+    }
+  }
+
+  #afficher-propositions__proposition__under {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    * {
+      margin: 0;
+    }
+
+  }
+
+  #afficher-propositions__boutons {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    justify-content: flex-end;
   }
 }
 
-#formulaire_vote {
+#formulaire-vote {
   h2 {
     margin-bottom: 0;
   }
