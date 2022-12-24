@@ -19,6 +19,15 @@
     p {
       margin-top: 0;
     }
+
+    img {
+      border: $grisClair 3px solid;
+      margin-top: 20px;
+      border-radius: 10px;
+      width: 200px;
+      height: 200px;
+      align-self: center;
+    }
   }
 
   #afficher-propositions__top {

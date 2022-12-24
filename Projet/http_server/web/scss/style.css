@@ -1075,6 +1075,14 @@ input[type=time]::-webkit-calendar-picker-indicator {
 #afficher-propositions .panel2 p {
   margin-top: 0;
 }
+#afficher-propositions .panel2 img {
+  border: #a8a8a8 3px solid;
+  margin-top: 20px;
+  border-radius: 10px;
+  width: 200px;
+  height: 200px;
+  align-self: center;
+}
 #afficher-propositions #afficher-propositions__top {
   display: flex;
   flex-direction: row;
@@ -1233,59 +1241,25 @@ input[type=time]::-webkit-calendar-picker-indicator {
   font-weight: bold;
   color: #838383;
 }
-
-#resultats-vote {
+#afficher-resultats #afficher-resultats__body {
   display: flex;
   flex-direction: column;
-  width: 80%;
 }
-#resultats-vote div {
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
-  border-radius: 5px;
-}
-#resultats-vote div div {
-  position: relative;
-  width: 100%;
+#afficher-resultats #afficher-resultats__body #resultats-vote__body {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 20px;
 }
-#resultats-vote div div + div {
-  margin-top: 20px;
+#afficher-resultats #afficher-resultats__body #resultats-vote__body .resultats-vote__body__noresults {
+  display: flex;
+  align-self: center;
 }
-#resultats-vote div div label {
-  margin: 5px 0 5px 10px;
-  padding-right: 60px;
-}
-@media screen and (max-width: 700px) {
-  #resultats-vote div div label {
-    padding-right: 20px;
-  }
-}
-#resultats-vote div div label a {
-  color: white;
-  text-decoration: none;
-}
-#resultats-vote div div label a:hover {
-  text-decoration: underline;
-}
-#resultats-vote div div span {
-  margin-right: 10px;
-}
-#resultats-vote div div label,
-#resultats-vote div div span {
-  z-index: 1;
-  font-size: 1.2rem;
-}
-#resultats-vote div div .percentage_bar {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(to right, #E1603C 0%, #E1603C var(--percentage), #1B1B1B var(--percentage), #1B1B1B 100%);
+#afficher-resultats #afficher-resultats__body #resultats-vote__body img {
+  border: #a8a8a8 3px solid;
+  border-radius: 10px;
+  width: 200px;
+  height: 200px;
+  align-self: center;
 }
 
 #listeQuestionsFinies .question {

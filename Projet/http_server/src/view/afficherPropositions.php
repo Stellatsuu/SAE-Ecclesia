@@ -29,6 +29,9 @@ if (count($propositions) == 0) {
 
     $bodyContent = <<<HTML
     <div class="panel2">
+
+        <img src="assets/images/anime.gif" alt="sad anime boy gif">
+
         <h2>Il n'y a aucune proposition pour cette question</h2>
     </div>
     HTML;

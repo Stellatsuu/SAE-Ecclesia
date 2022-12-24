@@ -14,6 +14,14 @@ $nomUsuelOrga = htmlspecialchars($organisateur->getNomUsuel());
 
 $resultats = $systemeVote->afficherResultats();
 
+if($resultats == "") {
+    $resultats = <<<HTML
+    <img src="assets/images/confused-cat.gif" alt="confused cat" class="resultats-vote__body__noresults">
+
+    <h2 class="resultats-vote__body__noresults">Pas de propositions -> pas de résultats</h2>
+    HTML;
+}
+
 ?>
 
 <div class="panel" id="afficher-resultats">
@@ -31,13 +39,13 @@ $resultats = $systemeVote->afficherResultats();
         <span id="description" class="markdown"><?= $descriptionQuestion ?></span>
     </div>
 
-    <div id="resultats-vote">
+    <div id="afficher-resultats__body" class="panel2">
 
-        <div id="resultats_vote__top">
+        <div id="resultats-vote__top">
             <h2>Résultats du vote</h2>
         </div>
 
-        <div id="resultats_vote__body">
+        <div id="resultats-vote__body">
             <?= $resultats ?>
         </div>
 
