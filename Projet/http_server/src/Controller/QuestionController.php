@@ -345,7 +345,7 @@ class QuestionController extends MainController
             return strtolower($mot);
         }, $motsCles);
 
-        $nbPages = ceil((new QuestionRepository())->countAllPhaseRedactionOuPlus($motsCles) / $nbQuestionsParPage);
+        $nbPages = ceil((new QuestionRepository())->countAllPhaseRedactionOuPlus($motsCles) / $nbQuestionsParPage) ?: 1;
         $page = isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] > 0 && $_GET["page"] <= $nbPages ? $_GET["page"] : 1;
         
         $offset = ($page - 1) * $nbQuestionsParPage;

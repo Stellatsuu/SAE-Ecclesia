@@ -219,17 +219,16 @@ class PropositionController extends MainController
 
     public static function afficherPropositions()
     {
-        $username = ConnexionUtilisateur::getUsernameSiConnecte();
-
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
-
-        //Vérification si la question existe
         $question = Question::castIfNotNull((new QuestionRepository())->select($idQuestion));
+        $redirectURL = "frontController.php?controller=question&action=afficherQuestion&idQuestion=" . $idQuestion;
+
+        $username = ConnexionUtilisateur::getUsernameSiConnecte($redirectURL);        
 
         $estLieAQuestion = (new UtilisateurRepository)->estLieAQuestion($username, $idQuestion);
 
         if (!$estLieAQuestion)
-            static::error(LMQ_URL, "Vous n'avez pas accès aux propositions");
+            static::error($redirectURL, "Vous n'avez pas accès aux propositions");
 
         //Vérification si la question contient des propositions
         $propositions = (new PropositionRepository())->selectAllByQuestion($idQuestion);
@@ -244,7 +243,6 @@ class PropositionController extends MainController
             "question" => $question,
             "propositions" => $propositions,
             "index" => $index,
-            "username" => $username,
         ]);
     }
 
@@ -280,7 +278,6 @@ class PropositionController extends MainController
         $AP_URL = "frontController.php?controller=proposition&action=afficherPropositions&idQuestion=" . $question->getIdQuestion();
 
         if (!$estResponsable && !$estOrganisateur) {
-
             static::error($AP_URL, "Vous n'avez pas les droits pour supprimer cette proposition");
         }
 

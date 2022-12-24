@@ -3,20 +3,23 @@
 use App\SAE\Lib\PhotoProfil;
 use App\SAE\Model\DataObject\Question;
 
+$query = htmlspecialchars(rawurldecode($query));
+
 $questionHTMLs = [];
 foreach ($questions as $q) {
     $question = Question::castIfNotNull($q);
     $idQuestion = $question->getIdQuestion();
-    $titre = $question->getTitre();
-    $description = $question->getDescription();
-    $datePublication = $question->getDateDebutRedaction()->format("d/m/Y");
-    $phase = $question->getPhase()->toString();
-
     $utilisateur = $question->getOrganisateur();
-    $nomUsuel = $utilisateur->getNomUsuel();
-    $b64img = $utilisateur->getPhotoProfil(64);
-    $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
 
+    $query = htmlspecialchars(rawurldecode($query));
+    $titre = htmlspecialchars($question->getTitre());
+    $description = htmlspecialchars($question->getDescription());
+    $datePublication = htmlspecialchars($question->getDateDebutRedaction()->format("d/m/Y"));
+    $phase = htmlspecialchars($question->getPhase()->toString());
+    $nomUsuel = htmlspecialchars($utilisateur->getNomUsuel());
+    $b64img = htmlspecialchars($utilisateur->getPhotoProfil(64));
+
+    $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
 
     $html = <<<HTML
         <div class="question-compact">
@@ -28,7 +31,6 @@ foreach ($questions as $q) {
                         $nomUsuel
                     </div>
                 </span>
-
 
                 <a href="frontController.php?controller=question&action=afficherQuestion&idQuestion=$idQuestion">
                     $titre
@@ -139,7 +141,7 @@ if ($nbPages == 1) {
             <form action="frontController.php" method="get">
                 <input type="hidden" name="controller" value="question">
                 <input type="hidden" name="action" value="listerQuestions">
-                <input type="text" name="query" value="<?= htmlspecialchars(rawurldecode($query)) ?>" />
+                <input type="text" name="query" value="<?= $query ?>" />
                 <input type="submit" value="">
             </form>
         </div>

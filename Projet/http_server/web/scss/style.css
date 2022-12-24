@@ -1054,84 +1054,107 @@ input[type=time]::-webkit-calendar-picker-indicator {
   justify-content: space-around;
 }
 
-#afficher-propositions #propositionTitle {
-  width: 100%;
+#afficher-propositions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 30px;
+  gap: 30px;
 }
-#afficher-propositions details {
-  width: 80%;
-  padding: 10px;
-  margin: 20px auto;
+#afficher-propositions .panel2 {
+  padding: 0 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
 }
-#afficher-propositions details .titre-description {
+#afficher-propositions .panel2 .button {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  align-self: center;
+}
+#afficher-propositions .panel2 p {
+  margin-top: 0;
+}
+#afficher-propositions .panel2 img {
+  border: #a8a8a8 3px solid;
+  margin-top: 20px;
+  border-radius: 10px;
+  width: 200px;
+  height: 200px;
+  align-self: center;
+}
+#afficher-propositions #afficher-propositions__top {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 10px;
+}
+#afficher-propositions #afficher-propositions__top * {
+  margin: 0;
+}
+#afficher-propositions #afficher-propositions__top span {
   font-size: 1.3rem;
   font-weight: bold;
-  margin: 5px 20px;
+  color: #838383;
 }
-#afficher-propositions details .description p {
-  margin: 0 20px;
-  text-align: justify;
-}
-#afficher-propositions #propositionSelector {
+#afficher-propositions #afficher-propositions__body {
   display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+#afficher-propositions #afficher-propositions__selector {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
   align-items: center;
   justify-content: center;
-  margin-bottom: 30px;
-  width: 100%;
 }
-#afficher-propositions #propositionSelector a:first-child {
-  margin-right: 20px;
-}
-#afficher-propositions #propositionSelector a:last-child {
-  margin-left: 20px;
-}
-#afficher-propositions #propositionSelector .boite {
-  min-width: calc(50% - 90px);
-  text-align: center;
-}
-#afficher-propositions #proposition {
-  width: 80%;
-}
-#afficher-propositions #proposition h2 {
-  margin: 0 0 4px 0;
-}
-#afficher-propositions #proposition p {
-  text-align: justify;
-  margin: 0 0 4px 0;
-}
-#afficher-propositions #proposition p + h2 {
-  margin-top: 8px;
-}
-#afficher-propositions #nomResponsable {
-  width: 80%;
-  text-align: right;
-  margin: 5px;
-}
-#afficher-propositions #btns {
-  width: 80%;
+#afficher-propositions #afficher-propositions__selector .boite {
+  min-width: 200px;
   display: flex;
+  justify-content: center;
+}
+#afficher-propositions #afficher-propositions__selector * {
+  margin: 0;
+}
+#afficher-propositions #afficher-propositions__proposition__under {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+#afficher-propositions #afficher-propositions__proposition__under * {
+  margin: 0;
+}
+#afficher-propositions #afficher-propositions__boutons {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
   justify-content: flex-end;
 }
-#afficher-propositions #btns button,
-#afficher-propositions #btns .button {
-  margin: 5px;
-}
 
-#formulaire_vote {
+#formulaire-vote {
   display: flex;
   flex-direction: column;
   width: 80%;
 }
-#formulaire_vote h2 {
+#formulaire-vote h2 {
   margin-bottom: 0;
 }
-#formulaire_vote p {
+#formulaire-vote p {
   margin-top: 5px;
 }
-#formulaire_vote input[type=submit] {
+#formulaire-vote input[type=submit] {
   margin-top: 20px;
   align-self: center;
 }
-#formulaire_vote input[type=radio] {
+#formulaire-vote input[type=radio] {
   cursor: pointer;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -1145,7 +1168,7 @@ input[type=time]::-webkit-calendar-picker-indicator {
   place-items: center;
   place-content: center;
 }
-#formulaire_vote input[type=radio]::before {
+#formulaire-vote input[type=radio]::before {
   content: "";
   width: 0.75em;
   height: 0.75em;
@@ -1154,127 +1177,89 @@ input[type=time]::-webkit-calendar-picker-indicator {
   box-shadow: inset 1em 1em #E1603C;
   background-color: CanvasText;
 }
-#formulaire_vote input[type=radio]:checked::before {
+#formulaire-vote input[type=radio]:checked::before {
   transform: scale(1);
 }
-#formulaire_vote div {
+#formulaire-vote div {
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
 }
-#formulaire_vote div div {
+#formulaire-vote div div {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-#formulaire_vote div div + div {
+#formulaire-vote div div + div {
   margin-top: 20px;
 }
-#formulaire_vote div div label {
+#formulaire-vote div div label {
   font-size: 1.2rem;
   margin: 0;
   padding-right: 60px;
 }
 @media screen and (max-width: 700px) {
-  #formulaire_vote div div label {
+  #formulaire-vote div div label {
     padding-right: 20px;
   }
 }
 
-#afficherResultats #propositionTitle {
-  width: 100%;
-}
-#afficherResultats #description {
-  text-align: justify;
-}
-#afficherResultats #propositionSelector {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 30px;
-  width: 100%;
-}
-#afficherResultats #propositionSelector a:first-child {
-  margin-right: 20px;
-}
-#afficherResultats #propositionSelector a:last-child {
-  margin-left: 20px;
-}
-#afficherResultats #propositionSelector .boite {
-  min-width: calc(50% - 90px);
-  text-align: center;
-}
-#afficherResultats #proposition {
-  width: 80%;
-}
-#afficherResultats #proposition h2 {
-  margin: 0 0 4px 0;
-}
-#afficherResultats #proposition p {
-  text-align: justify;
-  margin: 0 0 4px 0;
-}
-#afficherResultats #proposition p + h2 {
-  margin-top: 8px;
-}
-
-#resultats_vote {
+#afficher-resultats {
   display: flex;
   flex-direction: column;
-  width: 80%;
+  align-items: stretch;
+  padding: 30px;
+  gap: 30px;
 }
-#resultats_vote input[type=submit] {
-  margin-top: 20px;
-  align-self: center;
+#afficher-resultats .panel2 {
+  padding: 0 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
 }
-#resultats_vote div {
+#afficher-resultats .panel2 .button {
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
-  border-radius: 5px;
+  align-self: center;
 }
-#resultats_vote div div {
-  position: relative;
-  width: 100%;
+#afficher-resultats .panel2 p {
+  margin-top: 0;
+}
+#afficher-resultats #afficher-resultats__top {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 10px;
 }
-#resultats_vote div div + div {
-  margin-top: 20px;
+#afficher-resultats #afficher-resultats__top * {
+  margin: 0;
 }
-#resultats_vote div div label {
-  margin: 5px 0 5px 10px;
-  padding-right: 60px;
+#afficher-resultats #afficher-resultats__top span {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #838383;
 }
-@media screen and (max-width: 700px) {
-  #resultats_vote div div label {
-    padding-right: 20px;
-  }
+#afficher-resultats #afficher-resultats__body {
+  display: flex;
+  flex-direction: column;
 }
-#resultats_vote div div label a {
-  color: white;
-  text-decoration: none;
+#afficher-resultats #afficher-resultats__body #resultats-vote__body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
-#resultats_vote div div label a:hover {
-  text-decoration: underline;
+#afficher-resultats #afficher-resultats__body #resultats-vote__body .resultats-vote__body__noresults {
+  display: flex;
+  align-self: center;
 }
-#resultats_vote div div span {
-  margin-right: 10px;
-}
-#resultats_vote div div label,
-#resultats_vote div div span {
-  z-index: 1;
-  font-size: 1.2rem;
-}
-#resultats_vote div div .percentage_bar {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(to right, #E1603C 0%, #E1603C var(--percentage), #1B1B1B var(--percentage), #1B1B1B 100%);
+#afficher-resultats #afficher-resultats__body #resultats-vote__body img {
+  border: #a8a8a8 3px solid;
+  border-radius: 10px;
+  width: 200px;
+  height: 200px;
+  align-self: center;
 }
 
 #listeQuestionsFinies .question {
