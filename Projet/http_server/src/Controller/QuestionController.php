@@ -201,7 +201,6 @@ class QuestionController extends MainController
             $tags = "{" . $tags . "}"; // array pour postgre
         }
 
-        DebugController::logToFile($tags);
         $question->setDescription($description);
         $question->setSections($sections);
         $question->setRedacteurs($redacteurs);
@@ -211,9 +210,9 @@ class QuestionController extends MainController
         $question->setDateOuvertureVotes($dateOuvertureVotes);
         $question->setDateFermetureVotes($dateFermetureVotes);
         $question->setSystemeVote(SystemeVoteFactory::createSystemeVote($systemeVote, $question));
-        //$question->setTags($tags);
+        $question->setTags($tags);
 
-        //(new QuestionRepository)->update($question);
+        (new QuestionRepository)->update($question);
         static::message(LMQ_URL, "La question a été posée");
     }
 
