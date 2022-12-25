@@ -193,7 +193,7 @@ class QuestionController extends MainController
         $tags = "{}";
         if(isset($_POST["tags"])) {
             $tags = preg_replace('/[^a-zA-Z0-9-\s]/', "", $_POST["tags"]); //retire toutes les expressions non voulues (/,; etc.)
-            $tags = preg_replace('/[ ]+/', ",", $_POST["tags"]); // -> remplace les espaces par des virgules
+            $tags = preg_replace('/[ ]+/', ",", $tags); // -> remplace les espaces par des virgules
             $tags = strtolower($tags); // -> met le string en minuscule
             $tags = explode(',', $tags); // -> transforme le string en tableau en coupant avec les virgules
             $tags = array_unique($tags); // -> trie le tableau pour enlever les doublons
