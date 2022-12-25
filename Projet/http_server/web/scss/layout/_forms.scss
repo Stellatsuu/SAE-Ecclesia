@@ -53,7 +53,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   background-image: url('data:image/svg+xml;utf8,<svg style="color: white" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16"> <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" fill="white"></path> <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" fill="white"></path> </svg>');
 }
 
-input[type="radio"] {
+input[type="radio"], input[type="checkbox"]{
   appearance: none;
   background-color: $couleurFond2;
   margin: 0;
@@ -62,17 +62,27 @@ input[type="radio"] {
   width: 1.15em;
   height: 1.15em;
   border: 0.15em solid $couleurPrincipale;
-  border-radius: 50%;
   display: inline-grid;
   place-content: center;
+  cursor: pointer;
 
   &::before {
     content: "";
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+  }
+  &:checked::before {
+    transform: scale(1);
+  }
+}
+
+input[type="radio"] {
+  border-radius: 50%;
+
+  &::before {
     width: 0.65em;
     height: 0.65em;
     border-radius: 50%;
-    transform: scale(0);
-    transition: 120ms transform ease-in-out;
     box-shadow: inset 1em 1em $couleurPrincipale;
   }
   &:checked::before {
@@ -81,23 +91,10 @@ input[type="radio"] {
 }
 
 input[type="checkbox"] {
-  appearance: none;
-  background-color: $couleurFond2;
-  margin: 0;
-  font: inherit;
-  color: $couleurPrincipale;
-  width: 1.15em;
-  height: 1.15em;
-  border: 0.15em solid $couleurPrincipale;
-  display: inline-grid;
-  place-content: center;
 
   &::before {
-    content: "";
     width: 1em;
     height: 1em;
-    transform: scale(0);
-    transition: 120ms transform ease-in-out;
     background-image: url("../assets/images/tickCheckbox.svg");
     background-size:contain;
     background-position: center center;

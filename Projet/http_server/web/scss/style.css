@@ -746,7 +746,7 @@ input[type=time]::-webkit-calendar-picker-indicator {
   background-image: url('data:image/svg+xml;utf8,<svg style="color: white" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16"> <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" fill="white"></path> <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" fill="white"></path> </svg>');
 }
 
-input[type=radio] {
+input[type=radio], input[type=checkbox] {
   appearance: none;
   background-color: #252525;
   margin: 0;
@@ -755,41 +755,35 @@ input[type=radio] {
   width: 1.15em;
   height: 1.15em;
   border: 0.15em solid #E1603C;
-  border-radius: 50%;
   display: inline-grid;
   place-content: center;
+  cursor: pointer;
+}
+input[type=radio]::before, input[type=checkbox]::before {
+  content: "";
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+}
+input[type=radio]:checked::before, input[type=checkbox]:checked::before {
+  transform: scale(1);
+}
+
+input[type=radio] {
+  border-radius: 50%;
 }
 input[type=radio]::before {
-  content: "";
   width: 0.65em;
   height: 0.65em;
   border-radius: 50%;
-  transform: scale(0);
-  transition: 120ms transform ease-in-out;
   box-shadow: inset 1em 1em #E1603C;
 }
 input[type=radio]:checked::before {
   transform: scale(1);
 }
 
-input[type=checkbox] {
-  appearance: none;
-  background-color: #252525;
-  margin: 0;
-  font: inherit;
-  color: #E1603C;
-  width: 1.15em;
-  height: 1.15em;
-  border: 0.15em solid #E1603C;
-  display: inline-grid;
-  place-content: center;
-}
 input[type=checkbox]::before {
-  content: "";
   width: 1em;
   height: 1em;
-  transform: scale(0);
-  transition: 120ms transform ease-in-out;
   background-image: url("../assets/images/tickCheckbox.svg");
   background-size: contain;
   background-position: center center;
@@ -1161,15 +1155,16 @@ input[type=checkbox]:checked::before {
 }
 
 #afficher-propositions__formulaire-vote {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  width: 80%;
 }
 #afficher-propositions__formulaire-vote h2 {
   margin-bottom: 0;
 }
-#afficher-propositions__formulaire-vote p {
+#afficher-propositions__formulaire-vote > p {
   margin-top: 5px;
+  width: 80%;
 }
 #afficher-propositions__formulaire-vote input[type=submit] {
   margin-top: 20px;
@@ -1177,13 +1172,15 @@ input[type=checkbox]:checked::before {
 }
 #afficher-propositions__formulaire-vote .choix-proposition {
   display: grid;
-  grid-template-columns: max-content max-content;
+  width: 100%;
+  grid-template-columns: 1fr auto;
   align-items: center;
 }
 #afficher-propositions__formulaire-vote .choix-proposition label {
   font-size: 1.2rem;
   margin: 7.5px 0;
   padding-right: 60px;
+  word-break: break-word;
 }
 @media screen and (max-width: 700px) {
   #afficher-propositions__formulaire-vote .choix-proposition label {
