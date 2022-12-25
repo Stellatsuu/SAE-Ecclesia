@@ -48,10 +48,8 @@ class UninominalMajoritaireAUnTour extends AbstractSystemeVote
             $checked = $aDejaVote && $idProposition == $idPropositionVotee ? "checked" : "";
 
             $radio = <<<HTML
-                <div class="choix-proposition">
-                    <label>$titreProposition</label>
-                    <input type="radio" name="idProposition" id="choix$idProposition" value="$idProposition" required $checked>
-                </div>
+                <label for="choix$idProposition">$titreProposition</label>
+                <input type="radio" name="idProposition" id="choix$idProposition" value="$idProposition" required $checked>
             HTML;
 
             $propositionRadios[] = $radio;
@@ -62,8 +60,10 @@ class UninominalMajoritaireAUnTour extends AbstractSystemeVote
 
 
         $res = <<<HTML
-        <p>Le vote se déroule en 1 tour. Choisissez une unique proposition parmi les suivantes</p>
+        <p>Le vote se déroule en 1 tour. Choisissez une unique proposition parmi les suivantes.</p>
+        <div class="choix-proposition">
             $propositionRadios
+        </div>
 
             <input type="submit" value="$submit">
         HTML;

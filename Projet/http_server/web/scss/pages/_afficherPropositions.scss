@@ -97,7 +97,7 @@
   }
 }
 
-#formulaire-vote {
+#afficher-propositions__formulaire-vote {
   h2 {
     margin-bottom: 0;
   }
@@ -115,56 +115,18 @@
     align-self: center;
   }
 
-  input[type="radio"] {
-    cursor: pointer;
-    -webkit-appearance: none;
-    appearance: none;
-    font: inherit;
-    color: currentColor;
-    width: 1.5em;
-    height: 1.5em;
-    border: 0.15em solid $couleurPrincipale;
+  .choix-proposition {
+    display:grid;
+    grid-template-columns: max-content max-content;
+    align-items: center;
 
-    display: grid;
-    place-items: center;
-    place-content: center;
+    label {
+      font-size: 1.2rem;
+      margin: 0;
+      padding-right: 60px;
 
-    &::before {
-      content: "";
-      width: 0.75em;
-      height: 0.75em;
-      transform: scale(0);
-      transition: 120ms transform ease-in-out;
-      box-shadow: inset 1em 1em $couleurPrincipale;
-      background-color: CanvasText;
-    }
-
-    &:checked::before {
-      transform: scale(1);
-    }
-  }
-
-  div {
-    width: fit-content;
-
-    div {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      & + div {
-        margin-top: 20px;
-      }
-
-      label {
-        font-size: 1.2rem;
-        margin: 0;
-        padding-right: 60px;
-
-        @media screen and (max-width: 700px) {
-          padding-right: 20px;
-        }
+      @media screen and (max-width: 700px) {
+        padding-right: 20px;
       }
     }
   }
