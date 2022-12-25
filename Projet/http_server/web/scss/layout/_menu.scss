@@ -7,9 +7,9 @@ header{
   align-items: center;
 
 
-input{
-  display:none;
-}
+  input[type=checkbox]{
+    display:none !important;
+  }
 
   nav{
     position: relative;
