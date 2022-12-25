@@ -198,6 +198,8 @@ select {
 }
 
 .modal-fit {
+  width: -webkit-fit-content !important;
+  width: -moz-fit-content !important;
   width: fit-content !important;
 }
 .modal-fit input:not([type=submit]) {
@@ -286,6 +288,8 @@ select {
   position: relative;
   display: flex;
   align-items: center;
+  width: -webkit-max-content;
+  width: -moz-max-content;
   width: max-content;
 }
 .tooltip .tooltipImage {
@@ -369,6 +373,8 @@ select {
   font-size: 1rem;
   visibility: hidden;
   opacity: 0;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
   width: fit-content;
   background-color: #b4b4b4;
   color: #000;
@@ -627,6 +633,8 @@ header #mobileMenu {
   top: 75px;
   right: -100px;
   width: 200px;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
   height: fit-content;
   border-radius: 10px;
   z-index: 1000;
@@ -747,7 +755,9 @@ input[type=time]::-webkit-calendar-picker-indicator {
 }
 
 input[type=radio], input[type=checkbox] {
-  appearance: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
   background-color: #252525;
   margin: 0;
   font: inherit;
@@ -893,6 +903,8 @@ input[type=checkbox]:checked::before {
 
 .comptePanel {
   padding: 0 50px;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
   width: fit-content;
 }
 .comptePanel div {
@@ -944,7 +956,8 @@ input[type=checkbox]:checked::before {
 }
 .markdown a {
   color: #08D1EC;
-  text-decoration-color: #08D1EC;
+  -webkit-text-decoration-color: #08D1EC;
+          text-decoration-color: #08D1EC;
 }
 
 .message, .errorMessage {
@@ -962,8 +975,10 @@ input[type=checkbox]:checked::before {
   left: 50%;
   transform: translate(-50%, -50%);
   /* animation */
-  animation: disappear 500ms forwards;
-  animation-delay: 4s;
+  -webkit-animation: disappear 500ms forwards;
+          animation: disappear 500ms forwards;
+  -webkit-animation-delay: 4s;
+          animation-delay: 4s;
 }
 
 .errorMessage {
@@ -971,6 +986,16 @@ input[type=checkbox]:checked::before {
   border: 1px solid rgba(194, 50, 11, 0.3);
   box-shadow: 0 4px 30px rgba(194, 50, 11, 0.1);
   color: #E43C0E;
+}
+
+@-webkit-keyframes disappear {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
 
 @keyframes disappear {
@@ -1062,6 +1087,8 @@ input[type=checkbox]:checked::before {
   margin: 0;
 }
 #listeMesQuestions .modal-content {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
   width: fit-content;
 }
 #listeMesQuestions .modal-content div {
@@ -1084,6 +1111,8 @@ input[type=checkbox]:checked::before {
   flex-direction: column;
 }
 #afficher-propositions .panel2 .button {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
   width: fit-content;
   align-self: center;
 }
@@ -1204,6 +1233,8 @@ input[type=checkbox]:checked::before {
   flex-direction: column;
 }
 #afficher-resultats .panel2 .button {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
   width: fit-content;
   align-self: center;
 }
@@ -1350,15 +1381,24 @@ input[type=checkbox]:checked::before {
   margin-top: 5px;
 }
 #afficherProfil ~ .modal form input[type=submit] {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
   width: fit-content;
   align-self: center;
 }
 
+#liste-questions {
+  align-items: stretch;
+}
+@media screen and (max-width: 350px) {
+  #liste-questions {
+    align-items: center;
+  }
+}
 #liste-questions #liste-questions__top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: calc(100% - 40px);
   padding: 20px;
   gap: 20px;
 }
@@ -1461,6 +1501,8 @@ input[type=checkbox]:checked::before {
   flex-direction: column;
 }
 #afficher-question .panel2 .button {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
   width: fit-content;
   align-self: center;
 }
@@ -1513,17 +1555,21 @@ h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset, body {
 }
 
 a {
-  text-decoration-color: #E1603C;
+  -webkit-text-decoration-color: #E1603C;
+          text-decoration-color: #E1603C;
   color: #E1603C;
 }
 
 .unselectable {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active {
+  background: none !important;
 }
 
 input:-webkit-autofill,
@@ -1551,6 +1597,4 @@ body {
   font-family: Raleway, serif;
   background-image: url("../assets/images/greek_logo_fond.png");
   background-size: 30%;
-}
-
-/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */
