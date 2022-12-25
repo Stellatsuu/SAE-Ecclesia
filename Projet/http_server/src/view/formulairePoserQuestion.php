@@ -92,7 +92,7 @@
 
         <div id="tags_input">
             <label for="tags_input">Tag(s) :
-                    <input type="text" id="tags_id" name="tags" placeholder="Veuillez séparer les tags avec des espaces.">
+                    <input type="text" id="tags_id" name="tags" placeholder="Veuillez séparer les tags avec des espaces." pattern="[a-zA-Z0-9-\s]*">
             </label>
         </div>
 

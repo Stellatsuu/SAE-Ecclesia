@@ -1,9 +1,2 @@
 2022-12-13 21:55:31 : Début des tests
 2022-12-13 21:55:31 : info: La base de données a été réinitialisée
-2022-12-24 18:51:41 : {}
-2022-12-24 18:55:40 : {truc,bidule,machin}
-2022-12-24 19:02:32 : {dmls,,dsm}
-2022-12-24 19:06:34 : {dmlsdsm}
-2022-12-24 19:06:57 : {dmls,dsm}
-2022-12-25 07:15:13 : {tag,tag2}
-2022-12-25 12:11:00 : {dmls,dsm,mdsm,dsmfmlesd,dsm13223}
