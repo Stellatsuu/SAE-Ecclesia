@@ -456,8 +456,8 @@ header {
   justify-content: space-around;
   align-items: center;
 }
-header input {
-  display: none;
+header input[type=checkbox] {
+  display: none !important;
 }
 header nav {
   position: relative;
