@@ -375,7 +375,6 @@ select {
   padding: 10px;
   border-radius: 6px;
   position: absolute;
-  z-index: 1;
   top: -60px;
   left: 50%;
   transform: translateX(-50%);
@@ -521,6 +520,7 @@ header #mobileMenu {
     display: flex;
     position: fixed;
     top: 0;
+    z-index: 2;
   }
   header #mobileMenu > div, header #mobileMenu label {
     background-color: #2a2a2a;
@@ -1135,6 +1135,9 @@ input[type=checkbox]:checked::before {
 #afficher-propositions #afficher-propositions__selector * {
   margin: 0;
 }
+#afficher-propositions #afficher-propositions__selector img {
+  z-index: 1;
+}
 #afficher-propositions #afficher-propositions__proposition__under {
   width: 100%;
   display: flex;
@@ -1403,7 +1406,6 @@ input[type=checkbox]:checked::before {
   grid-template-columns: 1fr 1fr 1fr;
   gap: 25px;
   margin: 20px;
-  width: calc(100% - 40px);
 }
 @media screen and (max-width: 1300px) {
   #liste-questions #questions {
