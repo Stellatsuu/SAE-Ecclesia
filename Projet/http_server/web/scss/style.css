@@ -754,6 +754,64 @@ input[type=time]::-webkit-calendar-picker-indicator {
   background-image: url('data:image/svg+xml;utf8,<svg style="color: white" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16"> <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" fill="white"></path> <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" fill="white"></path> </svg>');
 }
 
+input[type=radio] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-color: #252525;
+  margin: 0;
+  font: inherit;
+  color: #E1603C;
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid #E1603C;
+  border-radius: 50%;
+  display: inline-grid;
+  place-content: center;
+}
+input[type=radio]::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em #E1603C;
+}
+input[type=radio]:checked::before {
+  transform: scale(1);
+}
+
+input[type=checkbox] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-color: #252525;
+  margin: 0;
+  font: inherit;
+  color: #E1603C;
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid #E1603C;
+  display: inline-grid;
+  place-content: center;
+}
+input[type=checkbox]::before {
+  content: "";
+  width: 1em;
+  height: 1em;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  background-image: url("../assets/images/tickCheckbox.svg");
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: #E1603C;
+}
+input[type=checkbox]:checked::before {
+  transform: scale(1);
+}
+
 #roles_input {
   display: flex;
   flex-direction: row;
@@ -1133,68 +1191,34 @@ input[type=time]::-webkit-calendar-picker-indicator {
   justify-content: flex-end;
 }
 
-#formulaire-vote {
+#afficher-propositions__formulaire-vote {
   display: flex;
   flex-direction: column;
   width: 80%;
 }
-#formulaire-vote h2 {
+#afficher-propositions__formulaire-vote h2 {
   margin-bottom: 0;
 }
-#formulaire-vote p {
+#afficher-propositions__formulaire-vote p {
   margin-top: 5px;
 }
-#formulaire-vote input[type=submit] {
+#afficher-propositions__formulaire-vote input[type=submit] {
   margin-top: 20px;
   align-self: center;
 }
-#formulaire-vote input[type=radio] {
-  cursor: pointer;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-       appearance: none;
-  font: inherit;
-  color: currentColor;
-  width: 1.5em;
-  height: 1.5em;
-  border: 0.15em solid #E1603C;
+#afficher-propositions__formulaire-vote .choix-proposition {
   display: grid;
-  place-items: center;
-  place-content: center;
-}
-#formulaire-vote input[type=radio]::before {
-  content: "";
-  width: 0.75em;
-  height: 0.75em;
-  transform: scale(0);
-  transition: 120ms transform ease-in-out;
-  box-shadow: inset 1em 1em #E1603C;
-  background-color: CanvasText;
-}
-#formulaire-vote input[type=radio]:checked::before {
-  transform: scale(1);
-}
-#formulaire-vote div {
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
-}
-#formulaire-vote div div {
-  width: 100%;
-  display: flex;
+  grid-template-columns: -webkit-max-content -webkit-max-content;
+  grid-template-columns: max-content max-content;
   align-items: center;
-  justify-content: space-between;
 }
-#formulaire-vote div div + div {
-  margin-top: 20px;
-}
-#formulaire-vote div div label {
+#afficher-propositions__formulaire-vote .choix-proposition label {
   font-size: 1.2rem;
   margin: 0;
   padding-right: 60px;
 }
 @media screen and (max-width: 700px) {
-  #formulaire-vote div div label {
+  #afficher-propositions__formulaire-vote .choix-proposition label {
     padding-right: 20px;
   }
 }
