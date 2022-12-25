@@ -380,10 +380,6 @@ select {
   left: 50%;
   transform: translateX(-50%);
   transition: opacity 0.3s;
-  white-space: nowrap;
-  overflow-wrap: normal;
-  word-break: keep-all;
-  hyphens: none;
 }
 .user-tooltip .user-tooltip__text::after {
   content: "";

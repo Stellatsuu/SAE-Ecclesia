@@ -17,6 +17,7 @@ foreach ($questions as $q) {
     $datePublication = htmlspecialchars($question->getDateDebutRedaction()->format("d/m/Y"));
     $phase = htmlspecialchars($question->getPhase()->toString());
     $nomUsuel = htmlspecialchars($utilisateur->getNomUsuel());
+    $nomUsuel = preg_replace("/ /", "&nbsp;", $nomUsuel, 1);
     $b64img = htmlspecialchars($utilisateur->getPhotoProfil(64));
 
     $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
