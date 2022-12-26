@@ -125,12 +125,16 @@ class QuestionRepository extends AbstractRepository
         return $resultat;
     }
 
-    public function selectAllLimitOffset(int $limit, int $offset, array $motsCles = []): array
+    public function selectAllLimitOffset(int $limit, int $offset, array $motsCles = [], array $tags=[]): array
     {
         $conditions = [];
         for ($i = 0; $i < count($motsCles); $i++) {
             $conditions[] = "AND (LOWER(titre_question) LIKE :mot_cle_$i OR LOWER(description_question) LIKE :mot_cle_$i)";
         }
+
+        $tags="{" . implode(",",$tags) . "}";
+        $conditions[] = "AND tags @> :tags";
+
         $conditions = implode(' ', $conditions);
 
         $sql = <<<SQL
@@ -149,6 +153,7 @@ class QuestionRepository extends AbstractRepository
         $values = [
             'limit' => $limit,
             'offset' => $offset,
+            'tags' => $tags,
         ];
 
         for ($i = 0; $i < count($motsCles); $i++) {
@@ -163,12 +168,16 @@ class QuestionRepository extends AbstractRepository
         return $resultat;
     }
 
-    public function countAllPhaseRedactionOuPlus(array $motsCles = []): int
+    public function countAllPhaseRedactionOuPlus(array $motsCles = [], array $tags=[]): int
     {
         $conditions = [];
         for ($i = 0; $i < count($motsCles); $i++) {
             $conditions[] = "AND (LOWER(titre_question) LIKE :mot_cle_$i OR LOWER(description_question) LIKE :mot_cle_$i)";
         }
+
+        $tags="{" . implode(",",$tags) . "}";
+        $conditions[] = "AND tags @> :tags";
+
         $conditions = implode(' ', $conditions);
 
         $sql = <<<SQL
@@ -179,7 +188,10 @@ class QuestionRepository extends AbstractRepository
                 $conditions
         SQL;
 
-        $values = [];
+        $values = [
+            'tags' => $tags,
+        ];
+
         for ($i = 0; $i < count($motsCles); $i++) {
             $values["mot_cle_$i"] = "%$motsCles[$i]%";
         }
