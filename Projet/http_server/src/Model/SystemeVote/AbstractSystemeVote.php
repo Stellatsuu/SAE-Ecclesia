@@ -9,13 +9,6 @@ abstract class AbstractSystemeVote
 
     private Question $question;
 
-    public function getResultats() {
-        return [];
-    }
-
-
-    //public abstract function getResultats(): array;
-
     /**
      * @return string
      * Renvoie le nom du système de vote, à utiliser dans la BDD
