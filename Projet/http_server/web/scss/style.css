@@ -1390,7 +1390,7 @@ input[type=checkbox]:checked::before {
 #liste-questions {
   align-items: stretch;
 }
-@media screen and (max-width: 350px) {
+@media screen and (max-width: 450px) {
   #liste-questions {
     align-items: center;
   }
