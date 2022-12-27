@@ -51,10 +51,8 @@ class VoteParApprobation extends AbstractSystemeVote
             $checked = $aDejaVote && in_array($idProposition, $idPropositionVotees) ? "checked" : "";
 
             $checkbox = <<<HTML
-                <div class="choix-proposition">
-                    <label>$titreProposition</label>
-                    <input type="checkbox" name="idPropositions[]" value="$idProposition" $checked>
-                </div>
+                <label for="choix$idProposition">$titreProposition</label>
+                <input type="checkbox" id="choix$idProposition" name="idPropositions[]" value="$idProposition" $checked>
             HTML;
 
             $propositionCheckboxes[] = $checkbox;
@@ -65,10 +63,10 @@ class VoteParApprobation extends AbstractSystemeVote
 
         $res = <<<HTML
         <p>Le vote se déroule en 1 tour. Choisissez toutes les propositions que vous soutenez.</p>
-
+        <div class="choix-proposition">
             $propositionCheckboxes
-
-            <input type="submit" value="$submit">
+        </div>
+        <input type="submit" value="$submit">
         HTML;
 
         return $res;

@@ -7,9 +7,9 @@ header{
   align-items: center;
 
 
-input{
-  display:none;
-}
+  input[type=checkbox]{
+    display:none !important;
+  }
 
   nav{
     position: relative;
@@ -87,6 +87,7 @@ input{
       display:flex;
       position: fixed;
       top: 0;
+      z-index: 2;
 
       > div, label{
         background-color: $couleurFond2_5;

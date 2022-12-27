@@ -1,5 +1,6 @@
 <?php
 
+use App\SAE\Lib\Markdown;
 use App\SAE\Lib\PhotoProfil;
 use App\SAE\Model\DataObject\Question;
 
@@ -13,10 +14,11 @@ foreach ($questions as $q) {
 
     $query = htmlspecialchars(rawurldecode($query));
     $titre = htmlspecialchars($question->getTitre());
-    $description = htmlspecialchars($question->getDescription());
+    $description = Markdown::toHtml($question->getDescription());
     $datePublication = htmlspecialchars($question->getDateDebutRedaction()->format("d/m/Y"));
     $phase = htmlspecialchars($question->getPhase()->toString());
     $nomUsuel = htmlspecialchars($utilisateur->getNomUsuel());
+    $nomUsuel = preg_replace("/ /", "&nbsp;", $nomUsuel, 1);
     $b64img = htmlspecialchars($utilisateur->getPhotoProfil(64));
 
     $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
@@ -37,9 +39,9 @@ foreach ($questions as $q) {
                 </a>
             </span>
 
-            <p class="question-compact__description">
+            <span class="question-compact__description markdown">
                 $description
-            </p>
+            </span>
 
             <span class="question-compact__bottom">
                 <span>
