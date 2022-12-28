@@ -62,4 +62,54 @@
       }
     }
   }
+
+  .diagramme {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+    justify-content: center;
+
+    .diagramme__ligne {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      .diagramme__segment {
+        display: inline-block;
+        height: 20px;
+
+        &:nth-child(1) {
+          background-color: black;
+        }
+
+        &:nth-child(2) {
+          background-color: red;
+        }
+
+        &:nth-child(3) {
+          background-color: yellow;
+        }
+
+        &:nth-child(4) {
+          background-color: limegreen;
+        }
+
+        &:nth-child(5) {
+          background-color: green;
+        }
+
+        &:nth-child(6) {
+          background-color: darkgreen;
+        }
+
+
+
+
+
+
+      }
+    }
+  }
 }

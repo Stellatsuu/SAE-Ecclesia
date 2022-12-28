@@ -1276,6 +1276,41 @@ input[type=checkbox]:checked::before {
   height: 200px;
   align-self: center;
 }
+#afficher-resultats .diagramme {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: stretch;
+  justify-content: center;
+}
+#afficher-resultats .diagramme .diagramme__ligne {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+#afficher-resultats .diagramme .diagramme__ligne .diagramme__segment {
+  display: inline-block;
+  height: 20px;
+}
+#afficher-resultats .diagramme .diagramme__ligne .diagramme__segment:nth-child(1) {
+  background-color: black;
+}
+#afficher-resultats .diagramme .diagramme__ligne .diagramme__segment:nth-child(2) {
+  background-color: red;
+}
+#afficher-resultats .diagramme .diagramme__ligne .diagramme__segment:nth-child(3) {
+  background-color: yellow;
+}
+#afficher-resultats .diagramme .diagramme__ligne .diagramme__segment:nth-child(4) {
+  background-color: limegreen;
+}
+#afficher-resultats .diagramme .diagramme__ligne .diagramme__segment:nth-child(5) {
+  background-color: green;
+}
+#afficher-resultats .diagramme .diagramme__ligne .diagramme__segment:nth-child(6) {
+  background-color: darkgreen;
+}
 
 #listeQuestionsFinies .question {
   text-align: justify;

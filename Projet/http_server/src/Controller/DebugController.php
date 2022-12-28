@@ -10,6 +10,7 @@ use App\SAE\Model\DataObject\Proposition;
 use App\SAE\Model\DataObject\Question;
 use App\SAE\Model\DataObject\Section;
 use App\SAE\Model\DataObject\Utilisateur;
+use App\SAE\Model\DataObject\Vote;
 use App\SAE\Model\HTTP\Session;
 use App\SAE\Model\Repository\DatabaseConnection;
 use App\SAE\Model\Repository\PropositionRepository;
@@ -18,6 +19,7 @@ use App\SAE\Model\Repository\RedacteurRepository;
 use App\SAE\Model\Repository\SectionRepository;
 use App\SAE\Model\Repository\UtilisateurRepository;
 use App\SAE\Model\Repository\VotantRepository;
+use App\SAE\Model\Repository\VoteRepository;
 
 class DebugController extends MainController
 {
@@ -148,12 +150,12 @@ class DebugController extends MainController
             $description = ucfirst($description);
 
             $username = $utilisateurs[rand(0, count($utilisateurs) - 1)]->getUsername();
-            $dateDebutRedaction = date("Y-m-d H:i:s", rand(strtotime("2015-01-01"), time()));
+            $dateDebutRedaction = date("Y-m-d H:i:s", rand(strtotime("2020-01-01"), time()));
             $dateFinRedaction = date("Y-m-d H:i:s", strtotime($dateDebutRedaction) + rand(60 * 60 * 24 * 30, 60 * 60 * 24 * 365));
             $dateOuvertureVotes = date("Y-m-d H:i:s", strtotime($dateFinRedaction) + rand(60 * 60 * 24 * 30, 60 * 60 * 24 * 365));
             $dateFermetureVotes = date("Y-m-d H:i:s", strtotime($dateOuvertureVotes) + rand(60 * 60 * 24 * 30, 60 * 60 * 24 * 365));
 
-            $systemesVote = ["majoritaire_a_un_tour", "approbation"];
+            $systemesVote = ["majoritaire_a_un_tour", "approbation", "jugement_majoritaire"];
 
             $stmt->execute([
                 "titre_question" => $titre,
@@ -231,6 +233,39 @@ class DebugController extends MainController
             }
 
             (new RedacteurRepository())->insert($idQuestion, "test");
+        }
+    }
+
+    private static function insertRandomVotants(int $min, int $max)
+    {
+        $questions = (new QuestionRepository())->selectAll();
+        //only keep questions from fake users
+        $questions = array_values(array_filter($questions, function ($question) {
+            return preg_match("/[0-9]+$/", $question->getUsernameOrganisateur());
+        }));
+        $utilisateurs = array_values(array_filter((new UtilisateurRepository)->selectAll(), function ($utilisateur) {
+            return preg_match("/[0-9]+$/", $utilisateur->getUsername());
+        }));
+
+        foreach ($questions as $question) {
+            $votants = [];
+            $nbVotants = rand($min, $max);
+            $question = Question::castIfNotNull($question);
+            $idQuestion = $question->getIdQuestion();
+
+            (new VotantRepository)->insert($idQuestion, $question->getUsernameOrganisateur());
+            $votants[] = $question->getUsernameOrganisateur();
+
+            for ($i = 0; $i < $nbVotants; $i++) {
+
+                do {
+                    $username = $utilisateurs[rand(0, count($utilisateurs) - 1)]->getUsername();
+                } while (in_array($username, $votants));
+
+                $votants[] = $username;
+                (new VotantRepository())->insert($idQuestion, $username);
+            }
+
             (new VotantRepository())->insert($idQuestion, "test");
         }
     }
@@ -278,6 +313,111 @@ class DebugController extends MainController
         }
     }
 
+    private static function insertRandomVotes()
+    {
+        $questions = (new QuestionRepository())->selectAll();
+        //only keep questions from fake users
+        $questions = array_values(array_filter($questions, function ($question) {
+            return preg_match("/[0-9]+$/", $question->getUsernameOrganisateur());
+        }));
+        $utilisateurs = array_values(array_filter((new UtilisateurRepository)->selectAll(), function ($utilisateur) {
+            return preg_match("/[0-9]+$/", $utilisateur->getUsername());
+        }));
+
+        foreach ($questions as $question) {
+            $question = Question::castIfNotNull($question);
+
+            $usernamesVotant = (new VotantRepository())->selectAllByQuestion($question->getIdQuestion());
+            $propositions = (new PropositionRepository())->selectAllByQuestion($question->getIdQuestion());
+            $nbPropositions = count($propositions);
+            $idPropositions = array_map(function ($proposition) {
+                return $proposition->getIdProposition();
+            }, $propositions);
+
+            $attractivite = [];
+            foreach($idPropositions as $idProposition) {
+                $attractivite[$idProposition] = rand(0, 100);
+            }
+
+            $systemeVote = $question->getSystemeVote();
+
+            switch ($systemeVote->getNom()) {
+                case 'majoritaire_a_un_tour':
+                    foreach ($usernamesVotant as $username) {
+
+                        //choisir une proposition, avec une probabilité proportionnelle à son attractivité
+                        $idProposition = $idPropositions[0];
+                        $max = 0;
+                        foreach($idPropositions as $idProposition) {
+                            $max += $attractivite[$idProposition];
+                        }
+                        $rand = rand(0, $max);
+                        $sum = 0;
+                        foreach($idPropositions as $idProposition) {
+                            $sum += $attractivite[$idProposition];
+                            if($sum >= $rand) break;
+                        }
+
+                        $vote = new Vote(
+                            $idProposition,
+                            $username,
+                            1
+                        );
+
+                        (new VoteRepository())->insert($vote);
+                    }
+                    break;
+                case 'approbation':
+                    foreach ($usernamesVotant as $username) {
+                        foreach ($idPropositions as $idProposition) {
+                            
+                            if(rand(0, 100) > $attractivite[$idProposition]) continue;
+
+                            $vote = new Vote(
+                                $idProposition,
+                                $username,
+                                1
+                            );
+
+                            (new VoteRepository())->insert($vote);
+                        }
+                    }
+                    break;
+                case 'jugement_majoritaire':
+                    foreach ($usernamesVotant as $username) {
+                        foreach ($idPropositions as $idProposition) {
+
+                            //donner une mention à une proposition, avec une probabilité proportionnelle à son attractivité
+                            //les mentions vont de 0 à 5, 5 étant la meilleure
+                            $mention = 0;
+                            $max = 0;
+                            for($i = 0; $i <= 5; $i++) {
+                                $max += $attractivite[$idProposition];
+                            }
+                            $rand = rand(0, $max);
+                            $sum = 0;
+                            for($i = 0; $i <= 5; $i++) {
+                                $sum += $attractivite[$idProposition];
+                                if($sum >= $rand) {
+                                    $mention = $i;
+                                    break;
+                                }
+                            }
+
+                            $vote = new Vote(
+                                $idProposition,
+                                $username,
+                                $mention
+                            );
+
+                            (new VoteRepository())->insert($vote);
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+
     private static function updatePhotosProfil()
     {
         $utilisateurs = (new UtilisateurRepository())->selectAll();
@@ -312,6 +452,10 @@ class DebugController extends MainController
         static::insertRandomRedacteurs(3, 10);
 
         static::insertRandomPropositions(0.5);
+
+        static::insertRandomVotants(3, 10);
+
+        static::insertRandomVotes();
 
         static::message(ACCUEIL_URL, "La base de données a été réinitialisée");
     }
