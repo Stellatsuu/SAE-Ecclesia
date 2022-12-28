@@ -23,8 +23,8 @@ INSERT INTO Demande_Question(titre_demande_question, description_demande_questio
 INSERT INTO Demande_Question(titre_demande_question, description_demande_question, username_organisateur) VALUES('Blind Test', 'Quand devrait se dérouler le prochain *blind test*?', 'chatoine'); --Chollet
 
 -- Question
-INSERT INTO Question(id_question, titre_question, description_question, username_organisateur) VALUES(10001, 'Cryptographie', 'Est-ce que le chiffrement symétrique est un bon chiffrement ?', 'alainmj'); --Marie-Jeanne
-INSERT INTO Question(id_question, titre_question, description_question, username_organisateur, date_debut_redaction, date_fin_redaction, date_ouverture_votes, date_fermeture_votes) VALUES(10002, 'Mythes SQL', 'Les SQL Ninjas : Mythologie ou réalité ?', 'xavierp', '2020-01-01 00:00:00', '2024-01-01 00:00:00', '2024-01-01 00:00:00', '2024-01-01 00:00:00'); --X Palleja
+INSERT INTO Question(id_question, titre_question, description_question, username_organisateur, tags) VALUES(10001, 'Cryptographie', 'Est-ce que le chiffrement symétrique est un bon chiffrement ?', 'alainmj', '{mathématiques, algo, cryptographie}'); --Marie-Jeanne
+INSERT INTO Question(id_question, titre_question, description_question, username_organisateur, date_debut_redaction, date_fin_redaction, date_ouverture_votes, date_fermeture_votes, tags) VALUES(10002, 'Mythes SQL', 'Les SQL Ninjas : Mythologie ou réalité ?', 'xavierp', '2020-01-01 00:00:00', '2024-01-01 00:00:00', '2024-01-01 00:00:00', '2024-01-01 00:00:00', '{sql, ninja, secte, bdd}'); --X Palleja
 
 -- Section
 INSERT INTO Section(id_section, id_question, nom_section, description_section) VALUES (4001, 10002, 'Section n°1', 'Ceci est la section n°1');
