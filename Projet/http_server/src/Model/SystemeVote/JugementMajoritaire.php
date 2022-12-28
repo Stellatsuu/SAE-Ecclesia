@@ -201,71 +201,6 @@ class JugementMajoritaire extends AbstractSystemeVote
         return $res;
     }
 
-    private static function calculerHistogramme(array $propositions, array $votes): array
-    {
-        $histogramme = [];
-        foreach ($propositions as $p) {
-            $p = Proposition::castIfNotNull($p);
-            $histogramme[$p->getIdProposition()] = array_fill(0, count(self::MENTIONS), 0);
-        }
-
-        foreach ($votes as $v) {
-            $v = Vote::castIfNotNull($v);
-            $histogramme[$v->getIdProposition()][$v->getValeur()]++;
-        }
-
-        return $histogramme;
-    }
-
-    private static function trier($histogramme)
-    {
-        $idPropositions = array_keys($histogramme);
-        usort($idPropositions, function ($a, $b) use ($histogramme) {
-            return static::compare($histogramme[$a], $histogramme[$b]);
-        });
-
-        return $idPropositions;
-    }
-
-    private static function compare($a, $b)
-    {
-        do {
-            $ma = static::mentionMajoritaire($a);
-            $mb = static::mentionMajoritaire($b);
-
-            if ($ma > $mb) {
-                return -1;
-            } else if ($ma < $mb) {
-                return 1;
-            } else {
-                $a[$ma]--;
-                $b[$mb]--;
-            }
-
-            if(array_sum($a) == 0 || array_sum($b) == 0) {
-                return 0;
-            }
-        } while ($a == $b);
-    }
-
-    private static function mentionMajoritaire(array $mentions): int
-    {
-        $nbVotes = array_sum($mentions);
-        if ($nbVotes % 2 == 0) {
-            $nbVotesMentionMajoritaire = $nbVotes / 2;
-        } else {
-            $nbVotesMentionMajoritaire = ($nbVotes - 1) / 2 + 1;
-        }
-
-        $nbVotesCumules = 0;
-        for ($i = 0; $i < count($mentions); $i++) {
-            $nbVotesCumules += $mentions[$i];
-            if ($nbVotesCumules >= $nbVotesMentionMajoritaire) {
-                return $i;
-            }
-        }
-    }
-
     public function traiterVote(): void
     {
         $question = $this->getQuestion();
@@ -315,5 +250,70 @@ class JugementMajoritaire extends AbstractSystemeVote
         }
 
         VoteController::message($lienAfficherPropositions, $message);
+    }
+
+    private static function calculerHistogramme(array $propositions, array $votes): array
+    {
+        $histogramme = [];
+        foreach ($propositions as $p) {
+            $p = Proposition::castIfNotNull($p);
+            $histogramme[$p->getIdProposition()] = array_fill(0, count(self::MENTIONS), 0);
+        }
+
+        foreach ($votes as $v) {
+            $v = Vote::castIfNotNull($v);
+            $histogramme[$v->getIdProposition()][$v->getValeur()]++;
+        }
+
+        return $histogramme;
+    }
+
+    private static function trier($histogramme): array
+    {
+        $idPropositions = array_keys($histogramme);
+        usort($idPropositions, function ($a, $b) use ($histogramme) {
+            return static::comparer($histogramme[$a], $histogramme[$b]);
+        });
+
+        return $idPropositions;
+    }
+
+    private static function comparer($a, $b): int
+    {
+        do {
+            $ma = static::mentionMajoritaire($a);
+            $mb = static::mentionMajoritaire($b);
+
+            if ($ma > $mb) {
+                return -1;
+            } else if ($ma < $mb) {
+                return 1;
+            } else {
+                $a[$ma]--;
+                $b[$mb]--;
+            }
+
+            if (array_sum($a) == 0 || array_sum($b) == 0) {
+                return 0;
+            }
+        } while ($a == $b);
+    }
+
+    private static function mentionMajoritaire(array $mentions): int
+    {
+        $nbVotes = array_sum($mentions);
+        if ($nbVotes % 2 == 0) {
+            $nbVotesMentionMajoritaire = $nbVotes / 2;
+        } else {
+            $nbVotesMentionMajoritaire = ($nbVotes - 1) / 2 + 1;
+        }
+
+        $nbVotesCumules = 0;
+        for ($i = 0; $i < count($mentions); $i++) {
+            $nbVotesCumules += $mentions[$i];
+            if ($nbVotesCumules >= $nbVotesMentionMajoritaire) {
+                return $i;
+            }
+        }
     }
 }
