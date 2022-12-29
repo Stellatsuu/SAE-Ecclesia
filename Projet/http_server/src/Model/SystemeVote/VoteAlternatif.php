@@ -294,7 +294,6 @@ namespace App\SAE\Model\SystemeVote\VoteAlternatif{
 
     class VoteUtilisateur{
         private array $listeVotes;
-        private string $usernameVotant;
 
         /**
          * @return array La liste des votes des utilisateurs dans l'ordre de préférence
