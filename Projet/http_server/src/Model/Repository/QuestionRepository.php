@@ -137,6 +137,10 @@ class QuestionRepository extends AbstractRepository
 
         $conditions = implode(' ', $conditions);
 
+
+        
+
+
         $sql = <<<SQL
             SELECT *
                 FROM question 

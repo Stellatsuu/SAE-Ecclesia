@@ -1,2 +1,4 @@
 2022-12-13 21:55:31 : Début des tests
 2022-12-13 21:55:31 : info: La base de données a été réinitialisée
+2022-12-29 16:58:37 : lecture,coauteur
+2022-12-29 16:58:47 : lecture,vote,redaction,resultats,organisateur,coauteur,redacteur,votant
