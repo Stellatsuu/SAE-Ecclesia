@@ -112,4 +112,56 @@
       }
     }
   }
+
+  .voteAlternatif{
+    overflow-x: auto;
+    width:100%;
+
+    table{
+      $tailleArrondi: 7px;
+
+      margin: auto;
+
+      td{
+        background-color: $couleurFond2;
+        padding: 5px;
+
+        > span{
+          font-size: .7em;
+          margin-right: 5px;
+        }
+      }
+
+      tr:first-child{
+        td:first-child{
+          border-top-left-radius: $tailleArrondi;
+        }
+        td:last-child{
+          border-top-right-radius: $tailleArrondi;
+        }
+        td:not(:first-child){
+          font-weight: bold;
+        }
+      }
+      tr:last-child{
+        td:first-child{
+          border-bottom-left-radius: $tailleArrondi;
+        }
+        td:last-child{
+          border-bottom-right-radius: $tailleArrondi;
+        }
+      }
+      tr:not(:first-child) td{
+        text-align: center;
+      }
+
+      .propositionPerdante{
+        background-color: #A8A8A8;
+      }
+      .casePleine, .propositionGagnante{
+        background-color: $couleurPrincipale;
+      }
+
+    }
+  }
 }
