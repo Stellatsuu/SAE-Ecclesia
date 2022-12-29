@@ -340,7 +340,7 @@ namespace App\SAE\Model\SystemeVote\VoteAlternatif{
         }
 
         /**
-         * Supprime le vote d'id @param int $idProposition des votes de l'utilisateur
+         * Supprime le vote d'id $idProposition des votes de l'utilisateur
          * */
         public function supprimerVote(int $idProposition){
             for($i = 0; $i < count($this->listeVotes); $i++){
@@ -352,7 +352,7 @@ namespace App\SAE\Model\SystemeVote\VoteAlternatif{
         }
 
         /**
-         * @return int L'id de la proposition favorite de l'utilisateur
+         * @return ?int L'id de la proposition favorite de l'utilisateur ou null si aucune proposition ne reste
          * */
         public function getPropositionFavorite(): ?int{
             return count($this->listeVotes) > 0 ? $this->listeVotes[0]->getIdProposition() : null;
