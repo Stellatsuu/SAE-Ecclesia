@@ -140,6 +140,9 @@ if ($nbPages == 1) {
     <div id="liste-questions__top">
         <h1>Questions : </h1>
         <div class="barre-recherche">
+            <div class="filtres">
+            <a class="bouton_ouvrir_filtres" href="#"><img src="assets/images/filter-icon.svg" alt="bouton filtres"></a>
+            </div>
             <form action="frontController.php" method="get">
                 <input type="hidden" name="controller" value="question">
                 <input type="hidden" name="action" value="listerQuestions">

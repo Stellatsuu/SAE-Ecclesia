@@ -125,7 +125,7 @@ class QuestionRepository extends AbstractRepository
         return $resultat;
     }
 
-    public function selectAllLimitOffset(int $limit, int $offset, array $motsCles = [], array $tags=[]): array
+    public function selectAllLimitOffset(int $limit, int $offset, array $motsCles = [], array $tags = [], array $filtres = []): array
     {
         $conditions = [];
         for ($i = 0; $i < count($motsCles); $i++) {

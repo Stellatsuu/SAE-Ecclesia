@@ -832,7 +832,7 @@ input[type=checkbox]:checked::before {
 }
 @media screen and (max-width: 1000px) {
   #roles_input #votants_input,
-#roles_input #redacteurs_input {
+  #roles_input #redacteurs_input {
     width: 100%;
   }
 }
@@ -1407,10 +1407,20 @@ input[type=checkbox]:checked::before {
 #liste-questions #liste-questions__top .barre-recherche {
   display: flex;
   justify-content: stretch;
+  align-items: center;
   width: 40%;
   height: 40px;
   border-radius: 40px;
   background-color: #d9d9d9;
+}
+#liste-questions #liste-questions__top .barre-recherche .filtres {
+  display: flex;
+  align-items: center;
+}
+#liste-questions #liste-questions__top .barre-recherche .filtres .bouton_ouvrir_filtres {
+  margin-left: 10px;
+  width: 30px;
+  height: 30px;
 }
 #liste-questions #liste-questions__top .barre-recherche form {
   width: 100%;
