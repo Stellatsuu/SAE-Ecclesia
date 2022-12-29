@@ -142,12 +142,31 @@ if ($nbPages == 1) {
         <div class="barre-recherche">
             <div class="filtres">
             <a class="bouton_ouvrir_filtres" href="#"><img src="assets/images/filter-icon.svg" alt="bouton filtres"></a>
+                <form action="frontController.php" method="get">
+                    <div class="filtres-phases">
+                        <label>Phase(s)</label><br>
+                        <input type="checkbox" name="filtres[]" value="lecture"><label>Lecture</label><br>
+                        <input type="checkbox" name="filtres[]" value="vote"><label>Vote</label><br>
+                        <input type="checkbox" name="filtres[]" value="redaction"><label>Redaction</label><br>
+                        <input type="checkbox" name="filtres[]" value="resultats"><label>Résultats</label><br>
+                    </div>
+                    <div class="filtres-roles">
+                        <label>Rôles(s)</label><br>
+                        <input type="checkbox" name="filtres[]" value="organisateur"><label>Organisateur</label><br>
+                        <input type="checkbox" name="filtres[]" value="coauteur"><label>Co-Auteur</label><br>
+                        <input type="checkbox" name="filtres[]" value="redacteur"><label>Redacteur</label><br>
+                        <input type="checkbox" name="filtres[]" value="votant"><label>Votant</label><br>
+                    </div>
+                    <input type="hidden" name="controller" value="question">
+                    <input type="hidden" name="action" value="listerQuestions">
+                    <input type="submit" value="Valider" class="button">
+                </form>
             </div>
             <form action="frontController.php" method="get">
                 <input type="hidden" name="controller" value="question">
                 <input type="hidden" name="action" value="listerQuestions">
                 <input type="text" name="query" value="<?= $query ?>" />
-                <input type="submit" value="">
+                <input type="submit" value="" id="validation-search">
             </form>
         </div>
     </div>

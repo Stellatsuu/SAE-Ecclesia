@@ -1435,7 +1435,7 @@ input[type=checkbox]:checked::before {
   padding: 10px;
   font-size: 1.2rem;
 }
-#liste-questions #liste-questions__top .barre-recherche form input[type=submit] {
+#liste-questions #liste-questions__top .barre-recherche form #validation-search {
   background: none;
   border: none;
   color: #000;
