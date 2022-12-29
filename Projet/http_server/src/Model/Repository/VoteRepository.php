@@ -139,4 +139,23 @@ class VoteRepository extends AbstractRepository
         }
         return $resultat;
     }
+
+    /**
+     * @param int idQuestion l'id de la question
+     * @return int le nombre de votants ayant participé au vote
+     * */
+    public function selectNombreDeVotantsEffectifs(int $idQuestion): int{
+        $sql = <<<SQL
+            SELECT COUNT(DISTINCT username_votant) 
+            FROM vote v JOIN proposition p ON v.id_proposition = p.id_proposition
+            WHERE id_question = :idQuestion;
+        SQL;
+
+        $pdo = DatabaseConnection::getPdo()->prepare($sql);
+        $pdo->execute([
+            "idQuestion" => $idQuestion
+        ]);
+
+        return $pdo->fetch()[0];
+    }
 }

@@ -155,7 +155,7 @@ class DebugController extends MainController
             $dateOuvertureVotes = date("Y-m-d H:i:s", strtotime($dateFinRedaction) + rand(60 * 60 * 24 * 30, 60 * 60 * 24 * 365));
             $dateFermetureVotes = date("Y-m-d H:i:s", strtotime($dateOuvertureVotes) + rand(60 * 60 * 24 * 30, 60 * 60 * 24 * 365));
 
-            $systemesVote = ["majoritaire_a_un_tour", "approbation", "jugement_majoritaire"];
+            $systemesVote = ["majoritaire_a_un_tour", "approbation", "jugement_majoritaire", "alternatif"];
 
             $stmt->execute([
                 "titre_question" => $titre,
@@ -408,6 +408,29 @@ class DebugController extends MainController
                                 $idProposition,
                                 $username,
                                 $mention
+                            );
+
+                            (new VoteRepository())->insert($vote);
+                        }
+                    }
+                    break;
+                case 'alternatif':
+                    foreach ($usernamesVotant as $username) {
+                        $classements = [];
+                        for($i = 0; $i < $nbPropositions; $i++){
+                            $classements[] = $i+1;
+                        }
+
+                        shuffle($classements);
+
+                        for ($i = 0; $i < $nbPropositions; $i++) {
+                            $idProposition = $idPropositions[$i];
+                            $classement = $classements[$i];
+
+                            $vote = new Vote(
+                                $idProposition,
+                                $username,
+                                $classement
                             );
 
                             (new VoteRepository())->insert($vote);
