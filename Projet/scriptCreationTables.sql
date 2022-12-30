@@ -139,6 +139,7 @@ CREATE TABLE Demande_Co_Auteur (
 -- FONCTIONS, PROCEDURES ET TRIGGERS
 
 DROP FUNCTION IF EXISTS utilisateur_est_lie_a_question;
+DROP FUNCTION IF EXISTS getPhase;
 
 CREATE OR REPLACE FUNCTION utilisateur_est_lie_a_question (p_username_utilisateur varchar(50), p_id_question integer)
     RETURNS boolean
@@ -179,6 +180,39 @@ BEGIN
             WHERE
                 pr.id_question = p_id_question
                 AND c.username_co_auteur = p_username_utilisateur);
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION getPhase (p_id_question integer)
+RETURNS varchar
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_date_debut_redaction timestamp;
+    v_date_fin_redaction timestamp;
+    v_date_ouverture_votes timestamp;
+    v_date_fermeture_votes timestamp;
+BEGIN
+    SELECT date_debut_redaction, date_fin_redaction, date_ouverture_votes, date_fermeture_votes
+    INTO v_date_debut_redaction, v_date_fin_redaction, v_date_ouverture_votes, v_date_fermeture_votes
+    FROM Question
+    WHERE id_question = p_id_question;
+
+    IF(v_date_debut_redaction IS NULL OR v_date_fin_redaction IS NULL OR v_date_ouverture_votes IS NULL OR v_date_fermeture_votes IS NULL) THEN
+        RETURN 'nonRemplie';
+    ELSEIF(CURRENT_TIMESTAMP < v_date_debut_redaction) THEN
+        RETURN 'attente';
+    ELSEIF(CURRENT_TIMESTAMP >= v_date_debut_redaction AND CURRENT_TIMESTAMP <= v_date_fin_redaction) THEN
+        RETURN 'redaction';
+    ELSEIF(CURRENT_TIMESTAMP > v_date_fin_redaction AND CURRENT_TIMESTAMP < v_date_ouverture_votes) THEN
+        RETURN 'lecture';
+    ELSEIF(CURRENT_TIMESTAMP >= v_date_ouverture_votes AND CURRENT_TIMESTAMP <= v_date_fermeture_votes) THEN
+        RETURN 'vote';
+    ELSEIF(CURRENT_TIMESTAMP > v_date_fermeture_votes) THEN
+        RETURN 'resultat';
+    ELSE
+        RETURN 'erreur';
+    END IF;
 END;
 $$;
 
