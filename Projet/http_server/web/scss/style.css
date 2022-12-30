@@ -1280,6 +1280,45 @@ input[type=checkbox]:checked::before {
 #afficher-resultats .diagramme .diagramme__ligne .diagramme__segment:nth-child(6) {
   background-color: darkgreen;
 }
+#afficher-resultats .voteAlternatif {
+  overflow-x: auto;
+  width: 100%;
+}
+#afficher-resultats .voteAlternatif table {
+  margin: auto;
+}
+#afficher-resultats .voteAlternatif table td {
+  background-color: #252525;
+  padding: 5px;
+}
+#afficher-resultats .voteAlternatif table td > span {
+  font-size: 0.7em;
+  margin-right: 5px;
+}
+#afficher-resultats .voteAlternatif table tr:first-child td:first-child {
+  border-top-left-radius: 7px;
+}
+#afficher-resultats .voteAlternatif table tr:first-child td:last-child {
+  border-top-right-radius: 7px;
+}
+#afficher-resultats .voteAlternatif table tr:first-child td:not(:first-child) {
+  font-weight: bold;
+}
+#afficher-resultats .voteAlternatif table tr:last-child td:first-child {
+  border-bottom-left-radius: 7px;
+}
+#afficher-resultats .voteAlternatif table tr:last-child td:last-child {
+  border-bottom-right-radius: 7px;
+}
+#afficher-resultats .voteAlternatif table tr:not(:first-child) td {
+  text-align: center;
+}
+#afficher-resultats .voteAlternatif table .propositionPerdante {
+  background-color: #A8A8A8;
+}
+#afficher-resultats .voteAlternatif table .casePleine, #afficher-resultats .voteAlternatif table .propositionGagnante {
+  background-color: #E1603C;
+}
 
 #listeQuestionsFinies .question {
   text-align: justify;

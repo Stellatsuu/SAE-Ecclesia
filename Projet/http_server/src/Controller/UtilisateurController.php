@@ -83,7 +83,6 @@ class UtilisateurController extends MainController
             $nom,
             $prenom,
             $email,
-            PhotoProfil::getRandomPhotoProfilParDefaut(),
             MotDePasse::hacher($password)
         );
 

@@ -96,7 +96,7 @@ namespace App\SAE\Model\SystemeVote{
                 $estPremiereColonne = true;
 
                 foreach($resultats as $tour){
-                    $cellule = "<td>";
+                    $cellule = "<td class='casePleine'>";
 
                     foreach($tour as $idPropositionTour => $value){
                         $pourcentage = $value[0];
@@ -121,8 +121,8 @@ namespace App\SAE\Model\SystemeVote{
                         }
                     }
 
-                    if($cellule == "<td>"){
-                        $cellule = "<td class='caseVide'>-</td>";
+                    if($cellule == "<td class='casePleine'>"){
+                        $cellule = "<td>-</td>";
                     }else{
                         $cellule .= "</td>";
                     }
@@ -136,12 +136,14 @@ namespace App\SAE\Model\SystemeVote{
 
 
             $html = <<<HTML
-                <table>
-                    <tr>
-                        $header
-                    </tr>
-                    $votesParProposition
-                </table>
+                <div class="voteAlternatif">
+                    <table>
+                        <tr>
+                            $header
+                        </tr>
+                        $votesParProposition
+                    </table>
+                </div>
 
                 <p>$propositionGagnante est la proposition gagnante.</p>
             HTML;
