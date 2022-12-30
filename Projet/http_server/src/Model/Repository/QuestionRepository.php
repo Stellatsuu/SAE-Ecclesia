@@ -2,6 +2,7 @@
 
 namespace App\SAE\Model\Repository;
 
+use App\SAE\Controller\DebugController;
 use App\SAE\Model\DataObject\AbstractDataObject;
 use App\SAE\Model\DataObject\Question;
 use App\SAE\Model\SystemeVote\SystemeVoteFactory;
@@ -127,30 +128,64 @@ class QuestionRepository extends AbstractRepository
 
     public function selectAllLimitOffset(int $limit, int $offset, array $motsCles = [], array $tags = [], array $filtres = []): array
     {
-        $conditions = [];
-        for ($i = 0; $i < count($motsCles); $i++) {
-            $conditions[] = "AND (LOWER(titre_question) LIKE :mot_cle_$i OR LOWER(description_question) LIKE :mot_cle_$i)";
+        $conditionsMCTags = [];
+        $conditionsNoFiltres = "";
+        $conditionsFiltres = [];
+        $username = ""; //TODO
+
+        if(empty($filtres)){
+            $conditionsNoFiltres = "AND date_debut_redaction IS NOT NULL AND date_debut_redaction <= CURRENT_TIMESTAMP";
+        } else{
+            if(in_array("redacteur", $filtres)){
+                //TODO SQL : estRedacteur
+            }
+            if(in_array("coauteur", $filtres)){
+                //TODO SQL : estCoAuteur
+            }
+            if(in_array("votant", $filtres)){
+                //TODO SQL : estVotant
+            }
+
+            //TODO : trouver un moyen de concatener ça avec les AND et OR
+            if(in_array("lecture", $filtres)){
+                $conditionsFiltres[] = "OR getPhase(id_question) = 'lecture'";
+            }
+            if(in_array("redaction", $filtres)){
+                $conditionsFiltres[] = "OR getPhase(id_question) = 'redaction'";
+            }
+            if(in_array("vote", $filtres)){
+                $conditionsFiltres[] = "OR getPhase(id_question) = 'vote'";
+            }
+            if(in_array("resultat", $filtres)){
+                $conditionsFiltres[] = "OR getPhase(id_question) = 'resultat'";
+            }
         }
 
+        /////GESTION TAGS ET MOTS-CLES
+
         $tags="{" . implode(",",$tags) . "}";
-        $conditions[] = "AND tags @> :tags";
+        $conditionsMCTags[] = "tags @> :tags";
 
-        $conditions = implode(' ', $conditions);
+        for ($i = 0; $i < count($motsCles); $i++) {
+            $conditionsMCTags[] = "AND (LOWER(titre_question) LIKE :mot_cle_$i OR LOWER(description_question) LIKE :mot_cle_$i)";
+        }
 
-
-        
-
+        /////FORMAT TABLEAU -> FORMAT STRING
+        $conditionsMCTags = implode(' ', $conditionsMCTags);
+        $conditionsFiltres = implode(' ', $conditionsFiltres);
 
         $sql = <<<SQL
             SELECT *
                 FROM question 
-                WHERE date_debut_redaction IS NOT NULL
-                AND date_debut_redaction <= CURRENT_TIMESTAMP
-                $conditions
+                WHERE $conditionsMCTags
+                $conditionsNoFiltres
+                $conditionsFiltres
                 ORDER BY date_debut_redaction DESC
                 LIMIT :limit
                 OFFSET :offset
         SQL;
+
+        DebugController::logToFile($sql);
 
         $pdo = DatabaseConnection::getPdo();
         $pdoStatement = $pdo->prepare($sql);

@@ -355,8 +355,10 @@ class QuestionController extends MainController
             return $t!="";
         });
 
-        foreach($_GET['filtres'] as $filtreSelectionne) {
-            $filtres[] = $filtreSelectionne;
+        if(isset($_GET['filtres'])) {
+            foreach ($_GET['filtres'] as $filtreSelectionne) {
+                $filtres[] = $filtreSelectionne;
+            }
         }
 
         //TODO : supprimer :
