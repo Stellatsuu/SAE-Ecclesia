@@ -1,5 +1,6 @@
 <?php
 
+use App\SAE\Lib\ConnexionUtilisateur;
 use App\SAE\Lib\Markdown;
 use App\SAE\Lib\PhotoProfil;
 use App\SAE\Model\DataObject\Question;
@@ -143,20 +144,28 @@ if ($nbPages == 1) {
             <div class="filtres">
             <a class="bouton_ouvrir_filtres" href="#"><img src="assets/images/filter-icon.svg" alt="bouton filtres"></a>
                 <form action="frontController.php" method="get">
+                    <!-- //TODO préremplissage des cases selon les checkbox precedentes
+                         //TODO paginations avec filtres -->
                     <div class="filtres-phases">
                         <label>Phase(s)</label><br>
                         <input type="checkbox" name="filtres[]" value="lecture"><label>Lecture</label><br>
                         <input type="checkbox" name="filtres[]" value="vote"><label>Vote</label><br>
                         <input type="checkbox" name="filtres[]" value="redaction"><label>Redaction</label><br>
-                        <input type="checkbox" name="filtres[]" value="resultats"><label>Résultats</label><br>
+                        <input type="checkbox" name="filtres[]" value="resultat"><label>Résultats</label><br>
                     </div>
-                    <div class="filtres-roles">
-                        <label>Rôles(s)</label><br>
-                        <input type="checkbox" name="filtres[]" value="organisateur"><label>Organisateur</label><br>
-                        <input type="checkbox" name="filtres[]" value="coauteur"><label>Co-Auteur</label><br>
-                        <input type="checkbox" name="filtres[]" value="redacteur"><label>Redacteur</label><br>
-                        <input type="checkbox" name="filtres[]" value="votant"><label>Votant</label><br>
-                    </div>
+
+                    <?php
+                    if(ConnexionUtilisateur::estConnecte()){
+                        echo <<<html
+                        <div class="filtres-roles">
+                            <label>Rôles(s)</label><br>
+                            <input type="checkbox" name="filtres[]" value="coauteur"><label>Co-Auteur</label><br>
+                            <input type="checkbox" name="filtres[]" value="redacteur"><label>Redacteur</label><br>
+                            <input type="checkbox" name="filtres[]" value="votant"><label>Votant</label><br>
+                        </div>
+                    html;
+                    }?>
+
                     <input type="hidden" name="controller" value="question">
                     <input type="hidden" name="action" value="listerQuestions">
                     <input type="submit" value="Valider" class="button">
