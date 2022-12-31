@@ -56,11 +56,6 @@ namespace App\SAE\Model\SystemeVote{
                     }
                 }
 
-                /*$input = <<<HTML
-                <label for="choix$idProposition">$titreProposition</label>
-                <input type="number" id="choix$idProposition" name="choix$idProposition">
-                HTML;*/
-
                 $item = <<<HTML
                     <div class='item' id='item$idProposition'  draggable="true">
                         <p>$titreProposition</p>
