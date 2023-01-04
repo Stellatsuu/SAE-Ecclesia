@@ -356,13 +356,30 @@ class QuestionController extends MainController
             return $t!="";
         });
 
-        if(isset($_GET['filtres'])) {
-            foreach ($_GET['filtres'] as $filtreSelectionne) {
-                $filtresFormatTab[] = $filtreSelectionne;
-            }
-            $filtresFormatTexte = implode("+", $filtresFormatTab);
+        if(isset($_GET['lecture'])) {
+            $filtresFormatTab[] = $_GET['lecture'];
+        }
+        if(isset($_GET['vote'])) {
+            $filtresFormatTab[] = $_GET['vote'];
+        }
+        if(isset($_GET['redaction'])) {
+            $filtresFormatTab[] = $_GET['redaction'];
+        }
+        if(isset($_GET['resultat'])) {
+            $filtresFormatTab[] = $_GET['resultat'];
         }
 
+        if(isset($_GET['coauteur'])) {
+            $filtresFormatTab[] = $_GET['coauteur'];
+        }
+        if(isset($_GET['redacteur'])) {
+            $filtresFormatTab[] = $_GET['redacteur'];
+        }
+        if(isset($_GET['votant'])) {
+            $filtresFormatTab[] = $_GET['votant'];
+        }
+
+        $filtresFormatTexte = implode("+", $filtresFormatTab);
         //TODO : supprimer :
         DebugController::logToFile(implode("," , $filtresFormatTab));
 

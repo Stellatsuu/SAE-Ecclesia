@@ -152,10 +152,10 @@ if ($nbPages == 1) {
                          //TODO paginations avec filtres -->
                     <div class="filtres-phases">
                         <label>Phase(s)</label><br>
-                        <input type="checkbox" name="filtres[]" value="lecture"><label>Lecture</label><br>
-                        <input type="checkbox" name="filtres[]" value="vote"><label>Vote</label><br>
-                        <input type="checkbox" name="filtres[]" value="redaction"><label>Redaction</label><br>
-                        <input type="checkbox" name="filtres[]" value="resultat"><label>Résultats</label><br>
+                        <input type="checkbox" name="lecture" value="lecture"><label>Lecture</label><br>
+                        <input type="checkbox" name="vote" value="vote"><label>Vote</label><br>
+                        <input type="checkbox" name="redaction" value="redaction"><label>Redaction</label><br>
+                        <input type="checkbox" name="resultat" value="resultat"><label>Résultats</label><br>
                     </div>
 
                     <?php
@@ -163,9 +163,9 @@ if ($nbPages == 1) {
                         echo <<<html
                         <div class="filtres-roles">
                             <label>Rôles(s)</label><br>
-                            <input type="checkbox" name="filtres[]" value="coauteur"><label>Co-Auteur</label><br>
-                            <input type="checkbox" name="filtres[]" value="redacteur"><label>Redacteur</label><br>
-                            <input type="checkbox" name="filtres[]" value="votant"><label>Votant</label><br>
+                            <input type="checkbox" name="coauteur" value="coauteur"><label>Co-Auteur</label><br>
+                            <input type="checkbox" name="redacteur" value="redacteur"><label>Redacteur</label><br>
+                            <input type="checkbox" name="votant" value="votant"><label>Votant</label><br>
                         </div>
                     html;
                     }?>
@@ -173,7 +173,6 @@ if ($nbPages == 1) {
                     <input type="hidden" name="controller" value="question">
                     <input type="hidden" name="action" value="listerQuestions">
                     <input type="hidden" name="filtresQuery" value="<?= $filtresQuery ?>">
-                    <?php \App\SAE\Controller\DebugController::logToFile("FILTRES " . $filtresQuery);?>
                     <input type="submit" value="Valider" class="button">
                 </form>
             </div>
