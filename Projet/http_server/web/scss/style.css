@@ -1190,6 +1190,61 @@ input[type=checkbox]:checked::before {
     padding-right: 20px;
   }
 }
+#afficher-propositions__formulaire-vote .voteAlternatif {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+#afficher-propositions__formulaire-vote .voteAlternatif > div {
+  width: calc(50% - 30px);
+}
+#afficher-propositions__formulaire-vote .voteAlternatif .hide {
+  display: none;
+}
+#afficher-propositions__formulaire-vote .voteAlternatif .box {
+  display: flex;
+  align-items: stretch;
+  margin: 2px 0;
+  min-height: 40px;
+}
+#afficher-propositions__formulaire-vote .voteAlternatif .box > span {
+  width: 40px;
+  min-width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#afficher-propositions__formulaire-vote .voteAlternatif .item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #353535;
+  cursor: grab;
+  width: 100%;
+}
+#afficher-propositions__formulaire-vote .voteAlternatif .item p, #afficher-propositions__formulaire-vote .voteAlternatif .item img {
+  margin: 10px 5px;
+}
+#afficher-propositions__formulaire-vote .voteAlternatif .source-container, #afficher-propositions__formulaire-vote .voteAlternatif .destination-container {
+  width: 100%;
+  border: solid #767676 2px;
+}
+#afficher-propositions__formulaire-vote .voteAlternatif .source-container .box > span {
+  background-color: #A8A8A8;
+}
+#afficher-propositions__formulaire-vote .voteAlternatif .destination-container .box > span {
+  background-color: #E1603C;
+}
+@media screen and (max-width: 700px) {
+  #afficher-propositions__formulaire-vote .voteAlternatif {
+    flex-direction: column;
+  }
+  #afficher-propositions__formulaire-vote .voteAlternatif > div {
+    width: 100%;
+    margin: 20px 0;
+  }
+}
 
 #afficher-resultats {
   display: flex;
@@ -1197,6 +1252,7 @@ input[type=checkbox]:checked::before {
   align-items: stretch;
   padding: 30px;
   gap: 30px;
+  position: relative;
 }
 #afficher-resultats .panel2 {
   padding: 0 20px 20px 20px;

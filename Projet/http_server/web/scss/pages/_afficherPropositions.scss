@@ -137,4 +137,68 @@
       }
     }
   }
+
+  .voteAlternatif{
+    width:100%;
+    display:flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    > div{
+      width: calc(50% - 30px);
+    }
+
+    .hide{
+      display:none;
+    }
+    .box{
+      display:flex;
+      align-items: stretch;
+      margin: 2px 0;
+      min-height: 40px;
+
+      > span{
+        width: 40px;
+        min-width: 40px;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+    .item{
+      display:flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: $couleurFond3;
+      cursor: grab;
+      width: 100%;
+
+      p, img{
+        margin: 10px 5px;
+      }
+    }
+    .source-container, .destination-container{
+      width:100%;
+      border: solid #767676 2px;
+    }
+    .source-container{
+      .box > span{
+        background-color: #A8A8A8;
+      }
+    }
+    .destination-container{
+      .box > span{
+        background-color: $couleurPrincipale;
+      }
+    }
+
+    @media screen and (max-width: 700px){
+      flex-direction: column;
+
+      > div{
+        width:100%;
+        margin: 20px 0;
+      }
+    }
+  }
 }

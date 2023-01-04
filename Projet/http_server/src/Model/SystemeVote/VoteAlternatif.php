@@ -39,7 +39,8 @@ namespace App\SAE\Model\SystemeVote{
                 $votes = (new VoteRepository)->selectAllByQuestionEtVotant($question->getIdQuestion(), $username);
             }
 
-            $propositionCheckboxes = [];
+            $colonneOrigine = [];
+            $colonneDestination = [];
             for ($i = 0; $i < count($propositions); $i++) {
                 $p = $propositions[$i];
                 $idProposition = rawurlencode($p->getIdProposition());
@@ -55,30 +56,82 @@ namespace App\SAE\Model\SystemeVote{
                     }
                 }
 
-                $input = <<<HTML
-                <label for="choix$idProposition">$titreProposition</label>
-                <input type="number" id="choix$idProposition" name="choix$idProposition" value="$valeur" min="1" max="$nbPropositions" required>
-            HTML;
+                $item = <<<HTML
+                    <div class='item' id='item$idProposition'  draggable="true">
+                        <p>$titreProposition</p>
+                        <input type="hidden" name="choix$idProposition" value="$valeur" min="1" max="$nbPropositions" required/>
+                        <img src="assets/images/dragAndDrop.svg"/>
+                    </div>
+                HTML;
 
-                $propositionInput[] = $input;
+                if($valeur !== ""){
+                    $colonneDestination[((int) $valeur) - 1] = <<<HTML
+                        <div class="box" id="dest$valeur">
+                            <span>$valeur</span>
+                            $item
+                        </div>
+                    HTML;
+                }else{
+                    $index = count($colonneOrigine);
+                    $colonneOrigine[$index] = <<<HTML
+                        <div class='box' id="source$index">
+                            <span>-</span>
+                            $item
+                        </div>
+                    HTML;
+                }
             }
 
-            $propositionInput = implode("", $propositionInput);
+            for ($i = 0; $i < count($propositions); $i++) {
+                if(!isset($colonneOrigine[$i])){
+                    $colonneOrigine[$i] = <<<HTML
+                        <div class='box' id="source$i">
+                            <span>-</span>
+                        </div>
+                    HTML;
+                }
+                if(!isset($colonneDestination[$i])){
+                    $colonneDestination[$i] = <<<HTML
+                        <div class="box" id="dest$i">
+                            <span>$i</span>
+                        </div>
+                    HTML;
+                }
+            }
+
+            ksort($colonneOrigine);
+            ksort($colonneDestination);
+            $colonneOrigine = implode("", $colonneOrigine);
+            $colonneDestination = implode("", $colonneDestination);
             $submit = $aDejaVote ? "Modifier mon vote" : "Voter";
 
             $res = <<<HTML
-        <p>Le vote se déroule en 1 tour. Classez les propositions suivantes par ordre de préférence.</p>
-        <div class="choix-proposition">
-            $propositionInput
-        </div>
-        <input type="submit" value="$submit">
-        HTML;
+                <p>Le vote se déroule en 1 tour. Classez les propositions suivantes par ordre de préférence.</p>
+                <div class="choix-proposition voteAlternatif"> 
+                    <div>
+                        <h3>Non classé:</h3> 
+                        <div class="source-container">
+                            $colonneOrigine
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Classement:</h3> 
+                        <div class='destination-container'>
+                            $colonneDestination
+                        </div>
+                    </div>
+                </div>
+                
+                <script src="js/dragAndDropRanking.js"></script>
+                <input type="submit" value="$submit">
+            HTML;
 
             return $res;
         }
 
         public function afficherResultats(): string{
-            $propositions = (new PropositionRepository())->selectAllByQuestion($this->getQuestion()->getIdQuestion());
+            $idQuestion = $this->getQuestion()->getIdQuestion();
+            $propositions = (new PropositionRepository())->selectAllByQuestion($idQuestion);
             $resultats = $this->calculerResultats();
 
 
@@ -89,9 +142,11 @@ namespace App\SAE\Model\SystemeVote{
 
             $propositionGagnante = "";
             $votesParProposition = "";
-            foreach($propositions as $proposition){
+            for($i = 0; $i < count($propositions); $i++){
+                $proposition = $propositions[$i];
                 $idProposition = $proposition->getidProposition();
-                $ligne = "<tr><td>{$proposition->getTitreProposition()}</td>";
+                $titreProposition = htmlspecialchars($proposition->getTitreProposition());
+                $ligne = "<tr><td><a href='frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion&index=$i'>$titreProposition</a></td>";
                 $pourcentagePrecedent = 0;
                 $estPremiereColonne = true;
 
