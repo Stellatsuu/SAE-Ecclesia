@@ -3,6 +3,7 @@
 namespace App\SAE\Model\Repository;
 
 use App\SAE\Controller\DebugController;
+use App\SAE\Lib\ConnexionUtilisateur;
 use App\SAE\Model\DataObject\AbstractDataObject;
 use App\SAE\Model\DataObject\Question;
 use App\SAE\Model\SystemeVote\SystemeVoteFactory;
@@ -131,33 +132,47 @@ class QuestionRepository extends AbstractRepository
         $conditionsMCTags = [];
         $conditionsNoFiltres = "";
         $conditionsFiltres = [];
-        $username = ""; //TODO
+        $values = [];
 
         if(empty($filtres)){
-            $conditionsNoFiltres = "AND date_debut_redaction IS NOT NULL AND date_debut_redaction <= CURRENT_TIMESTAMP";
+            //AFFICHAGE TOUTES LES QUESTIONS
+            $conditionsNoFiltres = "date_debut_redaction IS NOT NULL AND date_debut_redaction <= CURRENT_TIMESTAMP";
         } else{
-            if(in_array("redacteur", $filtres)){
-                //TODO SQL : estRedacteur
-            }
-            if(in_array("coauteur", $filtres)){
-                //TODO SQL : estCoAuteur
-            }
-            if(in_array("votant", $filtres)){
-                //TODO SQL : estVotant
+            //AFFICHAGE QUESTIONS FILTREES
+            DebugController::logToFile(ConnexionUtilisateur::estConnecte());
+            if(ConnexionUtilisateur::estConnecte()) {
+                if (in_array("redacteur", $filtres)) {
+                    $conditionsFiltres[] = "(EXISTS(SELECT * FROM proposition WHERE username_responsable = :usernameRedacteur))";
+                    $conditionsFiltres[] = "OR";
+                    $values['usernameRedacteur'] = ConnexionUtilisateur::getUsername();
+                }
+                if (in_array("coauteur", $filtres)) {
+                    $conditionsFiltres[] = "(EXISTS(SELECT * FROM co_auteur WHERE username_co_auteur = :usernameCoAuteur))";
+                    $conditionsFiltres[] = "OR";
+                    $values['usernameCoAuteur'] = ConnexionUtilisateur::getUsername();
+                }
+                if (in_array("votant", $filtres)) {
+                    $conditionsFiltres[] = "(EXISTS(SELECT * FROM votant WHERE username_votant = :usernameVotant))";
+                    $conditionsFiltres[] = "OR";
+                    $values['usernameVotant'] = ConnexionUtilisateur::getUsername();
+                }
             }
 
-            //TODO : trouver un moyen de concatener ça avec les AND et OR
             if(in_array("lecture", $filtres)){
-                $conditionsFiltres[] = "OR getPhase(id_question) = 'lecture'";
+                $conditionsFiltres[] = "getPhase(id_question) = 'lecture'";
+                $conditionsFiltres[] = "OR";
             }
             if(in_array("redaction", $filtres)){
-                $conditionsFiltres[] = "OR getPhase(id_question) = 'redaction'";
+                $conditionsFiltres[] = "getPhase(id_question) = 'redaction'";
+                $conditionsFiltres[] = "OR";
             }
             if(in_array("vote", $filtres)){
-                $conditionsFiltres[] = "OR getPhase(id_question) = 'vote'";
+                $conditionsFiltres[] = "getPhase(id_question) = 'vote'";
+                $conditionsFiltres[] = "OR";
             }
             if(in_array("resultat", $filtres)){
-                $conditionsFiltres[] = "OR getPhase(id_question) = 'resultat'";
+                $conditionsFiltres[] = "getPhase(id_question) = 'resultat'";
+                $conditionsFiltres[] = "OR";
             }
         }
 
@@ -167,8 +182,10 @@ class QuestionRepository extends AbstractRepository
         $conditionsMCTags[] = "tags @> :tags";
 
         for ($i = 0; $i < count($motsCles); $i++) {
-            $conditionsMCTags[] = "AND (LOWER(titre_question) LIKE :mot_cle_$i OR LOWER(description_question) LIKE :mot_cle_$i)";
+            $conditionsMCTags[] = "AND (LOWER(titre_question) LIKE :mot_cle_$i OR LOWER(description_question) LIKE :mot_cle_$i) AND";
         }
+
+        array_pop($conditionsFiltres); //suppression du OR en trop à la fin
 
         /////FORMAT TABLEAU -> FORMAT STRING
         $conditionsMCTags = implode(' ', $conditionsMCTags);
@@ -185,15 +202,11 @@ class QuestionRepository extends AbstractRepository
                 OFFSET :offset
         SQL;
 
-        DebugController::logToFile($sql);
-
         $pdo = DatabaseConnection::getPdo();
         $pdoStatement = $pdo->prepare($sql);
-        $values = [
-            'limit' => $limit,
-            'offset' => $offset,
-            'tags' => $tags,
-        ];
+        $values['limit'] = $limit;
+        $values['offset'] = $offset;
+        $values['tags'] = $tags;
 
         for ($i = 0; $i < count($motsCles); $i++) {
             $values["mot_cle_$i"] = "%$motsCles[$i]%";

@@ -2,6 +2,7 @@
 
 use App\SAE\Lib\ConnexionUtilisateur;
 use App\SAE\Lib\Markdown;
+use App\SAE\Lib\PhaseQuestion;
 use App\SAE\Lib\PhotoProfil;
 use App\SAE\Model\DataObject\Question;
 
@@ -16,7 +17,10 @@ foreach ($questions as $q) {
     $query = htmlspecialchars(rawurldecode($query));
     $titre = htmlspecialchars($question->getTitre());
     $description = Markdown::toHtml($question->getDescription());
-    $datePublication = htmlspecialchars($question->getDateDebutRedaction()->format("d/m/Y"));
+    $datePublication = "Non publiée";
+    if(!($question->getPhase() == PhaseQuestion::NonRemplie || $question->getPhase() == PhaseQuestion::Attente)){
+        $datePublication = htmlspecialchars($question->getDateDebutRedaction()->format("d/m/Y"));
+    }
     $phase = htmlspecialchars($question->getPhase()->toString());
     $nomUsuel = htmlspecialchars($utilisateur->getNomUsuel());
     $nomUsuel = preg_replace("/ /", "&nbsp;", $nomUsuel, 1);
@@ -58,7 +62,7 @@ foreach ($questions as $q) {
     $questionHTMLs[] = $html;
 }
 
-function pageLink($page, $text, $nbPages, $query, $active = true, $isCurrent = false): string
+function pageLink($page, $text, $nbPages, $query, $filtresQuery, $active = true, $isCurrent = false): string
 {
     if (!$active) {
         $res = <<<html
@@ -74,7 +78,7 @@ function pageLink($page, $text, $nbPages, $query, $active = true, $isCurrent = f
         html;
     } else {
         $res = <<<html
-        <a href="frontController.php?controller=question&action=listerQuestions&page=$page&query=$query" class="pagination__link unselectable">
+        <a href="frontController.php?controller=question&action=listerQuestions&page=$page&query=$query&filtres=$filtresQuery" class="pagination__link unselectable">
             $text
         </a>
         html;
@@ -97,41 +101,41 @@ function pageLink($page, $text, $nbPages, $query, $active = true, $isCurrent = f
 }
 if ($nbPages == 1) {
     $paginationLinks = [
-        pageLink(-1, "<<", 1, $query, false),
-        pageLink(-1, "<", 1, $query, false),
-        pageLink(1, "1", 1, $query, true, true),
-        pageLink(-1, ">", 1, $query, false),
-        pageLink(-1, ">>", 1, $query, false),
+        pageLink(-1, "<<", 1, $query, $filtresQuery, false),
+        pageLink(-1, "<", 1, $query, $filtresQuery,false),
+        pageLink(1, "1", 1, $query, $filtresQuery,true, true),
+        pageLink(-1, ">", 1, $query, $filtresQuery,false),
+        pageLink(-1, ">>", 1, $query, $filtresQuery, false),
     ];
 } else if ($page == 1) {
     $paginationLinks = [
-        pageLink(-1, "<<", $nbPages, $query, false),
-        pageLink(-1, "<", $nbPages, $query, false),
-        pageLink(1, "1", $nbPages, $query, true, true),
-        pageLink(2, "2", $nbPages, $query),
-        pageLink(3, "3", $nbPages, $query),
-        pageLink(2, ">", $nbPages, $query),
-        pageLink($nbPages, ">>", $nbPages, $query)
+        pageLink(-1, "<<", $nbPages, $query, $filtresQuery, false),
+        pageLink(-1, "<", $nbPages, $query, $filtresQuery, false),
+        pageLink(1, "1", $nbPages, $query, $filtresQuery,true, true),
+        pageLink(2, "2", $nbPages, $query, $filtresQuery),
+        pageLink(3, "3", $nbPages, $query, $filtresQuery),
+        pageLink(2, ">", $nbPages, $query, $filtresQuery),
+        pageLink($nbPages, ">>", $nbPages, $query, $filtresQuery)
     ];
 } else if ($page >= $nbPages) {
     $paginationLinks = [
-        pageLink(1, "<<", $nbPages, $query),
-        pageLink($page - 1, "<", $nbPages, $query),
-        pageLink($page - 2, $page - 2, $nbPages, $query),
-        pageLink($page - 1, $page - 1, $nbPages, $query),
-        pageLink($page, $page, $nbPages, $query, true, true),
-        pageLink(-1, ">", $nbPages, $query, false),
-        pageLink(-1, ">>", $nbPages, $query, false)
+        pageLink(1, "<<", $nbPages, $query, $filtresQuery),
+        pageLink($page - 1, "<", $nbPages, $query, $filtresQuery),
+        pageLink($page - 2, $page - 2, $nbPages, $query, $filtresQuery),
+        pageLink($page - 1, $page - 1, $nbPages, $query, $filtresQuery),
+        pageLink($page, $page, $nbPages, $query, $filtresQuery,true, true),
+        pageLink(-1, ">", $nbPages, $query, $filtresQuery,false),
+        pageLink(-1, ">>", $nbPages, $query, $filtresQuery, false)
     ];
 } else {
     $paginationLinks = [
-        pageLink(1, "<<", $nbPages, $query),
-        pageLink($page - 1, "<", $nbPages, $query),
-        pageLink($page - 1, $page - 1, $nbPages, $query),
-        pageLink($page, $page, $nbPages, $query, true, true),
-        pageLink($page + 1, $page + 1, $nbPages, $query),
-        pageLink($page + 1, ">", $nbPages, $query),
-        pageLink($nbPages, ">>", $nbPages, $query)
+        pageLink(1, "<<", $nbPages, $query, $filtresQuery),
+        pageLink($page - 1, "<", $nbPages, $query, $filtresQuery),
+        pageLink($page - 1, $page - 1, $nbPages, $query, $filtresQuery),
+        pageLink($page, $page, $nbPages, $query, $filtresQuery, true, true),
+        pageLink($page + 1, $page + 1, $nbPages, $query, $filtresQuery),
+        pageLink($page + 1, ">", $nbPages, $query, $filtresQuery),
+        pageLink($nbPages, ">>", $nbPages, $query, $filtresQuery)
     ];
 }
 ?>
@@ -142,7 +146,7 @@ if ($nbPages == 1) {
         <h1>Questions : </h1>
         <div class="barre-recherche">
             <div class="filtres">
-            <a class="bouton_ouvrir_filtres" href="#"><img src="assets/images/filter-icon.svg" alt="bouton filtres"></a>
+                <a class="bouton_ouvrir_filtres" href="#"><img src="assets/images/filter-icon.svg" alt="bouton filtres"></a>
                 <form action="frontController.php" method="get">
                     <!-- //TODO préremplissage des cases selon les checkbox precedentes
                          //TODO paginations avec filtres -->
@@ -168,6 +172,8 @@ if ($nbPages == 1) {
 
                     <input type="hidden" name="controller" value="question">
                     <input type="hidden" name="action" value="listerQuestions">
+                    <input type="hidden" name="filtresQuery" value="<?= $filtresQuery ?>">
+                    <?php \App\SAE\Controller\DebugController::logToFile("FILTRES " . $filtresQuery);?>
                     <input type="submit" value="Valider" class="button">
                 </form>
             </div>

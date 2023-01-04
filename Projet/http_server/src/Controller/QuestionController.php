@@ -341,7 +341,8 @@ class QuestionController extends MainController
         $motsClesEtTags = explode(" ", $query)?:[];
         $motsCles=[];
         $tags=[];
-        $filtres=[];
+        $filtresFormatTab=[];
+        $filtresFormatTexte = "";
 
         foreach ($motsClesEtTags as $mot){
             if(substr($mot,0,1)=="#"){
@@ -357,19 +358,20 @@ class QuestionController extends MainController
 
         if(isset($_GET['filtres'])) {
             foreach ($_GET['filtres'] as $filtreSelectionne) {
-                $filtres[] = $filtreSelectionne;
+                $filtresFormatTab[] = $filtreSelectionne;
             }
+            $filtresFormatTexte = implode("+", $filtresFormatTab);
         }
 
         //TODO : supprimer :
-        DebugController::logToFile(implode("," , $filtres));
+        DebugController::logToFile(implode("," , $filtresFormatTab));
 
         $nbPages = ceil((new QuestionRepository())->countAllPhaseRedactionOuPlus($motsCles,$tags) / $nbQuestionsParPage) ?: 1;
         $page = isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] > 0 && $_GET["page"] <= $nbPages ? $_GET["page"] : 1;
         
         $offset = ($page - 1) * $nbQuestionsParPage;
 
-        $questions = (new QuestionRepository())->selectAllLimitOffset($nbQuestionsParPage, $offset, $motsCles, $tags, $filtres);
+        $questions = (new QuestionRepository())->selectAllLimitOffset($nbQuestionsParPage, $offset, $motsCles, $tags, $filtresFormatTab);
 
         static::afficherVue("view.php", [
             "titrePage" => "Liste des questions",
@@ -377,7 +379,8 @@ class QuestionController extends MainController
             "questions" => $questions,
             "page" => $page,
             "nbPages" => $nbPages,
-            "query" => $query
+            "query" => $query,
+            "filtresQuery" => $filtresFormatTexte
         ]);
     }
 
