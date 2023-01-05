@@ -150,6 +150,7 @@ if ($nbPages == 1) {
                 <form action="frontController.php" method="get">
                     <!-- //TODO préremplissage des cases selon les checkbox precedentes
                          //TODO paginations avec filtres -->
+                    <span><a href="frontController.php?controller=question&action=listerQuestions">Tout supprimer</a></span>
                     <div class="filtres-phases">
                         <label>Phase(s)</label><br>
                         <input type="checkbox" name="lecture" value="lecture"><label>Lecture</label><br>
