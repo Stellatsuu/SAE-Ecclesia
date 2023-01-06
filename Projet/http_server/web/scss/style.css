@@ -832,7 +832,7 @@ input[type=checkbox]:checked::before {
 }
 @media screen and (max-width: 1000px) {
   #roles_input #votants_input,
-  #roles_input #redacteurs_input {
+#roles_input #redacteurs_input {
     width: 100%;
   }
 }
@@ -1235,6 +1235,9 @@ input[type=checkbox]:checked::before {
 }
 #afficher-propositions__formulaire-vote .voteAlternatif .destination-container .box > span {
   background-color: #E1603C;
+}
+#afficher-propositions__formulaire-vote .voteAlternatif .selected {
+  border: solid #E1603C 2px;
 }
 @media screen and (max-width: 700px) {
   #afficher-propositions__formulaire-vote .voteAlternatif {
