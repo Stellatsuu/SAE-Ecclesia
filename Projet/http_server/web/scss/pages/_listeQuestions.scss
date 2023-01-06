@@ -37,8 +37,9 @@
           white-space: nowrap;
           z-index: 1;
           
-          grid-template-columns: 20px 1fr 20px 1fr;
+          grid-template-columns: auto auto auto auto;
           gap: 10px;
+          width:min-content;
 
           justify-items: stretch;
           align-items: stretch;
@@ -59,12 +60,10 @@
             font-size: 1rem;
           }
 
-          .menu-filtre-2fr {
-            grid-column: auto / span 2;
-          }
-
           .menu-filtre-4fr {
             grid-column: auto / span 4;
+            font-weight: bold;
+            font-size: 1.2rem;
           }
 
           input[type="submit"] {
@@ -82,6 +81,13 @@
             border-color: transparent transparent $couleurPrincipale transparent;
             top: -15px;
             left: 12px;
+          }
+
+          #lien-tout-supprimer {
+            position: absolute;
+            top: 7px;
+            right: 7px;
+            font-size: 0.9rem;
           }
         }
 

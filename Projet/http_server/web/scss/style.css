@@ -1568,8 +1568,11 @@ input[type=checkbox]:checked::before {
           hyphens: none;
   white-space: nowrap;
   z-index: 1;
-  grid-template-columns: 20px 1fr 20px 1fr;
+  grid-template-columns: auto auto auto auto;
   gap: 10px;
+  width: -webkit-min-content;
+  width: -moz-min-content;
+  width: min-content;
   justify-items: stretch;
   align-items: stretch;
   position: absolute;
@@ -1585,11 +1588,10 @@ input[type=checkbox]:checked::before {
   padding: 0;
   font-size: 1rem;
 }
-#liste-questions #liste-questions__top .barre-recherche .menu-filtre .filtres .menu-filtre-2fr {
-  grid-column: auto/span 2;
-}
 #liste-questions #liste-questions__top .barre-recherche .menu-filtre .filtres .menu-filtre-4fr {
   grid-column: auto/span 4;
+  font-weight: bold;
+  font-size: 1.2rem;
 }
 #liste-questions #liste-questions__top .barre-recherche .menu-filtre .filtres input[type=submit] {
   margin: 0;
@@ -1605,6 +1607,12 @@ input[type=checkbox]:checked::before {
   border-color: transparent transparent #E1603C transparent;
   top: -15px;
   left: 12px;
+}
+#liste-questions #liste-questions__top .barre-recherche .menu-filtre .filtres #lien-tout-supprimer {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  font-size: 0.9rem;
 }
 #liste-questions #liste-questions__top .barre-recherche .menu-filtre:focus-within .filtres {
   display: grid;

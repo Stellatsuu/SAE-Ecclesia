@@ -143,6 +143,20 @@ if ($nbPages == 1) {
         pageLink($nbPages, "&gt&gt", $nbPages, $query, $filtres)
     ];
 }
+
+$filtresRolesHTMLElements = [];
+if (ConnexionUtilisateur::estConnecte()) {
+    $filtresRolesHTMLElements[] = <<<HTML
+        <span class="menu-filtre-4fr">Rôles(s)</span>
+    HTML;
+    foreach (["coauteur" => "Co-auteur", "redacteur" => "Rédacteur", "votant" => "Votant"] as $role => $titre) {
+        $checked = isset($_GET["f_$role"]) ? "checked" : "";
+        $filtresRolesHTMLElements[] = <<<HTML
+            <input type="checkbox" id="f_coauteur_id" name="f_coauteur" value="true" $checked>
+            <label for="f_coauteur_id">$titre</label>
+        HTML;
+    }
+}
 ?>
 
 <div class="panel" id="liste-questions">
@@ -160,16 +174,13 @@ if ($nbPages == 1) {
                     <a class="bouton-ouvrir-filtres" href="#"><img src="assets/images/filter-icon.svg" alt="bouton filtres"></a>
 
                     <div class="filtres">
-                        <span class="menu-filtre-2fr">Phase(s)</span>
-                        <span class="menu-filtre-2fr"><a href="frontController.php?controller=question&action=listerQuestions">Tout supprimer</a></span>
+                        <span class="menu-filtre-4fr">Phase(s)</span>
+                        <a id="lien-tout-supprimer" href="frontController.php?controller=question&action=listerQuestions">Tout supprimer</a>
                         <input type="checkbox" id="f_lecture_id" name="f_lecture" value="true" <?= isset($_GET['f_lecture']) ? "checked" : "" ?>><label for="f_lecture_id">Lecture</label>
                         <input type="checkbox" id="f_vote_id" name="f_vote" value="true" <?= isset($_GET['f_vote']) ? "checked" : "" ?>><label for="f_vote_id">Vote</label>
                         <input type="checkbox" id="f_redaction_id" name="f_redaction" value="true" <?= isset($_GET['f_redaction']) ? "checked" : "" ?>><label for="f_redaction_id">Rédaction</label>
                         <input type="checkbox" id="f_resultat_id" name="f_resultat" value="true" <?= isset($_GET['f_resultat']) ? "checked" : "" ?>><label for="f_resultat_id">Résultat</label>
-                        <span class="menu-filtre-4fr">Rôles(s)</span>
-                        <input type="checkbox" id="f_coauteur_id" name="f_coauteur" value="true" <?= isset($_GET['f_coauteur']) ? "checked" : "" ?> <?= ConnexionUtilisateur::estConnecte() ? "" : "disabled" ?>><label for="f_coauteur_id">Co-auteur</label>
-                        <input type="checkbox" id="f_redacteur_id" name="f_redacteur" value="true" <?= isset($_GET['f_redacteur']) ? "checked" : "" ?> <?= ConnexionUtilisateur::estConnecte() ? "" : "disabled" ?>><label for="f_redacteur_id">Rédacteur</label>
-                        <input type="checkbox" id="f_votant_id" name="f_votant" value="true" <?= isset($_GET['f_votant']) ? "checked" : "" ?> <?= ConnexionUtilisateur::estConnecte() ? "" : "disabled" ?>><label for="f_votant_id">Votant</label>
+                        <?= implode("", $filtresRolesHTMLElements) ?>
                         <input type="submit" value="Valider" class="button">
                     </div>
                 </div>
