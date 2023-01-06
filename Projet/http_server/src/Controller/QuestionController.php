@@ -341,8 +341,6 @@ class QuestionController extends MainController
         $motsClesEtTags = explode(" ", $query)?:[];
         $motsCles=[];
         $tags=[];
-        $filtresFormatTab=[];
-        $filtresFormatTexte = "";
 
         foreach ($motsClesEtTags as $mot){
             if(substr($mot,0,1)=="#"){
@@ -356,39 +354,22 @@ class QuestionController extends MainController
             return $t!="";
         });
 
-        if(isset($_GET['lecture'])) {
-            $filtresFormatTab[] = $_GET['lecture'];
-        }
-        if(isset($_GET['vote'])) {
-            $filtresFormatTab[] = $_GET['vote'];
-        }
-        if(isset($_GET['redaction'])) {
-            $filtresFormatTab[] = $_GET['redaction'];
-        }
-        if(isset($_GET['resultat'])) {
-            $filtresFormatTab[] = $_GET['resultat'];
-        }
+        $filtres = [];
+        if(isset($_GET["f_lecture"])) $filtres[] = "lecture";
+        if(isset($_GET["f_redaction"])) $filtres[] = "redaction";
+        if(isset($_GET["f_vote"])) $filtres[] = "vote";
+        if(isset($_GET["f_resultat"])) $filtres[] = "resultat";
+        if(isset($_GET["f_redacteur"])) $filtres[] = "redacteur";
+        if(isset($_GET["f_coauteur"])) $filtres[] = "coauteur";
+        if(isset($_GET["f_votant"])) $filtres[] = "votant";
 
-        if(isset($_GET['coauteur'])) {
-            $filtresFormatTab[] = $_GET['coauteur'];
-        }
-        if(isset($_GET['redacteur'])) {
-            $filtresFormatTab[] = $_GET['redacteur'];
-        }
-        if(isset($_GET['votant'])) {
-            $filtresFormatTab[] = $_GET['votant'];
-        }
 
-        $filtresFormatTexte = implode("+", $filtresFormatTab);
-        //TODO : supprimer :
-        DebugController::logToFile(implode("," , $filtresFormatTab));
-
-        $nbPages = ceil((new QuestionRepository())->countAllPhaseRedactionOuPlus($motsCles,$tags) / $nbQuestionsParPage) ?: 1;
+        $nbPages = ceil((new QuestionRepository())->countAllListerQuestion($motsCles,$tags, $filtres) / $nbQuestionsParPage) ?: 1;
         $page = isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] > 0 && $_GET["page"] <= $nbPages ? $_GET["page"] : 1;
         
         $offset = ($page - 1) * $nbQuestionsParPage;
 
-        $questions = (new QuestionRepository())->selectAllLimitOffset($nbQuestionsParPage, $offset, $motsCles, $tags, $filtresFormatTab);
+        $questions = (new QuestionRepository())->selectAllListerQuestions($nbQuestionsParPage, $offset, $motsCles, $tags, $filtres);
 
         static::afficherVue("view.php", [
             "titrePage" => "Liste des questions",
@@ -397,7 +378,7 @@ class QuestionController extends MainController
             "page" => $page,
             "nbPages" => $nbPages,
             "query" => $query,
-            "filtresQuery" => $filtresFormatTexte
+            "filtres" => $filtres
         ]);
     }
 

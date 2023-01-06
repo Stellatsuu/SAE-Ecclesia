@@ -334,8 +334,11 @@ class DebugController extends MainController
                 return $proposition->getIdProposition();
             }, $propositions);
 
+            if ($nbPropositions == 0)
+                continue;
+
             $attractivite = [];
-            foreach($idPropositions as $idProposition) {
+            foreach ($idPropositions as $idProposition) {
                 $attractivite[$idProposition] = rand(0, 100);
             }
 
@@ -348,14 +351,14 @@ class DebugController extends MainController
                         //choisir une proposition, avec une probabilité proportionnelle à son attractivité
                         $idProposition = $idPropositions[0];
                         $max = 0;
-                        foreach($idPropositions as $idProposition) {
+                        foreach ($idPropositions as $idProposition) {
                             $max += $attractivite[$idProposition];
                         }
                         $rand = rand(0, $max);
                         $sum = 0;
-                        foreach($idPropositions as $idProposition) {
+                        foreach ($idPropositions as $idProposition) {
                             $sum += $attractivite[$idProposition];
-                            if($sum >= $rand) break;
+                            if ($sum >= $rand) break;
                         }
 
                         $vote = new Vote(
@@ -370,8 +373,8 @@ class DebugController extends MainController
                 case 'approbation':
                     foreach ($usernamesVotant as $username) {
                         foreach ($idPropositions as $idProposition) {
-                            
-                            if(rand(0, 100) > $attractivite[$idProposition]) continue;
+
+                            if (rand(0, 100) > $attractivite[$idProposition]) continue;
 
                             $vote = new Vote(
                                 $idProposition,
@@ -391,14 +394,14 @@ class DebugController extends MainController
                             //les mentions vont de 0 à 5, 5 étant la meilleure
                             $mention = 0;
                             $max = 0;
-                            for($i = 0; $i <= 5; $i++) {
+                            for ($i = 0; $i <= 5; $i++) {
                                 $max += $attractivite[$idProposition];
                             }
                             $rand = rand(0, $max);
                             $sum = 0;
-                            for($i = 0; $i <= 5; $i++) {
+                            for ($i = 0; $i <= 5; $i++) {
                                 $sum += $attractivite[$idProposition];
-                                if($sum >= $rand) {
+                                if ($sum >= $rand) {
                                     $mention = $i;
                                     break;
                                 }
@@ -417,8 +420,8 @@ class DebugController extends MainController
                 case 'alternatif':
                     foreach ($usernamesVotant as $username) {
                         $classements = [];
-                        for($i = 0; $i < $nbPropositions; $i++){
-                            $classements[] = $i+1;
+                        for ($i = 0; $i < $nbPropositions; $i++) {
+                            $classements[] = $i + 1;
                         }
 
                         shuffle($classements);
