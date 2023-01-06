@@ -3,14 +3,9 @@
 namespace App\SAE\Controller;
 
 use App\SAE\Lib\ConnexionUtilisateur;
-use App\SAE\Model\DataObject\Paragraphe;
 use App\SAE\Model\DataObject\Proposition;
-use App\SAE\Model\DataObject\Question;
 use App\SAE\Model\DataObject\Utilisateur;
-use App\SAE\Model\HTTP\Session;
-use App\SAE\Model\Repository\ParagrapheRepository;
 use App\SAE\Model\Repository\PropositionRepository;
-use App\SAE\Model\Repository\QuestionRepository;
 use App\SAE\Model\Repository\UtilisateurRepository;
 use App\SAE\Lib\PhaseQuestion as Phase;
 use App\SAE\Model\DataObject\DemandeCoAuteur;
@@ -23,11 +18,11 @@ class CoAuteurController extends MainController
     public static function afficherFormulaireGererCoAuteurs()
     {
         $username = ConnexionUtilisateur::getUsernameSiConnecte();
-        
+
         $idProposition = static::getIfSetAndNumeric("idProposition");
         $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
 
-        if($proposition->getUsernameResponsable() != $username) {
+        if ($proposition->getUsernameResponsable() != $username) {
             static::error(LMQ_URL, "Vous n'êtes pas le responsable de cette proposition.");
         }
 
@@ -71,7 +66,7 @@ class CoAuteurController extends MainController
         $idProposition = static::getIfSetAndNumeric("idProposition");
         $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
 
-        if($proposition->getUsernameResponsable() != $username) {
+        if ($proposition->getUsernameResponsable() != $username) {
             static::error(LMQ_URL, "Vous n'êtes pas le responsable de cette proposition.");
         }
 
@@ -123,7 +118,7 @@ class CoAuteurController extends MainController
         $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
 
         $estLieAQuestion = (new UtilisateurRepository())->estLieAQuestion($username, $proposition->getIdQuestion());
-        if(!$estLieAQuestion) {
+        if (!$estLieAQuestion) {
             static::error(LMQ_URL, "Vous n'avez pas les droits pour demander à être co-auteur de cette proposition.");
         }
 
@@ -136,7 +131,7 @@ class CoAuteurController extends MainController
 
     public static function demanderCoAuteur()
     {
-        $message = isset($_POST['message']) ? $_POST['message'] : "";
+        $message = $_POST['message'] ?? "";
 
         $username = ConnexionUtilisateur::getUsernameSiConnecte();
 
@@ -185,7 +180,8 @@ class CoAuteurController extends MainController
         static::message("frontController.php?controller=coAuteur&action=afficherFormulaireGererCoAuteurs&idProposition=$idProposition", "La demande de co-auteur a bien été acceptée.");
     }
 
-    public static function refuserDemandeCoAuteur() {
+    public static function refuserDemandeCoAuteur()
+    {
         $username = ConnexionUtilisateur::getUsernameSiConnecte();
 
         $usernameDemandeur = static::getIfSet("usernameDemandeur");
