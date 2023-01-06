@@ -88,26 +88,28 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
     </header>
 
     <main>
-        <?php
+        <div id="messagesFlash">
+            <?php
 
-        use App\SAE\Lib\MessageFlash;
+            use App\SAE\Lib\MessageFlash;
 
-        if (MessageFlash::contientMessage("info")) {
-            $messages = MessageFlash::lireMessages("info");
-            foreach ($messages as $message) {
-                echo "<div class='message'>" . $message["message"] . "</div>";
+            if (MessageFlash::contientMessage("info")) {
+                $messages = MessageFlash::lireMessages("info");
+                foreach ($messages as $message) {
+                    echo "<div class='message'>" . $message["message"] . "</div>";
+                }
             }
-        }
 
-        if (MessageFlash::contientMessage("error")) {
-            $messages = MessageFlash::lireMessages("error");
-            foreach ($messages as $message) {
-                echo "<div class='errorMessage'>" . $message["message"] . "</div>";
+            if (MessageFlash::contientMessage("error")) {
+                $messages = MessageFlash::lireMessages("error");
+                foreach ($messages as $message) {
+                    echo "<div class='errorMessage'>" . $message["message"] . "</div>";
+                }
             }
-        }
+            ?>
+        </div>
 
-        require __DIR__ . "/{$contenuPage}";
-        ?>
+        <?php require __DIR__ . "/{$contenuPage}"; ?>
 
         <div id="modalSeConnecter" class="modal">
 

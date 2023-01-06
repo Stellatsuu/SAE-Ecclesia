@@ -509,7 +509,7 @@ header nav #activeMenu a {
 header #mobileMenu {
   display: none;
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 650px) {
   header {
     margin-bottom: 90px;
   }
@@ -664,7 +664,7 @@ header #mobileMenu {
 .onlyOnMobile {
   display: none;
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 650px) {
   .onlyOnMobile {
     display: block;
   }
@@ -947,30 +947,31 @@ input[type=checkbox]:checked::before {
   text-decoration-color: #08D1EC;
 }
 
-.message, .errorMessage {
-  /* glassmorphism */
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 7px;
-  box-shadow: 0 4px 30px rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 10px 20px;
+#messagesFlash {
   /* positionnement */
   position: fixed;
   top: 10%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
+  z-index: 1000000;
+}
+
+.message, .errorMessage {
+  /* style */
+  background-color: #9f9f9f;
+  border: 2px solid #868686;
+  border-radius: 7px;
+  padding: 10px 20px;
+  margin: 5px 0;
+  box-shadow: 4px 4px 10px black;
   /* animation */
   animation: disappear 500ms forwards;
-  animation-delay: 4s;
+  animation-delay: 10s;
 }
 
 .errorMessage {
-  background: rgba(194, 50, 11, 0.2);
-  border: 1px solid rgba(194, 50, 11, 0.3);
-  box-shadow: 0 4px 30px rgba(194, 50, 11, 0.1);
-  color: #E43C0E;
+  background-color: #c2320b;
+  border-color: #922608;
 }
 
 @keyframes disappear {
@@ -979,7 +980,7 @@ input[type=checkbox]:checked::before {
   }
   100% {
     opacity: 0;
-    visibility: hidden;
+    display: none;
   }
 }
 #ecrirePropositionForm .sectionTitle {
