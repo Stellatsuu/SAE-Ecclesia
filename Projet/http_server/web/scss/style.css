@@ -1208,6 +1208,12 @@ input[type=checkbox]:checked::before {
   margin: 2px 0;
   min-height: 40px;
 }
+#afficher-propositions__formulaire-vote .voteAlternatif .box:first-child {
+  margin-top: 0;
+}
+#afficher-propositions__formulaire-vote .voteAlternatif .box:last-child {
+  margin-bottom: 0;
+}
 #afficher-propositions__formulaire-vote .voteAlternatif .box > span {
   width: 40px;
   min-width: 40px;
@@ -1222,6 +1228,7 @@ input[type=checkbox]:checked::before {
   background-color: #353535;
   cursor: grab;
   width: 100%;
+  padding: 2px;
 }
 #afficher-propositions__formulaire-vote .voteAlternatif .item p, #afficher-propositions__formulaire-vote .voteAlternatif .item img {
   margin: 10px 5px;
@@ -1238,6 +1245,7 @@ input[type=checkbox]:checked::before {
 }
 #afficher-propositions__formulaire-vote .voteAlternatif .selected {
   border: solid #E1603C 2px;
+  padding: 0 !important;
 }
 @media screen and (max-width: 700px) {
   #afficher-propositions__formulaire-vote .voteAlternatif {

@@ -29,7 +29,6 @@ boxes.forEach(box => {
 
 function dragEnter(e) {
     e.preventDefault();
-    console.log('dragEnter');
 }
 
 function dragOver(e) {
@@ -98,7 +97,7 @@ function selectItem(e) {
     //swap d'éléments
     if(destination.childElementCount === 2){
         console.log(destination);
-        const elementAEchanger = destination.lastElementChild;
+        const elementAEchanger = destination.querySelector(".item");
         const origine = selectedItem.parentElement;
 
         origine.appendChild(elementAEchanger);
