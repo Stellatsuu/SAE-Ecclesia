@@ -2,7 +2,6 @@
 
 namespace App\SAE\Model\DataObject;
 
-use App\SAE\Controller\MainController;
 use App\SAE\Model\Repository\UtilisateurRepository;
 
 class DemandeQuestion extends AbstractDataObject
@@ -49,7 +48,7 @@ class DemandeQuestion extends AbstractDataObject
     }
 
     // Getters
-    
+
     public function getIdQuestion(): int
     {
         return $this->idQuestion;

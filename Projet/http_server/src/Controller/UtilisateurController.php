@@ -4,11 +4,8 @@ namespace App\SAE\Controller;
 
 use App\SAE\Lib\ConnexionUtilisateur;
 use App\SAE\Lib\MotDePasse;
-use App\SAE\Lib\PhaseQuestion;
 use App\SAE\Lib\PhotoProfil;
-use App\SAE\Model\DataObject\Question;
 use App\SAE\Model\DataObject\Utilisateur;
-use App\SAE\Model\Repository\QuestionRepository;
 use App\SAE\Model\Repository\UtilisateurRepository;
 
 const PROFIL_URL = "frontController.php?controller=utilisateur&action=afficherProfil";

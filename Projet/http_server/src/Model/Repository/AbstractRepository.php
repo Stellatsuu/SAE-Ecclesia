@@ -13,6 +13,21 @@ abstract class AbstractRepository
     protected abstract function getNomsColonnes(): array;
     protected abstract function construire(array $objetFormatTableau): AbstractDataObject;
 
+
+    /**
+     * @param string $sql Requête sql à exécuter.
+     * @param array $values Valeurs utilisées.
+     * */
+    private function getPdoStatement(string $sql, array $values): bool|\PDOStatement
+    {
+        $pdo = DatabaseConnection::getPdo();
+
+        $pdoStatement = $pdo->prepare($sql);
+        $pdoStatement->execute($values);
+
+        return $pdoStatement;
+    }
+
     public function selectAll(): array
     {
         $nomTable = $this->getNomTable();
@@ -31,37 +46,29 @@ abstract class AbstractRepository
 
     public function select(...$params): ?AbstractDataObject
     {
-        if(count($params) == 1) {
+        if (count($params) == 1) {
             return $this->selectCleUnique($params[0]);
-        } else if(count($params) >= 2) {
+        } elseif (count($params) >= 2) {
             return $this->selectCleMultiple($params);
         } else {
             throw new \Exception("Au moins un paramètre est requis");
         }
     }
 
-    private function selectCleUnique($valeurClePrimaire)
+    private function selectCleUnique($valeurClePrimaire): ?AbstractDataObject
     {
         $nomTable = $this->getNomTable();
         $nomClePrimaire = $this->getNomClePrimaire();
 
         $sql = "SELECT * FROM $nomTable WHERE $nomClePrimaire = :valeurClePrimaire";
-        $pdo = DatabaseConnection::getPdo();
         $values = [
             'valeurClePrimaire' => $valeurClePrimaire
         ];
 
-        $pdoStatement = $pdo->prepare($sql);
-        $pdoStatement->execute($values);
-
-        $ligne = $pdoStatement->fetch();
-        if ($ligne === false) {
-            return null;
-        }
-        return $this->construire($ligne);
+        return $this->executerSelect($sql, $values);
     }
 
-    private function selectCleMultiple($valeursClePrimaire)
+    private function selectCleMultiple($valeursClePrimaire): ?AbstractDataObject
     {
         $nomTable = $this->getNomTable();
         $nomsClesPrimaires = explode(",", $this->getNomClePrimaire());
@@ -71,6 +78,7 @@ abstract class AbstractRepository
         }
 
         $conditionsArray = [];
+        $values = [];
         for ($i = 0; $i < count($nomsClesPrimaires); $i++) {
             $cond = $nomsClesPrimaires[$i] . " = :valeurClePrimaire" . $i;
             $conditionsArray[] = $cond;
@@ -81,15 +89,21 @@ abstract class AbstractRepository
 
         $sql = "SELECT * FROM $nomTable WHERE $conditions";
 
-        $pdo = DatabaseConnection::getPdo();
+        return $this->executerSelect($sql, $values);
+    }
 
-        $pdoStatement = $pdo->prepare($sql);
-        $pdoStatement->execute($values);
+    /**
+     * @param string $sql Requête sql à exécuter.
+     * @param array $values Valeurs utilisées.
+     * */
+    private function executerSelect(string $sql, array $values): ?AbstractDataObject
+    {
+        $pdoStatement = self::getPdoStatement($sql, $values);
 
         $ligne = $pdoStatement->fetch();
-        if ($ligne === false) {
+        if ($ligne === false)
             return null;
-        }
+
         return $this->construire($ligne);
     }
 
@@ -108,8 +122,7 @@ abstract class AbstractRepository
         $sql = substr($sql, 0, -2);
         $sql .= " WHERE $nomClePrimaire = :$nomClePrimaire";
 
-        $pdoStatement = DatabaseConnection::getPdo()->prepare($sql);
-        $pdoStatement->execute($values);
+        $this->getPdoStatement($sql, $values);
     }
 
     public function insert(AbstractDataObject $object): void
@@ -131,15 +144,14 @@ abstract class AbstractRepository
         $sql .= ")";
 
 
-        $pdoStatement = DatabaseConnection::getPdo()->prepare($sql);
-        $pdoStatement->execute($values);
+        $this->getPdoStatement($sql, $values);
     }
 
     public function delete(...$params): void
     {
-        if(count($params) == 1) {
+        if (count($params) == 1) {
             $this->deleteCleUnique($params[0]);
-        } else if(count($params) >= 2) {
+        } elseif (count($params) >= 2) {
             $this->deleteCleMultiple($params);
         } else {
             throw new \Exception("Au moins un paramètre est requis");
@@ -152,13 +164,11 @@ abstract class AbstractRepository
         $nomClePrimaire = $this->getNomClePrimaire();
 
         $sql = "DELETE FROM $nomTable WHERE $nomClePrimaire = :valeurClePrimaire";
-        $pdo = DatabaseConnection::getPdo();
         $values = [
             'valeurClePrimaire' => $valeurClePrimaire
         ];
 
-        $pdoStatement = $pdo->prepare($sql);
-        $pdoStatement->execute($values);
+        $this->getPdoStatement($sql, $values);
     }
 
     private function deleteCleMultiple($valeursClePrimaire): void
@@ -171,6 +181,7 @@ abstract class AbstractRepository
         }
 
         $conditionsArray = [];
+        $values = [];
         for ($i = 0; $i < count($nomsClesPrimaires); $i++) {
             $cond = $nomsClesPrimaires[$i] . " = :valeurClePrimaire" . $i;
             $conditionsArray[] = $cond;
@@ -181,9 +192,6 @@ abstract class AbstractRepository
 
         $sql = "DELETE FROM $nomTable WHERE $conditions";
 
-        $pdo = DatabaseConnection::getPdo();
-
-        $pdoStatement = $pdo->prepare($sql);
-        $pdoStatement->execute($values);
+        $this->getPdoStatement($sql, $values);
     }
 }

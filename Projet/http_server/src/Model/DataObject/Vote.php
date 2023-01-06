@@ -36,7 +36,8 @@ class Vote extends AbstractDataObject
         }
     }
     
-    public function formatTableau(): array {
+    public function formatTableau(): array
+    {
         return [
             "id_proposition" => $this->idProposition,
             "username_votant" => $this->usernameVotant,
@@ -44,7 +45,8 @@ class Vote extends AbstractDataObject
         ];
     }
 
-    public function getValeurClePrimaire() : string {
+    public function getValeurClePrimaire() : string
+    {
         return $this->usernameVotant . ", " . $this->idProposition;
     }
 
@@ -59,7 +61,7 @@ class Vote extends AbstractDataObject
 
     public function getVotant(): Utilisateur
     {
-        if($this->votant == null) {
+        if ($this->votant == null) {
             $this->votant = (new UtilisateurRepository())->select($this->usernameVotant);
         }
         return $this->votant;
