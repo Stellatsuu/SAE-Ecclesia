@@ -1,11 +1,9 @@
 #liste-questions {
-
   align-items: stretch;
 
   @media screen and (max-width: 450px) {
     align-items: center;
   }
-  
 
   #liste-questions__top {
     display: flex;
@@ -24,19 +22,79 @@
       border-radius: 40px;
       background-color: $grisClair2;
 
-      .filtres{
-        display: flex;
-        align-items: center;
+      .menu-filtre {
+        position: relative;
+        margin-left: 7px;
 
-        .bouton_ouvrir_filtres{
-          margin-left: 10px;
-          width: 30px;
-          height: 30px;
+        .bouton-ouvrir-filtres img {
+          transform: translateY(2px);
+        }
+
+        .filtres {
+          display: none;
+
+          hyphens: none;
+          white-space: nowrap;
+          z-index: 1;
+          
+          grid-template-columns: 20px 1fr 20px 1fr;
+          gap: 10px;
+
+          justify-items: stretch;
+          align-items: stretch;
+
+          position: absolute;
+          top: 50px;
+          left: -15px;
+
+          background-color: $couleurFond3;
+
+          border: solid 3px $couleurPrincipale;
+          border-radius: 10px;
+          padding: 10px;
+
+          label {
+            margin: 0;
+            padding: 0;
+            font-size: 1rem;
+          }
+
+          .menu-filtre-2fr {
+            grid-column: auto / span 2;
+          }
+
+          .menu-filtre-4fr {
+            grid-column: auto / span 4;
+          }
+
+          input[type="submit"] {
+            margin: 0;
+            grid-column: 1 / span 4;
+          }
+
+          &::after {
+            position: absolute;
+            content: "";
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 15px 15px 15px;
+            border-color: transparent transparent $couleurPrincipale transparent;
+            top: -15px;
+            left: 12px;
+          }
+        }
+
+        &:focus-within {
+          .filtres {
+            display: grid;
+          }
         }
       }
 
       form {
         width: 100%;
+        height: 100%;
         display: flex;
         justify-content: stretch;
         align-items: center;

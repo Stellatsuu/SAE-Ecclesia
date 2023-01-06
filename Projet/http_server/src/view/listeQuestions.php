@@ -156,26 +156,22 @@ if ($nbPages == 1) {
                 <input type="hidden" name="controller" value="question">
                 <input type="hidden" name="action" value="listerQuestions">
 
-                <div class="filtres">
-                    <a class="bouton_ouvrir_filtres" href="#"><img src="assets/images/filter-icon.svg" alt="bouton filtres"></a>
+                <div class="menu-filtre">
+                    <a class="bouton-ouvrir-filtres" href="#"><img src="assets/images/filter-icon.svg" alt="bouton filtres"></a>
 
-                    <span><a href="frontController.php?controller=question&action=listerQuestions">Tout supprimer</a></span>
-                    <div class="filtres-phases">
-                        <label>Phase(s)</label><br>
-                        <input type="checkbox" name="f_lecture" value="true" <?= isset($_GET['f_lecture']) ? "checked" : "" ?>><label>Lecture</label><br>
-                        <input type="checkbox" name="f_vote" value="true" <?= isset($_GET['f_vote']) ? "checked" : "" ?>><label>Vote</label><br>
-                        <input type="checkbox" name="f_redaction" value="true" <?= isset($_GET['f_redaction']) ? "checked" : "" ?>><label>Rédaction</label><br>
-                        <input type="checkbox" name="f_resultat" value="true" <?= isset($_GET['f_resultat']) ? "checked" : "" ?>><label>Résultat</label><br>
+                    <div class="filtres">
+                        <span class="menu-filtre-2fr">Phase(s)</span>
+                        <span class="menu-filtre-2fr"><a href="frontController.php?controller=question&action=listerQuestions">Tout supprimer</a></span>
+                        <input type="checkbox" id="f_lecture_id" name="f_lecture" value="true" <?= isset($_GET['f_lecture']) ? "checked" : "" ?>><label for="f_lecture_id">Lecture</label>
+                        <input type="checkbox" id="f_vote_id" name="f_vote" value="true" <?= isset($_GET['f_vote']) ? "checked" : "" ?>><label for="f_vote_id">Vote</label>
+                        <input type="checkbox" id="f_redaction_id" name="f_redaction" value="true" <?= isset($_GET['f_redaction']) ? "checked" : "" ?>><label for="f_redaction_id">Rédaction</label>
+                        <input type="checkbox" id="f_resultat_id" name="f_resultat" value="true" <?= isset($_GET['f_resultat']) ? "checked" : "" ?>><label for="f_resultat_id">Résultat</label>
+                        <span class="menu-filtre-4fr">Rôles(s)</span>
+                        <input type="checkbox" id="f_coauteur_id" name="f_coauteur" value="true" <?= isset($_GET['f_coauteur']) ? "checked" : "" ?> <?= ConnexionUtilisateur::estConnecte() ? "" : "disabled" ?>><label for="f_coauteur_id">Co-auteur</label>
+                        <input type="checkbox" id="f_redacteur_id" name="f_redacteur" value="true" <?= isset($_GET['f_redacteur']) ? "checked" : "" ?> <?= ConnexionUtilisateur::estConnecte() ? "" : "disabled" ?>><label for="f_redacteur_id">Rédacteur</label>
+                        <input type="checkbox" id="f_votant_id" name="f_votant" value="true" <?= isset($_GET['f_votant']) ? "checked" : "" ?> <?= ConnexionUtilisateur::estConnecte() ? "" : "disabled" ?>><label for="f_votant_id">Votant</label>
+                        <input type="submit" value="Valider" class="button">
                     </div>
-
-                    <div class="filtres-roles">
-                        <label>Rôles(s)</label><br>
-                        <input type="checkbox" name="f_coauteur" value="true" <?= isset($_GET['f_coauteur']) ? "checked" : "" ?> <?= ConnexionUtilisateur::estConnecte() ? "" : "disabled" ?>><label>Co-auteur</label><br>
-                        <input type="checkbox" name="f_redacteur" value="true" <?= isset($_GET['f_redacteur']) ? "checked" : "" ?> <?= ConnexionUtilisateur::estConnecte() ? "" : "disabled" ?>><label>Rédacteur</label><br>
-                        <input type="checkbox" name="f_votant" value="true" <?= isset($_GET['f_votant']) ? "checked" : "" ?> <?= ConnexionUtilisateur::estConnecte() ? "" : "disabled" ?>><label>Votant</label><br>
-                    </div>
-
-                    <input type="submit" value="Valider" class="button">
                 </div>
 
                 <input type="text" name="query" value="<?= $query ?>" />
