@@ -6,12 +6,12 @@ use App\SAE\Lib\PhaseQuestion;
 use App\SAE\Lib\PhotoProfil;
 use App\SAE\Model\DataObject\Proposition;
 use App\SAE\Model\DataObject\Question;
-use App\SAE\Model\Repository\PropositionRepository;
 use App\SAE\Model\Repository\VotantRepository;
 
 $username = ConnexionUtilisateur::getUsername() ?? '';
 $question = Question::castIfNotNull($question);
 $idQuestion = $question->getIdQuestion();
+$idQuestionUrl = rawurlencode($idQuestion);
 $phase = $question->getPhase();
 $sections = $question->getSections();
 $organisateur = $question->getOrganisateur();
@@ -57,7 +57,7 @@ for ($i = 0; $i < count($propositions); $i++) {
                         $nomUsuelResp
                     </div>
                 </span>
-                <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion&index=$i">
+                <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestionUrl&index=$i">
                     $titreProposition
                 </a>
         </div>
@@ -72,13 +72,13 @@ $ligneExplicationSysVote = $phase == PhaseQuestion::Resultat ?
 
 $estVotant = (new VotantRepository)->existsForQuestion($idQuestion, $username);
 
-$lienVoirResultats = "<a href='frontController.php?controller=question&action=afficherResultats&idQuestion=$idQuestion'>Voir les résultats</a>";
-$lienVoirPropositions = "<a href='frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion'>Lire les propositions</a>";
-$lienVoterPropositions = "<a href='frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion'>Voter pour une proposition</a>";
+$lienVoirResultats = "<a href='frontController.php?controller=question&action=afficherResultats&idQuestion=$idQuestionUrl'>Voir les résultats</a>";
+$lienVoirPropositions = "<a href='frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestionUrl'>Lire les propositions</a>";
+$lienVoterPropositions = "<a href='frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestionUrl'>Voter pour une proposition</a>";
 
-if($phase == PhaseQuestion::Vote && $estVotant) {
+if ($phase == PhaseQuestion::Vote && $estVotant) {
    $ligneExplicationSysVote .= " $lienVoterPropositions";
-} else if($phase == PhaseQuestion::Resultat) {
+} elseif($phase == PhaseQuestion::Resultat) {
     $ligneExplicationSysVote .= " $lienVoirResultats";
 } else {
     $ligneExplicationSysVote .= " $lienVoirPropositions";
@@ -127,26 +127,12 @@ if($phase == PhaseQuestion::Vote && $estVotant) {
 
         <?php
         $boutonEcrireProposition = <<<HTML
-        <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireEcrireProposition&idQuestion=$idQuestion">Ecrire une proposition</a>
+        <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireEcrireProposition&idQuestion=$idQuestionUrl">Ecrire une proposition</a>
         HTML;
 
         if ($peutEcrireProposition) {
             echo $boutonEcrireProposition;
         }
         ?>
-
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 </div>

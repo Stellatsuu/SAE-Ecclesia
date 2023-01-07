@@ -8,16 +8,24 @@
     $i = 0;
         foreach ($demandes as $q) {
             $i++;
-            echo "<div class='demandeQuestion acceptOrDeny'><div class='boite' style='--order: " . $i . "'>";
-            echo ("<h2>" . htmlspecialchars($q->getTitre()) . "</h2>");
-            echo ("<span class=\"markdown\">" . Markdown::toHtml($q->getDescription()) . "</span>");
-            echo ("<p>- " . htmlspecialchars($q->getOrganisateur()->getPrenom()) . " " . htmlspecialchars(strtoupper($q->getOrganisateur()->getNom()))) . "</p>";
+            $titre = htmlspecialchars($q->getTitre());
+            $description = Markdown::toHtml($q->getDescription());
+            $nomOrganisateur = htmlspecialchars($q->getOrganisateur()->getPrenom()) . " " . htmlspecialchars(strtoupper($q->getOrganisateur()->getNom()));
+            $idQuestionUrl = rawurlencode($q->getIdQuestion());
 
-            echo "</div>";
-            echo "<div class='boite'>";
-            echo ("<a class='button refuserBtn' href='frontController.php?controller=demandeQuestion&action=refuserDemandeQuestion&idQuestion=" . rawurlencode($q->getIdQuestion()) . "'>Refuser</a>");
-            echo ("<a class='button validerBtn' href='frontController.php?controller=demandeQuestion&action=accepterDemandeQuestion&idQuestion=" . rawurlencode($q->getIdQuestion()) . "'>Valider</a>");
-            echo "</div></div>";
+            echo <<<HTML
+                <div class="demandeQuestion acceptOrDeny">
+                    <div class="boite" style="--order: $i;">
+                        <h2>$titre</h2>
+                        <span class="markdown">$description</span>
+                        <p>- $nomOrganisateur</p>
+                    </div>
+                    <div class="boite">
+                        <a class="button refuserBtn" href="frontController.php?controller=demandeQuestion&action=refuserDemandeQuestion&idQuestion=$idQuestionUrl">Refuser</a>
+                        <a class="button validerBtn" href="frontController.php?controller=demandeQuestion&action=accepterDemandeQuestion&idQuestion=$idQuestionUrl">Valider</a>
+                    </div>
+                </div>
+            HTML;
         }
     ?>
 </div>

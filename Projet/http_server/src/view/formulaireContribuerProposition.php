@@ -11,7 +11,7 @@ $question = $proposition->getQuestion();
     <fieldset>
         <label for="titreProposition">Nom de la proposition : </label>
         <div class="text_input_div">
-            <input type="text" id="titreProposition" name="titreProposition" maxlength="100" value="<?= $proposition->getTitreProposition() ?>" required />
+            <input type="text" id="titreProposition" name="titreProposition" maxlength="100" value="<?= htmlspecialchars($proposition->getTitreProposition()) ?>" required />
             <span class="indicateur_max_chars  unselectable">100 max</span>
         </div>
 

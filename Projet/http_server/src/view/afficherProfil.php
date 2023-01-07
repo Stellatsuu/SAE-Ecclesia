@@ -18,19 +18,19 @@ $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
     <div id="contenuProfil">
         <div id="PPusername">
             <p id="PP"><?= $pfp ?></p>
-            <p><?php echo $utilisateur->getUsername(); ?></p>
+            <p><?= htmlspecialchars($utilisateur->getUsername()); ?></p>
             <a class="modal-open" href="#modalModifierPFP"><img src='./assets/images/image-icon.svg' id="editPP" alt="editImageIcon"/></a>
         </div>
 
         <div id="informations">
             <label>Prénom et Nom</label>
             <a class="modal-open" href="#modalModifierNomPrenom"><img src='./assets/images/pen-ico.svg' class="pen" alt="editPenIcon"/></a>
-            <p><?php echo $utilisateur->getPrenom() . " " . $utilisateur->getNom(); ?></p>
+            <p><?= htmlspecialchars($utilisateur->getPrenom()) . " " . htmlspecialchars($utilisateur->getNom()); ?></p>
 
 
             <label>Adresse mail</label>
             <a class="modal-open" href="#modalModifierEmail"><img src='./assets/images/pen-ico.svg' class="pen" alt="editPenIcon"/></a>
-            <p><?php echo $utilisateur->getEmail(); ?></p>
+            <p><?= htmlspecialchars($utilisateur->getEmail()); ?></p>
 
             <label>Mot de passe</label>
             <a class="modal-open" href="#modalModifierMDP"><img src='./assets/images/pen-ico.svg' class="pen" alt="editPenIcon"/></a>
@@ -63,10 +63,10 @@ $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
             <h2>Modifier mon nom/prénom</h2>
 
             <label>Nom</label>
-            <input type="text" name="nom" value="<?php echo $utilisateur->getNom(); ?>" required>
+            <input type="text" name="nom" value="<?= htmlspecialchars($utilisateur->getNom()); ?>" required>
 
             <label>Prénom</label>
-            <input type="text" name="prenom" value="<?php echo $utilisateur->getPrenom(); ?>" required>
+            <input type="text" name="prenom" value="<?= htmlspecialchars($utilisateur->getPrenom()); ?>" required>
 
             <input type="submit" value="Modifier">
 
@@ -83,7 +83,7 @@ $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
             <h2>Modifier mon adresse mail</h2>
 
             <label>Adresse mail</label>
-            <input type="email" name="email" value="<?php echo $utilisateur->getEmail(); ?>" required>
+            <input type="email" name="email" value="<?= htmlspecialchars($utilisateur->getEmail()); ?>" required>
 
             <input type="submit" value="Modifier">
 
