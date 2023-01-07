@@ -152,8 +152,8 @@ if (ConnexionUtilisateur::estConnecte()) {
     foreach (["coauteur" => "Co-auteur", "redacteur" => "Rédacteur", "votant" => "Votant"] as $role => $titre) {
         $checked = isset($_GET["f_$role"]) ? "checked" : "";
         $filtresRolesHTMLElements[] = <<<HTML
-            <input type="checkbox" id="f_coauteur_id" name="f_coauteur" value="true" $checked>
-            <label for="f_coauteur_id">$titre</label>
+            <input type="checkbox" id="f_{$role}_id" name="f_$role" value="true" $checked>
+            <label for="f_{$role}_id">$titre</label>
         HTML;
     }
 }
