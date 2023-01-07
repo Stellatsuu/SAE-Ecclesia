@@ -31,8 +31,11 @@ class PhotoProfil
         return base64_encode($photoData);
     }
 
-    public static function convertirRedimensionnerRogner(string $photoData, int $longueurCote = 256): string
+    public static function convertirRedimensionnerRogner(string|null $photoData, int $longueurCote = 256): string
     {
+        if($photoData === null){
+            return self::getPhotoProfilNull();
+        }
 
         $b64 = base64_decode($photoData);
 

@@ -83,6 +83,8 @@ class UtilisateurController extends MainController
             MotDePasse::hacher($password)
         );
 
+        $utilisateur->setPhotoProfil(PhotoProfil::getRandomPhotoProfilParDefaut());
+
         (new UtilisateurRepository)->insert($utilisateur);
 
         ConnexionUtilisateur::connecter($username);
