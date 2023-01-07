@@ -7,7 +7,7 @@ use App\SAE\Model\Repository\UtilisateurRepository;
 
 $estConnecte = ConnexionUtilisateur::estConnecte();
 $estAdmin = ConnexionUtilisateur::estAdmin();
-
+$username = ConnexionUtilisateur::getUsername();
 $lienDemandes = $estAdmin ? <<<HTML
 <li><a href="frontController.php?controller=demandeQuestion&action=listerDemandesQuestion">Demandes</a></li>
 HTML : "";
@@ -20,7 +20,7 @@ if ($estConnecte) {
     <li><a href="frontController.php?controller=utilisateur&action=seDeconnecter">Se déconnecter</a></li>
     html;
 
-    $utilisateur = (new UtilisateurRepository)->select(ConnexionUtilisateur::getUsername());
+    $utilisateur = (new UtilisateurRepository)->select($username);
 
     if (!$utilisateur) {
         ConnexionUtilisateur::deconnecter();
@@ -54,7 +54,9 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <title><?php echo $titrePage; ?></title>
+
+    <title><?= htmlspecialchars($titrePage) ?></title>
+
     <link rel="stylesheet" href="scss/style.css">
 </head>
 
@@ -62,12 +64,15 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
     <header>
         <input type="checkbox" id="mobileOpen" />
         <div id="mobileMenu">
-            <label for="mobileOpen">
+            <label id="barreMenu" for="mobileOpen">
                 <img src="assets/images/logoSite.svg" />
             </label>
-            <div>
-
-            </div>
+            <?php if ($estConnecte) echo
+             "<div id='pfpMobile'>
+                 <label for='mobileOpen'>$username</label>
+                 <label for='mobileOpen'>$pfp</label>
+             </div>"?>
+            <div id='fleches'></div>
         </div>
         <nav>
             <ul>
@@ -77,14 +82,14 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
                 <li><a href="frontController.php?controller=demandeQuestion&action=afficherFormulaireDemandeQuestion">Poser une question</a></li>
                 <?= $liensComptesVersionMobile ?>
             </ul>
-            <div class="menu_compte" tabindex="0">
-                <a class="bouton_ouvrir_compte" href="#"><?= $pfp ?></a>
-                <ul>
-                    <?= $liensComptes ?>
-                </ul>
-            </div>
         </nav>
-
+        <div class="menu_compte" tabindex="0">
+            <a class="bouton_ouvrir_compte" href="#"><?= $pfp ?></a>
+            <?php if($estConnecte) echo  "<label>$username</label>";?>
+            <ul>
+                <?= $liensComptes ?>
+            </ul>
+        </div>
     </header>
 
     <main>
@@ -236,5 +241,4 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
         });
     </script>
 </body>
-
 </html>

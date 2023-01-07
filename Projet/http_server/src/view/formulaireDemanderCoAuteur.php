@@ -1,6 +1,6 @@
 <form method="post" action="frontController.php?controller=coAuteur&action=demanderCoAuteur" class="panel">
     <h1>Demander à être co-auteur</h1>
-    <h2><?= $proposition->getTitreProposition() ?></h2>
+    <h2><?= htmlspecialchars($proposition->getTitreProposition()) ?></h2>
     <fieldset>
 
         <label for="message_id">Message :</label>
@@ -11,7 +11,7 @@
 
     </fieldset>
 
-    <input type="hidden" name="idProposition" value="<?= $proposition->getIdProposition() ?>">
+    <input type="hidden" name="idProposition" value="<?= htmlspecialchars($proposition->getIdProposition()) ?>">
 
     <input type="submit" value="Valider">
 </form>

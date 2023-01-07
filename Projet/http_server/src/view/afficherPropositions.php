@@ -3,17 +3,17 @@
 use App\SAE\Lib\ConnexionUtilisateur;
 use App\SAE\Lib\Markdown;
 use App\SAE\Lib\PhaseQuestion;
-use App\SAE\Model\DataObject\Paragraphe;
 use App\SAE\Model\DataObject\Proposition;
 use App\SAE\Model\DataObject\Question;
 use App\SAE\Model\Repository\CoAuteurRepository;
-use App\SAE\Model\Repository\PropositionRepository;
 use App\SAE\Model\Repository\VotantRepository;
 
 $username = ConnexionUtilisateur::getUsername() ?? "";
 $question = Question::castIfNotNull($question);
 $phase = $question->getPhase();
 $idQuestion = $question->getIdQuestion();
+$idQuestionUrl = rawurlencode($idQuestion);
+$idQuestionHtml = rawurlencode($idQuestion);
 $organisateur = $question->getOrganisateur();
 $usernameOrganisateur = $organisateur->getUsername();
 $systemeVote = $question->getSystemeVote();
@@ -25,7 +25,7 @@ $titreQuestion = htmlspecialchars($question->getTitre());
 $descriptionQuestion = Markdown::toHtml($question->getDescription());
 $nomUsuelOrga = htmlspecialchars($organisateur->getNomUsuel());
 
-if (count($propositions) == 0) {
+if (empty($propositions)) {
 
     $bodyContent = <<<HTML
     <div class="panel2">
@@ -46,6 +46,7 @@ if (count($propositions) == 0) {
 
     $propositionActuelle = Proposition::castIfNotNull($propositions[$index]);
     $idProposition = $propositionActuelle->getIdProposition();
+    $idPropositionUrl = rawurlencode($idProposition);
     $usernameResponsable = $propositionActuelle->getUsernameResponsable();
     $paragraphes = $propositionActuelle->getParagraphes();
 
@@ -73,11 +74,11 @@ if (count($propositions) == 0) {
 
     $selectorHTML = <<<HTML
     <div id="afficher-propositions__selector">
-        <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion&index=$indexPrevious">
+        <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestionUrl&index=$indexPrevious">
             <img src="assets/images/arrow.svg" style="transform: rotate(90deg)">
         </a>
         <span class="boite">$titreProposition</span>
-        <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion&index=$indexNext">
+        <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestionUrl&index=$indexNext">
             <img src="assets/images/arrow.svg" style="transform: rotate(-90deg)">
         </a>
     </div>
@@ -101,7 +102,7 @@ if (count($propositions) == 0) {
                 <p>Êtes vous sûr(e) de vouloir supprimer la proposition ?</p>
                 <div>
                     <a class="button refuserBtn" href="#">Non</a>
-                    <a class="button validerBtn" href="frontController.php?controller=proposition&action=supprimerProposition&idProposition={$propositionActuelle->getIdProposition()}">Oui</a>
+                    <a class="button validerBtn" href="frontController.php?controller=proposition&action=supprimerProposition&idProposition=$idPropositionUrl">Oui</a>
                 </div>
                 <a href="#" class="modal-close">
                     <img src="assets/images/close-icon.svg" alt="bouton fermer">
@@ -115,15 +116,15 @@ if (count($propositions) == 0) {
     HTML;
 
     $btnModifierHTML = <<<HTML
-        <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireContribuerProposition&idProposition=$idProposition">Modifier</a>
+        <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireContribuerProposition&idProposition=$idPropositionUrl">Modifier</a>
     HTML;
 
     $btnDemanderCoAuteurHTML = <<<HTML
-        <a class="button" href="frontController.php?controller=coAuteur&action=afficherFormulaireDemanderCoAuteur&idProposition=$idProposition">Demander à être co-auteur</a>
+        <a class="button" href="frontController.php?controller=coAuteur&action=afficherFormulaireDemanderCoAuteur&idProposition=$idPropositionUrl">Demander à être co-auteur</a>
     HTML;
 
     $btnGererCoAuteursHTML = <<<HTML
-        <a class="button" href="frontController.php?controller=coAuteur&action=afficherFormulaireGererCoAuteurs&idProposition=$idProposition">Gérer les co-auteurs</a>
+        <a class="button" href="frontController.php?controller=coAuteur&action=afficherFormulaireGererCoAuteurs&idProposition=$idPropositionUrl">Gérer les co-auteurs</a>
     HTML;
 
     $btnSupprimerHTML = ($estOrganisateur || $estResponsable) && ($phase == PhaseQuestion::Redaction || $phase == PhaseQuestion::Lecture) ? $btnSupprimerHTML : "";
@@ -152,7 +153,7 @@ if (count($propositions) == 0) {
     $formulaireVoteHTML = <<<HTML
         <form id="afficher-propositions__formulaire-vote" action="frontController.php?controller=vote&action=voter" method="post">
             <h2>Vote</h2>
-            <input type="hidden" name="idQuestion" value="$idQuestion">
+            <input type="hidden" name="idQuestion" value="$idQuestionHtml">
             $interfaceVote
         </form>
     HTML;

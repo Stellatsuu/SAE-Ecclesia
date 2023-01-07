@@ -2,7 +2,6 @@
 
 namespace App\SAE\Model\Repository;
 
-use App\SAE\Controller\DebugController;
 use App\SAE\Lib\ConnexionUtilisateur;
 use App\SAE\Model\DataObject\AbstractDataObject;
 use App\SAE\Model\DataObject\Question;
@@ -45,10 +44,10 @@ class QuestionRepository extends AbstractRepository
             $row['description_question'],
             $row['username_organisateur']
         );
-        $question->setDateDebutRedaction($row['date_debut_redaction'] == NULL ? NULL : new DateTime($row['date_debut_redaction']));
-        $question->setDateFinRedaction($row['date_fin_redaction'] == NULL ? NULL : new DateTime($row['date_fin_redaction']));
-        $question->setDateOuvertureVotes($row['date_ouverture_votes'] == NULL ? NULL : new DateTime($row['date_ouverture_votes']));
-        $question->setDateFermetureVotes($row['date_fermeture_votes'] == NULL ? NULL : new DateTime($row['date_fermeture_votes']));
+        $question->setDateDebutRedaction($row['date_debut_redaction'] == null ? null : new DateTime($row['date_debut_redaction']));
+        $question->setDateFinRedaction($row['date_fin_redaction'] == null ? null : new DateTime($row['date_fin_redaction']));
+        $question->setDateOuvertureVotes($row['date_ouverture_votes'] == null ? null : new DateTime($row['date_ouverture_votes']));
+        $question->setDateFermetureVotes($row['date_fermeture_votes'] == null ? null : new DateTime($row['date_fermeture_votes']));
         $question->setSystemeVote(SystemeVoteFactory::createSystemeVote($row['systeme_vote'], $question));
         $question->setTags($row['tags']);
         return $question;

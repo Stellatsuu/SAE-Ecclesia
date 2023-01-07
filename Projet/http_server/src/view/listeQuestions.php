@@ -75,7 +75,7 @@ function pageLink($page, $text, $nbPages, $query, $filtres, $active = true, $isC
             $text
         </span>
         html;
-    } else if ($isCurrent) {
+    } elseif ($isCurrent) {
         $res = <<<html
         <span class="pagination__link pagination__link--current unselectable">
             $text
@@ -112,7 +112,7 @@ if ($nbPages == 1) {
         pageLink(-1, "&gt", 1, $query, $filtres, false),
         pageLink(-1, "&gt&gt", 1, $query, $filtres, false),
     ];
-} else if ($page == 1) {
+} elseif ($page == 1) {
     $paginationLinks = [
         pageLink(-1, "&lt&lt", $nbPages, $query, $filtres, false),
         pageLink(-1, "&lt", $nbPages, $query, $filtres, false),
@@ -122,7 +122,7 @@ if ($nbPages == 1) {
         pageLink(2, "&gt", $nbPages, $query, $filtres),
         pageLink($nbPages, "&gt&gt", $nbPages, $query, $filtres)
     ];
-} else if ($page >= $nbPages) {
+} elseif ($page >= $nbPages) {
     $paginationLinks = [
         pageLink(1, "&lt&lt", $nbPages, $query, $filtres),
         pageLink($page - 1, "&lt", $nbPages, $query, $filtres),
@@ -200,5 +200,4 @@ if (ConnexionUtilisateur::estConnecte()) {
     <div class="pagination">
         <?php echo implode("", $paginationLinks); ?>
     </div>
-
 </div>

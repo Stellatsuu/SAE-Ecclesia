@@ -28,6 +28,25 @@ abstract class AbstractRepository
         return $pdoStatement;
     }
 
+    /**
+     * @return string Clé primaire composite de la table.
+     * */
+    private function genererConditionsClePrimaireComposite() : array
+    {
+        $conditionsArray = [];
+        $values = [];
+        for ($i = 0; $i < count($nomsClesPrimaires); $i++) {
+            $cond = $nomsClesPrimaires[$i] . " = :valeurClePrimaire" . $i;
+            $conditionsArray[] = $cond;
+            $values["valeurClePrimaire" . $i] = $valeursClePrimaire[$i];
+        }
+
+         return [
+             "conditions" => implode(" AND ", $conditionsArray),
+             "values" => $values
+         ];
+    }
+
     public function selectAll(): array
     {
         $nomTable = $this->getNomTable();
@@ -77,15 +96,9 @@ abstract class AbstractRepository
             throw new \Exception("Nombre de clés primaires incorrect");
         }
 
-        $conditionsArray = [];
-        $values = [];
-        for ($i = 0; $i < count($nomsClesPrimaires); $i++) {
-            $cond = $nomsClesPrimaires[$i] . " = :valeurClePrimaire" . $i;
-            $conditionsArray[] = $cond;
-            $values["valeurClePrimaire" . $i] = $valeursClePrimaire[$i];
-        }
-
-        $conditions = implode(" AND ", $conditionsArray);
+        $conditionsValues = $this->genererConditionsClePrimaireComposite();
+        $conditions = $conditionsValues["conditions"];
+        $values = $conditionsValues["values"];
 
         $sql = "SELECT * FROM $nomTable WHERE $conditions";
 
@@ -98,7 +111,7 @@ abstract class AbstractRepository
      * */
     private function executerSelect(string $sql, array $values): ?AbstractDataObject
     {
-        $pdoStatement = self::getPdoStatement($sql, $values);
+        $pdoStatement = $this->getPdoStatement($sql, $values);
 
         $ligne = $pdoStatement->fetch();
         if ($ligne === false)
@@ -180,15 +193,9 @@ abstract class AbstractRepository
             throw new \Exception("Nombre de clés primaires incorrect");
         }
 
-        $conditionsArray = [];
-        $values = [];
-        for ($i = 0; $i < count($nomsClesPrimaires); $i++) {
-            $cond = $nomsClesPrimaires[$i] . " = :valeurClePrimaire" . $i;
-            $conditionsArray[] = $cond;
-            $values["valeurClePrimaire" . $i] = $valeursClePrimaire[$i];
-        }
-
-        $conditions = implode(" AND ", $conditionsArray);
+        $conditionsValues = $this->genererConditionsClePrimaireComposite();
+        $conditions = $conditionsValues["conditions"];
+        $values = $conditionsValues["values"];
 
         $sql = "DELETE FROM $nomTable WHERE $conditions";
 

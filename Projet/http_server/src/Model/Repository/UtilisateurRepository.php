@@ -32,14 +32,13 @@ class UtilisateurRepository extends AbstractRepository
 
     public function construire(array $row): Utilisateur
     {
-        $utilisateur = new Utilisateur(
+        return new Utilisateur(
             $row['username_utilisateur'],
             $row['nom_utilisateur'],
             $row['prenom_utilisateur'],
             $row['email_utilisateur'],
             $row['mdp_hashed']
         );
-        return $utilisateur;
     }
 
     //vérification que l'utilisateur est soit l'organisateur, soit un rédacteur, soit un co-auteur, soit un votant de la question

@@ -4,6 +4,7 @@ namespace App\SAE\Model\SystemeVote{
 
     use App\SAE\Controller\VoteController;
     use App\SAE\Lib\ConnexionUtilisateur;
+    use App\SAE\Lib\PhaseQuestion;
     use App\SAE\Model\DataObject\Proposition;
     use App\SAE\Model\DataObject\Vote;
     use App\SAE\Model\Repository\PropositionRepository;
@@ -11,13 +12,15 @@ namespace App\SAE\Model\SystemeVote{
     use App\SAE\Model\Repository\VoteRepository;
     use App\SAE\Model\SystemeVote\VoteAlternatif\VoteUtilisateur;
 
-    enum StatusProposition{
+    enum StatusProposition
+    {
         case perdante;
         case normale;
         case gagnante;
     }
 
-    class VoteAlternatif extends AbstractSystemeVote{
+    class VoteAlternatif extends AbstractSystemeVote
+    {
         public function getNom(): string
         {
             return "alternatif";
@@ -130,7 +133,7 @@ namespace App\SAE\Model\SystemeVote{
         }
 
         public function afficherResultats(): string{
-            $idQuestion = $this->getQuestion()->getIdQuestion();
+            $idQuestion = rawurlencode($this->getQuestion()->getIdQuestion());
             $propositions = (new PropositionRepository())->selectAllByQuestion($idQuestion);
             $resultats = $this->calculerResultats();
 
@@ -160,7 +163,7 @@ namespace App\SAE\Model\SystemeVote{
                         if($idPropositionTour == $idProposition){
                             if($status == StatusProposition::gagnante){
                                 $cellule = "<td class='propositionGagnante'>";
-                                $propositionGagnante = $proposition->getTitreProposition();
+                                $propositionGagnante = htmlspecialchars($proposition->getTitreProposition());
                             }else if($status == StatusProposition::perdante){
                                 $cellule = "<td class='propositionPerdante'>";
                             }
@@ -209,7 +212,8 @@ namespace App\SAE\Model\SystemeVote{
         /**
          * @return array Tous les décomptes de vote
          * */
-        private function calculerResultats(): array{
+        private function calculerResultats(): array
+        {
             $question = $this->getQuestion();
             $idQuestion = $question->getIdQuestion();
             $nbVotesTotal = (new VoteRepository)->selectNombreDeVotantsEffectifs($idQuestion);
@@ -221,7 +225,7 @@ namespace App\SAE\Model\SystemeVote{
             $decomptesEnPourcentage = [];
             $indexTour = 0; //compteur de tours
 
-            while(!$majoriteeAbsolue){
+            while (!$majoriteeAbsolue) {
                 $decomptes[$indexTour] = [];
                 $decomptesEnPourcentage[$indexTour] = [];
 
@@ -230,34 +234,34 @@ namespace App\SAE\Model\SystemeVote{
                     $decomptes[$indexTour][$idProposition] = 0;
                 }
 
-                foreach($votes as $vote){
+                foreach ($votes as $vote) {
                     $decomptes[$indexTour][$vote->getPropositionFavorite()]++;
                 }
 
                 $idPropositionFaible = 0;
                 $nbVotesFaible = POSIX_RLIMIT_INFINITY;
                 //recherche majoritaire, cas échéant indexTour++ et on dégage le plus faible
-                foreach($decomptes[$indexTour] as $idProposition => $nbVotes){
+                foreach ($decomptes[$indexTour] as $idProposition => $nbVotes) {
                     $decomptesEnPourcentage[$indexTour][$idProposition][0] = round(($nbVotes * 100)/$nbVotesTotal);
                     $decomptesEnPourcentage[$indexTour][$idProposition][1] = StatusProposition::normale;
 
-                    if($nbVotes >= $nbVotesMajoriteeAbsolue){
+                    if ($nbVotes >= $nbVotesMajoriteeAbsolue) {
                         $majoriteeAbsolue = true;
                         $decomptesEnPourcentage[$indexTour][$idProposition][1] = StatusProposition::gagnante;
                     }
 
-                    if($nbVotes < $nbVotesFaible){
+                    if ($nbVotes < $nbVotesFaible) {
                         $idPropositionFaible = $idProposition;
                         $nbVotesFaible = $nbVotes;
                     }
                 }
 
-                if(!$majoriteeAbsolue){
-                    foreach($votes as $vote){
+                if (!$majoriteeAbsolue) {
+                    foreach ($votes as $vote) {
                         $vote->supprimerVote($idPropositionFaible);
                     }
-                    for($i = 0; $i < count($candidatsRestants); $i++){
-                        if($candidatsRestants[$i]->getIdProposition() == $idPropositionFaible){
+                    for ($i = 0; $i < count($candidatsRestants); $i++) {
+                        if ($candidatsRestants[$i]->getIdProposition() == $idPropositionFaible) {
                             array_splice($candidatsRestants, $i, 1);
                             break;
                         }
@@ -271,11 +275,18 @@ namespace App\SAE\Model\SystemeVote{
             return $decomptesEnPourcentage;
         }
 
-        public function traiterVote(): void{
+        public function traiterVote(): void
+        {
             $username = ConnexionUtilisateur::getUsernameSiConnecte();
             $question = $this->getQuestion();
             $idQuestion = $question->getIdQuestion();
             $AP_URL = "frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion";
+
+            $phase = $question->getPhase();
+            if ($phase !== PhaseQuestion::Vote) {
+                VoteController::error("frontController.php", "La question n'est pas en phase de vote");
+                return;
+            }
 
             $estVotant = (new VotantRepository)->existsForQuestion($idQuestion, $username);
             if (!$estVotant)
@@ -302,18 +313,17 @@ namespace App\SAE\Model\SystemeVote{
                 $proposition = Proposition::castIfNotNull($proposition, $AP_URL, "Erreur lors du vote 2");
 
                 $vote = $_POST["choix" . $idProposition];
-                if(!isset($vote)){
+                if (!isset($vote)) {
                     VoteController::error($AP_URL, "Vous devez donner un numéro à chacune des propositions.");
                     return;
                 }
-                if($vote < 1 || $vote > $nbPropositions)
-                {
+                if ($vote < 1 || $vote > $nbPropositions) {
                     VoteController::error($AP_URL, "Les propositions doivent être classés avec des nombres allant de 1 à " . $nbPropositions . ".");
                     return;
                 }
 
                 $votes[] = new Vote($proposition, $username, $vote);
-                if(in_array($vote, $voteNumbers)){
+                if (in_array($vote, $voteNumbers)) {
                     VoteController::error($AP_URL, "Deux propositions ne peuvent pas avoir un même numéro.");
                     return;
                 }
@@ -355,14 +365,15 @@ namespace App\SAE\Model\SystemeVote\VoteAlternatif{
         /**
          * @return array La liste des votes des utilisateurs dans l'ordre de préférence
          * */
-        public static function creerListeDeVotes(int $idQuestion): array{
+        public static function creerListeDeVotes(int $idQuestion): array
+        {
             $votes = (new VoteRepository())->selectAllByQuestion($idQuestion);
             $votesOrdonnes = [];
 
-            foreach($votes as $vote){
+            foreach ($votes as $vote) {
                 $usernameVotant = $vote->getUsernameVotant();
 
-                if(!isset($votesOrdonnes[$usernameVotant])){
+                if (!isset($votesOrdonnes[$usernameVotant])) {
                     $votesOrdonnes[$usernameVotant] = new VoteUtilisateur();
                 }
 
@@ -375,19 +386,21 @@ namespace App\SAE\Model\SystemeVote\VoteAlternatif{
         /**
          * Crée une PriorityQueue <b>vide</b> des votes dans l'ordre de préférence de l'utilisateur
          * */
-        private function __construct(){
+        private function __construct()
+        {
             $this->listeVotes = [];
         }
 
         /**
          * Ajoute un vote aux votes de l'utilisateur
          * */
-        public function ajouterVote(Vote $vote){
+        public function ajouterVote(Vote $vote)
+        {
             $nbVotes = count($this->listeVotes);
-            for($i = 0; $i <= $nbVotes; $i++){
-                if($i == $nbVotes){
+            for ($i = 0; $i <= $nbVotes; $i++) {
+                if ($i == $nbVotes) {
                     $this->listeVotes[] = $vote;
-                }else if($this->listeVotes[$i]->getValeur() > $vote->getValeur()){
+                } elseif ($this->listeVotes[$i]->getValeur() > $vote->getValeur()) {
                     $temp = $this->listeVotes[$i];
                     $this->listeVotes[$i] = $vote;
                     $vote = $temp;
@@ -398,9 +411,10 @@ namespace App\SAE\Model\SystemeVote\VoteAlternatif{
         /**
          * Supprime le vote d'id $idProposition des votes de l'utilisateur
          * */
-        public function supprimerVote(int $idProposition){
-            for($i = 0; $i < count($this->listeVotes); $i++){
-                if($this->listeVotes[$i]->getIdProposition() == $idProposition){
+        public function supprimerVote(int $idProposition)
+        {
+            for ($i = 0; $i < count($this->listeVotes); $i++) {
+                if ($this->listeVotes[$i]->getIdProposition() == $idProposition) {
                     array_splice($this->listeVotes, $i, 1);
                     break;
                 }
@@ -410,7 +424,8 @@ namespace App\SAE\Model\SystemeVote\VoteAlternatif{
         /**
          * @return ?int L'id de la proposition favorite de l'utilisateur ou null si aucune proposition ne reste
          * */
-        public function getPropositionFavorite(): ?int{
+        public function getPropositionFavorite(): ?int
+        {
             return count($this->listeVotes) > 0 ? $this->listeVotes[0]->getIdProposition() : null;
         }
     }
