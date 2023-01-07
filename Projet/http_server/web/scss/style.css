@@ -448,7 +448,8 @@ header {
   padding-top: 15px;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 5%;
   align-items: center;
 }
 header input[type=checkbox] {
@@ -520,28 +521,53 @@ header #mobileMenu {
     display: flex;
     position: fixed;
     top: 0;
-    z-index: 2;
   }
-  header #mobileMenu > div, header #mobileMenu label {
+  header #mobileMenu #pfpMobile {
+    display: flex;
+    position: absolute;
+    top: 3px;
+    right: 20px;
+    align-items: center;
+  }
+  header #mobileMenu #pfpMobile label:first-of-type {
     background-color: #2a2a2a;
-    margin: 0;
+    border: solid #2a2a2a;
+    border-width: 2px 15px;
+    border-radius: 5px;
+    margin-right: -6px;
   }
-  header #mobileMenu > div:first-child, header #mobileMenu label:first-child {
+  header #mobileMenu #pfpMobile label {
+    margin: 0;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+  }
+  header #mobileMenu #pfpMobile img {
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    border: solid #2a2a2a 3px;
+  }
+  header #mobileMenu #fleches {
+    background-color: #2a2a2a;
+    -webkit-clip-path: polygon(0 0, 0% 100%, 100% 50%);
+    clip-path: polygon(0 0, 0% 100%, 100% 50%);
+    width: 15px;
+  }
+  header #mobileMenu #barreMenu {
+    margin: 0;
+    background-color: #2a2a2a;
     width: 60px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     cursor: pointer;
+    z-index: 3;
   }
-  header #mobileMenu > div:first-child img, header #mobileMenu label:first-child img {
+  header #mobileMenu #barreMenu img {
     height: 30px;
   }
-  header #mobileMenu > div:last-child, header #mobileMenu label:last-child {
-    -webkit-clip-path: polygon(0 0, 0% 100%, 100% 50%);
-    clip-path: polygon(0 0, 0% 100%, 100% 50%);
-    width: 15px;
-  }
-  header nav {
+  header nav, header .menu_compte {
     z-index: 1000;
     display: none;
     height: auto;
@@ -556,24 +582,24 @@ header #mobileMenu {
     background-color: transparent;
     overflow: hidden;
   }
-  header nav ul {
+  header nav ul, header .menu_compte ul {
     background-color: #2a2a2a;
     flex-direction: column;
     padding-bottom: 5px;
   }
-  header nav ul li {
+  header nav ul li, header .menu_compte ul li {
     padding: 0;
     border: none !important;
     border-radius: 0;
     background-color: transparent;
   }
-  header nav ul li:first-child, header nav ul li:last-child {
+  header nav ul li:first-child, header nav ul li:last-child, header .menu_compte ul li:first-child, header .menu_compte ul li:last-child {
     border-radius: 0;
   }
-  header nav ul li a {
+  header nav ul li a, header .menu_compte ul li a {
     height: calc(1.1em + 20px);
   }
-  header nav div {
+  header nav div, header .menu_compte div {
     -webkit-clip-path: polygon(0 0, 50% 100%, 100% 0);
     clip-path: polygon(0 0, 50% 100%, 100% 0);
     width: 100%;
@@ -588,16 +614,27 @@ header #mobileMenu {
   }
 }
 
+.menu_compte {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.menu_compte label {
+  background: #E1603C;
+  border: solid #E1603C;
+  border-width: 2px 15px;
+  border-radius: 5px;
+  font-size: 1em;
+  margin-top: -10px;
+  cursor: pointer;
+}
 .menu_compte .bouton_ouvrir_compte {
-  position: absolute;
-  top: 0;
-  right: -100px;
   display: flex;
   content: "";
   width: 46px;
   height: 46px;
   background-color: #E1603C;
-  border: solid #E1603C 2px;
+  border: solid #E1603C 3px;
   border-radius: 50%;
 }
 .menu_compte .bouton_ouvrir_compte img {
@@ -616,31 +653,47 @@ header #mobileMenu {
   transition: all 1s ease-in-out;
 }
 
-.menu_compte:focus-within .bouton_ouvrir_compte {
-  border: solid #B1482C 2px;
+.menu_compte:focus-within {
+  display: flex;
+  flex-direction: column;
+}
+.menu_compte:focus-within .bouton_ouvrir_compte, .menu_compte:focus-within label {
+  background-color: #B1482C;
+  border-color: #B1482C;
 }
 .menu_compte:focus-within ul {
   display: flex;
   opacity: 1;
   flex-direction: column;
   position: absolute;
-  top: 75px;
-  right: -100px;
-  width: 200px;
+  top: 80px;
+  width: 175px;
   height: fit-content;
   border-radius: 10px;
   z-index: 1000;
 }
 .menu_compte:focus-within ul li {
+  display: flex;
   padding: 0;
   text-align: center;
+  align-items: center;
+  justify-content: center;
+  background-color: #E1603C;
   border-bottom: solid #1B1B1B 2px;
   border-radius: 0;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
 .menu_compte:focus-within ul li a {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
   height: calc(1.1em + 20px);
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  font-size: 1.1em;
 }
 .menu_compte:focus-within ul li:hover {
   background-color: #B1482C;
@@ -655,7 +708,7 @@ header #mobileMenu {
   content: "";
   position: absolute;
   bottom: 100%;
-  right: 12px;
+  right: 91px;
   border-width: 15px;
   border-style: solid;
   border-color: transparent transparent #E1603C transparent;
@@ -832,7 +885,7 @@ input[type=checkbox]:checked::before {
 }
 @media screen and (max-width: 1000px) {
   #roles_input #votants_input,
-#roles_input #redacteurs_input {
+  #roles_input #redacteurs_input {
     width: 100%;
   }
 }
