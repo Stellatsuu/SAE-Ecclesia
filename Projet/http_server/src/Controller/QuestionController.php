@@ -88,11 +88,11 @@ class QuestionController extends MainController
         $AFPQ_URL = "frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion";
 
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
-        
+
         if ($question->getUsernameOrganisateur() != $username) {
             static::error(LMQ_URL, "Vous n'êtes pas l'organisateur de cette question. Vous ne pouvez pas la modifier.");
         }
-        
+
         $phase = $question->getPhase();
         switch ($phase) {
             case Phase::Redaction:
@@ -294,7 +294,7 @@ class QuestionController extends MainController
     public static function listerMesQuestions()
     {
         $username = ConnexionUtilisateur::getUsernameSiConnecte();
-        
+
         $questions = (new QuestionRepository)->selectAllByOrganisateur($username);
 
         static::afficherVue("view.php", [
@@ -338,23 +338,24 @@ class QuestionController extends MainController
     {
         $nbQuestionsParPage = 12;
         $query = isset($_GET["query"]) ? strtolower($_GET["query"]) : "";
-        $motsClesEtTags = explode(" ", $query)?:[];
-        $motsCles=[];
-        $tags=[];
+        $motsClesEtTags = explode(" ", $query) ?: [];
+        $motsCles = [];
+        $tags = [];
 
-        foreach ($motsClesEtTags as $mot){
-            if(substr($mot,0,1)=="#"){
-                $tags[]=substr($mot,1);
-            }
-            else{
-                $motsCles[]=$mot;
+        foreach ($motsClesEtTags as $mot) {
+            if (substr($mot, 0, 1) == "#") {
+                $tags[] = substr($mot, 1);
+            } else {
+                $motsCles[] = $mot;
             }
         }
-        $tags = array_filter($tags,function ($t){
-            return $t!="";
+        $tags = array_filter($tags, function ($t) {
+            return $t != "";
         });
 
         $filtres = [];
+        if (isset($_GET["f_non_remplie"])) $filtres[] = "non_remplie";
+        if (isset($_GET["f_attente"])) $filtres[] = "attente";
         if (isset($_GET["f_lecture"])) $filtres[] = "lecture";
         if (isset($_GET["f_redaction"])) $filtres[] = "redaction";
         if (isset($_GET["f_vote"])) $filtres[] = "vote";
@@ -363,10 +364,12 @@ class QuestionController extends MainController
         if (isset($_GET["f_coauteur"])) $filtres[] = "coauteur";
         if (isset($_GET["f_votant"])) $filtres[] = "votant";
 
+        if (isset($_GET["f_mq"])) $filtres[] = "mq";
 
-        $nbPages = ceil((new QuestionRepository())->countAllListerQuestion($motsCles,$tags, $filtres) / $nbQuestionsParPage) ?: 1;
+
+        $nbPages = ceil((new QuestionRepository())->countAllListerQuestion($motsCles, $tags, $filtres) / $nbQuestionsParPage) ?: 1;
         $page = isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] > 0 && $_GET["page"] <= $nbPages ? $_GET["page"] : 1;
-        
+
         $offset = ($page - 1) * $nbQuestionsParPage;
 
         $questions = (new QuestionRepository())->selectAllListerQuestions($nbQuestionsParPage, $offset, $motsCles, $tags, $filtres);
@@ -378,7 +381,7 @@ class QuestionController extends MainController
             "page" => $page,
             "nbPages" => $nbPages,
             "query" => $query,
-            "filtres" => $filtres
+            "filtres" => $filtres,
         ]);
     }
 

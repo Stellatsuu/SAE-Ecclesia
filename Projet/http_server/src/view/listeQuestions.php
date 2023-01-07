@@ -144,6 +144,34 @@ if ($nbPages == 1) {
     ];
 }
 
+$modeMesQuestions = false;
+$boutonAutrePage = "";
+if (ConnexionUtilisateur::estConnecte()) {
+    $modeMesQuestions = isset($_GET["f_mq"]);
+    $lienAutrePage = $modeMesQuestions ? "frontController.php?controller=question&action=listerQuestions" : "frontController.php?controller=question&action=listerQuestions&f_mq=true";
+    $boutonAutrePage = <<<HTML
+        <span>
+            <span>
+                Toutes les questions
+            </span>
+            <a href="$lienAutrePage" class="switch-mode">
+                <img src="assets/images/switch-icon.svg" alt="switch">
+            </a>
+            <span>
+                Mes questions
+            </span>
+        </span>
+    HTML;
+
+    if ($modeMesQuestions) {
+        $filtreMesQuestions = <<<HTML
+            <input type="hidden" name="f_mq" value="true">
+        HTML;
+    } else {
+        $filtreMesQuestions = "";
+    }
+}
+
 $filtresRolesHTMLElements = [];
 if (ConnexionUtilisateur::estConnecte()) {
     $filtresRolesHTMLElements[] = <<<HTML
@@ -157,12 +185,46 @@ if (ConnexionUtilisateur::estConnecte()) {
         HTML;
     }
 }
+
+$filtresPhasesHTMLElements = [];
+$filtresPhasesHTMLElements[] = <<<HTML
+    <span class="menu-filtre-4fr">Phase(s)</span>
+HTML;
+
+if ($modeMesQuestions) {
+    $phases = [
+        "non_remplie" => "Non remplie",
+        "attente" => "En attente",
+        "lecture" => "Lecture",
+        "redaction" => "Rédaction",
+        "vote" => "Vote",
+        "resultat" => "Résultat"
+    ];
+} else {
+    $phases = [
+        "lecture" => "Lecture",
+        "redaction" => "Rédaction",
+        "vote" => "Vote",
+        "resultat" => "Résultat"
+    ];
+}
+
+foreach ($phases as $phase => $titre) {
+    $checked = isset($_GET["f_$phase"]) ? "checked" : "";
+    $filtresPhasesHTMLElements[] = <<<HTML
+        <input type="checkbox" id="f_{$phase}_id" name="f_$phase" value="true" $checked>
+        <label for="f_{$phase}_id">$titre</label>
+    HTML;
+}
+
 ?>
 
 <div class="panel" id="liste-questions">
 
     <div id="liste-questions__top">
         <h1>Questions : </h1>
+
+        <?= $boutonAutrePage ?>
 
         <div class="barre-recherche">
 
@@ -174,13 +236,12 @@ if (ConnexionUtilisateur::estConnecte()) {
                     <a class="bouton-ouvrir-filtres" href="#"><img src="assets/images/filter-icon.svg" alt="bouton filtres"></a>
 
                     <div class="filtres">
-                        <span class="menu-filtre-4fr">Phase(s)</span>
                         <a id="lien-tout-supprimer" href="frontController.php?controller=question&action=listerQuestions">Tout supprimer</a>
-                        <input type="checkbox" id="f_lecture_id" name="f_lecture" value="true" <?= isset($_GET['f_lecture']) ? "checked" : "" ?>><label for="f_lecture_id">Lecture</label>
-                        <input type="checkbox" id="f_vote_id" name="f_vote" value="true" <?= isset($_GET['f_vote']) ? "checked" : "" ?>><label for="f_vote_id">Vote</label>
-                        <input type="checkbox" id="f_redaction_id" name="f_redaction" value="true" <?= isset($_GET['f_redaction']) ? "checked" : "" ?>><label for="f_redaction_id">Rédaction</label>
-                        <input type="checkbox" id="f_resultat_id" name="f_resultat" value="true" <?= isset($_GET['f_resultat']) ? "checked" : "" ?>><label for="f_resultat_id">Résultat</label>
+                        
+                        <?= $filtreMesQuestions ?>
+                        <?= implode("", $filtresPhasesHTMLElements) ?>
                         <?= implode("", $filtresRolesHTMLElements) ?>
+
                         <input type="submit" value="Valider" class="button">
                     </div>
                 </div>

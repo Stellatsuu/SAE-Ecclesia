@@ -89,6 +89,11 @@ class DebugController extends MainController
             $username = strtolower($prenom . $nom . rand(0, 1000));
             $email = $username . "@gmail.com";
 
+            if (rand(0, 100) < 30) {
+                $nom = "";
+                $prenom = "";
+            }
+
             $imageType = $possiblePhotoTypes[rand(0, count($possiblePhotoTypes) - 1)];
             $image = file_get_contents("https://source.boringavatars.com/" . $imageType . "/256/" . $username);
             $image = base64_encode($image);

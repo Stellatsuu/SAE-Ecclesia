@@ -137,7 +137,7 @@ class QuestionRepository extends AbstractRepository
 
         $sql = <<<SQL
             SELECT *
-                FROM question 
+                FROM question q
                 WHERE $conditions
                 ORDER BY date_debut_redaction DESC
                 LIMIT :limit
@@ -163,7 +163,7 @@ class QuestionRepository extends AbstractRepository
 
         $sql = <<<SQL
             SELECT COUNT(*)
-                FROM question 
+                FROM question q 
                 WHERE $conditions
         SQL;
 
@@ -173,76 +173,82 @@ class QuestionRepository extends AbstractRepository
         return $stmt->fetchColumn();
     }
 
-    private function genererConditionsEtValuesListerQuestions(array $motsCles = [], array $tags = [], array $filtres = []) {
-        $conditionsMCTags = [];
-        $values = [];
+    private function genererConditionsEtValuesListerQuestions(array $motsCles = [], array $tags = [], array $filtres = [])
+    {
 
-        if (!empty($filtres)) {
-            $conditionsPhases = [];
+        $modeMesQuestions = in_array("mq", $filtres);
 
-            //PHASES
-            if (in_array("lecture", $filtres)) {
-                $conditionsPhases[] = "getPhase(id_question) = 'lecture'";
-            }
-            if (in_array("redaction", $filtres)) {
-                $conditionsPhases[] = "getPhase(id_question) = 'redaction'";
-            }
-            if (in_array("vote", $filtres)) {
-                $conditionsPhases[] = "getPhase(id_question) = 'vote'";
-            }
-            if (in_array("resultat", $filtres)) {
-                $conditionsPhases[] = "getPhase(id_question) = 'resultat'";
-            }
+        $conditions = [];
 
-            $conditionsRoles = [];
+        $connecte = ConnexionUtilisateur::estConnecte();
 
-            //RÔLES
-            if (ConnexionUtilisateur::estConnecte()) {
-                if (in_array("redacteur", $filtres)) {
-                    $conditionsRoles[] = "(EXISTS(SELECT * FROM redacteur WHERE username_redacteur = :username))";
-                    $values['username'] = ConnexionUtilisateur::getUsername();
-                }
-                if (in_array("coauteur", $filtres)) {
-                    $conditionsRoles[] = "(EXISTS(SELECT * FROM co_auteur WHERE username_co_auteur = :username))";
-                    $values['username'] = ConnexionUtilisateur::getUsername();
-                }
-                if (in_array("votant", $filtres)) {
-                    $conditionsRoles[] = "(EXISTS(SELECT * FROM votant WHERE username_votant = :username))";
-                    $values['username'] = ConnexionUtilisateur::getUsername();
-                }
-            }
 
-            $conditionsPhases = implode(" OR ", $conditionsPhases);
-            $conditionsRoles = implode(" OR ", $conditionsRoles);
-
-            $conditionsFiltres = array_filter([$conditionsPhases, $conditionsRoles], function ($condition) {
-                return !empty($condition);
-            });
-            $conditionsFiltres = implode(" AND ", $conditionsFiltres);
+        //MODE MES QUESTIONS
+        if ($connecte && $modeMesQuestions) {
+            $conditions[] = "(username_organisateur = :username)";
+            $values['username'] = ConnexionUtilisateur::getUsername();
         } else {
-            $conditionsFiltres = "(date_debut_redaction IS NOT NULL AND date_debut_redaction <= CURRENT_TIMESTAMP)";
+            $conditions[] = "(date_debut_redaction IS NOT NULL AND date_debut_redaction <= CURRENT_TIMESTAMP)";
         }
 
-        /////GESTION TAGS ET MOTS-CLES
 
+        //RÔLES
+        $conditionsRoles = [];
+
+        if ($connecte && in_array("redacteur", $filtres)) {
+            $conditionsRoles[] = "(EXISTS(SELECT * FROM redacteur WHERE username_redacteur = :username AND id_question = q.id_question))";
+            $values['username'] = ConnexionUtilisateur::getUsername();
+        }
+
+        if ($connecte && in_array("coauteur", $filtres)) {
+            $conditionsRoles[] = "(EXISTS(SELECT * FROM co_auteur ca JOIN paragraphe pa ON ca.id_paragraphe = p.id_paragraphe JOIN proposition p ON pa.id_proposition = p.id_proposition WHERE username_co_auteur = :username AND p.id_question = q.id_question))";
+            $values['username'] = ConnexionUtilisateur::getUsername();
+        }
+
+        if ($connecte && in_array("votant", $filtres)) {
+            $conditionsRoles[] = "(EXISTS(SELECT * FROM votant WHERE username_votant = :username AND id_question = q.id_question))";
+            $values['username'] = ConnexionUtilisateur::getUsername();
+        }
+
+        $conditionsRoles = implode(" OR ", $conditionsRoles);
+        if($conditionsRoles != "") $conditions[] = "($conditionsRoles)";
+
+
+        //PHASES
+        $conditionsPhases = [];
+
+        if (in_array("non_remplie", $filtres)) $conditionsPhases[] = "getPhase(id_question) = 'nonRemplie'";
+
+        if (in_array("attente", $filtres)) $conditionsPhases[] = "getPhase(id_question) = 'attente'";
+
+        if (in_array("lecture", $filtres)) $conditionsPhases[] = "getPhase(id_question) = 'lecture'";
+
+        if (in_array("redaction", $filtres)) $conditionsPhases[] = "getPhase(id_question) = 'redaction'";
+
+        if (in_array("vote", $filtres)) $conditionsPhases[] = "getPhase(id_question) = 'vote'";
+
+        if (in_array("resultat", $filtres)) $conditionsPhases[] = "getPhase(id_question) = 'resultat'";
+
+        $conditionsPhases = implode(" OR ", $conditionsPhases);
+        if($conditionsPhases != "") $conditions[] = "($conditionsPhases)";
+
+
+        //TAGS
         $tags = "{" . implode(",", $tags) . "}";
-        $conditionsMCTags[] = "(tags @> :tags)";
 
-        for ($i = 0; $i < count($motsCles); $i++) {
-            $conditionsMCTags[] = "(LOWER(titre_question) LIKE :mot_cle_$i OR LOWER(description_question) LIKE :mot_cle_$i)";
-        }
-
-        $conditionsMCTags = implode(" AND ", $conditionsMCTags);
-        $conditions = array_filter([$conditionsFiltres, $conditionsMCTags], function ($condition) {
-            return !empty($condition);
-        });
-        $conditions = implode(" AND ", $conditions);
-
+        $conditions[] = "(tags @> :tags)";
         $values['tags'] = $tags;
 
+
+        //MOTS-CLÉS
         for ($i = 0; $i < count($motsCles); $i++) {
+            $conditions[] = "(LOWER(titre_question) LIKE :mot_cle_$i OR LOWER(description_question) LIKE :mot_cle_$i)";
             $values["mot_cle_$i"] = "%$motsCles[$i]%";
         }
+
+        
+        $conditions = implode(" AND ", $conditions);
+
 
         return ["conditions" => $conditions, "values" => $values];
     }
