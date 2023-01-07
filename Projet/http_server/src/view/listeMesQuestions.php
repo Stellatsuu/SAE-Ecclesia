@@ -1,5 +1,6 @@
 <?php
 
+use App\SAE\Lib\Markdown;
 use App\SAE\Model\DataObject\Question;
 use App\SAE\Lib\PhaseQuestion as Phase;
 
@@ -14,7 +15,7 @@ $i = 0;
         $q = Question::castIfNotNull($q);
 
         $titre = htmlspecialchars($q->getTitre());
-        $description = \App\SAE\Lib\Markdown::toHtml($q->getDescription());
+        $description = Markdown::toHtml($q->getDescription());
         $idQuestion = rawurlencode($q->getIdQuestion());
 
         $phase = $q->getPhase();

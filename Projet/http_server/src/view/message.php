@@ -1,1 +1,1 @@
-    <p class="<?=$messageType?>"> <?= $message; ?></p>
+<p class="<?= htmlspecialchars($messageType) ?>"> <?= htmlspecialchars($message) ?></p>

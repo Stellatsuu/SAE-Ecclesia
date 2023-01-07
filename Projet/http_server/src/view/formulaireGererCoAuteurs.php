@@ -9,7 +9,7 @@
             <button type="button" id="add_co_auteur">+</button>
         </div>
 
-        <input type="hidden" name="idProposition" value="<?= $proposition->getIdProposition() ?>">
+        <input type="hidden" name="idProposition" value="<?= htmlspecialchars($proposition->getIdProposition()) ?>">
     </fieldset>
 
     <input type="submit" value="Valider">
@@ -23,11 +23,11 @@
     foreach ($demandesCoAuteur as $demande) {
 
         $demande = DemandeCoAuteur::castIfNotNull($demande);
-        $usernameDemandeur = $demande->getUsernameDemandeur();
+        $usernameDemandeur = htmlspecialchars($demande->getUsernameDemandeur());
         $demandeur = $demande->getDemandeur();
-        $nomComplet = $demandeur->getPrenom() . " " . strtoupper($demandeur->getNom());
-        $message = $demande->getMessage();
-        $idProposition = $demande->getIdProposition();
+        $nomComplet = htmlspecialchars($demandeur->getPrenom() . " " . strtoupper($demandeur->getNom()));
+        $message = htmlspecialchars($demande->getMessage());
+        $idProposition = htmlspecialchars($demande->getIdProposition());
 
         $html = <<<HTML
         <div class="demandeCoAuteur acceptOrDeny">
@@ -54,7 +54,6 @@
 <script>
     const utilisateurs = <?= json_encode($utilisateursAutorises) ?>;
     const coAuteurs = <?= json_encode($coAuteurs) ?>;
-    console.log(utilisateurs);
     const options = '<option value="" selected disabled>---</option>' + utilisateurs.map(utilisateur => `<option value="${utilisateur.username}">${(utilisateur.nom).toUpperCase()} ${utilisateur.prenom}</option>`).join("\n");
 </script>
 <script type="module" src="js/co_auteurs.js"></script>

@@ -52,7 +52,7 @@ if ($existeProposition) {
         ?>
     </fieldset>
 
-    <?= $existeProposition ? "<input type=\"hidden\" name=\"idProposition\" value=\"{$proposition->getidProposition()}\"/>" : "" ?>
-    <input type="hidden" name="idQuestion" value="<?= $question->getIdQuestion() ?>" />
+    <?= $existeProposition ? "<input type=\"hidden\" name=\"idProposition\" value=\"" . htmlspecialchars($proposition->getidProposition()) . "\"/>" : "" ?>
+    <input type="hidden" name="idQuestion" value="<?= htmlspecialchars($question->getIdQuestion()) ?>" />
     <input type="submit" value="Enregistrer" />
 </form>
