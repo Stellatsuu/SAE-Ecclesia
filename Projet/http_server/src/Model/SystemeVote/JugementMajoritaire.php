@@ -133,7 +133,7 @@ class JugementMajoritaire extends AbstractSystemeVote
             $p = Proposition::castIfNotNull($p);
 
             $titreProposition = htmlspecialchars($p->getTitreProposition());
-            $lienProposition = "frontController.php?action=afficherPropositions&idQuestion=$idQuestion&index=$idProposition";
+            $lienProposition = "TODO";
 
             $mentions = $histogramme[$idProposition];
             $nbMentions = array_sum($mentions);
@@ -144,58 +144,89 @@ class JugementMajoritaire extends AbstractSystemeVote
                 $mentions
             );
 
-            $mentionsTD = [];
-            for ($j = 0; $j < count(self::MENTIONS); $j++) {
-                $mentionsTD[] = "<td>" . $mentionsPourcent[$j] . "%</td>";
-            }
-            $mentionsTD = implode("", $mentionsTD);
-
-            $propositionHTML = <<<HTML
-                <tr>
-                    <td><a href="$lienProposition">$titreProposition</a></td>
-                    $mentionsTD
-                </tr>
-            HTML;
-            $propositionHTMLs[] = $propositionHTML;
-
-
             $diagrammeHTML = <<<HTML
                 <div class="diagramme__ligne">
-                    <div class="diagramme__segment" style="width: {$mentionsPourcent[0]}%"></div>
-                    <div class="diagramme__segment" style="width: {$mentionsPourcent[1]}%"></div>
-                    <div class="diagramme__segment" style="width: {$mentionsPourcent[2]}%"></div>
-                    <div class="diagramme__segment" style="width: {$mentionsPourcent[3]}%"></div>
-                    <div class="diagramme__segment" style="width: {$mentionsPourcent[4]}%"></div>
-                    <div class="diagramme__segment" style="width: {$mentionsPourcent[5]}%"></div>
+                    <div class="diagramme__segment" style="width: {$mentionsPourcent[0]}%">
+                        <div class="diagramme__segment__texte">{$mentionsPourcent[0]}%</div>
+
+                    </div>
+                    <div class="diagramme__segment" style="width: {$mentionsPourcent[1]}%">
+                        <div class="diagramme__segment__texte">{$mentionsPourcent[1]}%</div>
+                    </div>
+                    <div class="diagramme__segment" style="width: {$mentionsPourcent[2]}%">
+                        <div class="diagramme__segment__texte">{$mentionsPourcent[2]}%</div>
+                    </div>
+                    <div class="diagramme__segment" style="width: {$mentionsPourcent[3]}%">
+                        <div class="diagramme__segment__texte">{$mentionsPourcent[3]}%</div>
+                    </div>
+                    <div class="diagramme__segment" style="width: {$mentionsPourcent[4]}%">
+                        <div class="diagramme__segment__texte">{$mentionsPourcent[4]}%</div>
+                    </div>
+                    <div class="diagramme__segment" style="width: {$mentionsPourcent[5]}%">
+                        <div class="diagramme__segment__texte">{$mentionsPourcent[5]}%</div>
+                    </div>
                 </div>
             HTML;
 
-            $diagrammeHTMLs[] = $diagrammeHTML;
+            $propositionHTML = <<<HTML
+                <a href="$lienProposition">$titreProposition</a>
+                $diagrammeHTML
+            HTML;
+
+            $propositionHTMLs[] = $propositionHTML;
         }
 
         $propositionHTMLs = implode("", $propositionHTMLs);
-        $diagrammeHTMLs = implode("", $diagrammeHTMLs);
 
-        $mentionsTH = [];
-        for ($i = 0; $i < count(self::MENTIONS); $i++) {
-            $mentionsTH[] = "<th>" . self::MENTIONS[$i] . "</th>";
+        $propositionGagnante = null;
+        foreach ($propositions as $proposition) {
+            $proposition = Proposition::castIfNotNull($proposition);
+            if ($proposition->getIdProposition() == $idPropositionsTriees[0]) {
+                $propositionGagnante = $proposition;
+                break;
+            }
         }
-
-        $mentionsTH = implode("", $mentionsTH);
+        $propositionGagnante = Proposition::castIfNotNull($propositionGagnante);
+        $titrePropositionGagnante = htmlspecialchars($propositionGagnante->getTitreProposition());
+        $mentionMajoritairePropositionGagnante = static::MENTIONS[static::mentionMajoritaire($histogramme[$idPropositionsTriees[0]])];
 
         $res = <<<HTML
-            <table class="propositions">
-                <tr>
-                    <th>Propositions</th>
-                    $mentionsTH
-                </tr>
-
-                $propositionHTMLs
-
-                <div class="diagramme">
-                    $diagrammeHTMLs
+            <div class="jugement-majoritaire">
+                <div class="jugement-majoritaire__grid">
+                    $propositionHTMLs
                 </div>
-            </table>
+
+                <p><strong>$titrePropositionGagnante</strong> est la proposition gagnante, avec une mention majoritaire de <strong>$mentionMajoritairePropositionGagnante</strong>.</p>
+
+                <div class="jugement-majoritaire__legende">
+                    <h3>Mentions</h3>
+                    <div class="diagramme__legende">
+                        <span></span>
+                        : <strong>Très bien</strong>
+                    </div>
+                    <div class="diagramme__legende">
+                        <span></span>
+                        : <strong>Bien</strong>
+                    </div>
+                    <div class="diagramme__legende">
+                        <span></span>
+                        : <strong>Assez bien</strong>
+                    </div>
+                    <div class="diagramme__legende">
+                        <span></span>
+                        : <strong>Passable</strong>
+                    </div>
+                    <div class="diagramme__legende">
+                        <span></span>
+                        : <strong>Insuffisant</strong>
+                    </div>
+                    <div class="diagramme__legende">
+                        <span></span>
+                        : <strong>À rejeter</strong>
+                    </div>
+                </div>
+
+            </div>
         HTML;
 
         return $res;
@@ -296,7 +327,7 @@ class JugementMajoritaire extends AbstractSystemeVote
             if (array_sum($a) == 0 || array_sum($b) == 0) {
                 return 0;
             }
-        } while ($a == $b);
+        } while ($ma == $mb);
     }
 
     private static function mentionMajoritaire(array $mentions): int

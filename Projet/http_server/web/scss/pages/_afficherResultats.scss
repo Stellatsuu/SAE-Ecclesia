@@ -64,105 +64,191 @@
     }
   }
 
-  .diagramme {
+  .jugement-majoritaire {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    align-items: stretch;
-    justify-content: center;
+    gap: 20px;
+
+    .jugement-majoritaire__grid {
+      display: grid;
+      grid-template-columns: 40% 1fr;
+      gap: 20px;
+
+      align-items: center;
+      justify-content: start;
+
+      a {
+        color: $couleurTexte;
+        text-decoration: none;
+        font-size: 18px;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      @media screen and (max-width: 900px) {
+        grid-template-columns: 1fr;
+      }
+    }
 
     .diagramme__ligne {
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: center;
+    }
 
-      .diagramme__segment {
-        display: inline-block;
-        height: 20px;
+    .diagramme__segment {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 36px;
+      overflow: hidden;
+      text-overflow: clip;
 
-        &:nth-child(1) {
-          background-color: black;
+      &:nth-of-type(1) {
+        background-color: #181818;
+        border-radius: 10px 0 0 10px;
+        color: white;
+      }
+
+      &:nth-of-type(2) {
+        background-color: #ff4141;
+        color: black;
+      }
+
+      &:nth-of-type(3) {
+        background-color: #fffa8d;
+        color: black;
+      }
+
+      &:nth-of-type(4) {
+        background-color: #3fdf5b;
+        color: black;
+      }
+
+      &:nth-of-type(5) {
+        background-color: #00b620;
+        color: black;
+      }
+
+      &:nth-of-type(6) {
+        background-color: #007514;
+        border-radius: 0 10px 10px 0;
+        color: white;
+      }
+    }
+
+    .jugement-majoritaire__legende {
+
+      h3 {
+        margin: 0;
+      }
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .diagramme__legende {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        align-items: center;
+        justify-content: stretch;
+
+        span {
+          width: 40px;
+          height: 20px;
+          border-radius: 10px;
         }
 
-        &:nth-child(2) {
-          background-color: red;
+        &:nth-of-type(6) {
+          span {
+            background-color: #181818;
+          }
         }
 
-        &:nth-child(3) {
-          background-color: yellow;
+        &:nth-of-type(5) {
+          span {
+            background-color: #ff4141;
+          }
         }
 
-        &:nth-child(4) {
-          background-color: limegreen;
+        &:nth-of-type(4) {
+          span {
+            background-color: #fffa8d;
+          }
         }
 
-        &:nth-child(5) {
-          background-color: green;
+        &:nth-of-type(3) {
+          span {
+            background-color: #3fdf5b;
+          }
         }
 
-        &:nth-child(6) {
-          background-color: darkgreen;
+        &:nth-of-type(2) {
+          span {
+            background-color: #00b620;
+          }
         }
 
-
-
-
-
-
+        &:nth-of-type(1) {
+          span {
+            background-color: #007514;
+          }
+        }
       }
     }
   }
 
-
-  .voteAlternatif{
+  .voteAlternatif {
     $tailleArrondi: 7px;
     overflow-x: auto;
-    width:100%;
+    width: 100%;
 
-    table{
+    table {
       margin: auto;
 
-      td{
+      td {
         background-color: $couleurFond2;
         padding: 5px;
 
-        > span{
-          font-size: .7em;
+        > span {
+          font-size: 0.7em;
           margin-right: 5px;
         }
       }
 
-      tr:first-child{
-        td:first-child{
+      tr:first-child {
+        td:first-child {
           border-top-left-radius: $tailleArrondi;
         }
-        td:last-child{
+        td:last-child {
           border-top-right-radius: $tailleArrondi;
         }
-        td:not(:first-child){
+        td:not(:first-child) {
           font-weight: bold;
         }
       }
-      tr:last-child{
-        td:first-child{
+      tr:last-child {
+        td:first-child {
           border-bottom-left-radius: $tailleArrondi;
         }
-        td:last-child{
+        td:last-child {
           border-bottom-right-radius: $tailleArrondi;
         }
       }
-      tr:not(:first-child) td{
+      tr:not(:first-child) td {
         text-align: center;
       }
 
-      .propositionPerdante{
-        background-color: #A8A8A8;
+      .propositionPerdante {
+        background-color: #a8a8a8;
       }
-      .casePleine, .propositionGagnante{
+      .casePleine,
+      .propositionGagnante {
         background-color: $couleurPrincipale;
       }
-
     }
   }
 }
