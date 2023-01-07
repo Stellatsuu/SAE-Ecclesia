@@ -12,14 +12,15 @@ class ConnexionUtilisateur
 {
     // L'utilisateur connecté sera enregistré en session associé à la clé suivante 
     private static string $cleConnexion = "username";
+    private static string $cleEstAdmin = "est_admin";
 
     public static function connecter(string $username): void
     {
         $session = Session::getInstance();
         $session->enregistrer(self::$cleConnexion, $username);
 
-        $est_admin = (new AdministrateurRepository())->existe($username);
-        $session->enregistrer("est_admin", $est_admin);
+        $estAdmin = (new AdministrateurRepository())->existe($username);
+        $session->enregistrer(self::$cleEstAdmin, $estAdmin);
     }
 
     public static function estConnecte(): bool
@@ -31,14 +32,14 @@ class ConnexionUtilisateur
     public static function estAdmin(): bool
     {
         $session = Session::getInstance();
-        return $session->contient("est_admin") && $session->lire("est_admin");
+        return $session->contient(self::$cleEstAdmin) && $session->lire(self::$cleEstAdmin);
     }
 
     public static function deconnecter(): void
     {
         $session = Session::getInstance();
         $session->supprimer(self::$cleConnexion);
-        $session->supprimer("est_admin");
+        $session->supprimer(self::$cleEstAdmin);
     }
 
     public static function getUsername(): ?string

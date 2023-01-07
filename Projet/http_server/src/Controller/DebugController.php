@@ -2,7 +2,6 @@
 
 namespace App\SAE\Controller;
 
-use App\SAE\Lib\MessageFlash;
 use App\SAE\Lib\MotDePasse;
 use App\SAE\Lib\PhotoProfil;
 use App\SAE\Model\DataObject\Paragraphe;
@@ -11,7 +10,6 @@ use App\SAE\Model\DataObject\Question;
 use App\SAE\Model\DataObject\Section;
 use App\SAE\Model\DataObject\Utilisateur;
 use App\SAE\Model\DataObject\Vote;
-use App\SAE\Model\HTTP\Session;
 use App\SAE\Model\Repository\DatabaseConnection;
 use App\SAE\Model\Repository\PropositionRepository;
 use App\SAE\Model\Repository\QuestionRepository;

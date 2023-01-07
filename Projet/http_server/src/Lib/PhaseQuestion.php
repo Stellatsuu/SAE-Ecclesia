@@ -2,7 +2,8 @@
 
 namespace App\SAE\Lib;
 
-enum PhaseQuestion {
+enum PhaseQuestion
+{
     case NonRemplie;
     case Attente;
     case Redaction;
@@ -10,21 +11,15 @@ enum PhaseQuestion {
     case Vote;
     case Resultat;
 
-    public function toString() {
-        switch($this) {
-            case PhaseQuestion::NonRemplie:
-                return "Non remplie";
-            case PhaseQuestion::Attente:
-                return "Attente";
-            case PhaseQuestion::Redaction:
-                return "Rédaction";
-            case PhaseQuestion::Lecture:
-                return "Lecture";
-            case PhaseQuestion::Vote:
-                return "Vote";
-            case PhaseQuestion::Resultat:
-                return "Résultat";
-        }
+    public function toString()
+    {
+        return match ($this) {
+            PhaseQuestion::NonRemplie => "Non remplie",
+            PhaseQuestion::Attente => "Attente",
+            PhaseQuestion::Redaction => "Rédaction",
+            PhaseQuestion::Lecture => "Lecture",
+            PhaseQuestion::Vote => "Vote",
+            PhaseQuestion::Resultat => "Résultat"
+        };
     }
 }
-

@@ -7,17 +7,13 @@ use App\SAE\Model\DataObject\Paragraphe;
 use App\SAE\Model\DataObject\Proposition;
 use App\SAE\Model\DataObject\Question;
 use App\SAE\Model\DataObject\Utilisateur;
-use App\SAE\Model\HTTP\Session;
 use App\SAE\Model\Repository\ParagrapheRepository;
 use App\SAE\Model\Repository\PropositionRepository;
 use App\SAE\Model\Repository\QuestionRepository;
 use App\SAE\Model\Repository\UtilisateurRepository;
 use App\SAE\Lib\PhaseQuestion as Phase;
-use App\SAE\Model\DataObject\DemandeCoAuteur;
 use App\SAE\Model\Repository\CoAuteurRepository;
-use App\SAE\Model\Repository\DemandeCoAuteurRepository;
 use App\SAE\Model\Repository\RedacteurRepository;
-use App\SAE\Model\Repository\VotantRepository;
 
 class PropositionController extends MainController
 {
@@ -223,7 +219,7 @@ class PropositionController extends MainController
         $question = Question::castIfNotNull((new QuestionRepository())->select($idQuestion));
         $redirectURL = "frontController.php?controller=question&action=afficherQuestion&idQuestion=" . $idQuestion;
 
-        $username = ConnexionUtilisateur::getUsernameSiConnecte($redirectURL);        
+        $username = ConnexionUtilisateur::getUsernameSiConnecte($redirectURL);
 
         $estLieAQuestion = (new UtilisateurRepository)->estLieAQuestion($username, $idQuestion);
 

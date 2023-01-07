@@ -10,7 +10,6 @@ use App\SAE\Model\DataObject\Utilisateur;
 use App\SAE\Model\Repository\UtilisateurRepository as UtilisateurRepository;
 use App\SAE\Lib\PhaseQuestion as Phase;
 use App\SAE\Model\Repository\PropositionRepository as PropositionRepository;
-use App\SAE\Model\HTTP\Session;
 use App\SAE\Model\Repository\RedacteurRepository;
 use App\SAE\Model\SystemeVote\SystemeVoteFactory;
 use DateTime;
@@ -178,27 +177,27 @@ class QuestionController extends MainController
 
         if (!$dateCoherentes) {
             static::error($AFPQ_URL, "Les dates ne sont pas cohérentes");
-        } else if (strlen($description) > 4000) {
+        } elseif (strlen($description) > 4000) {
             static::error($AFPQ_URL, "La description de la question ne doit pas dépasser 4000 caractères");
-        } else if (count($sections) == 0) {
+        } elseif (count($sections) == 0) {
             static::error($AFPQ_URL, "Au moins une section est requise");
-        } else if (count($redacteurs) == 0) {
+        } elseif (count($redacteurs) == 0) {
             static::error($AFPQ_URL, "Veuillez sélectionner au moins un rédacteur");
-        } else if (count($votants) == 0) {
+        } elseif (count($votants) == 0) {
             static::error($AFPQ_URL, "Veuillez sélectionner au moins un votant");
         }
 
         $systemeVote = $_POST["systeme_vote"];
 
         $tags = "{}";
-        if(isset($_POST["tags"])) {
-            $tags = preg_replace('/[^a-zA-Z0-9-\s]/', "", $_POST["tags"]); //retire toutes les expressions non voulues (/,; etc.)
-            $tags = preg_replace('/[ ]+/', ",", $tags); // -> remplace les espaces par des virgules
-            $tags = strtolower($tags); // -> met le string en minuscule
-            $tags = explode(',', $tags); // -> transforme le string en tableau en coupant avec les virgules
-            $tags = array_unique($tags); // -> trie le tableau pour enlever les doublons
-            $tags = implode(',', $tags); // -> reforme le string en rassemblant avec des virgules
-            $tags = "{" . $tags . "}"; // array pour postgre
+        if (isset($_POST["tags"])) {
+            $tags = preg_replace('/[^a-zA-Z0-9-\s]/', "", $_POST["tags"]); // → retire toutes les expressions non voulues (/,; etc.)
+            $tags = preg_replace('/[ ]+/', ",", $tags); // → remplace les espaces par des virgules
+            $tags = strtolower($tags); // → met le string en minuscule
+            $tags = explode(',', $tags); // → transforme le string en tableau en coupant avec les virgules
+            $tags = array_unique($tags); // → trie le tableau pour enlever les doublons
+            $tags = implode(',', $tags); // → reforme le string en rassemblant avec des virgules
+            $tags = "{" . $tags . "}"; // → array pour postgre
         }
 
         $question->setDescription($description);
@@ -224,7 +223,7 @@ class QuestionController extends MainController
 
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
 
-        if($question->getUsernameOrganisateur() != $username) {
+        if ($question->getUsernameOrganisateur() != $username) {
             static::error(ACCUEIL_URL, "Vous n'êtes pas l'organisateur de cette question");
             return;
         }
@@ -248,7 +247,7 @@ class QuestionController extends MainController
 
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
 
-        if($question->getUsernameOrganisateur() != $username) {
+        if ($question->getUsernameOrganisateur() != $username) {
             static::error(ACCUEIL_URL, "Vous n'êtes pas l'organisateur de cette question");
             return;
         }
@@ -276,7 +275,7 @@ class QuestionController extends MainController
 
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
 
-        if($question->getUsernameOrganisateur() != $username) {
+        if ($question->getUsernameOrganisateur() != $username) {
             static::error(ACCUEIL_URL, "Vous n'êtes pas l'organisateur de cette question");
             return;
         }
@@ -335,7 +334,8 @@ class QuestionController extends MainController
         ]);
     }
 
-    public static function listerQuestions() {
+    public static function listerQuestions()
+    {
         $nbQuestionsParPage = 12;
         $query = isset($_GET["query"]) ? strtolower($_GET["query"]) : "";
         $motsClesEtTags = explode(" ", $query)?:[];
@@ -355,13 +355,13 @@ class QuestionController extends MainController
         });
 
         $filtres = [];
-        if(isset($_GET["f_lecture"])) $filtres[] = "lecture";
-        if(isset($_GET["f_redaction"])) $filtres[] = "redaction";
-        if(isset($_GET["f_vote"])) $filtres[] = "vote";
-        if(isset($_GET["f_resultat"])) $filtres[] = "resultat";
-        if(isset($_GET["f_redacteur"])) $filtres[] = "redacteur";
-        if(isset($_GET["f_coauteur"])) $filtres[] = "coauteur";
-        if(isset($_GET["f_votant"])) $filtres[] = "votant";
+        if (isset($_GET["f_lecture"])) $filtres[] = "lecture";
+        if (isset($_GET["f_redaction"])) $filtres[] = "redaction";
+        if (isset($_GET["f_vote"])) $filtres[] = "vote";
+        if (isset($_GET["f_resultat"])) $filtres[] = "resultat";
+        if (isset($_GET["f_redacteur"])) $filtres[] = "redacteur";
+        if (isset($_GET["f_coauteur"])) $filtres[] = "coauteur";
+        if (isset($_GET["f_votant"])) $filtres[] = "votant";
 
 
         $nbPages = ceil((new QuestionRepository())->countAllListerQuestion($motsCles,$tags, $filtres) / $nbQuestionsParPage) ?: 1;
@@ -382,12 +382,13 @@ class QuestionController extends MainController
         ]);
     }
 
-    public static function afficherQuestion() {
+    public static function afficherQuestion()
+    {
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
         $propositions = (new PropositionRepository())->selectAllByQuestion($idQuestion);
 
-        if(ConnexionUtilisateur::estConnecte()) {
+        if (ConnexionUtilisateur::estConnecte()) {
             $username = ConnexionUtilisateur::getUsername();
             $estRedacteur = (new RedacteurRepository)->existsForQuestion($idQuestion, $username);
             $propositionExiste = (new PropositionRepository())->selectByQuestionEtResponsable($idQuestion, $username) != null;

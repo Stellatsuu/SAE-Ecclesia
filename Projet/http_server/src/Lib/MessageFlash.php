@@ -6,10 +6,9 @@ use App\SAE\Model\HTTP\Session;
 class MessageFlash
 {
 
-    // Les messages sont enregistrés en session associée à la clé suivante 
+    // Les messages sont enregistrés en session associée à la clé suivante
     private static string $cleFlash = "_messagesFlash";
 
-    // $type parmi "success", "info", "warning" ou "danger" 
     public static function ajouter(string $type, string $message): void
     {
         $session = Session::getInstance();
@@ -32,7 +31,6 @@ class MessageFlash
         return false;
     }
 
-    // Attention : la lecture doit détruire le message
     public static function lireMessages(string $type): array
     {
         $session = Session::getInstance();
