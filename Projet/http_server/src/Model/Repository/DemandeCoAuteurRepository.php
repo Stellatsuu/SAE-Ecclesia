@@ -2,7 +2,6 @@
 
 namespace App\SAE\Model\Repository;
 
-use App\SAE\Model\DataObject\AbstractDataObject;
 use App\SAE\Model\DataObject\DemandeCoAuteur;
 
 class DemandeCoAuteurRepository extends AbstractRepository

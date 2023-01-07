@@ -2,11 +2,8 @@
 
 namespace App\SAE\Model\Repository;
 
-use App\SAE\Config\Conf;
 use App\SAE\Model\DataObject\AbstractDataObject;
 use App\SAE\Model\DataObject\Proposition;
-use App\SAE\Model\DataObject\Question;
-use App\SAE\Model\DataObject\Utilisateur;
 
 class PropositionRepository extends AbstractRepository
 {

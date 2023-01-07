@@ -2,9 +2,6 @@
 
 namespace App\SAE\Model\Repository;
 
-use App\SAE\Model\DataObject\AbstractDataObject;
-use App\SAE\Model\DataObject\Utilisateur;
-
 class VotantRepository
 {
     public function deleteAllByQuestion(int $idQuestion): void
