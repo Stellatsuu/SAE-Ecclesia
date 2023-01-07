@@ -63,43 +63,54 @@ class JugementMajoritaire extends AbstractSystemeVote
             $titreProposition = htmlspecialchars($p->getTitreProposition());
             $lienProposition = "frontController.php?action=afficherPropositions&idQuestion=$idQuestion&index=$i";
 
-            $mentionsTD = [];
+            $radios = [];
             for ($j = 0; $j < count(self::MENTIONS); $j++) {
                 $checked = $aDejaVote && $mentionsBDD[$idProposition] == $j ? "checked" : "";
-                $mentionsTD[] = "<td><input type='radio' name='mentions[$idProposition]' value='$j' $checked></td>";
+
+                $radio = <<<HTML
+                    <div class="container__radio">
+                        <input type="radio" name="mentions[$idProposition]" value="$j" $checked>
+                        <span class="mention__small">{$this::MENTIONS[$j]}</span>
+                    </div>
+                HTML;
+
+                $radios[] = $radio;
             }
-            $mentionsTD = implode("", $mentionsTD);
+            $radios = implode("", $radios);
 
             $propositionHTML = <<<HTML
-                <tr>
-                    <td><a href="$lienProposition">$titreProposition</a></td>
-                    $mentionsTD
-                </tr>
+                <a href="$lienProposition" class="proposition">
+                    $titreProposition
+                </a>
+                $radios
             HTML;
 
             $propositionHTMLs[] = $propositionHTML;
         }
         $propositionHTMLs = implode("", $propositionHTMLs);
-
-        $mentionsTH = [];
-        for ($i = 0; $i < count(self::MENTIONS); $i++) {
-            $mentionsTH[] = "<th>" . self::MENTIONS[$i] . "</th>";
+        
+        $mentionsHeaders = [];
+        foreach (self::MENTIONS as $mention) {
+            $mentionsHeaders[] = "<span class='mention'>$mention</span>";
         }
-        $mentionsTH = implode("", $mentionsTH);
+        $mentionsHeaders = implode("", $mentionsHeaders);
+
+
+
+
 
         $submitValue = $aDejaVote ? "Modifier mon vote" : "Voter";
 
         $res = <<<HTML
             <p>Le vote se déroule en 1 tour. Veuillez attribuer une note à chaque proposition.</p>
-            <table class="propositions">
-                <tr>
-                    <th>Propositions</th>
-                    $mentionsTH
-                </tr>
-
+            <div class="jugement-majoritaire">
+                <span>
+                    Propositions
+                </span>
+                $mentionsHeaders
+            
                 $propositionHTMLs
-
-            </table>
+            </div>
 
             <input type="submit" value="$submitValue">
         HTML;
@@ -144,27 +155,22 @@ class JugementMajoritaire extends AbstractSystemeVote
                 $mentions
             );
 
+            $diagrammeSegments = [];
+            for ($i = 0; $i < count(self::MENTIONS); $i++) {
+                $diagrammeSegment = <<<HTML
+                    <div class="diagramme__segment" style="width: {$mentionsPourcent[$i]}%">
+                        <div class="diagramme__segment__texte">{$mentionsPourcent[$i]}%</div>
+                    </div>
+                HTML;
+
+                $diagrammeSegments[] = $diagrammeSegment;
+            }
+
+            $diagrammeSegments = implode("", $diagrammeSegments);
+
             $diagrammeHTML = <<<HTML
                 <div class="diagramme__ligne">
-                    <div class="diagramme__segment" style="width: {$mentionsPourcent[0]}%">
-                        <div class="diagramme__segment__texte">{$mentionsPourcent[0]}%</div>
-
-                    </div>
-                    <div class="diagramme__segment" style="width: {$mentionsPourcent[1]}%">
-                        <div class="diagramme__segment__texte">{$mentionsPourcent[1]}%</div>
-                    </div>
-                    <div class="diagramme__segment" style="width: {$mentionsPourcent[2]}%">
-                        <div class="diagramme__segment__texte">{$mentionsPourcent[2]}%</div>
-                    </div>
-                    <div class="diagramme__segment" style="width: {$mentionsPourcent[3]}%">
-                        <div class="diagramme__segment__texte">{$mentionsPourcent[3]}%</div>
-                    </div>
-                    <div class="diagramme__segment" style="width: {$mentionsPourcent[4]}%">
-                        <div class="diagramme__segment__texte">{$mentionsPourcent[4]}%</div>
-                    </div>
-                    <div class="diagramme__segment" style="width: {$mentionsPourcent[5]}%">
-                        <div class="diagramme__segment__texte">{$mentionsPourcent[5]}%</div>
-                    </div>
+                    $diagrammeSegments
                 </div>
             HTML;
 

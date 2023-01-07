@@ -97,6 +97,8 @@
       flex-direction: row;
       align-items: center;
       justify-content: center;
+
+      clip-path: inset(0 0 0 0 round 10px);
     }
 
     .diagramme__segment {
@@ -109,7 +111,6 @@
 
       &:nth-of-type(1) {
         background-color: #181818;
-        border-radius: 10px 0 0 10px;
         color: white;
       }
 
@@ -135,7 +136,6 @@
 
       &:nth-of-type(6) {
         background-color: #007514;
-        border-radius: 0 10px 10px 0;
         color: white;
       }
     }

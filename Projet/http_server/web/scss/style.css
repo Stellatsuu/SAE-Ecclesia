@@ -1287,6 +1287,87 @@ input[type=checkbox]:checked::before {
     margin: 20px 0;
   }
 }
+#afficher-propositions__formulaire-vote .jugement-majoritaire {
+  display: grid;
+  grid-template-columns: 40% repeat(6, 1fr);
+  align-items: center;
+  justify-items: center;
+  gap: 10px;
+}
+#afficher-propositions__formulaire-vote .jugement-majoritaire span {
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+}
+#afficher-propositions__formulaire-vote .jugement-majoritaire span:first-of-type {
+  justify-self: flex-start;
+}
+#afficher-propositions__formulaire-vote .jugement-majoritaire .container__radio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+#afficher-propositions__formulaire-vote .jugement-majoritaire .mention__small {
+  display: none;
+  font-size: 0.8rem;
+  font-weight: 300;
+}
+#afficher-propositions__formulaire-vote .jugement-majoritaire .proposition {
+  justify-self: flex-start;
+  color: white;
+  text-decoration: none;
+}
+#afficher-propositions__formulaire-vote .jugement-majoritaire .proposition:hover {
+  text-decoration: underline;
+}
+@media screen and (max-width: 1000px) and (min-width: 601px) {
+  #afficher-propositions__formulaire-vote .jugement-majoritaire {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  #afficher-propositions__formulaire-vote .jugement-majoritaire .proposition {
+    grid-column: auto/span 6;
+    margin-top: 20px;
+  }
+  #afficher-propositions__formulaire-vote .jugement-majoritaire .mention {
+    display: none;
+  }
+  #afficher-propositions__formulaire-vote .jugement-majoritaire .mention__small {
+    display: block;
+  }
+}
+@media screen and (max-width: 600px) and (min-width: 401px) {
+  #afficher-propositions__formulaire-vote .jugement-majoritaire {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  #afficher-propositions__formulaire-vote .jugement-majoritaire .proposition {
+    grid-column: auto/span 3;
+    margin-top: 20px;
+  }
+  #afficher-propositions__formulaire-vote .jugement-majoritaire .mention {
+    display: none;
+  }
+  #afficher-propositions__formulaire-vote .jugement-majoritaire .mention__small {
+    display: block;
+  }
+}
+@media screen and (max-width: 400px) {
+  #afficher-propositions__formulaire-vote .jugement-majoritaire {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  #afficher-propositions__formulaire-vote .jugement-majoritaire .proposition {
+    grid-column: auto/span 2;
+    margin-top: 20px;
+  }
+  #afficher-propositions__formulaire-vote .jugement-majoritaire .mention {
+    display: none;
+    grid-column: auto/span 2;
+  }
+  #afficher-propositions__formulaire-vote .jugement-majoritaire .mention__small {
+    display: block;
+  }
+}
 
 #afficher-resultats {
   display: flex;
@@ -1375,6 +1456,8 @@ input[type=checkbox]:checked::before {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  -webkit-clip-path: inset(0 0 0 0 round 10px);
+          clip-path: inset(0 0 0 0 round 10px);
 }
 #afficher-resultats .jugement-majoritaire .diagramme__segment {
   display: flex;
@@ -1386,7 +1469,6 @@ input[type=checkbox]:checked::before {
 }
 #afficher-resultats .jugement-majoritaire .diagramme__segment:nth-of-type(1) {
   background-color: #181818;
-  border-radius: 10px 0 0 10px;
   color: white;
 }
 #afficher-resultats .jugement-majoritaire .diagramme__segment:nth-of-type(2) {
@@ -1407,7 +1489,6 @@ input[type=checkbox]:checked::before {
 }
 #afficher-resultats .jugement-majoritaire .diagramme__segment:nth-of-type(6) {
   background-color: #007514;
-  border-radius: 0 10px 10px 0;
   color: white;
 }
 #afficher-resultats .jugement-majoritaire .jugement-majoritaire__legende {
