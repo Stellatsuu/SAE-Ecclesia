@@ -117,7 +117,6 @@ class JugementMajoritaire extends AbstractSystemeVote
         $idPropositionsTriees = static::trier($histogramme);
 
         $propositionHTMLs = [];
-        $diagrammeHTMLs = [];
 
         foreach ($idPropositionsTriees as $idProposition) {
 
@@ -244,6 +243,12 @@ class JugementMajoritaire extends AbstractSystemeVote
         $mentions = $_POST["mentions"];
         $lienAfficherPropositions = "frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion";
 
+        $phase = $question->getPhase();
+        if ($phase !== PhaseQuestion::Vote) {
+            VoteController::error("frontController.php", "La question n'est pas en phase de vote");
+            return;
+        }
+
         $votes = [];
         foreach ($mentions as $idProposition => $mention) {
 
@@ -317,7 +322,7 @@ class JugementMajoritaire extends AbstractSystemeVote
 
             if ($ma > $mb) {
                 return -1;
-            } else if ($ma < $mb) {
+            } elseif ($ma < $mb) {
                 return 1;
             } else {
                 $a[$ma]--;
