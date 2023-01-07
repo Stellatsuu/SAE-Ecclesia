@@ -107,9 +107,8 @@
 <script>
     const question = <?= json_encode($question) ?>;
     const utilisateurs = <?= json_encode($utilisateurs) ?>;
-    console.log(utilisateurs);
-    const allUtilisateurOptions = '<option value="" selected disabled>---</option>' + utilisateurs.map(utilisateur => `<option value="${utilisateur.username}">${(utilisateur.nom).toUpperCase()} ${utilisateur.prenom}</option>`).join("\n");
+    const allUtilisateurOptions = '<option value="" selected disabled>---</option>' + utilisateurs.map(utilisateur => `<option value="${utilisateur.username}">${utilisateur.nomUsuel}</option>`).join("\n");
 </script>
 
-<script src="js/sections.js"></script>
-<script type='module' src="js/roles.js"></script>
+<script src="js/formulairePoserQuestion_sections.js"></script>
+<script type='module' src="js/formulairePoserQuestion_roles.js"></script>

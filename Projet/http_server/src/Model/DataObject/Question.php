@@ -186,12 +186,6 @@ class Question extends DemandeQuestion implements JsonSerializable
         $this->systemeVote = $systemeVote;
     }
 
-    public function setUsernameOrganisateur(string $usernameOrganisateur): void
-    {
-        $this->usernameOrganisateur = $usernameOrganisateur;
-        $this->organisateur = null;
-    }
-
     public function setTags(?string $tags) : void
     {
         $this->tags = $tags;
@@ -208,9 +202,9 @@ class Question extends DemandeQuestion implements JsonSerializable
     public function jsonSerialize() : mixed
     {
         return [
-            'id_question' => $this->getIdQuestion(),
-            'titre_question' => $this->getTitre(),
-            'description_question' => $this->getDescription(),
+            'id_question' => htmlspecialchars($this->getIdQuestion()),
+            'titre_question' => htmlspecialchars($this->getTitre()),
+            'description_question' => htmlspecialchars($this->getDescription()),
             'organisateur' => $this->getOrganisateur(),
             'sections' => $this->getSections(),
             'redacteurs' => $this->getRedacteurs(),
@@ -220,7 +214,7 @@ class Question extends DemandeQuestion implements JsonSerializable
             'date_ouverture_votes' => $this->getDateOuvertureVotes(),
             'date_fermeture_votes' => $this->getDateFermetureVotes(),
             'systeme_vote' => $this->getSystemeVote(),
-            'tags' => $this->getTags()
+            'tags' => htmlspecialchars($this->getTags())
         ];
     }
 }

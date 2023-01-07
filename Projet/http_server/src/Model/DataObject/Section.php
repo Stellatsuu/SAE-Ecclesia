@@ -88,10 +88,10 @@ class Section extends AbstractDataObject implements JsonSerializable {
     public function JsonSerialize(): array
     {
         return [
-            'id_section' => $this->idSection,
-            'id_question' => $this->idQuestion,
-            'nom_section' => $this->nomSection,
-            'description_section' => $this->descriptionSection
+            'id_section' => htmlspecialchars($this->idSection),
+            'id_question' => htmlspecialchars($this->idQuestion),
+            'nom_section' => htmlspecialchars($this->nomSection),
+            'description_section' => htmlspecialchars($this->descriptionSection)
         ];
     }
 

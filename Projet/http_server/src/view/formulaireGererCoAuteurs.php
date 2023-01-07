@@ -54,6 +54,6 @@
 <script>
     const utilisateurs = <?= json_encode($utilisateursAutorises) ?>;
     const coAuteurs = <?= json_encode($coAuteurs) ?>;
-    const options = '<option value="" selected disabled>---</option>' + utilisateurs.map(utilisateur => `<option value="${utilisateur.username}">${(utilisateur.nom).toUpperCase()} ${utilisateur.prenom}</option>`).join("\n");
+    const options = '<option value="" selected disabled>---</option>' + utilisateurs.map(utilisateur => `<option value="${utilisateur.username}">${$utilisateur.nomUsuel}</option>`).join("\n");
 </script>
-<script type="module" src="js/co_auteurs.js"></script>
+<script type="module" src="js/formulaireGererCoAuteurs.js"></script>

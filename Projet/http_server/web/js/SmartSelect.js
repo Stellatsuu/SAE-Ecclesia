@@ -1,5 +1,5 @@
 export class SmartSelect {
-  constructor(inputId, addButtonId, elementName, allOptions, defaultValues) {
+  constructor(inputId, addButtonId, elementName, allOptions, defaultValues, preventRemoveLast = true) {
     this.input = document.getElementById(inputId);
     this.addButton = document.getElementById(addButtonId);
     this.elementName = elementName;
@@ -7,6 +7,7 @@ export class SmartSelect {
     this.allElements = [];
     this.allOptions = allOptions;
     this.addButton.onclick = () => this.addElement();
+    this.preventRemoveLast = preventRemoveLast;
 
     if (defaultValues) {
       defaultValues.forEach((id) => {
@@ -85,7 +86,7 @@ export class SmartSelect {
   updateRemoveButtonLock() {
     const rmButtons = document.querySelectorAll(`.remove_${this.elementName}`);
     rmButtons.forEach((button) => {
-      if (this.nbElements == 1) {
+      if (this.nbElements == 1 && this.preventRemoveLast) {
         button.disabled = true;
       } else {
         button.disabled = false;

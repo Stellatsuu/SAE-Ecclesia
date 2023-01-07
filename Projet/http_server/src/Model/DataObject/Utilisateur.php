@@ -101,11 +101,12 @@ class Utilisateur extends AbstractDataObject implements JsonSerializable
     public function jsonSerialize(): mixed
     {
         return [
-            'username' => $this->username,
-            'nom' => $this->nom,
-            'prenom' => $this->prenom,
-            'email' => $this->email,
+            'username' => htmlspecialchars($this->username),
+            'nom' => htmlspecialchars($this->nom),
+            'prenom' => htmlspecialchars($this->prenom),
+            'email' => htmlspecialchars($this->email),
             'photoProfil' => $this->photoProfil,
+            'nomUsuel' => htmlspecialchars($this->getNomUsuel()),
         ];
     }
 
