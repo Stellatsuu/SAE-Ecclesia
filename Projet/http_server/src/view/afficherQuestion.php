@@ -47,7 +47,16 @@ for ($i = 0; $i < count($propositions); $i++) {
     $b64img = htmlspecialchars($responsable->getPhotoProfil());
     $nomUsuelResp = htmlspecialchars($responsable->getNomUsuel());
 
-    $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
+    if($responsable->getUsername() == $username) {
+        $nomUsuelResp = "<strong>Vous</strong>";
+        $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil", "pfp--self");
+    } else {
+        $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
+    }
+
+
+
+    
 
     $propositionHTML = <<<HTML
         <div class="proposition-compact">

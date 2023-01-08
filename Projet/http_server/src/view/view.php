@@ -49,7 +49,7 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">

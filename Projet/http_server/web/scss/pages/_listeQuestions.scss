@@ -126,13 +126,44 @@
       }
     }
 
-    @media screen and (max-width: 600px) {
+    @media screen and (max-width: 1300px) {
       flex-direction: column;
       gap: 10px;
 
       .barre-recherche {
+        width: 50%;
+      }
+    }
+
+    @media screen and (max-width: 700px) {
+      .barre-recherche {
         width: 100%;
       }
+    }
+
+    .switch-mode-container {
+
+      margin-left: auto;
+      margin-right: 10px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+
+      span {
+        text-align: center;
+      }
+
+      .switch-mode {
+        text-decoration: none;
+      }
+
+      @media screen and (max-width: 1300px) {
+        margin-left: 0;
+        margin-right: 0;
+      }
+      
     }
   }
 

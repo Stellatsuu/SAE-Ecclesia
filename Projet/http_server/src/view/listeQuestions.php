@@ -159,13 +159,14 @@ $titrePage = "Questions";
 if (ConnexionUtilisateur::estConnecte()) {
     $modeMesQuestions = isset($_GET["f_mq"]);
     $lienAutrePage = $modeMesQuestions ? "frontController.php?controller=question&action=listerQuestions" : "frontController.php?controller=question&action=listerQuestions&f_mq=true";
+    $style= $modeMesQuestions ? "" : "style='transform: rotate(180deg);'";
     $boutonAutrePage = <<<HTML
-        <span>
+        <span class="switch-mode-container">
             <span>
                 Toutes les questions
             </span>
             <a href="$lienAutrePage" class="switch-mode">
-                <img src="assets/images/switch-icon.svg" alt="switch">
+                <img src="assets/images/switch-icon.svg" alt="switch" $style>
             </a>
             <span>
                 Mes questions
