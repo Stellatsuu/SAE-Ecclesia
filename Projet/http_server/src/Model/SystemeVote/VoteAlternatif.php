@@ -63,7 +63,7 @@ namespace App\SAE\Model\SystemeVote{
                     <div class='item' id='item$idProposition'  draggable="true">
                         <p>$titreProposition</p>
                         <input type="hidden" name="choix$idProposition" value="$valeur" min="1" max="$nbPropositions" required/>
-                        <img src="assets/images/dragAndDrop.svg"/>
+                        <img src="assets/images/dragAndDrop.svg" alt="drag and drop">
                     </div>
                 HTML;
 

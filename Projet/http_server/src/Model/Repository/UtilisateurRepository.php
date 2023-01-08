@@ -136,7 +136,9 @@ class UtilisateurRepository extends AbstractRepository
             return null;
         }
 
-        return $row['photo_profil'];
+        $res = str_replace("\n", '', $row['photo_profil']);
+
+        return $res;
     }
 
     public function update(AbstractDataObject $object): void

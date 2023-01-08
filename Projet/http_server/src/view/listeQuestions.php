@@ -38,23 +38,23 @@ foreach ($questions as $q) {
 
     $html = <<<HTML
         <div class="question-compact">
-            <span class="question-compact__top">
+            <div class="question-compact__top">
 
-                <span class="question-compact__top__pfp user-tooltip">
+                <div class="question-compact__top__pfp user-tooltip">
                     $pfp
                     <div class="user-tooltip__text">
                         $nomUsuel
                     </div>
-                </span>
+                </div>
 
                 <a href="frontController.php?controller=question&action=afficherQuestion&idQuestion=$idQuestion">
                     $titre
                 </a>
-            </span>
+            </div>
 
-            <span class="question-compact__description markdown">
+            <div class="question-compact__description markdown">
                 $description
-            </span>
+            </div>
 
             <span class="question-compact__bottom">
                 <span>

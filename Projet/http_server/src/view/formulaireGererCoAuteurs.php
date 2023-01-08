@@ -2,7 +2,7 @@
     <h1>Co-auteurs de la proposition "<?= htmlspecialchars($proposition->getTitreProposition()) ?>" :</h1>
     <fieldset>
 
-        <label for="co_auteurs_input">Co-auteurs :</label>
+        <label>Co-auteurs :</label>
         <div id="co_auteurs_input">
 
 
@@ -54,6 +54,6 @@
 <script>
     const utilisateurs = <?= json_encode($utilisateursAutorises) ?>;
     const coAuteurs = <?= json_encode($coAuteurs) ?>;
-    const options = '<option value="" selected disabled>---</option>' + utilisateurs.map(utilisateur => `<option value="${utilisateur.username}">${$utilisateur.nomUsuel}</option>`).join("\n");
+    const options = '<option value="" selected disabled>---<\/option>' + utilisateurs.map(utilisateur => `<option value="${utilisateur.username}">${utilisateur.nomUsuel}<\/option>`).join("\n");
 </script>
 <script type="module" src="js/formulaireGererCoAuteurs.js"></script>

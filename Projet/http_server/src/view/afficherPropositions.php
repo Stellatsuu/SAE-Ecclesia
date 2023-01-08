@@ -60,7 +60,7 @@ if (empty($propositions)) {
 
         $paragrapheHTML = <<<HTML
         <h2>$nomSection</h2>
-        <span class = "markdown">$contenu</span>
+        <div class = "markdown">$contenu</div>
         HTML;
 
         $paragraphesHTML[] = $paragrapheHTML;
@@ -75,11 +75,11 @@ if (empty($propositions)) {
     $selectorHTML = <<<HTML
     <div id="afficher-propositions__selector">
         <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestionUrl&index=$indexPrevious">
-            <img src="assets/images/arrow.svg" style="transform: rotate(90deg)">
+            <img src="assets/images/arrow.svg" style="transform: rotate(90deg)" alt="flèche vers la gauche">
         </a>
         <span class="boite">$titreProposition</span>
         <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestionUrl&index=$indexNext">
-            <img src="assets/images/arrow.svg" style="transform: rotate(-90deg)">
+            <img src="assets/images/arrow.svg" style="transform: rotate(-90deg)" alt="flèche vers la droite">
         </a>
     </div>
     HTML;
@@ -174,7 +174,7 @@ if (empty($propositions)) {
 
     <div id="afficher-propositions__description" class="panel2">
         <h2>Description :</h2>
-        <span id="description" class="markdown"><?= $descriptionQuestion ?></span>
+        <div id="description" class="markdown"><?= $descriptionQuestion ?></div>
     </div>
 
     <div id="afficher-propositions__body">

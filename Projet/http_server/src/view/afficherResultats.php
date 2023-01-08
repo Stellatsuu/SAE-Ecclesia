@@ -35,7 +35,7 @@ if($resultats == "") {
 
     <div id="afficher-resultats__description" class="panel2">
         <h2>Description :</h2>
-        <span id="description" class="markdown"><?= $descriptionQuestion ?></span>
+        <div id="description" class="markdown"><?= $descriptionQuestion ?></div>
     </div>
 
     <div id="afficher-resultats__body" class="panel2">

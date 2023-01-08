@@ -28,7 +28,7 @@ if ($existeProposition) {
             $html = <<<HTML
             <details>
                 <summary class="titre-section">$nomSection</summary>
-                <span class='description-section markdown'>$descriptionSection</span>
+                <div class='description-section markdown'>$descriptionSection</div>
             </details>
             <textarea name="section_$i">
             HTML;

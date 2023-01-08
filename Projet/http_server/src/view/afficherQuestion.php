@@ -31,7 +31,7 @@ for ($i = 0; $i < count($sections); $i++) {
     $sectionHTML = <<<HTML
     <details>
         <summary class="titre-section">$nomSection</summary>
-        <span class='description-section markdown'>$descriptionSection</span>
+        <div class='description-section markdown'>$descriptionSection</div>
     </details>
     HTML;
 
@@ -54,18 +54,14 @@ for ($i = 0; $i < count($propositions); $i++) {
         $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
     }
 
-
-
-    
-
     $propositionHTML = <<<HTML
         <div class="proposition-compact">
-                <span class="proposition-compact__pfp user-tooltip">
+                <div class="proposition-compact__pfp user-tooltip">
                     $pfp
                     <div class="user-tooltip__text">
                         $nomUsuelResp
                     </div>
-                </span>
+                </div>
                 <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestionUrl&index=$i">
                     $titreProposition
                 </a>
@@ -124,7 +120,7 @@ if ($phase == PhaseQuestion::Vote && $estVotant) {
 
     <div id="afficher-question__description" class="panel2">
         <h2>Description :</h2>
-        <span id="description" class="markdown"><?= $descriptionQuestion ?></span>
+        <div id="description" class="markdown"><?= $descriptionQuestion ?></div>
     </div>
 
 

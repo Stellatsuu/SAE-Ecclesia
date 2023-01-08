@@ -17,7 +17,7 @@
                 <div class="demandeQuestion acceptOrDeny">
                     <div class="boite" style="--order: $i;">
                         <h2>$titre</h2>
-                        <span class="markdown">$description</span>
+                        <div class="markdown">$description</div>
                         <p>- $nomOrganisateur</p>
                     </div>
                     <div class="boite">

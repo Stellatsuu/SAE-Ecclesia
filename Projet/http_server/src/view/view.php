@@ -65,7 +65,7 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
         <input type="checkbox" id="mobileOpen" />
         <div id="mobileMenu">
             <label id="barreMenu" for="mobileOpen">
-                <img src="assets/images/logoSite.svg" />
+                <img src="assets/images/logoSite.svg" alt="logo du site" />
             </label>
             <?php if ($estConnecte) echo
              "<div id='pfpMobile'>
@@ -122,12 +122,12 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
                 <form action="frontController.php?controller=utilisateur&action=seConnecter" method="POST">
                     <h2>Se connecter</h2>
                     <div>
-                        <label for="username">Nom d'utilisateur</label>
-                        <input type="text" name="username" required>
+                        <label for="username_c_id">Nom d'utilisateur</label>
+                        <input id="username_c_id" type="text" name="username" required>
                     </div>
                     <div>
-                        <label for="password">Mot de passe</label>
-                        <input type="password" name="password" required>
+                        <label for="password_c_id">Mot de passe</label>
+                        <input id="password_c_id" type="password" name="password" required>
                     </div>
                     <div>
                         <input type="hidden" value="<?= $_SERVER['REQUEST_URI'] ?>" name="redirect">
@@ -153,12 +153,12 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
 
 
                     <div>
-                        <label for="username">Nom d'utilisateur*</label>
-                        <input type="text" name="username" required>
+                        <label for="username_i_id">Nom d'utilisateur*</label>
+                        <input id="username_i_id" type="text" name="username" required>
                     </div>
                     <div>
                         <div class="password-label">
-                            <label for="password">Mot de passe*</label>
+                            <label for="password_i_id">Mot de passe*</label>
                             <div class="tooltip">
                                 <img class="tooltipImage" src="assets/images/info-icon.svg" alt="bouton info">
                                 <div class="tooltiptext">Votre mot de passe doit contenir:
@@ -172,26 +172,26 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
                                 </div>
                             </div>
                         </div>
-                        <input type="password" name="password" required>
+                        <input id="password_i_id" type="password" name="password" required>
                     </div>
                     <div>
-                        <label for="passwordConfirmation">Confirmer le mot de passe*</label>
-                        <input type="password" name="passwordConfirmation" required>
-                    </div>
-
-                    <div>
-                        <label for="nom">Nom</label>
-                        <input type="text" name="nom">
+                        <label for="passwordConfirmation_id">Confirmer le mot de passe*</label>
+                        <input id="passwordConfirmation_id" type="password" name="passwordConfirmation" required>
                     </div>
 
                     <div>
-                        <label for="prenom">Prénom</label>
-                        <input type="text" name="prenom">
+                        <label for="nom_id">Nom</label>
+                        <input id="nom_id" type="text" name="nom">
                     </div>
 
                     <div>
-                        <label for="email">Email</label>
-                        <input type="email" name="email">
+                        <label for="prenom_id">Prénom</label>
+                        <input id="prenom_id" type="text" name="prenom">
+                    </div>
+
+                    <div>
+                        <label for="email_id">Email</label>
+                        <input id="email_id" type="email" name="email">
                     </div>
 
                     <div>

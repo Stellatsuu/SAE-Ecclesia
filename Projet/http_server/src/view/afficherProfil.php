@@ -124,7 +124,8 @@ $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
             <h2>Supprimer mon compte</h2>
 
             <p style="color: red;">Attention, cette action est irréversible !</p>
-            <input autocomplete="false" name="hidden" type="text" style="display:none;"> <!-- Pour éviter que le navigateur propose de remplir le formulaire -->
+            <!-- Pour éviter que le navigateur propose de remplir le formulaire. Parce que autocomplete="off" ne suffit plus, apparemment -->
+            <input autocomplete="false" name="hidden" type="text" style="display:none;"> 
 
             <label>Entrez votre mot de passe</label>
             <input type="password" name="mdp_suppression" required>
