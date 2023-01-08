@@ -157,8 +157,9 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
                         <input type="text" name="username" required>
                     </div>
                     <div>
-                        <label for="password" style="display: flex">Mot de passe*
-                            <span class="tooltip">
+                        <div class="password-label">
+                            <label for="password">Mot de passe*</label>
+                            <div class="tooltip">
                                 <img class="tooltipImage" src="assets/images/info-icon.svg" alt="bouton info">
                                 <div class="tooltiptext">Votre mot de passe doit contenir:
                                     <ul>
@@ -169,9 +170,8 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
                                         <li>Au moins un caractère spécial</li>
                                     </ul>
                                 </div>
-                            </span>
-                        </label>
-
+                            </div>
+                        </div>
                         <input type="password" name="password" required>
                     </div>
                     <div>
@@ -213,9 +213,6 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
             </div>
         </div>
     </main>
-
-    <footer id="">
-    </footer>
 
     <script>
         const body = document.querySelector("body");
