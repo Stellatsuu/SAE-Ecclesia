@@ -105,7 +105,7 @@ if ($phase == PhaseQuestion::Vote && $estVotant) {
 
                 if($phase != PhaseQuestion::Resultat && $phase != PhaseQuestion::NonRemplie) {
                     echo <<<HTML
-                        <a class="button modal-open" href="#modal$i">Phase suivante</a>
+                        <a class="button modal-open" href="#modal-phase-suivante">Phase suivante</a>
                     HTML;
                 }
             }
