@@ -86,6 +86,8 @@
                 <select name="systeme_vote">
                     <option value="majoritaire_a_un_tour">Majoritaire à un tour</option>
                     <option value="approbation">Vote par approbation</option>
+                    <option value="alternatif">Vote alternatif</option>
+                    <option value="jugement_majoritaire">Jugement majoritaire</option>
                 </select>
             </label>
         </div>
