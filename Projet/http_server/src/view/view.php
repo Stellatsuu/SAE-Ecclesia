@@ -15,7 +15,7 @@ HTML : "";
 if ($estConnecte) {
     $liensComptes = <<<html
     <li><a href="frontController.php?controller=utilisateur&action=afficherProfil">Mon compte</a></li>
-    <li><a href="frontController.php?controller=question&action=listerMesQuestions">Mes questions</a></li>
+    <li><a href="frontController.php?controller=question&action=listerQuestions&f_mq=true">Mes questions</a></li>
     $lienDemandes
     <li><a href="frontController.php?controller=utilisateur&action=seDeconnecter">Se déconnecter</a></li>
     html;

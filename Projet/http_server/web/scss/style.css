@@ -353,6 +353,9 @@ select {
   border-radius: 50%;
   border: solid 1px black;
 }
+.question-compact .question-compact__top .question-compact__top__pfp .pfp--self {
+  border: solid 2px #FF2727;
+}
 .question-compact .question-compact__description {
   font-size: 1.1rem;
   text-align: justify;
@@ -418,6 +421,9 @@ select {
   height: 48px;
   border-radius: 50%;
   border: solid 1px black;
+}
+.proposition-compact .proposition-compact__pfp img.pfp--self {
+  border: solid 2px #FF2727;
 }
 .proposition-compact a {
   text-decoration: none;

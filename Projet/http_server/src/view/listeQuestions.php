@@ -26,7 +26,15 @@ foreach ($questions as $q) {
     $nomUsuel = preg_replace("/ /", "&nbsp;", $nomUsuel, 1);
     $b64img = htmlspecialchars($utilisateur->getPhotoProfil(64));
 
-    $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
+
+    if (ConnexionUtilisateur::estConnecte() && ConnexionUtilisateur::getUsername() == $utilisateur->getUsername()) {
+        $nomUsuel = "<strong>Vous</strong>";
+        $imgClass = "pfp--self";
+    } else {
+        $imgClass = "";
+    }
+
+    $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil", $imgClass);
 
     $html = <<<HTML
         <div class="question-compact">
@@ -146,6 +154,8 @@ if ($nbPages == 1) {
 
 $modeMesQuestions = false;
 $boutonAutrePage = "";
+$filtreMesQuestions = "";
+$titrePage = "Questions";
 if (ConnexionUtilisateur::estConnecte()) {
     $modeMesQuestions = isset($_GET["f_mq"]);
     $lienAutrePage = $modeMesQuestions ? "frontController.php?controller=question&action=listerQuestions" : "frontController.php?controller=question&action=listerQuestions&f_mq=true";
@@ -167,9 +177,9 @@ if (ConnexionUtilisateur::estConnecte()) {
         $filtreMesQuestions = <<<HTML
             <input type="hidden" name="f_mq" value="true">
         HTML;
-    } else {
-        $filtreMesQuestions = "";
+        $titrePage = "Mes questions";
     }
+
 }
 
 $filtresRolesHTMLElements = [];
@@ -222,7 +232,7 @@ foreach ($phases as $phase => $titre) {
 <div class="panel" id="liste-questions">
 
     <div id="liste-questions__top">
-        <h1>Questions : </h1>
+        <h1><?= $titrePage ?></h1>
 
         <?= $boutonAutrePage ?>
 
@@ -237,7 +247,7 @@ foreach ($phases as $phase => $titre) {
 
                     <div class="filtres">
                         <a id="lien-tout-supprimer" href="frontController.php?controller=question&action=listerQuestions">Tout supprimer</a>
-                        
+
                         <?= $filtreMesQuestions ?>
                         <?= implode("", $filtresPhasesHTMLElements) ?>
                         <?= implode("", $filtresRolesHTMLElements) ?>

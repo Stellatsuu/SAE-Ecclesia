@@ -24,7 +24,7 @@ $i = 0;
         $linkPropositions = "";
 
         $openModalBoutonTemplate = <<<HTML
-            <a class="button modal-open" href="#modal$i">Phase suivante</a>
+            
         HTML;
 
         $editerBoutonTemplate = <<<HTML

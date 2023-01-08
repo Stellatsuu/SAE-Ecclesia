@@ -201,7 +201,7 @@ class QuestionRepository extends AbstractRepository
         }
 
         if ($connecte && in_array("coauteur", $filtres)) {
-            $conditionsRoles[] = "(EXISTS(SELECT * FROM co_auteur ca JOIN paragraphe pa ON ca.id_paragraphe = p.id_paragraphe JOIN proposition p ON pa.id_proposition = p.id_proposition WHERE username_co_auteur = :username AND p.id_question = q.id_question))";
+            $conditionsRoles[] = "(EXISTS(SELECT * FROM co_auteur ca JOIN paragraphe pa ON ca.id_paragraphe = pa.id_paragraphe JOIN proposition p ON pa.id_proposition = p.id_proposition WHERE username_co_auteur = :username AND p.id_question = q.id_question))";
             $values['username'] = ConnexionUtilisateur::getUsername();
         }
 

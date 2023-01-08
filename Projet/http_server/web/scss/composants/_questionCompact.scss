@@ -35,6 +35,10 @@
         border-radius: 50%;
         border: solid 1px black;
       }
+
+      .pfp--self {
+        border: solid 2px $couleurBordureSupprimer;
+      }
     }
   }
 

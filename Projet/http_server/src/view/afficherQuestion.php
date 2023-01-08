@@ -77,8 +77,8 @@ $lienVoirPropositions = "<a href='frontController.php?controller=proposition&act
 $lienVoterPropositions = "<a href='frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestionUrl'>Voter pour une proposition</a>";
 
 if ($phase == PhaseQuestion::Vote && $estVotant) {
-   $ligneExplicationSysVote .= " $lienVoterPropositions";
-} elseif($phase == PhaseQuestion::Resultat) {
+    $ligneExplicationSysVote .= " $lienVoterPropositions";
+} elseif ($phase == PhaseQuestion::Resultat) {
     $ligneExplicationSysVote .= " $lienVoirResultats";
 } else {
     $ligneExplicationSysVote .= " $lienVoirPropositions";
@@ -92,6 +92,25 @@ if ($phase == PhaseQuestion::Vote && $estVotant) {
                 par&nbsp;<?= $nomUsuelOrga ?>
             </span>
         </h1>
+
+        <div id="afficher-question__top__actions">
+            <?php
+            if ($username == $organisateur->getUsername()) {
+
+                if($phase == PhaseQuestion::NonRemplie || $phase == PhaseQuestion::Attente) {
+                    echo <<<HTML
+                        <a class="button" href="frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion">Éditer</a>
+                    HTML;
+                }
+
+                if($phase != PhaseQuestion::Resultat && $phase != PhaseQuestion::NonRemplie) {
+                    echo <<<HTML
+                        <a class="button modal-open" href="#modal$i">Phase suivante</a>
+                    HTML;
+                }
+            }
+            ?>
+        </div>
     </div>
 
     <div id="afficher-question__description" class="panel2">
@@ -103,16 +122,34 @@ if ($phase == PhaseQuestion::Vote && $estVotant) {
     <div id="afficher-question__sections" class="panel2">
         <h2>Sections :</h2>
 
-        <?= implode('', $sectionHTMLs) ?>
+        <?php if ($sectionHTMLs == []) {
+            echo "Aucune section n'a encore été écrite.";
+        } else {
+            echo implode('', $sectionHTMLs);
+        }
+        ?>
     </div>
 
+    <div id="afficher-question__calendrier" class="panel2">
+        <h2>Calendrier :</h2>
+
+        <h1>TODO!</h1>
+    </div>
 
     <div class="panel2">
 
         <h2>Propositions :</h2>
-        <p id="afficher-question__systeme-vote">
-            <?= $ligneExplicationSysVote ?>
-        </p>
+
+        <?php
+
+        if ($phase != PhaseQuestion::NonRemplie) {
+            echo <<<HTML
+            <p id="afficher-question__systeme-vote">
+                $ligneExplicationSysVote
+            </p>
+            HTML;
+        }
+        ?>
 
         <div id="afficher-question__propositions">
 
@@ -135,4 +172,51 @@ if ($phase == PhaseQuestion::Vote && $estVotant) {
         }
         ?>
     </div>
+
+    <?php
+    $passageRedactionBoutonTemplate = <<<HTML
+        <a class="button validerBtn" href="frontController.php?controller=question&action=passagePhaseRedaction&idQuestion=$idQuestion">Oui</a>
+    HTML;
+
+    $passageVoteBoutonTemplate = <<<HTML
+        <a class="button validerBtn" href="frontController.php?controller=question&action=passagePhaseVote&idQuestion=$idQuestion">Oui</a>
+    HTML;
+
+    $passageResultatBoutonTemplate = <<<HTML
+        <a class="button validerBtn" href="frontController.php?controller=question&action=passagePhaseResultats&idQuestion=$idQuestion">Oui</a>
+    HTML;
+
+    switch($phase) {
+        case PhaseQuestion::Attente:
+            $messageConfirmation = "Êtes vous sûr(e) de vouloir passer à la phase de rédaction ?";
+            $nextPhaseBouton = $passageRedactionBoutonTemplate;
+            break;
+        case PhaseQuestion::Redaction:
+            $messageConfirmation = "Êtes vous sûr(e) de vouloir passer à la phase de vote ?";
+            $nextPhaseBouton = $passageVoteBoutonTemplate;
+            break;
+        case PhaseQuestion::Vote:
+            $messageConfirmation = "Êtes vous sûr(e) de vouloir clore la question ?";
+            $nextPhaseBouton = $passageResultatBoutonTemplate;
+            break;
+        default:
+            $messageConfirmation = "";
+            $nextPhaseBouton = "";
+    }
+    ?>
+
+    <div id="modal-phase-suivante" class="modal">
+        <div class="modal-content panel">
+            <p><?= $messageConfirmation ?></p>
+            <div>
+                <a class="button refuserBtn" href="#">Non</a>
+                
+                <?= $nextPhaseBouton ?>
+            </div>
+            <a href="#" class="modal-close">
+                <img src="assets/images/close-icon.svg" alt="bouton fermer">
+            </a>
+        </div>
+    </div>
+
 </div>

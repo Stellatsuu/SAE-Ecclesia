@@ -293,15 +293,7 @@ class QuestionController extends MainController
 
     public static function listerMesQuestions()
     {
-        $username = ConnexionUtilisateur::getUsernameSiConnecte();
-
-        $questions = (new QuestionRepository)->selectAllByOrganisateur($username);
-
-        static::afficherVue("view.php", [
-            "titrePage" => "Mes questions",
-            "contenuPage" => "listeMesQuestions.php",
-            "questions" => $questions
-        ]);
+        static::redirect("http://localhost/web/frontController.php?controller=question&action=listerQuestions&f_mq=true");
     }
 
     public static function afficherResultats()
