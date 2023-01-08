@@ -35,13 +35,13 @@ class PropositionController extends MainController
             switch ($phase) {
                 case Phase::Attente:
                 case Phase::NonRemplie:
-                    QuestionController::error(ACCUEIL_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore écrire de proposition.");
+                    QuestionController::error(LQ_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore écrire de proposition.");
                     break;
                 case Phase::Vote:
-                    QuestionController::error(ACCUEIL_URL, "La question est en cours de vote. Vous ne pouvez plus écrire de proposition.");
+                    QuestionController::error(LQ_URL, "La question est en cours de vote. Vous ne pouvez plus écrire de proposition.");
                     break;
                 case Phase::Resultat:
-                    QuestionController::error(ACCUEIL_URL, "La question est terminée. Vous ne pouvez plus écrire de proposition.");
+                    QuestionController::error(LQ_URL, "La question est terminée. Vous ne pouvez plus écrire de proposition.");
                     break;
             }
         }
@@ -68,13 +68,13 @@ class PropositionController extends MainController
         switch ($phase) {
             case Phase::Attente:
             case Phase::NonRemplie:
-                QuestionController::error(ACCUEIL_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore écrire de proposition.");
+                QuestionController::error(LQ_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore écrire de proposition.");
                 break;
             case Phase::Vote:
-                QuestionController::error(ACCUEIL_URL, "La question est en cours de vote. Vous ne pouvez plus écrire de proposition.");
+                QuestionController::error(LQ_URL, "La question est en cours de vote. Vous ne pouvez plus écrire de proposition.");
                 break;
             case Phase::Resultat:
-                QuestionController::error(ACCUEIL_URL, "La question est terminée. Vous ne pouvez plus écrire de proposition.");
+                QuestionController::error(LQ_URL, "La question est terminée. Vous ne pouvez plus écrire de proposition.");
                 break;
         }
 
@@ -144,13 +144,13 @@ class PropositionController extends MainController
             switch ($phase) {
                 case Phase::Attente:
                 case Phase::NonRemplie:
-                    QuestionController::error(ACCUEIL_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer à une proposition.");
+                    QuestionController::error(LQ_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer à une proposition.");
                     break;
                 case Phase::Vote:
-                    QuestionController::error(ACCUEIL_URL, "La question est en cours de vote. Vous ne pouvez plus contribuer à une proposition.");
+                    QuestionController::error(LQ_URL, "La question est en cours de vote. Vous ne pouvez plus contribuer à une proposition.");
                     break;
                 case Phase::Resultat:
-                    QuestionController::error(ACCUEIL_URL, "La question est terminée. Vous ne pouvez plus contribuer à une proposition.");
+                    QuestionController::error(LQ_URL, "La question est terminée. Vous ne pouvez plus contribuer à une proposition.");
                     break;
             }
             return;
@@ -175,13 +175,13 @@ class PropositionController extends MainController
         switch ($phase) {
             case Phase::Attente:
             case Phase::NonRemplie:
-                QuestionController::error(ACCUEIL_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer pour la proposition.");
+                QuestionController::error(LQ_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer pour la proposition.");
                 break;
             case Phase::Vote:
-                QuestionController::error(ACCUEIL_URL, "La question est en cours de vote. Vous ne pouvez plus contribuer pour la proposition.");
+                QuestionController::error(LQ_URL, "La question est en cours de vote. Vous ne pouvez plus contribuer pour la proposition.");
                 break;
             case Phase::Resultat:
-                QuestionController::error(ACCUEIL_URL, "La question est terminée. Vous ne pouvez plus contribuer pour la proposition.");
+                QuestionController::error(LQ_URL, "La question est terminée. Vous ne pouvez plus contribuer pour la proposition.");
                 break;
         }
 
@@ -256,13 +256,13 @@ class PropositionController extends MainController
         switch ($phase) {
             case Phase::Attente:
             case Phase::NonRemplie:
-                QuestionController::error(ACCUEIL_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore supprimer de proposition.");
+                QuestionController::error(LQ_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore supprimer de proposition.");
                 break;
             case Phase::Vote:
-                QuestionController::error(ACCUEIL_URL, "La question est en cours de vote. Vous ne pouvez plus supprimer de proposition.");
+                QuestionController::error(LQ_URL, "La question est en cours de vote. Vous ne pouvez plus supprimer de proposition.");
                 break;
             case Phase::Resultat:
-                QuestionController::error(ACCUEIL_URL, "La question est terminée. Vous ne pouvez plus supprimer de proposition.");
+                QuestionController::error(LQ_URL, "La question est terminée. Vous ne pouvez plus supprimer de proposition.");
                 break;
         }
 
