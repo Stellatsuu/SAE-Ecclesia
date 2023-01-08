@@ -78,7 +78,7 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
             <ul>
                 <li><a href="frontController.php">Accueil</a></li>
                 <li><a href="frontController.php?controller=question&action=listerQuestions">Questions</a></li>
-                <li><a href="frontController.php?controller=question&action=afficherQuestionsFinies">Résultats</a></li>
+                <li><a href="frontController.php?controller=question&action=listerQuestions&f_resultat=true">Résultats</a></li>
                 <li><a href="frontController.php?controller=demandeQuestion&action=afficherFormulaireDemandeQuestion">Poser une question</a></li>
                 <?= $liensComptesVersionMobile ?>
             </ul>
