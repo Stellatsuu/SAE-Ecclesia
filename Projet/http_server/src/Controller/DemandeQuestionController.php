@@ -95,7 +95,6 @@ class DemandeQuestionController extends MainController
             $username
         );
         (new DemandeQuestionRepository)->insert($demande);
-
-        static::message(LMQ_URL, "Votre demande a été envoyée");
+        static::message(LQ_URL, "Votre demande a été envoyée");
     }
 }
