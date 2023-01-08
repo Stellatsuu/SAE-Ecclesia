@@ -25,7 +25,17 @@ const AFDQ_URL = "frontController.php?controller=demandeQuestion&action=afficher
 /**
  * @var string URL de la page "Lister mes questions"
  */
-const LMQ_URL = "frontController.php?controller=question&action=listerMesQuestions";
+const LMQ_URL = "frontController.php?controller=question&action=listerQuestions&f_mq=true";
+
+/**
+ * @var string URL de la page "Lister questions"
+ */
+const LQ_URL = "frontController.php?controller=question&action=listerQuestions";
+
+/**
+ * @var string URL d'une question, id à rajouter
+ */
+const Q_URL = "frontController.php?controller=question&action=afficherQuestion&idQuestion=";
 
 class MainController
 {
