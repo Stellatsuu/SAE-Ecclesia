@@ -28,7 +28,7 @@ class QuestionController extends MainController
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
 
         if ($question->getUsernameOrganisateur() != $username) {
-            static::error(LMQ_URL, "Vous n'êtes pas l'organisateur de cette question. Vous ne pouvez pas la modifier.");
+            static::error(LQ_URL, "Vous n'êtes pas l'organisateur de cette question. Vous ne pouvez pas la modifier.");
         }
 
         $utilisateurs = (new UtilisateurRepository)->selectAll();
@@ -36,13 +36,13 @@ class QuestionController extends MainController
         $phase = $question->getPhase();
         switch ($phase) {
             case Phase::Redaction:
-                static::error(LMQ_URL, "La question est en phase de rédaction. Vous ne pouvez plus la modifier.");
+                static::error(LQ_URL, "La question est en phase de rédaction. Vous ne pouvez plus la modifier.");
             case Phase::Lecture:
-                static::error(LMQ_URL, "La question est en phase de lecture. Vous ne pouvez plus la modifier.");
+                static::error(LQ_URL, "La question est en phase de lecture. Vous ne pouvez plus la modifier.");
             case Phase::Vote:
-                static::error(LMQ_URL, "La question est en phase de vote. Vous ne pouvez plus la modifier.");
+                static::error(LQ_URL, "La question est en phase de vote. Vous ne pouvez plus la modifier.");
             case Phase::Resultat:
-                static::error(LMQ_URL, "La question est terminée. Vous ne pouvez plus la modifier.");
+                static::error(LQ_URL, "La question est terminée. Vous ne pouvez plus la modifier.");
             case Phase::NonRemplie:
                 $question->setDateDebutRedaction((new DateTime())->add(new DateInterval('P1D'))->setTime(16, 0, 0));
                 $question->setDateFinRedaction((new DateTime())->add(new DateInterval('P8D'))->setTime(16, 0, 0));
@@ -90,25 +90,25 @@ class QuestionController extends MainController
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
 
         if ($question->getUsernameOrganisateur() != $username) {
-            static::error(LMQ_URL, "Vous n'êtes pas l'organisateur de cette question. Vous ne pouvez pas la modifier.");
+            static::error(LQ_URL, "Vous n'êtes pas l'organisateur de cette question. Vous ne pouvez pas la modifier.");
         }
 
         $phase = $question->getPhase();
         switch ($phase) {
             case Phase::Redaction:
-                static::error(LMQ_URL, "La question est en phase de rédaction. Vous ne pouvez plus la modifier.");
+                static::error(LQ_URL, "La question est en phase de rédaction. Vous ne pouvez plus la modifier.");
                 return;
                 break;
             case Phase::Lecture:
-                static::error(LMQ_URL, "La question est en phase de lecture. Vous ne pouvez plus la modifier.");
+                static::error(LQ_URL, "La question est en phase de lecture. Vous ne pouvez plus la modifier.");
                 return;
                 break;
             case Phase::Vote:
-                static::error(LMQ_URL, "La question est en phase de vote. Vous ne pouvez plus la modifier.");
+                static::error(LQ_URL, "La question est en phase de vote. Vous ne pouvez plus la modifier.");
                 return;
                 break;
             case Phase::Resultat:
-                static::error(LMQ_URL, "La question est terminée. Vous ne pouvez plus la modifier.");
+                static::error(LQ_URL, "La question est terminée. Vous ne pouvez plus la modifier.");
                 return;
                 break;
         }
@@ -224,13 +224,13 @@ class QuestionController extends MainController
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
 
         if ($question->getUsernameOrganisateur() != $username) {
-            static::error(ACCUEIL_URL, "Vous n'êtes pas l'organisateur de cette question");
+            static::error(LQ_URL, "Vous n'êtes pas l'organisateur de cette question");
             return;
         }
 
         $phase = $question->getPhase();
         if ($phase != Phase::Attente) {
-            static::error(ACCUEIL_URL, "Vous ne pouvez pas passer à la phase de rédaction depuis cette phase");
+            static::error(LMQ_URL, "Vous ne pouvez pas passer à la phase de rédaction depuis cette phase");
             return;
         }
 
@@ -248,13 +248,13 @@ class QuestionController extends MainController
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
 
         if ($question->getUsernameOrganisateur() != $username) {
-            static::error(ACCUEIL_URL, "Vous n'êtes pas l'organisateur de cette question");
+            static::error(LQ_URL, "Vous n'êtes pas l'organisateur de cette question");
             return;
         }
 
         $phase = $question->getPhase();
         if ($phase != Phase::Redaction && $phase != Phase::Lecture) {
-            static::error(ACCUEIL_URL, "La question n'est pas en phase de rédaction ou de vote");
+            static::error(LMQ_URL, "La question n'est pas en phase de rédaction ou de vote");
             return;
         }
 
@@ -276,24 +276,19 @@ class QuestionController extends MainController
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
 
         if ($question->getUsernameOrganisateur() != $username) {
-            static::error(ACCUEIL_URL, "Vous n'êtes pas l'organisateur de cette question");
+            static::error(LQ_URL, "Vous n'êtes pas l'organisateur de cette question");
             return;
         }
 
         $phase = $question->getPhase();
         if ($phase != Phase::Vote) {
-            static::error(ACCUEIL_URL, "La question n'est pas en phase de vote");
+            static::error(LMQ_URL, "La question n'est pas en phase de vote");
             return;
         }
 
         $question->setDateFermetureVotes(new DateTime("now"));
         (new QuestionRepository)->updateSansTablesAssociees($question);
         static::message(LMQ_URL, "La question est terminée. Vous pouvez maintenant voir les résultats");
-    }
-
-    public static function listerMesQuestions()
-    {
-        static::redirect("http://localhost/web/frontController.php?controller=question&action=listerQuestions&f_mq=true");
     }
 
     public static function afficherResultats()
@@ -304,7 +299,7 @@ class QuestionController extends MainController
 
         $phase = $question->getPhase();
         if ($phase != Phase::Resultat) {
-            static::error(ACCUEIL_URL, "La question n'est pas terminée. Vous ne pouvez pas encore voir les résultats");
+            static::error(LQ_URL, "La question n'est pas terminée. Vous ne pouvez pas encore voir les résultats");
             return;
         }
 
@@ -312,17 +307,6 @@ class QuestionController extends MainController
             "titrePage" => "Résultats",
             "contenuPage" => "afficherResultats.php",
             "question" => $question
-        ]);
-    }
-
-    public static function afficherQuestionsFinies()
-    {
-        $questions = (new QuestionRepository())->selectAllFinies();
-
-        static::afficherVue("view.php", [
-            "titrePage" => "Résultats",
-            "contenuPage" => "listeQuestionsFinies.php",
-            "questions" => $questions
         ]);
     }
 

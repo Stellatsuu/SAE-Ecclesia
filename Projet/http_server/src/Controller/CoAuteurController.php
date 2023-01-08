@@ -21,9 +21,10 @@ class CoAuteurController extends MainController
 
         $idProposition = static::getIfSetAndNumeric("idProposition");
         $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
+        $idQuestion = $proposition->getIdQuestion();
 
         if ($proposition->getUsernameResponsable() != $username) {
-            static::error(LMQ_URL, "Vous n'êtes pas le responsable de cette proposition.");
+            static::error(Q_URL . $idQuestion, "Vous n'êtes pas le responsable de cette proposition.");
         }
 
         $question = $proposition->getQuestion();
@@ -31,13 +32,13 @@ class CoAuteurController extends MainController
         switch ($phase) {
             case Phase::Attente:
             case Phase::NonRemplie:
-                QuestionController::error(LMQ_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
+                QuestionController::error(LQ_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
                 break;
             case Phase::Vote:
-                QuestionController::error(LMQ_URL, "La question est en cours de vote. Vous ne pouvez plus gérer les co-auteurs.");
+                QuestionController::error(LQ_URL, "La question est en cours de vote. Vous ne pouvez plus gérer les co-auteurs.");
                 break;
             case Phase::Resultat:
-                QuestionController::error(LMQ_URL, "La question est terminée. Vous ne pouvez plus gérer les co-auteurs.");
+                QuestionController::error(LQ_URL, "La question est terminée. Vous ne pouvez plus gérer les co-auteurs.");
                 break;
         }
 
@@ -65,9 +66,10 @@ class CoAuteurController extends MainController
 
         $idProposition = static::getIfSetAndNumeric("idProposition");
         $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
+        $idQuestion = $proposition->getIdQuestion();
 
         if ($proposition->getUsernameResponsable() != $username) {
-            static::error(LMQ_URL, "Vous n'êtes pas le responsable de cette proposition.");
+            static::error(Q_URL . $idQuestion, "Vous n'êtes pas le responsable de cette proposition.");
         }
 
         $question = $proposition->getQuestion();
@@ -75,13 +77,13 @@ class CoAuteurController extends MainController
         switch ($phase) {
             case Phase::Attente:
             case Phase::NonRemplie:
-                QuestionController::error(ACCUEIL_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
+                QuestionController::error(LQ_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore gérer les co-auteurs.");
                 break;
             case Phase::Vote:
-                QuestionController::error(ACCUEIL_URL, "La question est en cours de vote. Vous ne pouvez plus gérer les co-auteurs.");
+                QuestionController::error(LQ_URL, "La question est en cours de vote. Vous ne pouvez plus gérer les co-auteurs.");
                 break;
             case Phase::Resultat:
-                QuestionController::error(ACCUEIL_URL, "La question est terminée. Vous ne pouvez plus gérer les co-auteurs.");
+                QuestionController::error(LQ_URL, "La question est terminée. Vous ne pouvez plus gérer les co-auteurs.");
                 break;
         }
 
@@ -97,7 +99,7 @@ class CoAuteurController extends MainController
         }
 
         if (in_array($proposition->getResponsable(), $coAuteurs)) {
-            static::error("frontController.php?controller=coAuteur&action=afficherFormulaireGererCoAuteurs&idProposition=$idProposition", "Vous ne pouvez pas être co-auteur de votre propre proposition.");
+            static::error(Q_URL . $idQuestion, "Vous ne pouvez pas être co-auteur de votre propre proposition.");
             return;
         }
 
@@ -106,7 +108,7 @@ class CoAuteurController extends MainController
             (new CoAuteurRepository)->insertGlobal($proposition->getIdProposition(), $coAuteur->getUsername());
         }
 
-        static::message(LMQ_URL, "Les co-auteurs ont bien été modifiés.");
+        static::message(Q_URL . $idQuestion, "Les co-auteurs ont bien été modifiés.");
     }
 
     public static function afficherFormulaireDemanderCoAuteur()
@@ -117,9 +119,11 @@ class CoAuteurController extends MainController
 
         $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
 
+        $idQuestion = $proposition->getIdQuestion();
+
         $estLieAQuestion = (new UtilisateurRepository())->estLieAQuestion($username, $proposition->getIdQuestion());
         if (!$estLieAQuestion) {
-            static::error(LMQ_URL, "Vous n'avez pas les droits pour demander à être co-auteur de cette proposition.");
+            static::error(Q_URL . $idQuestion, "Vous n'avez pas les droits pour demander à être co-auteur de cette proposition.");
         }
 
         static::afficherVue('view.php', [
@@ -139,24 +143,25 @@ class CoAuteurController extends MainController
 
         $idProposition = static::getIfSetAndNumeric("idProposition");
         $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
+        $idQuestion = $proposition->getIdQuestion();
 
         $coAuteurs = (new CoAuteurRepository)->selectAllByProposition($proposition->getIdProposition());
         if (in_array($utilisateur, $coAuteurs)) {
-            static::error(ACCUEIL_URL, "Vous êtes déjà co-auteur de cette proposition.");
+            static::error(Q_URL . $idQuestion, "Vous êtes déjà co-auteur de cette proposition.");
         }
 
         if ($proposition->getUsernameResponsable() == $username) {
-            static::error(ACCUEIL_URL, "Vous êtes le responsable de cette proposition.");
+            static::error(Q_URL . $idQuestion, "Vous êtes le responsable de cette proposition.");
         }
 
         $exists = (new DemandeCoAuteurRepository)->select($username, $idProposition);
         if ($exists) {
-            static::error(ACCUEIL_URL, "Vous avez déjà demandé à être co-auteur de cette proposition.");
+            static::error(Q_URL . $idQuestion, "Vous avez déjà demandé à être co-auteur de cette proposition.");
         }
 
         $demandeCoAuteur = new DemandeCoAuteur($username, $idProposition, $message);
         (new DemandeCoAuteurRepository)->insert($demandeCoAuteur);
-        static::message(ACCUEIL_URL, "Votre demande a bien été envoyée.");
+        static::message(Q_URL . $idQuestion, "Votre demande a bien été envoyée.");
     }
 
     public static function accepterDemandeCoAuteur()
@@ -168,9 +173,10 @@ class CoAuteurController extends MainController
 
         $idProposition = static::getIfSetAndNumeric("idProposition");
         $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
+        $idQuestion = $proposition->getIdQuestion();
 
         if ($proposition->getUsernameResponsable() != $username) {
-            static::error(ACCUEIL_URL, "Vous n'êtes pas le responsable de cette proposition.");
+            static::error(Q_URL . $idQuestion, "Vous n'êtes pas le responsable de cette proposition.");
         }
 
         $demandeCoAuteur = DemandeCoAuteur::castIfNotNull((new DemandeCoAuteurRepository)->select($usernameDemandeur, $idProposition));
@@ -189,9 +195,10 @@ class CoAuteurController extends MainController
 
         $idProposition = static::getIfSetAndNumeric("idProposition");
         $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
+        $idQuestion = $proposition->getIdQuestion();
 
         if ($proposition->getUsernameResponsable() != $username) {
-            static::error(ACCUEIL_URL, "Vous n'êtes pas le responsable de cette proposition.");
+            static::error(Q_URL . $idQuestion, "Vous n'êtes pas le responsable de cette proposition.");
         }
 
         $demandeCoAuteur = DemandeCoAuteur::castIfNotNull((new DemandeCoAuteurRepository)->select($usernameDemandeur, $idProposition));
