@@ -98,7 +98,7 @@ if (empty($propositions)) {
 
     $modalHtml = <<<HTML
         <div id="modalSupprimer" class="modal">
-            <div class="modal-content boite">
+            <div class="modal-content panel">
                 <p>Êtes vous sûr(e) de vouloir supprimer la proposition ?</p>
                 <div>
                     <a class="button refuserBtn" href="#">Non</a>
@@ -186,3 +186,5 @@ if (empty($propositions)) {
     </div>
 
 </div>
+
+<?= $modalHtml ?>
