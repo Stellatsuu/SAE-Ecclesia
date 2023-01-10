@@ -9,12 +9,13 @@ use App\SAE\Model\DataObject\Section;
 use App\SAE\Model\DataObject\Utilisateur;
 use App\SAE\Model\Repository\UtilisateurRepository as UtilisateurRepository;
 use App\SAE\Lib\PhaseQuestion as Phase;
+use App\SAE\Model\DataObject\Proposition;
 use App\SAE\Model\Repository\PropositionRepository as PropositionRepository;
 use App\SAE\Model\Repository\RedacteurRepository;
+use App\SAE\Model\Repository\VotantRepository;
 use App\SAE\Model\SystemeVote\SystemeVoteFactory;
 use DateTime;
 use DateInterval;
-
 
 class QuestionController extends MainController
 {
@@ -366,22 +367,53 @@ class QuestionController extends MainController
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
         $propositions = (new PropositionRepository())->selectAllByQuestion($idQuestion);
+        $phase = $question->getPhase();
 
-        if (ConnexionUtilisateur::estConnecte()) {
-            $username = ConnexionUtilisateur::getUsername();
-            $estRedacteur = (new RedacteurRepository)->existsForQuestion($idQuestion, $username);
-            $propositionExiste = (new PropositionRepository())->selectByQuestionEtResponsable($idQuestion, $username) != null;
-            $peutEcrireProposition = $question->getPhase() == Phase::Redaction && $estRedacteur && !$propositionExiste;
-        } else {
-            $peutEcrireProposition = false;
-        }
+        $username = ConnexionUtilisateur::estConnecte() ? ConnexionUtilisateur::getUsername() : "";
+
+        $estOrganisateur = $question->getUsernameOrganisateur() == $username;
+        $estRedacteur = (new RedacteurRepository)->existsForQuestion($idQuestion, $username);
+        $estVotant = (new VotantRepository)->existsForQuestion($idQuestion, $username);
+
+        $peutEditer = $estOrganisateur && ($phase == Phase::NonRemplie || $phase == Phase::Attente);
+        $peutChangerPhase = $estOrganisateur && $phase != Phase::Resultat && $phase != Phase::NonRemplie;
+        $peutEcrireProposition = $estRedacteur && (new PropositionRepository)->selectByQuestionEtResponsable($idQuestion, $username) == null;
+        $peutVoter = $estVotant && $phase == Phase::Vote;
+
+        $dataQuestion = [
+            "idQuestion" => $question->getIdQuestion(),
+            "titre" => $question->getTitre(),
+            "description" => $question->getDescription(),
+            "nomUsuelOrga" => $question->getOrganisateur()->getNomUsuel(),
+            "phase" => $question->getPhase(),
+            "nomSystemeVote" => $question->getSystemeVote()->getNomComplet(),
+
+            "sections" => array_map(function ($section) {
+                return [
+                    "titre" => $section->getNomSection(),
+                    "description" => $section->getDescriptionSection()
+                ];
+            }, $question->getSections()),
+            
+            "propositions" => array_map(function ($proposition) use ($username) {
+                return [
+                    "idProposition" => $proposition->getIdProposition(),
+                    "titre" => $proposition->getTitreProposition(),
+                    "nomUsuelResp" => $proposition->getResponsable()->getNomUsuel(),
+                    "pfp" => $proposition->getResponsable()->getPhotoProfil(),
+                    "estAVous" => ($proposition->getUsernameResponsable() == $username)
+                ];
+            }, $propositions)
+        ];
 
         static::afficherVue("view.php", [
             "titrePage" => "Question",
             "contenuPage" => "afficherQuestion.php",
-            "question" => $question,
-            "propositions" => $propositions,
-            "peutEcrireProposition" => $peutEcrireProposition
+            "dataQuestion" => $dataQuestion,
+            "peutEditer" => $peutEditer,
+            "peutChangerPhase" => $peutChangerPhase,
+            "peutEcrireProposition" => $peutEcrireProposition,
+            "peutVoter" => $peutVoter,
         ]);
     }
 }
