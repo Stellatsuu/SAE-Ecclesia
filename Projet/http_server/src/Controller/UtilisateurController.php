@@ -129,6 +129,7 @@ class UtilisateurController extends MainController
 
         static::afficherVue("view.php", [
             "utilisateur" => $utilisateur,
+            "pfpb64" => $utilisateur->getPhotoProfil(),
             "contenuPage" => "afficherProfil.php",
             "titrePage" => "Mon compte"
         ]);
