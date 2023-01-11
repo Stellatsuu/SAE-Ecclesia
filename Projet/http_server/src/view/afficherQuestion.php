@@ -7,20 +7,21 @@ use App\SAE\Lib\PhotoProfil;
 //$dataQuestion
 $idQuestion = rawurlencode($dataQuestion['idQuestion']);
 $titre = htmlspecialchars($dataQuestion['titre']);
-$description = htmlspecialchars($dataQuestion['description']);
+$description = Markdown::toHtml($dataQuestion['description']);
 $nomUsuelOrga = htmlspecialchars($dataQuestion['nomUsuelOrga']);
+$nomSystemeVote = htmlspecialchars($dataQuestion['nomSystemeVote']);
 $phase = $dataQuestion['phase'];
-$nomSystemeVote = $dataQuestion['nomSystemeVote'];
 $sections = $dataQuestion['sections'];
 $propositions = $dataQuestion['propositions'];
 
 //$peutEditer
 //$peutChangerPhase
 //$peutEcrireProposition
+//$peutVoter
 
 $sectionHTMLs = array_map(function ($section) {
     $titre = htmlspecialchars($section['titre']);
-    $description = htmlspecialchars($section['description']);
+    $description = Markdown::toHtml($section['description']);
 
     return <<<HTML
     <details>
@@ -36,7 +37,7 @@ $propositionHTMLs = array_map(function ($proposition) use ($idQuestion) {
     $nomUsuelResp = htmlspecialchars($proposition['nomUsuelResp']);
     $estAVous = $proposition['estAVous'];
     $pfp = PhotoProfil::getBaliseImg($proposition['pfp'], "photo de profil", $estAVous ? "pfp--self" : "");
-    $nomUsuelResp = $estAVous ? "<strong>Vous</strong>" : $proposition['nomUsuelResp'];
+    $nomUsuelResp = $estAVous ? "<strong>Vous</strong>" : htmlspecialchars($proposition['nomUsuelResp']);
 
     return <<<HTML
     <div class="proposition-compact">
