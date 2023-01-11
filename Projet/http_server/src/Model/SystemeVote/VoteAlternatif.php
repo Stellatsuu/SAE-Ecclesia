@@ -137,6 +137,14 @@ namespace App\SAE\Model\SystemeVote{
             $propositions = (new PropositionRepository())->selectAllByQuestion($idQuestion);
             $resultats = $this->calculerResultats();
 
+            if (empty($resultats)) {
+                return <<<HTML
+                    <div class="pasDeVote">
+                        <img src="assets/images/confused-cat.gif" alt="aucun vote"/>
+                        <p>Il n'y a pas eu de votes enregistrés pour cette question.</p>
+                    </div>
+                HTML;
+            }
 
             $header = "<td>Candidats</td>";
             for($i = 0; $i < count($resultats); $i++){
@@ -217,6 +225,11 @@ namespace App\SAE\Model\SystemeVote{
             $question = $this->getQuestion();
             $idQuestion = $question->getIdQuestion();
             $nbVotesTotal = (new VoteRepository)->selectNombreDeVotantsEffectifs($idQuestion);
+
+            if ($nbVotesTotal == 0) {
+                return [];
+            }
+
             $nbVotesMajoriteeAbsolue = $nbVotesTotal/2 + 1;
             $votes = VoteUtilisateur::creerListeDeVotes($idQuestion);
             $candidatsRestants = (new PropositionRepository())->selectAllByQuestion($idQuestion);

@@ -14,6 +14,7 @@ use App\SAE\Model\Repository\UtilisateurRepository;
 use App\SAE\Lib\PhaseQuestion as Phase;
 use App\SAE\Model\Repository\CoAuteurRepository;
 use App\SAE\Model\Repository\RedacteurRepository;
+use App\SAE\Model\Repository\VotantRepository;
 
 class PropositionController extends MainController
 {
@@ -217,29 +218,94 @@ class PropositionController extends MainController
 
     public static function afficherPropositions()
     {
+        $username = ConnexionUtilisateur::estConnecte() ? ConnexionUtilisateur::getUsername() : "";
+
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
         $question = Question::castIfNotNull((new QuestionRepository())->select($idQuestion));
+        $systemeVote = $question->getSystemeVote();
+        $phase = $question->getPhase();
 
-        $username = ConnexionUtilisateur::getUsernameSiConnecte(Q_URL . $idQuestion);
-
-        $estLieAQuestion = (new UtilisateurRepository)->estLieAQuestion($username, $idQuestion);
-
-        if (!$estLieAQuestion)
-            static::error(Q_URL . $idQuestion, "Vous n'avez pas accès aux propositions");
-
-        //Vérification si la question contient des propositions
         $propositions = (new PropositionRepository())->selectAllByQuestion($idQuestion);
+        $idPropositions = array_map(function ($proposition) {
+            return $proposition->getIdProposition();
+        }, $propositions);
 
-        //Index pour le tableau de propositions (prop1 = index0)
-        $index = isset($_GET['index']) ? $_GET['index'] : 0;
+        //permet de passer soit un index, soit un id de proposition dans l'URL
+        if(isset($_GET['idProposition'])) {
+            $idProposition = static::getIfSetAndNumeric("idProposition");
+            $index = array_search($idProposition, $idPropositions);
+            if($index === false) {
+                static::error("frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion", "La proposition n'existe pas ou n'est pas associée à cette question.");
+            }
+        } else {
+            $index = isset($_GET['index']) ? static::getIfSetAndNumeric("index") : 0;
+        }
+
+        $nbPropositions = count($propositions);
+
+        if($nbPropositions != 0) {
+            $index = $index % $nbPropositions;
+            $propositionAffichee = $propositions[$index];
+        } else {
+            $propositionAffichee = null;
+        }
+
+        $estOrganisateur = $propositionAffichee != null && $question->getUsernameOrganisateur() == $username;
+        $estResponsable = $propositionAffichee != null && $propositionAffichee->getUsernameResponsable() == $username;
+        $estCoAuteur = $propositionAffichee != null && (new CoAuteurRepository())->existsForProposition($propositionAffichee->getIdProposition(), $username);
+        $estVotant = $propositionAffichee != null && (new VotantRepository())->existsForQuestion($idQuestion, $username);
+
+        $peutSupprimerOrga = $estOrganisateur && ($phase == Phase::Redaction || $phase == Phase::Lecture);
+        $peutSupprimerResp = $estResponsable && ($phase == Phase::Redaction);
+
+        $peutSupprimer = $peutSupprimerOrga || $peutSupprimerResp;
+        $peutEditer = $phase == Phase::Redaction && ($estResponsable || $estCoAuteur);
+        $peutVoter = $phase == Phase::Vote && $estVotant;
+        $peutGererCoAuteurs = $estResponsable && $phase == Phase::Redaction;
+        $peutDemanderCoAuteur = !$estCoAuteur && !$estResponsable && $phase == Phase::Redaction;
+
+        $dataQuestion = [
+            "idQuestion" => $question->getIdQuestion(),
+            "titreQuestion" => $question->getTitre(),
+            "descriptionQuestion" => $question->getDescription(),
+            "nomUsuelOrganisateur" => $question->getOrganisateur()->getNomUsuel(),
+            "interfaceVote" => $systemeVote->afficherInterfaceVote()
+        ];
+
+        $dataProposition = $propositionAffichee == null ? null :
+        [
+            "idProposition" => $propositionAffichee->getIdProposition(),
+            "titreProposition" => $propositionAffichee->getTitreProposition(),
+            "nomUsuelResponsable" => $propositionAffichee->getResponsable()->getNomUsuel(),
+            
+            "paragraphes" => array_map(function ($paragraphe) {
+                return [
+                    "titre" => $paragraphe->getSection()->getNomSection(),
+                    "contenu" => $paragraphe->getContenuParagraphe(),
+                ];
+            }, $propositionAffichee->getParagraphes()),
+        ];
+
+
+
+
+
+
+
+        
 
         static::afficherVue("view.php", [
             "titrePage" => "Propositions",
             "contenuPage" => "afficherPropositions.php",
-            "idQuestion" => $idQuestion,
-            "question" => $question,
-            "propositions" => $propositions,
+            "dataQuestion" => $dataQuestion,
+            "dataProposition" => $dataProposition,
             "index" => $index,
+            "nbPropositions" => $nbPropositions,
+            "peutSupprimer" => $peutSupprimer,
+            "peutEditer" => $peutEditer,
+            "peutVoter" => $peutVoter,
+            "peutGererCoAuteurs" => $peutGererCoAuteurs,
+            "peutDemanderCoAuteur" => $peutDemanderCoAuteur,
         ]);
     }
 
