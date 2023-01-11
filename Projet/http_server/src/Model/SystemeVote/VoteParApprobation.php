@@ -2,12 +2,9 @@
 
 namespace App\SAE\Model\SystemeVote;
 
-use App\SAE\Controller\MainController;
 use App\SAE\Controller\VoteController;
 use App\SAE\Lib\ConnexionUtilisateur;
-use App\SAE\Lib\PhaseQuestion;
 use App\SAE\Model\DataObject\Proposition;
-use App\SAE\Model\DataObject\Question;
 use App\SAE\Model\DataObject\Vote;
 use App\SAE\Model\Repository\PropositionRepository;
 use App\SAE\Model\Repository\VotantRepository;
@@ -171,7 +168,7 @@ class VoteParApprobation extends AbstractSystemeVote
         $aDejaVote = (new VoteRepository)->existsForQuestion($idQuestion, $username);
         if ($aDejaVote) {
             (new VoteRepository)->deleteAllByQuestionEtVotant($idQuestion, $username);
-            if (count($votes) === 0) {
+            if (empty($votes)) {
                 $message = "Votre vote a bien été supprimé";
             } else {
                 foreach ($votes as $vote) {

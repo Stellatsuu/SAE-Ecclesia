@@ -1,9 +1,12 @@
+$pointDeRupture : 650px;
+
 header{
 
   padding-top: 15px;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 5%;
   align-items: center;
 
 
@@ -77,7 +80,7 @@ header{
     display:none;
   }
 
-  @media screen and (max-width: 600px){
+  @media screen and (max-width: $pointDeRupture){
     margin-bottom: 90px;
 
     #mobileMenu{
@@ -87,33 +90,61 @@ header{
       display:flex;
       position: fixed;
       top: 0;
-      z-index: 2;
 
-      > div, label{
-        background-color: $couleurFond2_5;
-        margin: 0;
+      #pfpMobile {
+        display: flex;
+        position: absolute;
+        top: 3px;
+        right: 20px;
+        align-items: center;
 
-        &:first-child{
-          width: 60px;
+        label:first-of-type{
+          background-color: $couleurFond2_5;
+          border: solid $couleurFond2_5;
+          border-width: 2px 15px;
+          border-radius: 5px;
+          margin-right: -6px;
+        }
+
+        label{
+          margin: 0;
+          font-size: 1.1em;
           display: flex;
           align-items: center;
-          justify-content: flex-end;
-          cursor: pointer;
-
-          img{
-            height:30px;
-          }
-        }
-        &:last-child{
-          -webkit-clip-path: polygon(0 0, 0% 100%, 100% 50%);
-          clip-path: polygon(0 0, 0% 100%, 100% 50%);
-          width: 15px;
         }
 
+        img {
+          height: 35px;
+          width: 35px;
+          border-radius: 50%;
+          border: solid $couleurFond2_5 3px;
+        }
+      }
+
+      #fleches{
+        background-color: $couleurFond2_5;
+        -webkit-clip-path: polygon(0 0, 0% 100%, 100% 50%);
+        clip-path: polygon(0 0, 0% 100%, 100% 50%);
+        width: 15px;
+      }
+
+      #barreMenu{
+        margin: 0;
+        background-color: $couleurFond2_5;
+        width: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        cursor: pointer;
+        z-index: 3;
+
+        img{
+          height:30px;
+        }
       }
     }
 
-    nav{
+    nav, .menu_compte{
       z-index:1000;
       display:none;
       height: auto;
@@ -171,19 +202,29 @@ header{
 }
 
 .menu_compte {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  label{
+    background: $couleurPrincipale;
+    border: solid $couleurPrincipale;
+    border-width: 2px 15px;
+    border-radius: 5px;
+    font-size: 1em;
+    margin-top: -10px;
+    cursor: pointer;
+  }
   
   .bouton_ouvrir_compte {
-    position: absolute;
-    top: 0;
-    right: -100px;
     display: flex;
     content: "";
     width: 46px;
     height: 46px;
     background-color: $couleurPrincipale;
-    border: solid $couleurPrincipale 2px;
+    border: solid $couleurPrincipale 3px;
     border-radius: 50%;
-    
+
     img {
       width: 46px;
       height: 46px;
@@ -205,8 +246,16 @@ header{
 
 .menu_compte:focus-within {
 
-  .bouton_ouvrir_compte {
-    border: solid $couleurPrincipaleSurvol 2px;
+  display: flex;
+  flex-direction: column;
+
+  .bouton_ouvrir_compte, label {
+    background-color: $couleurPrincipaleSurvol;
+    border-color: $couleurPrincipaleSurvol;
+  }
+
+  label + ul{
+    top: 80px;
   }
 
   ul {
@@ -214,23 +263,34 @@ header{
     opacity: 1;
     flex-direction: column;
     position: absolute;
-    top: 75px;
-    right: -100px;
-    width: 200px;
+    top: 67px;
+    width: 175px;
     height: fit-content;
     border-radius: 10px;
     z-index: 1000;
 
     li {
+      display: flex;
       padding: 0;
       text-align: center;
+      align-items: center;
+      justify-content: center;
+      background-color: $couleurPrincipale;
       border-bottom: solid $couleurFond 2px;
       border-radius: 0;
       cursor: pointer;
       transition: all 0.2s ease-in-out;
 
       a {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
         height: calc(1.1em + 20px);
+        text-decoration: none;
+        color: $couleurTexte;
+        font-weight: 500;
+        font-size: 1.1em;
       }
 
       &:hover {
@@ -250,7 +310,7 @@ header{
       content: "";
       position: absolute;
       bottom: 100%;
-      right: 12px;
+      right: 91px;
       border-width: 15px;
       border-style: solid;
       border-color: transparent transparent $couleurPrincipale transparent;
@@ -262,7 +322,7 @@ header{
 .onlyOnMobile {
   display: none;
 
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: $pointDeRupture) {
     display: block;
   }
 }

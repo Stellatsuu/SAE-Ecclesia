@@ -82,11 +82,11 @@ class Utilisateur extends AbstractDataObject implements JsonSerializable
 
     public function getPhotoProfil($resolution = 256): ?string
     {
-        if($this->photoProfil == null) {
+        if ($this->photoProfil == null) {
             $this->photoProfil = (new UtilisateurRepository)->selectPhotoProfil($this->username);
         }
 
-        if($resolution == 256) {
+        if ($resolution == 256) {
             return $this->photoProfil;
         } else {
             return PhotoProfil::convertirRedimensionnerRogner($this->photoProfil, $resolution);
@@ -101,11 +101,12 @@ class Utilisateur extends AbstractDataObject implements JsonSerializable
     public function jsonSerialize(): mixed
     {
         return [
-            'username' => $this->username,
-            'nom' => $this->nom,
-            'prenom' => $this->prenom,
-            'email' => $this->email,
+            'username' => htmlspecialchars($this->username),
+            'nom' => htmlspecialchars($this->nom),
+            'prenom' => htmlspecialchars($this->prenom),
+            'email' => htmlspecialchars($this->email),
             'photoProfil' => $this->photoProfil,
+            'nomUsuel' => htmlspecialchars($this->getNomUsuel()),
         ];
     }
 

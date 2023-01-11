@@ -2,7 +2,6 @@
 
 namespace App\SAE\Model\DataObject;
 
-use App\SAE\Controller\MainController;
 use App\SAE\Model\Repository\PropositionRepository;
 use App\SAE\Model\Repository\UtilisateurRepository;
 

@@ -7,16 +7,13 @@ use App\SAE\Model\Repository\QuestionRepository as QuestionRepository;
 use App\SAE\Model\DataObject\Question as Question;
 use App\SAE\Model\Repository\DemandeQuestionRepository as DemandeQuestionRepository;
 use App\SAE\Model\DataObject\DemandeQuestion as DemandeQuestion;
-use App\SAE\Model\Repository\UtilisateurRepository as UtilisateurRepository;
-
-
 
 class DemandeQuestionController extends MainController
 {
     public static function listerDemandesQuestion(): void
     {
-        $est_admin = ConnexionUtilisateur::estAdmin();
-        if (!$est_admin) {
+        $estAdmin = ConnexionUtilisateur::estAdmin();
+        if (!$estAdmin) {
             static::error(ACCUEIL_URL, "Vous devez être administrateur pour accéder à cette page");
         }
 
@@ -31,8 +28,8 @@ class DemandeQuestionController extends MainController
 
     public static function refuserDemandeQuestion(): void
     {
-        $est_admin = ConnexionUtilisateur::estAdmin();
-        if (!$est_admin) {
+        $estAdmin = ConnexionUtilisateur::estAdmin();
+        if (!$estAdmin) {
             static::error(ACCUEIL_URL, "Vous devez être administrateur pour effectuer cette action");
         }
 
@@ -44,8 +41,8 @@ class DemandeQuestionController extends MainController
 
     public static function accepterDemandeQuestion(): void
     {
-        $est_admin = ConnexionUtilisateur::estAdmin();
-        if (!$est_admin) {
+        $estAdmin = ConnexionUtilisateur::estAdmin();
+        if (!$estAdmin) {
             static::error(ACCUEIL_URL, "Vous devez être administrateur pour effectuer cette action");
         }
 
@@ -98,7 +95,6 @@ class DemandeQuestionController extends MainController
             $username
         );
         (new DemandeQuestionRepository)->insert($demande);
-
-        static::message(LMQ_URL, "Votre demande a été envoyée");
+        static::message(LQ_URL, "Votre demande a été envoyée");
     }
 }

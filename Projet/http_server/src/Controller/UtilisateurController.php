@@ -4,11 +4,8 @@ namespace App\SAE\Controller;
 
 use App\SAE\Lib\ConnexionUtilisateur;
 use App\SAE\Lib\MotDePasse;
-use App\SAE\Lib\PhaseQuestion;
 use App\SAE\Lib\PhotoProfil;
-use App\SAE\Model\DataObject\Question;
 use App\SAE\Model\DataObject\Utilisateur;
-use App\SAE\Model\Repository\QuestionRepository;
 use App\SAE\Model\Repository\UtilisateurRepository;
 
 const PROFIL_URL = "frontController.php?controller=utilisateur&action=afficherProfil";
@@ -83,9 +80,10 @@ class UtilisateurController extends MainController
             $nom,
             $prenom,
             $email,
-            PhotoProfil::getRandomPhotoProfilParDefaut(),
             MotDePasse::hacher($password)
         );
+
+        $utilisateur->setPhotoProfil(PhotoProfil::getRandomPhotoProfilParDefaut());
 
         (new UtilisateurRepository)->insert($utilisateur);
 
@@ -131,6 +129,7 @@ class UtilisateurController extends MainController
 
         static::afficherVue("view.php", [
             "utilisateur" => $utilisateur,
+            "pfpb64" => $utilisateur->getPhotoProfil(),
             "contenuPage" => "afficherProfil.php",
             "titrePage" => "Mon compte"
         ]);

@@ -2,10 +2,7 @@
 
 namespace App\SAE\Model\Repository;
 
-use App\SAE\Model\DataObject\AbstractDataObject;
 use App\SAE\Model\DataObject\Vote;
-use App\SAE\Model\DataObject\Question;
-use App\SAE\Model\DataObject\Proposition;
 
 class VoteRepository extends AbstractRepository
 {
@@ -61,7 +58,8 @@ class VoteRepository extends AbstractRepository
     {
         $sql = <<<SQL
         SELECT * 
-            FROM vote JOIN WHERE id_proposition = :id_proposition
+            FROM vote 
+            WHERE id_proposition = :id_proposition
         SQL;
 
         $pdo = DatabaseConnection::getPdo();
@@ -124,7 +122,7 @@ class VoteRepository extends AbstractRepository
             FROM vote v JOIN proposition p 
                 ON v.id_proposition = p.id_proposition 
             WHERE p.id_question = :idQuestion 
-            AND v.username_votant = :username
+                AND v.username_votant = :username
         SQL;
 
         $pdo = DatabaseConnection::getPdo()->prepare($sql);
@@ -138,5 +136,25 @@ class VoteRepository extends AbstractRepository
             $resultat[] = $this->construire($ligne);
         }
         return $resultat;
+    }
+
+    /**
+     * @param int idQuestion l'id de la question
+     * @return int le nombre de votants ayant participé au vote
+     * */
+    public function selectNombreDeVotantsEffectifs(int $idQuestion): int{
+        $sql = <<<SQL
+            SELECT COUNT(DISTINCT username_votant) 
+            FROM vote v 
+                JOIN proposition p ON v.id_proposition = p.id_proposition
+            WHERE id_question = :idQuestion;
+        SQL;
+
+        $pdo = DatabaseConnection::getPdo()->prepare($sql);
+        $pdo->execute([
+            "idQuestion" => $idQuestion
+        ]);
+
+        return $pdo->fetch()[0];
     }
 }

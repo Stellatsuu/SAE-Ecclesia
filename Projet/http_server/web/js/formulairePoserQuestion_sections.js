@@ -27,8 +27,13 @@ function addSection() {
   new_section.classList.add("conteneur_section");
   new_section.id = "section" + nbSections + "_id";
   new_section.innerHTML = `
-        <div>Section ${nbSections}<button class="remove_section" type="button" onclick="removeSection(${nbSections})">supprimer</button></div>
+        <div>
+          <span>Section ${nbSections}</span>
+          <button class="remove_section" type="button" onclick="removeSection(${nbSections})">supprimer</button>
+        </div>
+
         <label for="nomSection${nbSections}_id">Nom:</label>
+
         <div class="text_input_div">   
             <input type="text" name="nomSection${nbSections}" id="nomSection${nbSections}_id" placeholder="Nom de la section" maxlength="50" required>
             <span class="indicateur_max_chars">50 max</span>
@@ -66,26 +71,29 @@ function updateRemoveSectionButtonLock() {
 function updateSectionsNumbers() {
   const conteneurs_sections =
     document.getElementsByClassName("conteneur_section");
+
   for (let i = 0; i < conteneurs_sections.length; i++) {
-    conteneurs_sections[i].children[0].innerHTML = `Section ${
-      i + 1
-    }<button class="remove_section" type="button" onclick="removeSection(${
-      i + 1
-    })">supprimer</button>`;
-    conteneurs_sections[i].children[1].id = "nomSection" + (i + 1) + "_id";
-    conteneurs_sections[i].children[1].name = "nomSection" + (i + 1);
-    conteneurs_sections[i].children[2].children[0].id =
-      "nomSection" + (i + 1) + "_id";
-    conteneurs_sections[i].children[2].children[0].name =
-      "nomSection" + (i + 1);
-    conteneurs_sections[i].children[3].id =
-      "descriptionSection" + (i + 1) + "_id";
-    conteneurs_sections[i].children[3].name = "descriptionSection" + (i + 1);
-    conteneurs_sections[i].children[4].children[0].id =
-      "descriptionSection" + (i + 1) + "_id";
-    conteneurs_sections[i].children[4].children[0].name =
-      "descriptionSection" + (i + 1);
-    conteneurs_sections[i].id = "section" + (i + 1) + "_id";
+
+    conteneurs_sections[i].children[0].innerHTML = `
+    <span>Section ${i + 1}</span>
+    <button class="remove_section" type="button" onclick="removeSection(${i + 1})">supprimer</button>`;
+
+
+    conteneurs_sections[i].children[1] = `
+    <label for="nomSection${i + 1}_id">Nom:</label>`;
+
+    let text_input_div1 = conteneurs_sections[i].children[2];
+    text_input_div1.children[0].id = `nomSection${i + 1}_id`;
+    text_input_div1.children[0].name = `nomSection${i + 1}`;
+
+    conteneurs_sections[i].children[3] = `
+    <label for="descriptionSection${i + 1}_id">Description:</label>`;
+
+    let text_input_div2 = conteneurs_sections[i].children[4];
+    text_input_div2.children[0].id = `descriptionSection${i + 1}_id`;
+    text_input_div2.children[0].name = `descriptionSection${i + 1}`;
+
+    conteneurs_sections[i].id = `section${i + 1}_id`;
   }
   nbSections = conteneurs_sections.length;
 }

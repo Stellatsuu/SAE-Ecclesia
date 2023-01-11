@@ -28,7 +28,7 @@ if ($existeProposition) {
             $html = <<<HTML
             <details>
                 <summary class="titre-section">$nomSection</summary>
-                <span class='description-section markdown'>$descriptionSection</span>
+                <div class='description-section markdown'>$descriptionSection</div>
             </details>
             <textarea name="section_$i">
             HTML;
@@ -52,7 +52,7 @@ if ($existeProposition) {
         ?>
     </fieldset>
 
-    <?= $existeProposition ? "<input type=\"hidden\" name=\"idProposition\" value=\"{$proposition->getidProposition()}\"/>" : "" ?>
-    <input type="hidden" name="idQuestion" value="<?= $question->getIdQuestion() ?>" />
+    <?= $existeProposition ? "<input type=\"hidden\" name=\"idProposition\" value=\"" . htmlspecialchars($proposition->getidProposition()) . "\"/>" : "" ?>
+    <input type="hidden" name="idQuestion" value="<?= htmlspecialchars($question->getIdQuestion()) ?>" />
     <input type="submit" value="Enregistrer" />
 </form>

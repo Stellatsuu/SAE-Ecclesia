@@ -27,12 +27,11 @@ class DemandeQuestionRepository extends AbstractRepository
 
     public function construire(array $row): DemandeQuestion
     {
-        $question = new DemandeQuestion(
+        return new DemandeQuestion(
             $row['id_demande_question'],
             $row['titre_demande_question'],
             $row['description_demande_question'],
             $row['username_organisateur']
         );
-        return $question;
-    } 
+    }
 }

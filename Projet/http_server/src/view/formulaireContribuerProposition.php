@@ -9,9 +9,9 @@ $question = $proposition->getQuestion();
 <form class="panel" method="post" action="frontController.php?controller=proposition&action=contribuerProposition" id="ecrirePropositionForm">
     <h1>Contribuer proposition</h1>
     <fieldset>
-        <label for="titreProposition">Nom de la proposition : </label>
+        <label>Nom de la proposition : </label>
         <div class="text_input_div">
-            <input type="text" id="titreProposition" name="titreProposition" maxlength="100" value="<?= $proposition->getTitreProposition() ?>" required />
+            <input type="text" id="titreProposition" name="titreProposition" maxlength="100" value="<?= htmlspecialchars($proposition->getTitreProposition()) ?>" required />
             <span class="indicateur_max_chars  unselectable">100 max</span>
         </div>
 
@@ -26,7 +26,7 @@ $question = $proposition->getQuestion();
             $html = <<<HTML
             <details>
                 <summary class="titre-section">$nomSection</summary>
-                <span class='description-section markdown'>$descriptionSection</span>
+                <div class='description-section markdown'>$descriptionSection</div>
             </details>
             <textarea name="section_$i">
             HTML;

@@ -2,12 +2,9 @@
 
 namespace App\SAE\Model\DataObject;
 
-use App\SAE\Model\Repository\DatabaseConnection;
 use App\SAE\Lib\PhaseQuestion as Phase;
-use App\SAE\Model\Repository\QuestionRepository;
 use App\SAE\Model\Repository\RedacteurRepository;
 use App\SAE\Model\Repository\SectionRepository;
-use App\SAE\Model\Repository\UtilisateurRepository;
 use App\SAE\Model\Repository\VotantRepository;
 use App\SAE\Model\SystemeVote\AbstractSystemeVote;
 use DateTime;
@@ -69,7 +66,7 @@ class Question extends DemandeQuestion implements JsonSerializable
     
     public function getSections(): ?array
     {
-        if($this->sections == null) {
+        if ($this->sections == null) {
             $this->sections = (new SectionRepository)->selectAllByQuestion($this->getIdQuestion());
         }
         return $this->sections;
@@ -77,7 +74,7 @@ class Question extends DemandeQuestion implements JsonSerializable
 
     public function getRedacteurs(): ?array
     {
-        if($this->redacteurs == null) {
+        if ($this->redacteurs == null) {
             $this->redacteurs = (new RedacteurRepository)->selectAllByQuestion($this->getIdQuestion());
         }
         return $this->redacteurs;
@@ -85,7 +82,7 @@ class Question extends DemandeQuestion implements JsonSerializable
 
     public function getVotants(): ?array
     {
-        if($this->votants == null) {
+        if ($this->votants == null) {
             $this->votants = (new VotantRepository)->selectAllByQuestion($this->getIdQuestion());
         }
         return $this->votants;
@@ -122,27 +119,27 @@ class Question extends DemandeQuestion implements JsonSerializable
 
     public function getPhase() {
         $now = new DateTime();
-        if($this->dateDebutRedaction == null || $this->dateFinRedaction == null || $this->dateOuvertureVotes == null || $this->dateFermetureVotes == null) {
+        if ($this->dateDebutRedaction == null || $this->dateFinRedaction == null || $this->dateOuvertureVotes == null || $this->dateFermetureVotes == null) {
             return Phase::NonRemplie;
         }
             
-        if($now < $this->dateDebutRedaction) {
+        if ($now < $this->dateDebutRedaction) {
             return Phase::Attente;
         }
 
-        if($now >= $this->dateDebutRedaction && $now <= $this->dateFinRedaction) {
+        if ($now >= $this->dateDebutRedaction && $now <= $this->dateFinRedaction) {
             return Phase::Redaction;
         }
 
-        if($now > $this->dateFinRedaction && $now < $this->dateOuvertureVotes) {
+        if ($now > $this->dateFinRedaction && $now < $this->dateOuvertureVotes) {
             return Phase::Lecture;
         }
 
-        if($now >= $this->dateOuvertureVotes && $now <= $this->dateFermetureVotes) {
+        if ($now >= $this->dateOuvertureVotes && $now <= $this->dateFermetureVotes) {
             return Phase::Vote;
         }
 
-        if($now > $this->dateFermetureVotes) {
+        if ($now > $this->dateFermetureVotes) {
             return Phase::Resultat;
         }
     }
@@ -189,13 +186,8 @@ class Question extends DemandeQuestion implements JsonSerializable
         $this->systemeVote = $systemeVote;
     }
 
-    public function setUsernameOrganisateur(string $usernameOrganisateur): void
+    public function setTags(?string $tags) : void
     {
-        $this->usernameOrganisateur = $usernameOrganisateur;
-        $this->organisateur = null;
-    }
-
-    public function setTags(?string $tags) : void{
         $this->tags = $tags;
     }
     //Caster
@@ -210,9 +202,9 @@ class Question extends DemandeQuestion implements JsonSerializable
     public function jsonSerialize() : mixed
     {
         return [
-            'id_question' => $this->getIdQuestion(),
-            'titre_question' => $this->getTitre(),
-            'description_question' => $this->getDescription(),
+            'id_question' => htmlspecialchars($this->getIdQuestion()),
+            'titre_question' => htmlspecialchars($this->getTitre()),
+            'description_question' => htmlspecialchars($this->getDescription()),
             'organisateur' => $this->getOrganisateur(),
             'sections' => $this->getSections(),
             'redacteurs' => $this->getRedacteurs(),
@@ -222,7 +214,7 @@ class Question extends DemandeQuestion implements JsonSerializable
             'date_ouverture_votes' => $this->getDateOuvertureVotes(),
             'date_fermeture_votes' => $this->getDateFermetureVotes(),
             'systeme_vote' => $this->getSystemeVote(),
-            'tags' => $this->getTags()
+            'tags' => htmlspecialchars($this->getTags())
         ];
     }
 }

@@ -1,13 +1,14 @@
 <?php
 
 use App\SAE\Lib\PhotoProfil;
-use App\SAE\Model\DataObject\Utilisateur;
 
-$utilisateur = Utilisateur::castIfNotNull($utilisateur);
-
-$b64img = $utilisateur->getPhotoProfil();
-
-$pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
+//$utilisateur passé par le Controller
+$username = htmlspecialchars($utilisateur->getUsername());
+$prenom = htmlspecialchars($utilisateur->getPrenom());
+$nom = htmlspecialchars($utilisateur->getNom());
+$email = htmlspecialchars($utilisateur->getEmail());
+//$pfpb64 passée par le Controller
+$pfp = PhotoProfil::getBaliseImg($pfpb64, "photo de profil");
 ?>
 
 
@@ -18,19 +19,19 @@ $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
     <div id="contenuProfil">
         <div id="PPusername">
             <p id="PP"><?= $pfp ?></p>
-            <p><?php echo $utilisateur->getUsername(); ?></p>
+            <p><?= $username ?></p>
             <a class="modal-open" href="#modalModifierPFP"><img src='./assets/images/image-icon.svg' id="editPP" alt="editImageIcon"/></a>
         </div>
 
         <div id="informations">
             <label>Prénom et Nom</label>
             <a class="modal-open" href="#modalModifierNomPrenom"><img src='./assets/images/pen-ico.svg' class="pen" alt="editPenIcon"/></a>
-            <p><?php echo $utilisateur->getPrenom() . " " . $utilisateur->getNom(); ?></p>
+            <p><?= $prenom . " " . $nom ?></p>
 
 
             <label>Adresse mail</label>
             <a class="modal-open" href="#modalModifierEmail"><img src='./assets/images/pen-ico.svg' class="pen" alt="editPenIcon"/></a>
-            <p><?php echo $utilisateur->getEmail(); ?></p>
+            <p><?= $email ?></p>
 
             <label>Mot de passe</label>
             <a class="modal-open" href="#modalModifierMDP"><img src='./assets/images/pen-ico.svg' class="pen" alt="editPenIcon"/></a>
@@ -63,10 +64,10 @@ $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
             <h2>Modifier mon nom/prénom</h2>
 
             <label>Nom</label>
-            <input type="text" name="nom" value="<?php echo $utilisateur->getNom(); ?>" required>
+            <input type="text" name="nom" value="<?= $nom ?>" required>
 
             <label>Prénom</label>
-            <input type="text" name="prenom" value="<?php echo $utilisateur->getPrenom(); ?>" required>
+            <input type="text" name="prenom" value="<?= $prenom ?>" required>
 
             <input type="submit" value="Modifier">
 
@@ -83,7 +84,7 @@ $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
             <h2>Modifier mon adresse mail</h2>
 
             <label>Adresse mail</label>
-            <input type="email" name="email" value="<?php echo $utilisateur->getEmail(); ?>" required>
+            <input type="email" name="email" value="<?= $email ?>" required>
 
             <input type="submit" value="Modifier">
 
@@ -124,7 +125,8 @@ $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
             <h2>Supprimer mon compte</h2>
 
             <p style="color: red;">Attention, cette action est irréversible !</p>
-            <input autocomplete="false" name="hidden" type="text" style="display:none;"> <!-- Pour éviter que le navigateur propose de remplir le formulaire -->
+            <!-- Pour éviter que le navigateur propose de remplir le formulaire. Parce que autocomplete="off" ne suffit plus, apparemment -->
+            <input autocomplete="false" name="hidden" type="text" style="display:none;"> 
 
             <label>Entrez votre mot de passe</label>
             <input type="password" name="mdp_suppression" required>

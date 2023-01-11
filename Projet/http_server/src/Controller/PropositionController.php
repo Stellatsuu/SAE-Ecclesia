@@ -7,15 +7,12 @@ use App\SAE\Model\DataObject\Paragraphe;
 use App\SAE\Model\DataObject\Proposition;
 use App\SAE\Model\DataObject\Question;
 use App\SAE\Model\DataObject\Utilisateur;
-use App\SAE\Model\HTTP\Session;
 use App\SAE\Model\Repository\ParagrapheRepository;
 use App\SAE\Model\Repository\PropositionRepository;
 use App\SAE\Model\Repository\QuestionRepository;
 use App\SAE\Model\Repository\UtilisateurRepository;
 use App\SAE\Lib\PhaseQuestion as Phase;
-use App\SAE\Model\DataObject\DemandeCoAuteur;
 use App\SAE\Model\Repository\CoAuteurRepository;
-use App\SAE\Model\Repository\DemandeCoAuteurRepository;
 use App\SAE\Model\Repository\RedacteurRepository;
 use App\SAE\Model\Repository\VotantRepository;
 
@@ -30,7 +27,7 @@ class PropositionController extends MainController
 
         $estRedacteur = (new RedacteurRepository())->existsForQuestion($idQuestion, $username);
         if (!$estRedacteur) {
-            static::error(ACCUEIL_URL, "Vous ne faites pas partie des rédacteurs de cette question.");
+            static::error(Q_URL . $idQuestion, "Vous ne faites pas partie des rédacteurs de cette question.");
         }
 
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
@@ -39,13 +36,13 @@ class PropositionController extends MainController
             switch ($phase) {
                 case Phase::Attente:
                 case Phase::NonRemplie:
-                    QuestionController::error(ACCUEIL_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore écrire de proposition.");
+                    QuestionController::error(LQ_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore écrire de proposition.");
                     break;
                 case Phase::Vote:
-                    QuestionController::error(ACCUEIL_URL, "La question est en cours de vote. Vous ne pouvez plus écrire de proposition.");
+                    QuestionController::error(LQ_URL, "La question est en cours de vote. Vous ne pouvez plus écrire de proposition.");
                     break;
                 case Phase::Resultat:
-                    QuestionController::error(ACCUEIL_URL, "La question est terminée. Vous ne pouvez plus écrire de proposition.");
+                    QuestionController::error(LQ_URL, "La question est terminée. Vous ne pouvez plus écrire de proposition.");
                     break;
             }
         }
@@ -72,18 +69,18 @@ class PropositionController extends MainController
         switch ($phase) {
             case Phase::Attente:
             case Phase::NonRemplie:
-                QuestionController::error(ACCUEIL_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore écrire de proposition.");
+                QuestionController::error(LQ_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore écrire de proposition.");
                 break;
             case Phase::Vote:
-                QuestionController::error(ACCUEIL_URL, "La question est en cours de vote. Vous ne pouvez plus écrire de proposition.");
+                QuestionController::error(LQ_URL, "La question est en cours de vote. Vous ne pouvez plus écrire de proposition.");
                 break;
             case Phase::Resultat:
-                QuestionController::error(ACCUEIL_URL, "La question est terminée. Vous ne pouvez plus écrire de proposition.");
+                QuestionController::error(LQ_URL, "La question est terminée. Vous ne pouvez plus écrire de proposition.");
                 break;
         }
 
         if (strlen($titreProposition) > 100) {
-            static::error(ACCUEIL_URL, "Le titre de votre proposition ne doit pas dépasser 100 caractères.");
+            static::error(Q_URL . $idQuestion, "Le titre de votre proposition ne doit pas dépasser 100 caractères.");
             return;
         }
 
@@ -100,7 +97,7 @@ class PropositionController extends MainController
         for ($i = 0; $i < count($sections); $i++) {
 
             $nom_paragraphe = 'section_' . $i;
-            $contenu = static::getIfSetAndNotEmpty($nom_paragraphe, ACCUEIL_URL, "Le contenu de la section " . ($i + 1) . " est vide.");
+            $contenu = static::getIfSetAndNotEmpty($nom_paragraphe, Q_URL . $idQuestion, "Le contenu de la section " . ($i + 1) . " est vide.");
 
             $paragraphe = new Paragraphe(
                 -1,
@@ -115,17 +112,17 @@ class PropositionController extends MainController
 
         $estRedacteur = (new RedacteurRepository())->existsForQuestion($question->getIdQuestion(), $username);
         if (!$estRedacteur) {
-            static::error(ACCUEIL_URL, "Vous ne faites pas partie des rédacteurs de cette question.");
+            static::error(Q_URL . $idQuestion, "Vous ne faites pas partie des rédacteurs de cette question.");
         }
 
         $propositionExiste = (new PropositionRepository())->selectByQuestionEtResponsable($question->getIdQuestion(), $username) == null ? false : true;
         if ($propositionExiste) {
-            static::error(ACCUEIL_URL, "Vous avez déjà écrit une proposition pour cette question.");
+            static::error(Q_URL . $idQuestion, "Vous avez déjà écrit une proposition pour cette question.");
         }
 
         (new PropositionRepository())->insert($proposition);
 
-        static::message(LMQ_URL, "La proposition a bien été enregistrée.");
+        static::message(Q_URL . $idQuestion, "La proposition a bien été enregistrée.");
     }
 
     public static function afficherFormulaireContribuerProposition()
@@ -134,12 +131,13 @@ class PropositionController extends MainController
 
         $idProposition = static::getIfSetAndNumeric("idProposition");
         $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
+        $idQuestion = $proposition->getIdQuestion();
 
         $estResponsable = $proposition->getUsernameResponsable() == $username;
         $estCoAuteur = (new CoAuteurRepository())->existsForProposition($idProposition, $username);
 
         if (!$estResponsable && !$estCoAuteur) {
-            static::error(ACCUEIL_URL, "Vous n'êtes pas autorisé à contribuer à cette proposition.");
+            static::error(Q_URL . $idQuestion, "Vous n'êtes pas autorisé à contribuer à cette proposition.");
         }
 
         $phase = $proposition->getQuestion()->getPhase();
@@ -147,13 +145,13 @@ class PropositionController extends MainController
             switch ($phase) {
                 case Phase::Attente:
                 case Phase::NonRemplie:
-                    QuestionController::error(ACCUEIL_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer à une proposition.");
+                    QuestionController::error(LQ_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer à une proposition.");
                     break;
                 case Phase::Vote:
-                    QuestionController::error(ACCUEIL_URL, "La question est en cours de vote. Vous ne pouvez plus contribuer à une proposition.");
+                    QuestionController::error(LQ_URL, "La question est en cours de vote. Vous ne pouvez plus contribuer à une proposition.");
                     break;
                 case Phase::Resultat:
-                    QuestionController::error(ACCUEIL_URL, "La question est terminée. Vous ne pouvez plus contribuer à une proposition.");
+                    QuestionController::error(LQ_URL, "La question est terminée. Vous ne pouvez plus contribuer à une proposition.");
                     break;
             }
             return;
@@ -172,18 +170,19 @@ class PropositionController extends MainController
 
         $idProposition = static::getIfSetAndNumeric("idProposition");
         $proposition = Proposition::castIfNotNull((new PropositionRepository())->select($idProposition));
+        $idQuestion = $proposition->getIdQuestion();
 
         $phase = $proposition->getQuestion()->getPhase();
         switch ($phase) {
             case Phase::Attente:
             case Phase::NonRemplie:
-                QuestionController::error("frontController.php?controller=question&action=listerMesQuestions", "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer pour la proposition.");
+                QuestionController::error(LQ_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore contribuer pour la proposition.");
                 break;
             case Phase::Vote:
-                QuestionController::error("frontController.php?controller=question&action=listerMesQuestions", "La question est en cours de vote. Vous ne pouvez plus contribuer pour la proposition.");
+                QuestionController::error(LQ_URL, "La question est en cours de vote. Vous ne pouvez plus contribuer pour la proposition.");
                 break;
             case Phase::Resultat:
-                QuestionController::error("frontController.php?controller=question&action=listerMesQuestions", "La question est terminée. Vous ne pouvez plus contribuer pour la proposition.");
+                QuestionController::error(LQ_URL, "La question est terminée. Vous ne pouvez plus contribuer pour la proposition.");
                 break;
         }
 
@@ -195,7 +194,7 @@ class PropositionController extends MainController
         for ($i = 0; $i < count($sections); $i++) {
 
             $nom_paragraphe = 'section_' . $i;
-            $contenu = static::getIfSetAndNotEmpty($nom_paragraphe, ACCUEIL_URL, "Le contenu de la section " . ($i + 1) . " est vide.");
+                $contenu = static::getIfSetAndNotEmpty($nom_paragraphe, Q_URL . $idQuestion, "Le contenu de la section " . ($i + 1) . " est vide.");
 
             $paragraphe = (new ParagrapheRepository())->selectByPropositionEtSection($proposition->getIdProposition(), $sections[$i]->getIdSection());
             $paragraphe->setContenuParagraphe($contenu);
@@ -203,7 +202,7 @@ class PropositionController extends MainController
         }
 
         if (!$estCoAuteur && !$estResponsable) {
-            static::error(LMQ_URL, "Vous n'êtes pas un des co-auteurs ou le responsable de cette proposition.");
+            static::error(Q_URL . $idQuestion, "Vous n'êtes pas un des co-auteurs ou le responsable de cette proposition.");
         }
 
         if ($estResponsable) {
@@ -214,35 +213,99 @@ class PropositionController extends MainController
         foreach ($paragraphes as $paragraphe) {
             (new ParagrapheRepository())->update($paragraphe);
         }
-        static::message(LMQ_URL, "La proposition a bien été enregistrée.");
+        static::message(Q_URL . $idQuestion, "La proposition a bien été enregistrée.");
     }
 
     public static function afficherPropositions()
     {
+        $username = ConnexionUtilisateur::estConnecte() ? ConnexionUtilisateur::getUsername() : "";
+
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
         $question = Question::castIfNotNull((new QuestionRepository())->select($idQuestion));
-        $redirectURL = "frontController.php?controller=question&action=afficherQuestion&idQuestion=" . $idQuestion;
+        $systemeVote = $question->getSystemeVote();
+        $phase = $question->getPhase();
 
-        $username = ConnexionUtilisateur::getUsernameSiConnecte($redirectURL);        
-
-        $estLieAQuestion = (new UtilisateurRepository)->estLieAQuestion($username, $idQuestion);
-
-        if (!$estLieAQuestion)
-            static::error($redirectURL, "Vous n'avez pas accès aux propositions");
-
-        //Vérification si la question contient des propositions
         $propositions = (new PropositionRepository())->selectAllByQuestion($idQuestion);
+        $idPropositions = array_map(function ($proposition) {
+            return $proposition->getIdProposition();
+        }, $propositions);
 
-        //Index pour le tableau de propositions (prop1 = index0)
-        $index = isset($_GET['index']) ? $_GET['index'] : 0;
+        //permet de passer soit un index, soit un id de proposition dans l'URL
+        if(isset($_GET['idProposition'])) {
+            $idProposition = static::getIfSetAndNumeric("idProposition");
+            $index = array_search($idProposition, $idPropositions);
+            if($index === false) {
+                static::error("frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion", "La proposition n'existe pas ou n'est pas associée à cette question.");
+            }
+        } else {
+            $index = isset($_GET['index']) ? static::getIfSetAndNumeric("index") : 0;
+        }
+
+        $nbPropositions = count($propositions);
+
+        if($nbPropositions != 0) {
+            $index = $index % $nbPropositions;
+            $propositionAffichee = $propositions[$index];
+        } else {
+            $propositionAffichee = null;
+        }
+
+        $estOrganisateur = $propositionAffichee != null && $question->getUsernameOrganisateur() == $username;
+        $estResponsable = $propositionAffichee != null && $propositionAffichee->getUsernameResponsable() == $username;
+        $estCoAuteur = $propositionAffichee != null && (new CoAuteurRepository())->existsForProposition($propositionAffichee->getIdProposition(), $username);
+        $estVotant = $propositionAffichee != null && (new VotantRepository())->existsForQuestion($idQuestion, $username);
+
+        $peutSupprimerOrga = $estOrganisateur && ($phase == Phase::Redaction || $phase == Phase::Lecture);
+        $peutSupprimerResp = $estResponsable && ($phase == Phase::Redaction);
+
+        $peutSupprimer = $peutSupprimerOrga || $peutSupprimerResp;
+        $peutEditer = $phase == Phase::Redaction && ($estResponsable || $estCoAuteur);
+        $peutVoter = $phase == Phase::Vote && $estVotant;
+        $peutGererCoAuteurs = $estResponsable && $phase == Phase::Redaction;
+        $peutDemanderCoAuteur = !$estCoAuteur && !$estResponsable && $phase == Phase::Redaction;
+
+        $dataQuestion = [
+            "idQuestion" => $question->getIdQuestion(),
+            "titreQuestion" => $question->getTitre(),
+            "descriptionQuestion" => $question->getDescription(),
+            "nomUsuelOrganisateur" => $question->getOrganisateur()->getNomUsuel(),
+            "interfaceVote" => $systemeVote->afficherInterfaceVote()
+        ];
+
+        $dataProposition = $propositionAffichee == null ? null :
+        [
+            "idProposition" => $propositionAffichee->getIdProposition(),
+            "titreProposition" => $propositionAffichee->getTitreProposition(),
+            "nomUsuelResponsable" => $propositionAffichee->getResponsable()->getNomUsuel(),
+            
+            "paragraphes" => array_map(function ($paragraphe) {
+                return [
+                    "titre" => $paragraphe->getSection()->getNomSection(),
+                    "contenu" => $paragraphe->getContenuParagraphe(),
+                ];
+            }, $propositionAffichee->getParagraphes()),
+        ];
+
+
+
+
+
+
+
+        
 
         static::afficherVue("view.php", [
             "titrePage" => "Propositions",
             "contenuPage" => "afficherPropositions.php",
-            "idQuestion" => $idQuestion,
-            "question" => $question,
-            "propositions" => $propositions,
+            "dataQuestion" => $dataQuestion,
+            "dataProposition" => $dataProposition,
             "index" => $index,
+            "nbPropositions" => $nbPropositions,
+            "peutSupprimer" => $peutSupprimer,
+            "peutEditer" => $peutEditer,
+            "peutVoter" => $peutVoter,
+            "peutGererCoAuteurs" => $peutGererCoAuteurs,
+            "peutDemanderCoAuteur" => $peutDemanderCoAuteur,
         ]);
     }
 
@@ -259,19 +322,20 @@ class PropositionController extends MainController
         switch ($phase) {
             case Phase::Attente:
             case Phase::NonRemplie:
-                QuestionController::error(ACCUEIL_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore supprimer de proposition.");
+                QuestionController::error(LQ_URL, "La question n'est pas encore prête. Vous ne pouvez pas encore supprimer de proposition.");
                 break;
             case Phase::Vote:
-                QuestionController::error(ACCUEIL_URL, "La question est en cours de vote. Vous ne pouvez plus supprimer de proposition.");
+                QuestionController::error(LQ_URL, "La question est en cours de vote. Vous ne pouvez plus supprimer de proposition.");
                 break;
             case Phase::Resultat:
-                QuestionController::error(ACCUEIL_URL, "La question est terminée. Vous ne pouvez plus supprimer de proposition.");
+                QuestionController::error(LQ_URL, "La question est terminée. Vous ne pouvez plus supprimer de proposition.");
                 break;
         }
 
         $estResponsable = $proposition->getUsernameResponsable() == $username;
         $estOrganisateur = $question->getUsernameOrganisateur() == $username;
 
+        //TODO : voir si simplification possible ou si toujours fonctionnel
         /**
          * @var string URL de afficherPropositions
          */

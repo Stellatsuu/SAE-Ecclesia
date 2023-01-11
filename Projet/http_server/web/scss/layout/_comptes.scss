@@ -24,4 +24,16 @@
       margin-top: 20px;
     }
   }
+
+  .password-label {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: center;
+
+    .tooltip {
+      width: fit-content;
+      margin-top: 10px;
+    }
+  }
 }

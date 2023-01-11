@@ -1,33 +1,37 @@
 .proposition-compact {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
 
-    background-color: $couleurFond2;
-    border: solid 3px $grisClair;
-    border-radius: 10px;
+  background-color: $couleurFond2;
+  border: solid 3px $grisClair;
+  border-radius: 10px;
 
-    padding: 10px;
+  padding: 10px;
 
-    width: calc(100% - 20px);
+  width: calc(100% - 20px);
 
-    .proposition-compact__pfp img {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        border: solid 1px black;
+  .proposition-compact__pfp img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: solid 1px black;
+
+    &.pfp--self {
+      border: solid 2px $couleurBordureSupprimer;
     }
+  }
 
-    a {
-        text-decoration: none;
-        color: $couleurTexte;
-        font-weight: bold;
-        font-size: 1.2rem;
+  a {
+    text-decoration: none;
+    color: $couleurTexte;
+    font-weight: bold;
+    font-size: 1.2rem;
 
-        &:hover {
-            text-decoration: underline;
-        }
+    &:hover {
+      text-decoration: underline;
     }
+  }
 }

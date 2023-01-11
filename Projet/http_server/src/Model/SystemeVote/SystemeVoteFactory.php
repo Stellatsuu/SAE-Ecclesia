@@ -14,6 +14,10 @@ class SystemeVoteFactory
                     return new UninominalMajoritaireAUnTour($question);
                 case "approbation":
                     return new VoteParApprobation($question);
+                case "jugement_majoritaire":
+                    return new JugementMajoritaire($question);
+                case "alternatif":
+                    return new VoteAlternatif($question);
                 default:
                     return new UninominalMajoritaireAUnTour($question);
             }

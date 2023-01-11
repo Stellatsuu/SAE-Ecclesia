@@ -20,6 +20,7 @@
       color: $couleurTexte;
       font-weight: bold;
       font-size: 1.3rem;
+      word-break: break-all;
 
       &:hover {
         text-decoration: underline;
@@ -34,6 +35,10 @@
         height: 48px;
         border-radius: 50%;
         border: solid 1px black;
+      }
+
+      .pfp--self {
+        border: solid 2px $couleurBordureSupprimer;
       }
     }
   }

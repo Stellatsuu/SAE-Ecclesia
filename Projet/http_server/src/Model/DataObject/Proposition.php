@@ -2,9 +2,7 @@
 
 namespace App\SAE\Model\DataObject;
 
-use App\SAE\Model\Repository\CoAuteurRepository;
 use App\SAE\Model\Repository\ParagrapheRepository;
-use App\SAE\Model\Repository\PropositionRepository;
 use App\SAE\Model\Repository\QuestionRepository;
 use App\SAE\Model\Repository\UtilisateurRepository;
 
@@ -102,7 +100,7 @@ class Proposition extends AbstractDataObject
 
     public function getParagraphes(): array
     {
-        if($this->paragraphes == null){
+        if ($this->paragraphes == null){
             $this->paragraphes = (new ParagrapheRepository)->selectAllByProposition($this->idProposition);
         }
         return $this->paragraphes;

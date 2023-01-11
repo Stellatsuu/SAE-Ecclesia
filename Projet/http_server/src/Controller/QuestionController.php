@@ -9,13 +9,13 @@ use App\SAE\Model\DataObject\Section;
 use App\SAE\Model\DataObject\Utilisateur;
 use App\SAE\Model\Repository\UtilisateurRepository as UtilisateurRepository;
 use App\SAE\Lib\PhaseQuestion as Phase;
+use App\SAE\Model\DataObject\Proposition;
 use App\SAE\Model\Repository\PropositionRepository as PropositionRepository;
-use App\SAE\Model\HTTP\Session;
 use App\SAE\Model\Repository\RedacteurRepository;
+use App\SAE\Model\Repository\VotantRepository;
 use App\SAE\Model\SystemeVote\SystemeVoteFactory;
 use DateTime;
 use DateInterval;
-
 
 class QuestionController extends MainController
 {
@@ -29,7 +29,7 @@ class QuestionController extends MainController
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
 
         if ($question->getUsernameOrganisateur() != $username) {
-            static::error(LMQ_URL, "Vous n'êtes pas l'organisateur de cette question. Vous ne pouvez pas la modifier.");
+            static::error(LQ_URL, "Vous n'êtes pas l'organisateur de cette question. Vous ne pouvez pas la modifier.");
         }
 
         $utilisateurs = (new UtilisateurRepository)->selectAll();
@@ -37,13 +37,13 @@ class QuestionController extends MainController
         $phase = $question->getPhase();
         switch ($phase) {
             case Phase::Redaction:
-                static::error(LMQ_URL, "La question est en phase de rédaction. Vous ne pouvez plus la modifier.");
+                static::error(LQ_URL, "La question est en phase de rédaction. Vous ne pouvez plus la modifier.");
             case Phase::Lecture:
-                static::error(LMQ_URL, "La question est en phase de lecture. Vous ne pouvez plus la modifier.");
+                static::error(LQ_URL, "La question est en phase de lecture. Vous ne pouvez plus la modifier.");
             case Phase::Vote:
-                static::error(LMQ_URL, "La question est en phase de vote. Vous ne pouvez plus la modifier.");
+                static::error(LQ_URL, "La question est en phase de vote. Vous ne pouvez plus la modifier.");
             case Phase::Resultat:
-                static::error(LMQ_URL, "La question est terminée. Vous ne pouvez plus la modifier.");
+                static::error(LQ_URL, "La question est terminée. Vous ne pouvez plus la modifier.");
             case Phase::NonRemplie:
                 $question->setDateDebutRedaction((new DateTime())->add(new DateInterval('P1D'))->setTime(16, 0, 0));
                 $question->setDateFinRedaction((new DateTime())->add(new DateInterval('P8D'))->setTime(16, 0, 0));
@@ -89,27 +89,27 @@ class QuestionController extends MainController
         $AFPQ_URL = "frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion";
 
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
-        
+
         if ($question->getUsernameOrganisateur() != $username) {
-            static::error(LMQ_URL, "Vous n'êtes pas l'organisateur de cette question. Vous ne pouvez pas la modifier.");
+            static::error(LQ_URL, "Vous n'êtes pas l'organisateur de cette question. Vous ne pouvez pas la modifier.");
         }
-        
+
         $phase = $question->getPhase();
         switch ($phase) {
             case Phase::Redaction:
-                static::error(LMQ_URL, "La question est en phase de rédaction. Vous ne pouvez plus la modifier.");
+                static::error(LQ_URL, "La question est en phase de rédaction. Vous ne pouvez plus la modifier.");
                 return;
                 break;
             case Phase::Lecture:
-                static::error(LMQ_URL, "La question est en phase de lecture. Vous ne pouvez plus la modifier.");
+                static::error(LQ_URL, "La question est en phase de lecture. Vous ne pouvez plus la modifier.");
                 return;
                 break;
             case Phase::Vote:
-                static::error(LMQ_URL, "La question est en phase de vote. Vous ne pouvez plus la modifier.");
+                static::error(LQ_URL, "La question est en phase de vote. Vous ne pouvez plus la modifier.");
                 return;
                 break;
             case Phase::Resultat:
-                static::error(LMQ_URL, "La question est terminée. Vous ne pouvez plus la modifier.");
+                static::error(LQ_URL, "La question est terminée. Vous ne pouvez plus la modifier.");
                 return;
                 break;
         }
@@ -178,27 +178,27 @@ class QuestionController extends MainController
 
         if (!$dateCoherentes) {
             static::error($AFPQ_URL, "Les dates ne sont pas cohérentes");
-        } else if (strlen($description) > 4000) {
+        } elseif (strlen($description) > 4000) {
             static::error($AFPQ_URL, "La description de la question ne doit pas dépasser 4000 caractères");
-        } else if (count($sections) == 0) {
+        } elseif (count($sections) == 0) {
             static::error($AFPQ_URL, "Au moins une section est requise");
-        } else if (count($redacteurs) == 0) {
+        } elseif (count($redacteurs) == 0) {
             static::error($AFPQ_URL, "Veuillez sélectionner au moins un rédacteur");
-        } else if (count($votants) == 0) {
+        } elseif (count($votants) == 0) {
             static::error($AFPQ_URL, "Veuillez sélectionner au moins un votant");
         }
 
         $systemeVote = $_POST["systeme_vote"];
 
         $tags = "{}";
-        if(isset($_POST["tags"])) {
-            $tags = preg_replace('/[^a-zA-Z0-9-\s]/', "", $_POST["tags"]); //retire toutes les expressions non voulues (/,; etc.)
-            $tags = preg_replace('/[ ]+/', ",", $tags); // -> remplace les espaces par des virgules
-            $tags = strtolower($tags); // -> met le string en minuscule
-            $tags = explode(',', $tags); // -> transforme le string en tableau en coupant avec les virgules
-            $tags = array_unique($tags); // -> trie le tableau pour enlever les doublons
-            $tags = implode(',', $tags); // -> reforme le string en rassemblant avec des virgules
-            $tags = "{" . $tags . "}"; // array pour postgre
+        if (isset($_POST["tags"])) {
+            $tags = preg_replace('/[^a-zA-Z0-9-\s]/', "", $_POST["tags"]); // → retire toutes les expressions non voulues (/,; etc.)
+            $tags = preg_replace('/[ ]+/', ",", $tags); // → remplace les espaces par des virgules
+            $tags = strtolower($tags); // → met le string en minuscule
+            $tags = explode(',', $tags); // → transforme le string en tableau en coupant avec les virgules
+            $tags = array_unique($tags); // → trie le tableau pour enlever les doublons
+            $tags = implode(',', $tags); // → reforme le string en rassemblant avec des virgules
+            $tags = "{" . $tags . "}"; // → array pour postgre
         }
 
         $question->setDescription($description);
@@ -224,14 +224,14 @@ class QuestionController extends MainController
 
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
 
-        if($question->getUsernameOrganisateur() != $username) {
-            static::error(ACCUEIL_URL, "Vous n'êtes pas l'organisateur de cette question");
+        if ($question->getUsernameOrganisateur() != $username) {
+            static::error(LQ_URL, "Vous n'êtes pas l'organisateur de cette question");
             return;
         }
 
         $phase = $question->getPhase();
         if ($phase != Phase::Attente) {
-            static::error(ACCUEIL_URL, "Vous ne pouvez pas passer à la phase de rédaction depuis cette phase");
+            static::error(LMQ_URL, "Vous ne pouvez pas passer à la phase de rédaction depuis cette phase");
             return;
         }
 
@@ -248,14 +248,14 @@ class QuestionController extends MainController
 
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
 
-        if($question->getUsernameOrganisateur() != $username) {
-            static::error(ACCUEIL_URL, "Vous n'êtes pas l'organisateur de cette question");
+        if ($question->getUsernameOrganisateur() != $username) {
+            static::error(LQ_URL, "Vous n'êtes pas l'organisateur de cette question");
             return;
         }
 
         $phase = $question->getPhase();
         if ($phase != Phase::Redaction && $phase != Phase::Lecture) {
-            static::error(ACCUEIL_URL, "La question n'est pas en phase de rédaction ou de vote");
+            static::error(LMQ_URL, "La question n'est pas en phase de rédaction ou de vote");
             return;
         }
 
@@ -276,33 +276,20 @@ class QuestionController extends MainController
 
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
 
-        if($question->getUsernameOrganisateur() != $username) {
-            static::error(ACCUEIL_URL, "Vous n'êtes pas l'organisateur de cette question");
+        if ($question->getUsernameOrganisateur() != $username) {
+            static::error(LQ_URL, "Vous n'êtes pas l'organisateur de cette question");
             return;
         }
 
         $phase = $question->getPhase();
         if ($phase != Phase::Vote) {
-            static::error(ACCUEIL_URL, "La question n'est pas en phase de vote");
+            static::error(LMQ_URL, "La question n'est pas en phase de vote");
             return;
         }
 
         $question->setDateFermetureVotes(new DateTime("now"));
         (new QuestionRepository)->updateSansTablesAssociees($question);
         static::message(LMQ_URL, "La question est terminée. Vous pouvez maintenant voir les résultats");
-    }
-
-    public static function listerMesQuestions()
-    {
-        $username = ConnexionUtilisateur::getUsernameSiConnecte();
-        
-        $questions = (new QuestionRepository)->selectAllByOrganisateur($username);
-
-        static::afficherVue("view.php", [
-            "titrePage" => "Mes questions",
-            "contenuPage" => "listeMesQuestions.php",
-            "questions" => $questions
-        ]);
     }
 
     public static function afficherResultats()
@@ -313,7 +300,7 @@ class QuestionController extends MainController
 
         $phase = $question->getPhase();
         if ($phase != Phase::Resultat) {
-            static::error(ACCUEIL_URL, "La question n'est pas terminée. Vous ne pouvez pas encore voir les résultats");
+            static::error(LQ_URL, "La question n'est pas terminée. Vous ne pouvez pas encore voir les résultats");
             return;
         }
 
@@ -324,41 +311,45 @@ class QuestionController extends MainController
         ]);
     }
 
-    public static function afficherQuestionsFinies()
+    public static function listerQuestions()
     {
-        $questions = (new QuestionRepository())->selectAllFinies();
-
-        static::afficherVue("view.php", [
-            "titrePage" => "Résultats",
-            "contenuPage" => "listeQuestionsFinies.php",
-            "questions" => $questions
-        ]);
-    }
-
-    public static function listerQuestions() {
         $nbQuestionsParPage = 12;
         $query = isset($_GET["query"]) ? strtolower($_GET["query"]) : "";
-        $motsClesEtTags = explode(" ", $query)?:[];
-        $motsCles=[];
-        $tags=[];
-        foreach ($motsClesEtTags as $mot){
-            if(substr($mot,0,1)=="#"){
-                $tags[]=substr($mot,1);
-            }
-            else{
-                $motsCles[]=$mot;
+        $motsClesEtTags = explode(" ", $query) ?: [];
+        $motsCles = [];
+        $tags = [];
+
+        foreach ($motsClesEtTags as $mot) {
+            if (substr($mot, 0, 1) == "#") {
+                $tags[] = substr($mot, 1);
+            } else {
+                $motsCles[] = $mot;
             }
         }
-        $tags = array_filter($tags,function ($t){
-            return $t!="";
+        $tags = array_filter($tags, function ($t) {
+            return $t != "";
         });
 
-        $nbPages = ceil((new QuestionRepository())->countAllPhaseRedactionOuPlus($motsCles,$tags) / $nbQuestionsParPage) ?: 1;
+        $filtres = [];
+        if (isset($_GET["f_non_remplie"])) $filtres[] = "non_remplie";
+        if (isset($_GET["f_attente"])) $filtres[] = "attente";
+        if (isset($_GET["f_lecture"])) $filtres[] = "lecture";
+        if (isset($_GET["f_redaction"])) $filtres[] = "redaction";
+        if (isset($_GET["f_vote"])) $filtres[] = "vote";
+        if (isset($_GET["f_resultat"])) $filtres[] = "resultat";
+        if (isset($_GET["f_redacteur"])) $filtres[] = "redacteur";
+        if (isset($_GET["f_coauteur"])) $filtres[] = "coauteur";
+        if (isset($_GET["f_votant"])) $filtres[] = "votant";
+
+        if (isset($_GET["f_mq"])) $filtres[] = "mq";
+
+
+        $nbPages = ceil((new QuestionRepository())->countAllListerQuestion($motsCles, $tags, $filtres) / $nbQuestionsParPage) ?: 1;
         $page = isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] > 0 && $_GET["page"] <= $nbPages ? $_GET["page"] : 1;
-        
+
         $offset = ($page - 1) * $nbQuestionsParPage;
 
-        $questions = (new QuestionRepository())->selectAllLimitOffset($nbQuestionsParPage, $offset, $motsCles, $tags);
+        $questions = (new QuestionRepository())->selectAllListerQuestions($nbQuestionsParPage, $offset, $motsCles, $tags, $filtres);
 
         static::afficherVue("view.php", [
             "titrePage" => "Liste des questions",
@@ -366,30 +357,63 @@ class QuestionController extends MainController
             "questions" => $questions,
             "page" => $page,
             "nbPages" => $nbPages,
-            "query" => $query
+            "query" => $query,
+            "filtres" => $filtres,
         ]);
     }
 
-    public static function afficherQuestion() {
+    public static function afficherQuestion()
+    {
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
         $propositions = (new PropositionRepository())->selectAllByQuestion($idQuestion);
+        $phase = $question->getPhase();
 
-        if(ConnexionUtilisateur::estConnecte()) {
-            $username = ConnexionUtilisateur::getUsername();
-            $estRedacteur = (new RedacteurRepository)->existsForQuestion($idQuestion, $username);
-            $propositionExiste = (new PropositionRepository())->selectByQuestionEtResponsable($idQuestion, $username) != null;
-            $peutEcrireProposition = $question->getPhase() == Phase::Redaction && $estRedacteur && !$propositionExiste;
-        } else {
-            $peutEcrireProposition = false;
-        }
+        $username = ConnexionUtilisateur::estConnecte() ? ConnexionUtilisateur::getUsername() : "";
+
+        $estOrganisateur = $question->getUsernameOrganisateur() == $username;
+        $estRedacteur = (new RedacteurRepository)->existsForQuestion($idQuestion, $username);
+        $estVotant = (new VotantRepository)->existsForQuestion($idQuestion, $username);
+
+        $peutEditer = $estOrganisateur && ($phase == Phase::NonRemplie || $phase == Phase::Attente);
+        $peutChangerPhase = $estOrganisateur && $phase != Phase::Resultat && $phase != Phase::NonRemplie;
+        $peutEcrireProposition = $estRedacteur && (new PropositionRepository)->selectByQuestionEtResponsable($idQuestion, $username) == null;
+        $peutVoter = $estVotant && $phase == Phase::Vote;
+
+        $dataQuestion = [
+            "idQuestion" => $question->getIdQuestion(),
+            "titre" => $question->getTitre(),
+            "description" => $question->getDescription(),
+            "nomUsuelOrga" => $question->getOrganisateur()->getNomUsuel(),
+            "phase" => $question->getPhase(),
+            "nomSystemeVote" => $question->getSystemeVote()->getNomComplet(),
+
+            "sections" => array_map(function ($section) {
+                return [
+                    "titre" => $section->getNomSection(),
+                    "description" => $section->getDescriptionSection()
+                ];
+            }, $question->getSections()),
+            
+            "propositions" => array_map(function ($proposition) use ($username) {
+                return [
+                    "idProposition" => $proposition->getIdProposition(),
+                    "titre" => $proposition->getTitreProposition(),
+                    "nomUsuelResp" => $proposition->getResponsable()->getNomUsuel(),
+                    "pfp" => $proposition->getResponsable()->getPhotoProfil(),
+                    "estAVous" => ($proposition->getUsernameResponsable() == $username)
+                ];
+            }, $propositions)
+        ];
 
         static::afficherVue("view.php", [
             "titrePage" => "Question",
             "contenuPage" => "afficherQuestion.php",
-            "question" => $question,
-            "propositions" => $propositions,
-            "peutEcrireProposition" => $peutEcrireProposition
+            "dataQuestion" => $dataQuestion,
+            "peutEditer" => $peutEditer,
+            "peutChangerPhase" => $peutChangerPhase,
+            "peutEcrireProposition" => $peutEcrireProposition,
+            "peutVoter" => $peutVoter,
         ]);
     }
 }

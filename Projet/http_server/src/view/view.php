@@ -7,7 +7,7 @@ use App\SAE\Model\Repository\UtilisateurRepository;
 
 $estConnecte = ConnexionUtilisateur::estConnecte();
 $estAdmin = ConnexionUtilisateur::estAdmin();
-
+$username = ConnexionUtilisateur::getUsername();
 $lienDemandes = $estAdmin ? <<<HTML
 <li><a href="frontController.php?controller=demandeQuestion&action=listerDemandesQuestion">Demandes</a></li>
 HTML : "";
@@ -15,12 +15,12 @@ HTML : "";
 if ($estConnecte) {
     $liensComptes = <<<html
     <li><a href="frontController.php?controller=utilisateur&action=afficherProfil">Mon compte</a></li>
-    <li><a href="frontController.php?controller=question&action=listerMesQuestions">Mes questions</a></li>
+    <li><a href="frontController.php?controller=question&action=listerQuestions&f_mq=true">Mes questions</a></li>
     $lienDemandes
     <li><a href="frontController.php?controller=utilisateur&action=seDeconnecter">Se déconnecter</a></li>
     html;
 
-    $utilisateur = (new UtilisateurRepository)->select(ConnexionUtilisateur::getUsername());
+    $utilisateur = (new UtilisateurRepository)->select($username);
 
     if (!$utilisateur) {
         ConnexionUtilisateur::deconnecter();
@@ -40,7 +40,7 @@ if ($estConnecte) {
     html;
 
     $pfp = <<<html
-    <img src="assets/images/defaultPFPs/disconnected.jpg"/>
+    <img src="assets/images/defaultPFPs/disconnected.jpg" alt="disconnectedPFP"/>
     html;
 }
 
@@ -49,12 +49,14 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <title><?php echo $titrePage; ?></title>
+
+    <title><?= htmlspecialchars($titrePage) ?></title>
+
     <link rel="stylesheet" href="scss/style.css">
 </head>
 
@@ -62,52 +64,57 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
     <header>
         <input type="checkbox" id="mobileOpen" />
         <div id="mobileMenu">
-            <label for="mobileOpen">
-                <img src="assets/images/logoSite.svg" />
+            <label id="barreMenu" for="mobileOpen">
+                <img src="assets/images/logoSite.svg" alt="websiteLogo" />
             </label>
-            <div>
-
-            </div>
+            <?php if ($estConnecte) echo
+             "<div id='pfpMobile'>
+                 <label for='mobileOpen'>$username</label>
+                 <label for='mobileOpen'>$pfp</label>
+             </div>"?>
+            <div id='fleches'></div>
         </div>
         <nav>
             <ul>
                 <li><a href="frontController.php">Accueil</a></li>
                 <li><a href="frontController.php?controller=question&action=listerQuestions">Questions</a></li>
-                <li><a href="frontController.php?controller=question&action=afficherQuestionsFinies">Résultats</a></li>
+                <li><a href="frontController.php?controller=question&action=listerQuestions&f_resultat=true">Résultats</a></li>
                 <li><a href="frontController.php?controller=demandeQuestion&action=afficherFormulaireDemandeQuestion">Poser une question</a></li>
                 <?= $liensComptesVersionMobile ?>
             </ul>
-            <div class="menu_compte" tabindex="0">
-                <a class="bouton_ouvrir_compte" href="#"><?= $pfp ?></a>
-                <ul>
-                    <?= $liensComptes ?>
-                </ul>
-            </div>
         </nav>
-
+        <div class="menu_compte" tabindex="0">
+            <a class="bouton_ouvrir_compte" href="#"><?= $pfp ?></a>
+            <?php if($estConnecte) echo  "<label>$username</label>";?>
+            <ul>
+                <?= $liensComptes ?>
+            </ul>
+        </div>
     </header>
 
     <main>
-        <?php
+        <div id="messagesFlash">
+            <?php
 
-        use App\SAE\Lib\MessageFlash;
+            use App\SAE\Lib\MessageFlash;
 
-        if (MessageFlash::contientMessage("info")) {
-            $messages = MessageFlash::lireMessages("info");
-            foreach ($messages as $message) {
-                echo "<div class='message'>" . $message["message"] . "</div>";
+            if (MessageFlash::contientMessage("info")) {
+                $messages = MessageFlash::lireMessages("info");
+                foreach ($messages as $message) {
+                    echo "<div class='message'>" . $message["message"] . "</div>";
+                }
             }
-        }
 
-        if (MessageFlash::contientMessage("error")) {
-            $messages = MessageFlash::lireMessages("error");
-            foreach ($messages as $message) {
-                echo "<div class='errorMessage'>" . $message["message"] . "</div>";
+            if (MessageFlash::contientMessage("error")) {
+                $messages = MessageFlash::lireMessages("error");
+                foreach ($messages as $message) {
+                    echo "<div class='errorMessage'>" . $message["message"] . "</div>";
+                }
             }
-        }
+            ?>
+        </div>
 
-        require __DIR__ . "/{$contenuPage}";
-        ?>
+        <?php require __DIR__ . "/{$contenuPage}"; ?>
 
         <div id="modalSeConnecter" class="modal">
 
@@ -115,12 +122,12 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
                 <form action="frontController.php?controller=utilisateur&action=seConnecter" method="POST">
                     <h2>Se connecter</h2>
                     <div>
-                        <label for="username">Nom d'utilisateur</label>
-                        <input type="text" name="username" required>
+                        <label for="username_c_id">Nom d'utilisateur</label>
+                        <input id="username_c_id" type="text" name="username" required>
                     </div>
                     <div>
-                        <label for="password">Mot de passe</label>
-                        <input type="password" name="password" required>
+                        <label for="password_c_id">Mot de passe</label>
+                        <input id="password_c_id" type="password" name="password" required>
                     </div>
                     <div>
                         <input type="hidden" value="<?= $_SERVER['REQUEST_URI'] ?>" name="redirect">
@@ -146,14 +153,15 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
 
 
                     <div>
-                        <label for="username">Nom d'utilisateur*</label>
-                        <input type="text" name="username" required>
+                        <label for="username_i_id">Nom d'utilisateur*</label>
+                        <input id="username_i_id" type="text" name="username" required>
                     </div>
                     <div>
-                        <label for="password" style="display: flex">Mot de passe*
-                            <span class="tooltip">
+                        <div class="password-label">
+                            <label for="password_i_id">Mot de passe*</label>
+                            <div class="tooltip">
                                 <img class="tooltipImage" src="assets/images/info-icon.svg" alt="bouton info">
-                                <div class="tooltiptext">Votre mot de passe doit contenir:
+                                <span class="tooltiptext"> Votre mot de passe doit contenir:
                                     <ul>
                                         <li>Au moins 8 caractères</li>
                                         <li>Au moins une lettre minuscule</li>
@@ -161,30 +169,29 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
                                         <li>Au moins un chiffre</li>
                                         <li>Au moins un caractère spécial</li>
                                     </ul>
-                                </div>
-                            </span>
-                        </label>
-
-                        <input type="password" name="password" required>
+                                </span>
+                            </div>
+                        </div>
+                        <input id="password_i_id" type="password" name="password" required>
                     </div>
                     <div>
-                        <label for="passwordConfirmation">Confirmer le mot de passe*</label>
-                        <input type="password" name="passwordConfirmation" required>
-                    </div>
-
-                    <div>
-                        <label for="nom">Nom</label>
-                        <input type="text" name="nom">
+                        <label for="passwordConfirmation_id">Confirmer le mot de passe*</label>
+                        <input id="passwordConfirmation_id" type="password" name="passwordConfirmation" required>
                     </div>
 
                     <div>
-                        <label for="prenom">Prénom</label>
-                        <input type="text" name="prenom">
+                        <label for="nom_id">Nom</label>
+                        <input id="nom_id" type="text" name="nom">
                     </div>
 
                     <div>
-                        <label for="email">Email</label>
-                        <input type="email" name="email">
+                        <label for="prenom_id">Prénom</label>
+                        <input id="prenom_id" type="text" name="prenom">
+                    </div>
+
+                    <div>
+                        <label for="email_id">Email</label>
+                        <input id="email_id" type="email" name="email">
                     </div>
 
                     <div>
@@ -206,9 +213,6 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
             </div>
         </div>
     </main>
-
-    <footer id="">
-    </footer>
 
     <script>
         const body = document.querySelector("body");
@@ -234,5 +238,4 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
         });
     </script>
 </body>
-
 </html>

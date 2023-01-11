@@ -2,9 +2,7 @@
 
 namespace App\SAE\Model\Repository;
 
-use App\SAE\Model\DataObject\AbstractDataObject;
 use App\SAE\Model\DataObject\Paragraphe;
-use App\SAE\Model\DataObject\Utilisateur;
 
 class ParagrapheRepository extends AbstractRepository
 {

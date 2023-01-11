@@ -2,9 +2,11 @@
 
 namespace App\SAE\Lib;
 
-class PhotoProfil {
+class PhotoProfil
+{
 
-    public static function getRandomPhotoProfilParDefaut(): string {
+    public static function getRandomPhotoProfilParDefaut(): string
+    {
 
         $randomInt = random_int(0, 10);
 
@@ -13,21 +15,27 @@ class PhotoProfil {
         return base64_encode($photoData);
     }
 
-    public static function getPhotoProfilNull(): string {
+    public static function getPhotoProfilNull(): string
+    {
 
         $photoData = file_get_contents(__DIR__ . "/../../web/assets/images/defaultPFPs/null.jpg");
 
         return base64_encode($photoData);
     }
 
-    public static function getPhotoProfilDeleted(): string {
+    public static function getPhotoProfilDeleted(): string
+    {
 
         $photoData = file_get_contents(__DIR__ . "/../../web/assets/images/defaultPFPs/deleted.jpg");
 
         return base64_encode($photoData);
     }
 
-    public static function convertirRedimensionnerRogner(string $photoData, int $longueurCote = 256): string {
+    public static function convertirRedimensionnerRogner(string|null $photoData, int $longueurCote = 256): string
+    {
+        if($photoData === null){
+            return self::getPhotoProfilNull();
+        }
 
         $b64 = base64_decode($photoData);
 
@@ -70,7 +78,7 @@ class PhotoProfil {
         $isSvg = strpos($decoded, "<svg") !== false;
 
 
-        if($isSvg) {
+        if ($isSvg) {
             return "<img src='data:image/svg+xml;base64," . $photoData . "' alt='$alt' class='$class'>";
         } else {
             return "<img src='data:image/png;base64," . $photoData . "' alt='$alt' class='$class'>";

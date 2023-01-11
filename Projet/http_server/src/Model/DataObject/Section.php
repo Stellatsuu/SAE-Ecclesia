@@ -15,7 +15,8 @@ class Section extends AbstractDataObject implements JsonSerializable {
     private string $nomSection;
     private string $descriptionSection;
 
-    public function __construct(int $idSection, Question|int $question, string $nomSection, string $descriptionSection) {
+    public function __construct(int $idSection, Question|int $question, string $nomSection, string $descriptionSection)
+    {
         $this->idSection = $idSection;
         $this->nomSection = $nomSection;
         $this->descriptionSection = $descriptionSection;
@@ -31,7 +32,8 @@ class Section extends AbstractDataObject implements JsonSerializable {
 
     //Respect du contrat
 
-    public function formatTableau(): array {
+    public function formatTableau(): array
+    {
         return [
             'id_question' => $this->idQuestion,
             'nom_section' => $this->nomSection,
@@ -39,49 +41,57 @@ class Section extends AbstractDataObject implements JsonSerializable {
         ];
     }
 
-    public function getValeurClePrimaire(): int {
+    public function getValeurClePrimaire(): int
+    {
         return $this->getIdSection();
     }
 
     // Getters
 
-    public function getIdSection(): int {
+    public function getIdSection(): int
+    {
         return $this->idSection;
     }
 
-    public function getIdQuestion(): int {
+    public function getIdQuestion(): int
+    {
         return $this->idQuestion;
     }
 
-    public function getQuestion(): ?Question {
+    public function getQuestion(): ?Question
+    {
         if ($this->question === null) {
             $this->question = (new QuestionRepository)->select($this->idQuestion);
         }
         return $this->question;
     }
 
-    public function getNomSection(): string {
+    public function getNomSection(): string
+    {
         return $this->nomSection;
     }
 
-    public function getDescriptionSection(): string {
+    public function getDescriptionSection(): string
+    {
         return $this->descriptionSection;
     }
 
     // Setters
 
-    public function setIdQuestion(int $idQuestion): void {
+    public function setIdQuestion(int $idQuestion): void
+    {
         $this->idQuestion = $idQuestion;
     }
 
     //Serialisation
 
-    public function JsonSerialize(): array {
+    public function JsonSerialize(): array
+    {
         return [
-            'id_section' => $this->idSection,
-            'id_question' => $this->idQuestion,
-            'nom_section' => $this->nomSection,
-            'description_section' => $this->descriptionSection
+            'id_section' => htmlspecialchars($this->idSection),
+            'id_question' => htmlspecialchars($this->idQuestion),
+            'nom_section' => htmlspecialchars($this->nomSection),
+            'description_section' => htmlspecialchars($this->descriptionSection)
         ];
     }
 

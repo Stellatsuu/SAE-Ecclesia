@@ -2,6 +2,7 @@
 
 namespace App\SAE\Model\Repository;
 
+use App\SAE\Lib\ConnexionUtilisateur;
 use App\SAE\Model\DataObject\AbstractDataObject;
 use App\SAE\Model\DataObject\Question;
 use App\SAE\Model\SystemeVote\SystemeVoteFactory;
@@ -43,10 +44,10 @@ class QuestionRepository extends AbstractRepository
             $row['description_question'],
             $row['username_organisateur']
         );
-        $question->setDateDebutRedaction($row['date_debut_redaction'] == NULL ? NULL : new DateTime($row['date_debut_redaction']));
-        $question->setDateFinRedaction($row['date_fin_redaction'] == NULL ? NULL : new DateTime($row['date_fin_redaction']));
-        $question->setDateOuvertureVotes($row['date_ouverture_votes'] == NULL ? NULL : new DateTime($row['date_ouverture_votes']));
-        $question->setDateFermetureVotes($row['date_fermeture_votes'] == NULL ? NULL : new DateTime($row['date_fermeture_votes']));
+        $question->setDateDebutRedaction($row['date_debut_redaction'] == null ? null : new DateTime($row['date_debut_redaction']));
+        $question->setDateFinRedaction($row['date_fin_redaction'] == null ? null : new DateTime($row['date_fin_redaction']));
+        $question->setDateOuvertureVotes($row['date_ouverture_votes'] == null ? null : new DateTime($row['date_ouverture_votes']));
+        $question->setDateFermetureVotes($row['date_fermeture_votes'] == null ? null : new DateTime($row['date_fermeture_votes']));
         $question->setSystemeVote(SystemeVoteFactory::createSystemeVote($row['systeme_vote'], $question));
         $question->setTags($row['tags']);
         return $question;
@@ -125,81 +126,130 @@ class QuestionRepository extends AbstractRepository
         return $resultat;
     }
 
-    public function selectAllLimitOffset(int $limit, int $offset, array $motsCles = [], array $tags=[]): array
+    public function selectAllListerQuestions(int $limit, int $offset, array $motsCles = [], array $tags = [], array $filtres = []): array
     {
-        $conditions = [];
-        for ($i = 0; $i < count($motsCles); $i++) {
-            $conditions[] = "AND (LOWER(titre_question) LIKE :mot_cle_$i OR LOWER(description_question) LIKE :mot_cle_$i)";
-        }
+        $conditionsEtValues = $this->genererConditionsEtValuesListerQuestions($motsCles, $tags, $filtres);
+        $conditions = $conditionsEtValues['conditions'];
+        $values = $conditionsEtValues['values'];
 
-        $tags="{" . implode(",",$tags) . "}";
-        $conditions[] = "AND tags @> :tags";
-
-        $conditions = implode(' ', $conditions);
+        $values['limit'] = $limit;
+        $values['offset'] = $offset;
 
         $sql = <<<SQL
             SELECT *
-                FROM question 
-                WHERE date_debut_redaction IS NOT NULL
-                AND date_debut_redaction <= CURRENT_TIMESTAMP
-                $conditions
+                FROM question q
+                WHERE $conditions
                 ORDER BY date_debut_redaction DESC
                 LIMIT :limit
                 OFFSET :offset
         SQL;
 
-        $pdo = DatabaseConnection::getPdo();
-        $pdoStatement = $pdo->prepare($sql);
-        $values = [
-            'limit' => $limit,
-            'offset' => $offset,
-            'tags' => $tags,
-        ];
+        $stmt = DatabaseConnection::getPdo()->prepare($sql);
+        $stmt->execute($values);
 
-        for ($i = 0; $i < count($motsCles); $i++) {
-            $values["mot_cle_$i"] = "%$motsCles[$i]%";
-        }
-
-        $pdoStatement->execute($values);
         $resultat = [];
-        foreach ($pdoStatement as $ligne) {
+        foreach ($stmt as $ligne) {
             $resultat[] = $this->construire($ligne);
         }
+
         return $resultat;
     }
 
-    public function countAllPhaseRedactionOuPlus(array $motsCles = [], array $tags=[]): int
+    public function countAllListerQuestion(array $motsCles = [], array $tags = [], array $filtres = []): int
     {
-        $conditions = [];
-        for ($i = 0; $i < count($motsCles); $i++) {
-            $conditions[] = "AND (LOWER(titre_question) LIKE :mot_cle_$i OR LOWER(description_question) LIKE :mot_cle_$i)";
-        }
-
-        $tags="{" . implode(",",$tags) . "}";
-        $conditions[] = "AND tags @> :tags";
-
-        $conditions = implode(' ', $conditions);
+        $conditionsEtValues = $this->genererConditionsEtValuesListerQuestions($motsCles, $tags, $filtres);
+        $conditions = $conditionsEtValues['conditions'];
+        $values = $conditionsEtValues['values'];
 
         $sql = <<<SQL
             SELECT COUNT(*)
-                FROM question
-                WHERE date_debut_redaction IS NOT NULL
-                AND date_debut_redaction <= CURRENT_TIMESTAMP
-                $conditions
+                FROM question q 
+                WHERE $conditions
         SQL;
 
-        $values = [
-            'tags' => $tags,
-        ];
+        $stmt = DatabaseConnection::getPdo()->prepare($sql);
+        $stmt->execute($values);
 
+        return $stmt->fetchColumn();
+    }
+
+    private function genererConditionsEtValuesListerQuestions(array $motsCles = [], array $tags = [], array $filtres = [])
+    {
+
+        $modeMesQuestions = in_array("mq", $filtres);
+
+        $conditions = [];
+
+        $connecte = ConnexionUtilisateur::estConnecte();
+
+
+        //MODE MES QUESTIONS
+        if ($connecte && $modeMesQuestions) {
+            $conditions[] = "(username_organisateur = :username)";
+            $values['username'] = ConnexionUtilisateur::getUsername();
+        } else {
+            $conditions[] = "(date_debut_redaction IS NOT NULL AND date_debut_redaction <= CURRENT_TIMESTAMP)";
+        }
+
+
+        //RÔLES
+        $conditionsRoles = [];
+
+        if ($connecte && in_array("redacteur", $filtres)) {
+            $conditionsRoles[] = "(EXISTS(SELECT * FROM redacteur WHERE username_redacteur = :username AND id_question = q.id_question))";
+            $values['username'] = ConnexionUtilisateur::getUsername();
+        }
+
+        if ($connecte && in_array("coauteur", $filtres)) {
+            $conditionsRoles[] = "(EXISTS(SELECT * FROM co_auteur ca JOIN paragraphe pa ON ca.id_paragraphe = pa.id_paragraphe JOIN proposition p ON pa.id_proposition = p.id_proposition WHERE username_co_auteur = :username AND p.id_question = q.id_question))";
+            $values['username'] = ConnexionUtilisateur::getUsername();
+        }
+
+        if ($connecte && in_array("votant", $filtres)) {
+            $conditionsRoles[] = "(EXISTS(SELECT * FROM votant WHERE username_votant = :username AND id_question = q.id_question))";
+            $values['username'] = ConnexionUtilisateur::getUsername();
+        }
+
+        $conditionsRoles = implode(" OR ", $conditionsRoles);
+        if($conditionsRoles != "") $conditions[] = "($conditionsRoles)";
+
+
+        //PHASES
+        $conditionsPhases = [];
+
+        if (in_array("non_remplie", $filtres)) $conditionsPhases[] = "getPhase(id_question) = 'nonRemplie'";
+
+        if (in_array("attente", $filtres)) $conditionsPhases[] = "getPhase(id_question) = 'attente'";
+
+        if (in_array("lecture", $filtres)) $conditionsPhases[] = "getPhase(id_question) = 'lecture'";
+
+        if (in_array("redaction", $filtres)) $conditionsPhases[] = "getPhase(id_question) = 'redaction'";
+
+        if (in_array("vote", $filtres)) $conditionsPhases[] = "getPhase(id_question) = 'vote'";
+
+        if (in_array("resultat", $filtres)) $conditionsPhases[] = "getPhase(id_question) = 'resultat'";
+
+        $conditionsPhases = implode(" OR ", $conditionsPhases);
+        if($conditionsPhases != "") $conditions[] = "($conditionsPhases)";
+
+
+        //TAGS
+        $tags = "{" . implode(",", $tags) . "}";
+
+        $conditions[] = "(tags @> :tags)";
+        $values['tags'] = $tags;
+
+
+        //MOTS-CLÉS
         for ($i = 0; $i < count($motsCles); $i++) {
+            $conditions[] = "(LOWER(titre_question) LIKE :mot_cle_$i OR LOWER(description_question) LIKE :mot_cle_$i)";
             $values["mot_cle_$i"] = "%$motsCles[$i]%";
         }
 
-        $pdo = DatabaseConnection::getPdo();
-        $pdoStatement = $pdo->prepare($sql);
-        $pdoStatement->execute($values);
+        
+        $conditions = implode(" AND ", $conditions);
 
-        return $pdoStatement->fetchColumn();
+
+        return ["conditions" => $conditions, "values" => $values];
     }
 }
