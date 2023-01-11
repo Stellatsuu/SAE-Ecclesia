@@ -1615,6 +1615,14 @@ input[type=checkbox]:checked::before {
 #afficher-resultats .voteAlternatif table .propositionGagnante {
   background-color: #E1603C;
 }
+#afficher-resultats .pasDeVote {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#afficher-resultats .pasDeVote > p {
+  margin-top: 20px;
+}
 
 #listeQuestionsFinies .question {
   text-align: justify;
