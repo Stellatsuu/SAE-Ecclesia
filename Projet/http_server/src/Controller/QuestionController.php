@@ -320,6 +320,8 @@ class QuestionController extends MainController
 
     public static function listerQuestions()
     {
+        $username = ConnexionUtilisateur::getUsername() ?: "";
+
         $nbQuestionsParPage = 12;
         $query = isset($_GET["query"]) ? strtolower($_GET["query"]) : "";
         $motsClesEtTags = explode(" ", $query) ?: [];
@@ -358,10 +360,32 @@ class QuestionController extends MainController
 
         $questions = (new QuestionRepository())->selectAllListerQuestions($nbQuestionsParPage, $offset, $motsCles, $tags, $filtres);
 
+        $dataQuestions = array_map(function ($question) use ($username) {
+            $question = Question::castIfNotNull($question);
+            return [
+                "idQuestion" => $question->getIdQuestion(),
+                "titre" => $question->getTitre(),
+                "description" => $question->getDescription(),
+                "datePublication" => $question->getDateDebutRedaction() ? $question->getDateDebutRedaction()->format("d/m/Y") : "Non Publiée",
+                "phase" => $question->getPhase()->toString(),
+                "nomUsuelOrganisateur" => $question->getOrganisateur()->getNomUsuel(),
+                "pfp" => $question->getOrganisateur()->getPhotoProfil(),
+                "estAVous" => $username == $question->getUsernameOrganisateur(),
+            ];
+        }, $questions);
+
+
+
+
+
+
+
+
         static::afficherVue("view.php", [
             "titrePage" => "Liste des questions",
             "contenuPage" => "listeQuestions.php",
-            "questions" => $questions,
+            "dataQuestions" => $dataQuestions,
+            "estConnecte" => ConnexionUtilisateur::estConnecte(),
             "page" => $page,
             "nbPages" => $nbPages,
             "query" => $query,

@@ -15,7 +15,6 @@ if($resultats == "") {
     <h2 class="resultats-vote__body__noresults">Pas de résultats sans propositions.</h2>
     HTML;
 }
-
 ?>
 
 <div class="panel" id="afficher-resultats">

@@ -1,49 +1,30 @@
 <?php
 
-use App\SAE\Lib\ConnexionUtilisateur;
 use App\SAE\Lib\Markdown;
-use App\SAE\Lib\PhaseQuestion;
 use App\SAE\Lib\PhotoProfil;
-use App\SAE\Model\DataObject\Question;
 
+//$dataQuestions
+//$estConnecte
 $query = htmlspecialchars(rawurldecode($query));
 
-$questionHTMLs = [];
-foreach ($questions as $q) {
-    $question = Question::castIfNotNull($q);
-    $idQuestion = $question->getIdQuestion();
-    $utilisateur = $question->getOrganisateur();
+$questionHTMLs = array_map(function ($question) {
+    $idQuestion = $question["idQuestion"];
+    $titre = htmlspecialchars($question["titre"]);
+    $description = Markdown::toHtml($question["description"]);
+    $datePublication = htmlspecialchars($question["datePublication"]);
+    $phase = htmlspecialchars($question["phase"]);
+    $estAVous = $question['estAVous'];
+    $pfp = PhotoProfil::getBaliseImg($question['pfp'], "photo de profil", $estAVous ? "pfp--self" : "");
+    $nomUsuelOrganisateur = $estAVous ? "<strong>Vous</strong>" : htmlspecialchars($question['nomUsuelOrganisateur']);
 
-    $query = htmlspecialchars(rawurldecode($query));
-    $titre = htmlspecialchars($question->getTitre());
-    $description = Markdown::toHtml($question->getDescription());
-    $datePublication = "Non publiée";
-    if (!($question->getPhase() == PhaseQuestion::NonRemplie || $question->getPhase() == PhaseQuestion::Attente)) {
-        $datePublication = htmlspecialchars($question->getDateDebutRedaction()->format("d/m/Y"));
-    }
-    $phase = htmlspecialchars($question->getPhase()->toString());
-    $nomUsuel = htmlspecialchars($utilisateur->getNomUsuel());
-    $nomUsuel = preg_replace("/ /", "&nbsp;", $nomUsuel, 1);
-    $b64img = htmlspecialchars($utilisateur->getPhotoProfil(64));
-
-
-    if (ConnexionUtilisateur::estConnecte() && ConnexionUtilisateur::getUsername() == $utilisateur->getUsername()) {
-        $nomUsuel = "<strong>Vous</strong>";
-        $imgClass = "pfp--self";
-    } else {
-        $imgClass = "";
-    }
-
-    $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil", $imgClass);
-
-    $html = <<<HTML
+    return <<<HTML
         <div class="question-compact">
             <div class="question-compact__top">
 
                 <div class="question-compact__top__pfp user-tooltip">
                     $pfp
                     <div class="user-tooltip__text">
-                        $nomUsuel
+                        $nomUsuelOrganisateur
                     </div>
                 </div>
 
@@ -66,9 +47,7 @@ foreach ($questions as $q) {
             </span>
         </div>
     HTML;
-
-    $questionHTMLs[] = $html;
-}
+}, $dataQuestions);
 
 function pageLink($page, $text, $nbPages, $query, $filtres, $active = true, $isCurrent = false): string
 {
@@ -156,7 +135,7 @@ $modeMesQuestions = false;
 $boutonAutrePage = "";
 $filtreMesQuestions = "";
 $titrePage = "Questions";
-if (ConnexionUtilisateur::estConnecte()) {
+if ($estConnecte) {
     $modeMesQuestions = isset($_GET["f_mq"]);
     $lienAutrePage = $modeMesQuestions ? "frontController.php?controller=question&action=listerQuestions" : "frontController.php?controller=question&action=listerQuestions&f_mq=true";
     $style= $modeMesQuestions ? "" : "style='transform: rotate(180deg);'";
@@ -184,7 +163,7 @@ if (ConnexionUtilisateur::estConnecte()) {
 }
 
 $filtresRolesHTMLElements = [];
-if (ConnexionUtilisateur::estConnecte()) {
+if ($estConnecte) {
     $filtresRolesHTMLElements[] = <<<HTML
         <span class="menu-filtre-4fr">Rôles(s)</span>
     HTML;
