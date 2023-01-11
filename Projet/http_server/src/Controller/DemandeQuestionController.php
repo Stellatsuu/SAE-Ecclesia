@@ -19,10 +19,20 @@ class DemandeQuestionController extends MainController
 
         $demandes = (new DemandeQuestionRepository)->selectAll();
 
+        $dataDemandes = array_map(function ($demande) {
+            $demande = DemandeQuestion::castIfNotNull($demande);
+            return [
+                "idQuestion" => $demande->getIdQuestion(),
+                "titre" => $demande->getTitre(),
+                "description" => $demande->getDescription(),
+                "nomUsuelOrganisateur" => $demande->getOrganisateur()->getNomUsuel()
+            ];
+        }, $demandes);
+
         static::afficherVue("view.php", [
             "titrePage" => "Liste des demandes",
             "contenuPage" => "listeDemandesQuestion.php",
-            "demandes" => $demandes
+            "dataDemandes" => $dataDemandes
         ]);
     }
 
