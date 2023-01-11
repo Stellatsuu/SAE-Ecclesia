@@ -40,7 +40,7 @@ if ($estConnecte) {
     html;
 
     $pfp = <<<html
-    <img src="assets/images/defaultPFPs/disconnected.jpg"/>
+    <img src="assets/images/defaultPFPs/disconnected.jpg" alt="disconnectedPFP"/>
     html;
 }
 
@@ -65,7 +65,7 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
         <input type="checkbox" id="mobileOpen" />
         <div id="mobileMenu">
             <label id="barreMenu" for="mobileOpen">
-                <img src="assets/images/logoSite.svg" alt="logo du site" />
+                <img src="assets/images/logoSite.svg" alt="websiteLogo" />
             </label>
             <?php if ($estConnecte) echo
              "<div id='pfpMobile'>
@@ -161,7 +161,7 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
                             <label for="password_i_id">Mot de passe*</label>
                             <div class="tooltip">
                                 <img class="tooltipImage" src="assets/images/info-icon.svg" alt="bouton info">
-                                <div class="tooltiptext">Votre mot de passe doit contenir:
+                                <span class="tooltiptext"> Votre mot de passe doit contenir:
                                     <ul>
                                         <li>Au moins 8 caractères</li>
                                         <li>Au moins une lettre minuscule</li>
@@ -169,7 +169,7 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
                                         <li>Au moins un chiffre</li>
                                         <li>Au moins un caractère spécial</li>
                                     </ul>
-                                </div>
+                                </span>
                             </div>
                         </div>
                         <input id="password_i_id" type="password" name="password" required>
