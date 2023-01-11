@@ -1,5 +1,5 @@
 #afficherProfil{
-  max-width: 50%;
+  min-width: 60%;
 
   #contenuProfil {
     display: flex;
@@ -12,6 +12,10 @@
       width: 20px;
       height: 20px;
       margin-left: 5px;
+    }
+
+    #informations{
+      gap: 5%;
     }
 
     #PPusername {
