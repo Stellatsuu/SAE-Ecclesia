@@ -1280,9 +1280,9 @@
 											"font": "Arial;13;0",
 											"left": 285,
 											"top": 349,
-											"width": 204.8134765625,
+											"width": 213.51611328125,
 											"height": 13,
-											"text": "+RoleUtilisateur: Utilisateur",
+											"text": "+RoleUtilisateur: Utilisateur connecté",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1297,7 +1297,7 @@
 											"font": "Arial;13;0",
 											"left": 285,
 											"top": 364,
-											"width": 204.8134765625,
+											"width": 213.51611328125,
 											"height": 13,
 											"text": "+RoleBDD: Serveur PostGre - BDD",
 											"horizontalAlignment": 0
@@ -1307,7 +1307,7 @@
 									"font": "Arial;13;0",
 									"left": 280,
 									"top": 344,
-									"width": 214.8134765625,
+									"width": 223.51611328125,
 									"height": 38
 								},
 								{
@@ -14045,7 +14045,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1041,
-									"top": 489,
+									"top": 501,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -14066,7 +14066,7 @@
 									"visible": null,
 									"font": "Arial;13;0",
 									"left": 1026,
-									"top": 489,
+									"top": 501,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -14087,7 +14087,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1070,
-									"top": 490,
+									"top": 502,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -14171,7 +14171,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1398,
-									"top": 451,
+									"top": 475,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 30,
@@ -14191,7 +14191,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1395,
-									"top": 437,
+									"top": 461,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -14211,7 +14211,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1402,
-									"top": 478,
+									"top": 502,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 25,
@@ -14256,7 +14256,7 @@
 								"$ref": "AAAAAAGE/gRq/e27yzw="
 							},
 							"lineStyle": 2,
-							"points": "1035:520;1056:520;1056:472;1424:472",
+							"points": "1035:520;1056:520;1056:496;1424:496",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGE/gWlzgFM47s="
