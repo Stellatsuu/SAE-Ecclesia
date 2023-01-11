@@ -1,31 +1,31 @@
 <?php
 
-use App\SAE\Lib\ConnexionUtilisateur;
 use App\SAE\Lib\Markdown;
 use App\SAE\Lib\PhaseQuestion;
-use App\SAE\Model\DataObject\Proposition;
-use App\SAE\Model\DataObject\Question;
-use App\SAE\Model\Repository\CoAuteurRepository;
-use App\SAE\Model\Repository\VotantRepository;
 
-$username = ConnexionUtilisateur::getUsername() ?? "";
-$question = Question::castIfNotNull($question);
-$phase = $question->getPhase();
-$idQuestion = $question->getIdQuestion();
-$idQuestionUrl = rawurlencode($idQuestion);
-$idQuestionHtml = rawurlencode($idQuestion);
-$organisateur = $question->getOrganisateur();
-$usernameOrganisateur = $organisateur->getUsername();
-$systemeVote = $question->getSystemeVote();
-$interfaceVote = $systemeVote->afficherInterfaceVote();
-//$propositions passé par le Controller
-//$index passé par le Controller
+//$dataQuestion
+$idQuestion = rawurlencode($dataQuestion['idQuestion']);
+$titreQuestion = htmlspecialchars($dataQuestion['titreQuestion']);
+$descriptionQuestion = Markdown::toHtml($dataQuestion['descriptionQuestion']);
+$nomUsuelOrganisateur = htmlspecialchars($dataQuestion['nomUsuelOrganisateur']);
+$interfaceVote = $dataQuestion['interfaceVote'];
 
-$titreQuestion = htmlspecialchars($question->getTitre());
-$descriptionQuestion = Markdown::toHtml($question->getDescription());
-$nomUsuelOrga = htmlspecialchars($organisateur->getNomUsuel());
+//$dataProposition
+$idProposition = rawurlencode($dataProposition['idProposition']);
+$titreProposition = htmlspecialchars($dataProposition['titreProposition']);
+$nomUsuelResponsable = htmlspecialchars($dataProposition['nomUsuelResponsable']);
+$paragraphes = $dataProposition['paragraphes'];
 
-if (empty($propositions)) {
+//$index
+//$nbPropositions
+
+//$peutSupprimer
+//$peutEditer
+//$peutVoter
+//$peutGererCoAuteurs
+//$peutDemanderCoAuteur
+
+if ($nbPropositions == 0) {
 
     $bodyContent = <<<HTML
     <div class="panel2">
@@ -37,64 +37,34 @@ if (empty($propositions)) {
     HTML;
 
     $formulaireVoteHTML = "";
-
 } else {
-    $index = $index % count($propositions);
-    $nbPropopositions = count($propositions);
-    $indexPrevious = $index == 0 ? $nbPropopositions - 1 : $index - 1;
-    $indexNext = ($index + 1) % $nbPropopositions;
 
-    $propositionActuelle = Proposition::castIfNotNull($propositions[$index]);
-    $idProposition = $propositionActuelle->getIdProposition();
-    $idPropositionUrl = rawurlencode($idProposition);
-    $usernameResponsable = $propositionActuelle->getUsernameResponsable();
-    $paragraphes = $propositionActuelle->getParagraphes();
-
-    $nomUsuelResp = htmlspecialchars($propositionActuelle->getResponsable()->getNomUsuel());
-    $titreProposition = htmlspecialchars($propositionActuelle->getTitreProposition());
-
-    $paragraphesHTML = [];
-    foreach ($paragraphes as $paragraphe) {
-        $nomSection = htmlspecialchars($paragraphe->getSection()->getNomSection());
-        $contenu = Markdown::toHtml($paragraphe->getContenuParagraphe());
-
-        $paragrapheHTML = <<<HTML
-        <h2>$nomSection</h2>
-        <div class = "markdown">$contenu</div>
-        HTML;
-
-        $paragraphesHTML[] = $paragrapheHTML;
-    }
-    $paragraphesHTML = implode("", $paragraphesHTML);
-
-    $estOrganisateur = $username == $usernameOrganisateur;
-    $estResponsable = $username == $usernameResponsable;
-    $estCoAuteur = (new CoAuteurRepository())->existsForProposition($idProposition, $username) || $estResponsable;
-    $estVotant = (new VotantRepository)->existsForQuestion($idQuestion, $username);
+    $indexPrevious = $index == 0 ? $nbPropositions - 1 : $index - 1;
+    $indexNext = ($index + 1) % $nbPropositions;
 
     $selectorHTML = <<<HTML
     <div id="afficher-propositions__selector">
-        <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestionUrl&index=$indexPrevious">
+        <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion&index=$indexPrevious">
             <img src="assets/images/arrow.svg" style="transform: rotate(90deg)" alt="flèche vers la gauche">
         </a>
         <span class="boite">$titreProposition</span>
-        <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestionUrl&index=$indexNext">
+        <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion&index=$indexNext">
             <img src="assets/images/arrow.svg" style="transform: rotate(-90deg)" alt="flèche vers la droite">
         </a>
     </div>
     HTML;
 
-    $propositonActuelleHTML = <<<HTML
-        <div class="boite" id="afficher-propositions__proposition">
-            $paragraphesHTML
-        </div>
-    HTML;
 
-    $signatureHTML = <<<HTML
-        <p id="afficher-propositions__nom-responsable">
-            $nomUsuelResp
-        </p>
-    HTML;
+    $paragraphesHTML = array_map(function ($paragraphe) {
+        $titre = htmlspecialchars($paragraphe['titre']);
+        $contenu = Markdown::toHtml($paragraphe['contenu']);
+
+        return <<<HTML
+            <h2>$titre</h2>
+            <div class = "markdown">$contenu</div>
+        HTML;
+    }, $paragraphes);
+    $paragraphesHTML = implode("", $paragraphesHTML);
 
     $modalHtml = <<<HTML
         <div id="modalSupprimer" class="modal">
@@ -102,7 +72,7 @@ if (empty($propositions)) {
                 <p>Êtes vous sûr(e) de vouloir supprimer la proposition ?</p>
                 <div>
                     <a class="button refuserBtn" href="#">Non</a>
-                    <a class="button validerBtn" href="frontController.php?controller=proposition&action=supprimerProposition&idProposition=$idPropositionUrl">Oui</a>
+                    <a class="button validerBtn" href="frontController.php?controller=proposition&action=supprimerProposition&idProposition=$idProposition">Oui</a>
                 </div>
                 <a href="#" class="modal-close">
                     <img src="assets/images/close-icon.svg" alt="bouton fermer">
@@ -116,49 +86,52 @@ if (empty($propositions)) {
     HTML;
 
     $btnModifierHTML = <<<HTML
-        <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireContribuerProposition&idProposition=$idPropositionUrl">Modifier</a>
+        <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireContribuerProposition&idProposition=$idProposition">Modifier</a>
     HTML;
 
     $btnDemanderCoAuteurHTML = <<<HTML
-        <a class="button" href="frontController.php?controller=coAuteur&action=afficherFormulaireDemanderCoAuteur&idProposition=$idPropositionUrl">Demander à être co-auteur</a>
+        <a class="button" href="frontController.php?controller=coAuteur&action=afficherFormulaireDemanderCoAuteur&idProposition=$idProposition">Demander à être co-auteur</a>
     HTML;
 
     $btnGererCoAuteursHTML = <<<HTML
-        <a class="button" href="frontController.php?controller=coAuteur&action=afficherFormulaireGererCoAuteurs&idProposition=$idPropositionUrl">Gérer les co-auteurs</a>
+        <a class="button" href="frontController.php?controller=coAuteur&action=afficherFormulaireGererCoAuteurs&idProposition=$idProposition">Gérer les co-auteurs</a>
     HTML;
 
-    $btnSupprimerHTML = ($estOrganisateur || $estResponsable) && ($phase == PhaseQuestion::Redaction || $phase == PhaseQuestion::Lecture) ? $btnSupprimerHTML : "";
-    $btnModifierHTML = ($estResponsable || $estCoAuteur) && $phase == PhaseQuestion::Redaction ? $btnModifierHTML : "";
-    $btnDemanderCoAuteurHTML = !$estCoAuteur && $phase == PhaseQuestion::Redaction ? $btnDemanderCoAuteurHTML : "";
-    $btnGererCoAuteursHTML = $estResponsable && $phase == PhaseQuestion::Redaction ? $btnGererCoAuteursHTML : "";
-
-    $boutonsHTML = <<<HTML
-        <div id="afficher-propositions__boutons">
-            $btnDemanderCoAuteurHTML
-            $btnModifierHTML
-            $btnSupprimerHTML
-            $btnGererCoAuteursHTML
-        </div>
-    HTML;
+    $btnSupprimerHTML = $peutSupprimer ? $btnSupprimerHTML : "";
+    $btnModifierHTML = $peutEditer ? $btnModifierHTML : "";
+    $btnDemanderCoAuteurHTML = $peutDemanderCoAuteur ? $btnDemanderCoAuteurHTML : "";
+    $btnGererCoAuteursHTML = $peutGererCoAuteurs ? $btnGererCoAuteursHTML : "";
 
     $bodyContent = <<<HTML
         $selectorHTML
-        $propositonActuelleHTML
+
+        <div class="boite" id="afficher-propositions__proposition">
+            $paragraphesHTML
+        </div>
+
         <div id="afficher-propositions__proposition__under">
-            $signatureHTML
-            $boutonsHTML
+            <p id="afficher-propositions__nom-responsable">
+                $nomUsuelResponsable
+            </p>
+            
+            <div id="afficher-propositions__boutons">
+                $btnDemanderCoAuteurHTML
+                $btnModifierHTML
+                $btnSupprimerHTML
+                $btnGererCoAuteursHTML
+            </div>
         </div>
     HTML;
 
     $formulaireVoteHTML = <<<HTML
         <form id="afficher-propositions__formulaire-vote" action="frontController.php?controller=vote&action=voter" method="post">
             <h2>Vote</h2>
-            <input type="hidden" name="idQuestion" value="$idQuestionHtml">
+            <input type="hidden" name="idQuestion" value="$idQuestion">
             $interfaceVote
         </form>
     HTML;
 
-    $formulaireVoteHTML = $estVotant && $phase == PhaseQuestion::Vote ? $formulaireVoteHTML : "";
+    $formulaireVoteHTML = $peutVoter ? $formulaireVoteHTML : "";
 }
 ?>
 
@@ -167,7 +140,7 @@ if (empty($propositions)) {
     <div id="afficher-propositions__top">
         <h1><?= $titreQuestion ?>
             <span>
-                par&nbsp;<?= $nomUsuelOrga ?>
+                par&nbsp;<?= $nomUsuelOrganisateur ?>
             </span>
         </h1>
     </div>
