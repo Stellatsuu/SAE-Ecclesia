@@ -93,41 +93,41 @@ function pageLink($page, $text, $nbPages, $query, $filtres, $active = true, $isC
 }
 if ($nbPages == 1) {
     $paginationLinks = [
-        pageLink(-1, "&lt&lt", 1, $query, $filtres, false),
-        pageLink(-1, "&lt", 1, $query, $filtres, false),
+        pageLink(-1, "&lt;&lt;", 1, $query, $filtres, false),
+        pageLink(-1, "&lt;", 1, $query, $filtres, false),
         pageLink(1, "1", 1, $query, $filtres, true, true),
-        pageLink(-1, "&gt", 1, $query, $filtres, false),
-        pageLink(-1, "&gt&gt", 1, $query, $filtres, false),
+        pageLink(-1, "&gt;", 1, $query, $filtres, false),
+        pageLink(-1, "&gt;&gt;", 1, $query, $filtres, false),
     ];
 } elseif ($page == 1) {
     $paginationLinks = [
-        pageLink(-1, "&lt&lt", $nbPages, $query, $filtres, false),
-        pageLink(-1, "&lt", $nbPages, $query, $filtres, false),
+        pageLink(-1, "&lt;&lt;", $nbPages, $query, $filtres, false),
+        pageLink(-1, "&lt;", $nbPages, $query, $filtres, false),
         pageLink(1, "1", $nbPages, $query, $filtres, true, true),
         pageLink(2, "2", $nbPages, $query, $filtres),
         pageLink(3, "3", $nbPages, $query, $filtres),
-        pageLink(2, "&gt", $nbPages, $query, $filtres),
-        pageLink($nbPages, "&gt&gt", $nbPages, $query, $filtres)
+        pageLink(2, "&gt;", $nbPages, $query, $filtres),
+        pageLink($nbPages, "&gt;&gt;", $nbPages, $query, $filtres)
     ];
 } elseif ($page >= $nbPages) {
     $paginationLinks = [
-        pageLink(1, "&lt&lt", $nbPages, $query, $filtres),
-        pageLink($page - 1, "&lt", $nbPages, $query, $filtres),
+        pageLink(1, "&lt;&lt;", $nbPages, $query, $filtres),
+        pageLink($page - 1, "&lt;", $nbPages, $query, $filtres),
         pageLink($page - 2, $page - 2, $nbPages, $query, $filtres),
         pageLink($page - 1, $page - 1, $nbPages, $query, $filtres),
         pageLink($page, $page, $nbPages, $query, $filtres, true, true),
-        pageLink(-1, "&gt", $nbPages, $query, $filtres, false),
-        pageLink(-1, "&gt&gt", $nbPages, $query, $filtres, false)
+        pageLink(-1, "&gt;", $nbPages, $query, $filtres, false),
+        pageLink(-1, "&gt;&gt;", $nbPages, $query, $filtres, false)
     ];
 } else {
     $paginationLinks = [
-        pageLink(1, "&lt&lt", $nbPages, $query, $filtres),
-        pageLink($page - 1, "&lt", $nbPages, $query, $filtres),
+        pageLink(1, "&lt;&lt;", $nbPages, $query, $filtres),
+        pageLink($page - 1, "&lt;", $nbPages, $query, $filtres),
         pageLink($page - 1, $page - 1, $nbPages, $query, $filtres),
         pageLink($page, $page, $nbPages, $query, $filtres, true, true),
         pageLink($page + 1, $page + 1, $nbPages, $query, $filtres),
-        pageLink($page + 1, "&gt", $nbPages, $query, $filtres),
-        pageLink($nbPages, "&gt&gt", $nbPages, $query, $filtres)
+        pageLink($page + 1, "&gt;", $nbPages, $query, $filtres),
+        pageLink($nbPages, "&gt;&gt;", $nbPages, $query, $filtres)
     ];
 }
 
