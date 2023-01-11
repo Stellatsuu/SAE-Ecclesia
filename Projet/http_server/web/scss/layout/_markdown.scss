@@ -29,6 +29,10 @@ $markdownLinkColor: #08D1EC;
     margin: 10px 0;
   }
 
+  p{
+    text-align: justify;
+  }
+
   a{
     color: $markdownLinkColor;
     text-decoration-color: $markdownLinkColor;

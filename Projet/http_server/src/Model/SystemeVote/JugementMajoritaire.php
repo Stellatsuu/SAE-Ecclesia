@@ -124,6 +124,16 @@ class JugementMajoritaire extends AbstractSystemeVote
         $idQuestion = $question->getIdQuestion();
         $propositions = (new PropositionRepository)->selectAllByQuestion($idQuestion);
         $votes = (new VoteRepository)->selectAllByQuestion($idQuestion);
+
+        if (empty($votes)) {
+            return <<<HTML
+                    <div class="pasDeVote">
+                        <img src="assets/images/confused-cat.gif" alt="aucun vote"/>
+                        <p>Il n'y a pas eu de votes enregistrés pour cette question.</p>
+                    </div>
+                HTML;
+        }
+
         $histogramme = $this->calculerHistogramme($propositions, $votes);
         $idPropositionsTriees = static::trier($histogramme);
 
