@@ -895,7 +895,7 @@ input[type=checkbox]:checked::before {
 }
 @media screen and (max-width: 1000px) {
   #roles_input #votants_input,
-  #roles_input #redacteurs_input {
+#roles_input #redacteurs_input {
     width: 100%;
   }
 }
@@ -1014,6 +1014,9 @@ input[type=checkbox]:checked::before {
 }
 .markdown ul {
   margin: 10px 0;
+}
+.markdown p {
+  text-align: justify;
 }
 .markdown a {
   color: #08D1EC;
