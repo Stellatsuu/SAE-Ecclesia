@@ -1,98 +1,78 @@
 <?php
 
-use App\SAE\Lib\ConnexionUtilisateur;
 use App\SAE\Lib\Markdown;
-use App\SAE\Lib\PhaseQuestion;
+use App\SAE\Lib\PhaseQuestion as Phase;
 use App\SAE\Lib\PhotoProfil;
-use App\SAE\Model\DataObject\Proposition;
-use App\SAE\Model\DataObject\Question;
-use App\SAE\Model\Repository\VotantRepository;
 
-$username = ConnexionUtilisateur::getUsername() ?? '';
-$question = Question::castIfNotNull($question);
-$idQuestion = $question->getIdQuestion();
-$idQuestionUrl = rawurlencode($idQuestion);
-$phase = $question->getPhase();
-$sections = $question->getSections();
-$organisateur = $question->getOrganisateur();
-$systemeVote = $question->getSystemeVote();
+//$dataQuestion
+$idQuestion = rawurlencode($dataQuestion['idQuestion']);
+$titre = htmlspecialchars($dataQuestion['titre']);
+$description = htmlspecialchars($dataQuestion['description']);
+$nomUsuelOrga = htmlspecialchars($dataQuestion['nomUsuelOrga']);
+$phase = $dataQuestion['phase'];
+$nomSystemeVote = $dataQuestion['nomSystemeVote'];
+$sections = $dataQuestion['sections'];
+$propositions = $dataQuestion['propositions'];
 
-$systemeVoteNomComplet = htmlspecialchars($systemeVote->getNomComplet());
-$titreQuestion = htmlspecialchars($question->getTitre());
-$nomUsuelOrga = htmlspecialchars($organisateur->getNomUsuel());
-$descriptionQuestion = Markdown::toHtml($question->getDescription());
+//$peutEditer
+//$peutChangerPhase
+//$peutEcrireProposition
 
-$sectionHTMLs = [];
-for ($i = 0; $i < count($sections); $i++) {
+$sectionHTMLs = array_map(function ($section) {
+    $titre = htmlspecialchars($section['titre']);
+    $description = htmlspecialchars($section['description']);
 
-    $nomSection = htmlspecialchars($sections[$i]->getNomSection());
-    $descriptionSection = Markdown::toHtml($sections[$i]->getDescriptionSection());
-
-    $sectionHTML = <<<HTML
+    return <<<HTML
     <details>
-        <summary class="titre-section">$nomSection</summary>
-        <div class='description-section markdown'>$descriptionSection</div>
+        <summary class="titre-section">$titre</summary>
+        <div class='description-section markdown'>$description</div>
     </details>
     HTML;
+}, $sections);
 
-    $sectionHTMLs[] = $sectionHTML;
-}
+$propositionHTMLs = array_map(function ($proposition) use ($idQuestion) {
+    $idProposition = rawurlencode($proposition['idProposition']);
+    $titre = htmlspecialchars($proposition['titre']);
+    $nomUsuelResp = htmlspecialchars($proposition['nomUsuelResp']);
+    $estAVous = $proposition['estAVous'];
+    $pfp = PhotoProfil::getBaliseImg($proposition['pfp'], "photo de profil", $estAVous ? "pfp--self" : "");
+    $nomUsuelResp = $estAVous ? "<strong>Vous</strong>" : $proposition['nomUsuelResp'];
 
-$propositionHTMLs = [];
-for ($i = 0; $i < count($propositions); $i++) {
-    $proposition = Proposition::castIfNotNull($propositions[$i]);
-    $responsable = $proposition->getResponsable();
-
-    $titreProposition = htmlspecialchars($proposition->getTitreProposition());
-    $b64img = htmlspecialchars($responsable->getPhotoProfil());
-    $nomUsuelResp = htmlspecialchars($responsable->getNomUsuel());
-
-    if($responsable->getUsername() == $username) {
-        $nomUsuelResp = "<strong>Vous</strong>";
-        $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil", "pfp--self");
-    } else {
-        $pfp = PhotoProfil::getBaliseImg($b64img, "photo de profil");
-    }
-
-    $propositionHTML = <<<HTML
-        <div class="proposition-compact">
-                <div class="proposition-compact__pfp user-tooltip">
-                    $pfp
-                    <div class="user-tooltip__text">
-                        $nomUsuelResp
-                    </div>
+    return <<<HTML
+    <div class="proposition-compact">
+            <div class="proposition-compact__pfp user-tooltip">
+                $pfp
+                <div class="user-tooltip__text">
+                    $nomUsuelResp
                 </div>
-                <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestionUrl&index=$i">
-                    $titreProposition
-                </a>
-        </div>
+            </div>
+            <a href="frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion&idProposition=$idProposition">
+                $titre
+            </a>
+    </div>
     HTML;
+}, $propositions);
 
-    $propositionHTMLs[] = $propositionHTML;
-}
+$ligneExplicationSysVote = $phase == Phase::Resultat ?
+    "Le choix s'est fait par un $nomSystemeVote." :
+    "Le choix se fera par un $nomSystemeVote.";
 
-$ligneExplicationSysVote = $phase == PhaseQuestion::Resultat ?
-    "Le choix s'est fait par un $systemeVoteNomComplet." :
-    "Le choix se fera par un $systemeVoteNomComplet.";
+$lienVoirResultats = "<a href='frontController.php?controller=question&action=afficherResultats&idQuestion=$idQuestion'>Voir les résultats</a>";
+$lienVoirPropositions = "<a href='frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion'>Lire les propositions</a>";
+$lienVoterPropositions = "<a href='frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestion'>Voter pour une proposition</a>";
 
-$estVotant = (new VotantRepository)->existsForQuestion($idQuestion, $username);
-
-$lienVoirResultats = "<a href='frontController.php?controller=question&action=afficherResultats&idQuestion=$idQuestionUrl'>Voir les résultats</a>";
-$lienVoirPropositions = "<a href='frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestionUrl'>Lire les propositions</a>";
-$lienVoterPropositions = "<a href='frontController.php?controller=proposition&action=afficherPropositions&idQuestion=$idQuestionUrl'>Voter pour une proposition</a>";
-
-if ($phase == PhaseQuestion::Vote && $estVotant) {
-    $ligneExplicationSysVote .= " $lienVoterPropositions";
-} elseif ($phase == PhaseQuestion::Resultat) {
-    $ligneExplicationSysVote .= " $lienVoirResultats";
+if ($peutVoter) {
+    $ligneExplicationSysVote .= " $lienVoterPropositions.";
+} else if ($phase == Phase::Resultat) {
+    $ligneExplicationSysVote .= " $lienVoirResultats. ";
 } else {
-    $ligneExplicationSysVote .= " $lienVoirPropositions";
+    $ligneExplicationSysVote .= " $lienVoirPropositions. ";
 }
 ?>
 
 <div id="afficher-question" class="panel">
     <div id="afficher-question__top">
-        <h1><?= $titreQuestion ?>
+        <h1><?= $titre ?>
             <span>
                 par&nbsp;<?= $nomUsuelOrga ?>
             </span>
@@ -100,39 +80,34 @@ if ($phase == PhaseQuestion::Vote && $estVotant) {
 
         <div id="afficher-question__top__actions">
             <?php
-            if ($username == $organisateur->getUsername()) {
-
-                if($phase == PhaseQuestion::NonRemplie || $phase == PhaseQuestion::Attente) {
-                    echo <<<HTML
+            if ($peutEditer)
+                echo <<<HTML
                         <a class="button" href="frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion">Éditer</a>
                     HTML;
-                }
 
-                if($phase != PhaseQuestion::Resultat && $phase != PhaseQuestion::NonRemplie) {
-                    echo <<<HTML
+            if ($peutChangerPhase)
+                echo <<<HTML
                         <a class="button modal-open" href="#modal-phase-suivante">Phase suivante</a>
                     HTML;
-                }
-            }
             ?>
         </div>
     </div>
 
     <div id="afficher-question__description" class="panel2">
         <h2>Description :</h2>
-        <div id="description" class="markdown"><?= $descriptionQuestion ?></div>
+        <div id="description" class="markdown"><?= $description ?></div>
     </div>
 
 
     <div id="afficher-question__sections" class="panel2">
         <h2>Sections :</h2>
 
-        <?php if ($sectionHTMLs == []) {
+        <?php 
+        if ($sectionHTMLs == []) 
             echo "Aucune section n'a encore été écrite.";
-        } else {
-            echo implode('', $sectionHTMLs);
-        }
+        echo implode('', $sectionHTMLs);
         ?>
+
     </div>
 
     <div id="afficher-question__calendrier" class="panel2">
@@ -146,35 +121,29 @@ if ($phase == PhaseQuestion::Vote && $estVotant) {
         <h2>Propositions :</h2>
 
         <?php
-
-        if ($phase != PhaseQuestion::NonRemplie) {
+        if ($phase != Phase::NonRemplie)
             echo <<<HTML
-            <p id="afficher-question__systeme-vote">
-                $ligneExplicationSysVote
-            </p>
+                <p id="afficher-question__systeme-vote">$ligneExplicationSysVote</p>
             HTML;
-        }
         ?>
 
         <div id="afficher-question__propositions">
 
             <?php
-            echo implode('', $propositionHTMLs);
-
-            if ($propositionHTMLs == []) {
+            if ($propositionHTMLs == []) 
                 echo "Aucune proposition n'a encore été écrite.";
-            }
+            echo implode('', $propositionHTMLs);
             ?>
+
         </div>
 
         <?php
         $boutonEcrireProposition = <<<HTML
-        <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireEcrireProposition&idQuestion=$idQuestionUrl">Ecrire une proposition</a>
+            <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireEcrireProposition&idQuestion=$idQuestion">Ecrire une proposition</a>
         HTML;
 
-        if ($peutEcrireProposition) {
+        if ($peutEcrireProposition) 
             echo $boutonEcrireProposition;
-        }
         ?>
     </div>
 
@@ -191,16 +160,16 @@ if ($phase == PhaseQuestion::Vote && $estVotant) {
         <a class="button validerBtn" href="frontController.php?controller=question&action=passagePhaseResultats&idQuestion=$idQuestion">Oui</a>
     HTML;
 
-    switch($phase) {
-        case PhaseQuestion::Attente:
+    switch ($phase) {
+        case Phase::Attente:
             $messageConfirmation = "Êtes vous sûr(e) de vouloir passer à la phase de rédaction ?";
             $nextPhaseBouton = $passageRedactionBoutonTemplate;
             break;
-        case PhaseQuestion::Redaction:
+        case Phase::Redaction:
             $messageConfirmation = "Êtes vous sûr(e) de vouloir passer à la phase de vote ?";
             $nextPhaseBouton = $passageVoteBoutonTemplate;
             break;
-        case PhaseQuestion::Vote:
+        case Phase::Vote:
             $messageConfirmation = "Êtes vous sûr(e) de vouloir clore la question ?";
             $nextPhaseBouton = $passageResultatBoutonTemplate;
             break;
@@ -215,7 +184,7 @@ if ($phase == PhaseQuestion::Vote && $estVotant) {
             <p><?= $messageConfirmation ?></p>
             <div>
                 <a class="button refuserBtn" href="#">Non</a>
-                
+
                 <?= $nextPhaseBouton ?>
             </div>
             <a href="#" class="modal-close">
