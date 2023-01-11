@@ -304,10 +304,17 @@ class QuestionController extends MainController
             return;
         }
 
+        $dataQuestion = [
+            "titre" => $question->getTitre(),
+            "description" => $question->getDescription(),
+            "nomUsuelOrganisateur" => $question->getOrganisateur()->getNomUsuel(),
+            "resultats" => $question->getSystemeVote()->afficherResultats()
+        ];
+
         static::afficherVue("view.php", [
             "titrePage" => "Résultats",
             "contenuPage" => "afficherResultats.php",
-            "question" => $question
+            "dataQuestion" => $dataQuestion
         ]);
     }
 

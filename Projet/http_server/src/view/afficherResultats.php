@@ -1,17 +1,12 @@
 <?php
 
 use App\SAE\Lib\Markdown;
-use App\SAE\Model\DataObject\Question;
 
-$question = Question::castIfNotNull($question);
-$organisateur = $question->getOrganisateur();
-$systemeVote = $question->getSystemeVote();
-
-$titreQuestion = htmlspecialchars($question->getTitre());
-$descriptionQuestion = Markdown::toHtml($question->getDescription());
-$nomUsuelOrga = htmlspecialchars($organisateur->getNomUsuel());
-
-$resultats = $systemeVote->afficherResultats();
+//$dataQuestion
+$titre = htmlspecialchars($dataQuestion['titre']);
+$description = Markdown::toHtml($dataQuestion['description']);
+$nomUsuelOrganisateur = htmlspecialchars($dataQuestion['nomUsuelOrganisateur']);
+$resultats = $dataQuestion['resultats'];
 
 if($resultats == "") {
     $resultats = <<<HTML
@@ -26,16 +21,16 @@ if($resultats == "") {
 <div class="panel" id="afficher-resultats">
 
     <div id="afficher-resultats__top">
-        <h1><?= $titreQuestion ?>
+        <h1><?= $titre ?>
             <span>
-                par&nbsp;<?= $nomUsuelOrga ?>
+                par&nbsp;<?= $nomUsuelOrganisateur ?>
             </span>
         </h1>
     </div>
 
     <div id="afficher-resultats__description" class="panel2">
         <h2>Description :</h2>
-        <div id="description" class="markdown"><?= $descriptionQuestion ?></div>
+        <div id="description" class="markdown"><?= $description ?></div>
     </div>
 
     <div id="afficher-resultats__body" class="panel2">
