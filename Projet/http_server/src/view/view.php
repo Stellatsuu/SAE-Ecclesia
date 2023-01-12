@@ -58,6 +58,7 @@ $liensComptesVersionMobile = preg_replace("/<li>/", "<li class='onlyOnMobile'>",
     <title><?= htmlspecialchars($titrePage) ?></title>
 
     <link rel="stylesheet" href="scss/style.css">
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon"/>
 </head>
 
 <body>
