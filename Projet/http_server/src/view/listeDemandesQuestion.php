@@ -5,27 +5,27 @@
 
     use App\SAE\Lib\Markdown;
 
-    $i = 0;
-        foreach ($demandes as $q) {
-            $i++;
-            $titre = htmlspecialchars($q->getTitre());
-            $description = Markdown::toHtml($q->getDescription());
-            $nomOrganisateur = htmlspecialchars($q->getOrganisateur()->getPrenom()) . " " . htmlspecialchars(strtoupper($q->getOrganisateur()->getNom()));
-            $idQuestionUrl = rawurlencode($q->getIdQuestion());
+    //$dataDemandes
 
-            echo <<<HTML
-                <div class="demandeQuestion acceptOrDeny">
-                    <div class="boite" style="--order: $i;">
-                        <h2>$titre</h2>
-                        <div class="markdown">$description</div>
-                        <p>- $nomOrganisateur</p>
-                    </div>
-                    <div class="boite">
-                        <a class="button refuserBtn" href="frontController.php?controller=demandeQuestion&action=refuserDemandeQuestion&idQuestion=$idQuestionUrl">Refuser</a>
-                        <a class="button validerBtn" href="frontController.php?controller=demandeQuestion&action=accepterDemandeQuestion&idQuestion=$idQuestionUrl">Valider</a>
-                    </div>
+    foreach ($dataDemandes as $demande) {
+        $titre = $demande['titre'];
+        $description = Markdown::toHtml($demande['description']);
+        $nomUsuelOrganisateur = $demande['nomUsuelOrganisateur'];
+        $idQuestion = $demande['idQuestion'];
+
+        echo <<<HTML
+            <div class="demandeQuestion acceptOrDeny">
+                <div class="boite">
+                    <h2>$titre</h2>
+                    <div class="markdown">$description</div>
+                    <p>- $nomUsuelOrganisateur</p>
                 </div>
-            HTML;
-        }
+                <div class="boite">
+                    <a class="button refuserBtn" href="frontController.php?controller=demandeQuestion&action=refuserDemandeQuestion&idQuestion=$idQuestion">Refuser</a>
+                    <a class="button validerBtn" href="frontController.php?controller=demandeQuestion&action=accepterDemandeQuestion&idQuestion=$idQuestion">Valider</a>
+                </div>
+            </div>
+        HTML;
+    }
     ?>
 </div>
