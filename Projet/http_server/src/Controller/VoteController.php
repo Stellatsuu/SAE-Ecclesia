@@ -31,7 +31,7 @@ class VoteController extends MainController
         if($question->getPhase() != Phase::Vote){
             static::error(LQ_URL, "La question n'est pas en phase de vote.");
         }
-        
+
         (new VoteRepository())->deleteAllByQuestionEtVotant($idQuestion, $username);
 
         VoteController::message($lienAfficherPropositions, "Votre vote a été supprimé");
