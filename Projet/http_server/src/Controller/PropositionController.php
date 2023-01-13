@@ -288,7 +288,7 @@ class PropositionController extends MainController
                 ];
             }, $propositionAffichee->getParagraphes()),
         ];
-        
+
         static::afficherVue("view.php", [
             "titrePage" => "Propositions",
             "contenuPage" => "afficherPropositions.php",
