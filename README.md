@@ -120,7 +120,7 @@ Pour ce faire, ouvrez php.ini :
 ```shell
 sudo nano /etc/php/8.0/fpm/php.ini
 ```
-Cherchez les lignes `;extension=pdo_pgsql` et `?extension=pgsql` et décommentez-les en enlevant le `?` devant.
+Cherchez les lignes `?extension=pdo_pgsql` et `?extension=pgsql` et décommentez-les en enlevant le `?` devant.
 
 Il ne nous reste plus qu'à redémarrer php pour avoir l'extension d'active :
 ```shell
@@ -133,7 +133,7 @@ Nous allons créer un fichier de configuration pour ce site :
 sudo nano /etc/nginx/sites-available/ecclesia.conf
 ```
 
-dans ce fichier, copiez le script suivant en ramplaçant `domain_name` par votre nom de domaine :
+Dans ce fichier, copiez le script suivant en ramplaçant `domain_name` par votre nom de domaine :
 ```shell
 server {
     listen      80;
