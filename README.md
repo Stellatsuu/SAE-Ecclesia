@@ -23,6 +23,12 @@ Ce projet avait pour but de travailler en utilisant la méthode Scrum, et en uti
 ## Liens du projet
 - [Maquette du site](https://www.figma.com/file/WP93v0pfBbt4o4ehlWiKqG/Maquette?node-id=0%3A1&t=FspctRWOaxGX5iTx-1)
 
+## Contributeurs
+- [@Raphaël Delaygues - Product Owner](https://github.com/Rafiki13)
+- [@Alexandre Letellier - Scrum Master au sprint 4](https://www.github.com/LadyRin)
+- [@Loïs Odiardo - Scrum Master aux sprints 1 et 2](https://www.github.com/Lois-Odiardo)
+- [@Stella-Maria Renucci - Scrum Master au sprint 3](https://www.github.com/Stellatsuu)
+
 ## Installation
 Nous supposerons ici que vous déployez le projet sur un serveur Linux.
 
@@ -179,11 +185,3 @@ Il ne vous reste plus qu'à modifier les informations avec ce que vous avez util
 ```shell
 sudo nano /var/www/SAE-systeme-de-vote-main/Projet/http_server/src/Config/Conf.php
 ```
-## Contributeurs
-- [@Raphaël Delaygues - Product Owner](https://github.com/Rafiki13)
-- [@Alexandre Letellier - Scrum Master au sprint 4](https://www.github.com/LadyRin)
-- [@Loïs Odiardo - Scrum Master aux sprints 1 et 2](https://www.github.com/Lois-Odiardo)
-- [@Stella-Maria Renucci - Scrum Master au sprint 3](https://www.github.com/Stellatsuu)
-
-## Rendus
-- Développement web : la branche à évaluer est la branche "rendu_php".
