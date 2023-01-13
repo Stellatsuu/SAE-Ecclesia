@@ -10,18 +10,17 @@ class Conf
 {
 
     static private array $databases = array(
+        'hostname' => '127.0.0.1', //correspond à l'adresse du serveur hébergeant Postgresql. S'il est le même que celui où est nginx, laisser par défaut
 
-        'hostname' => '',
+        'port' => '5432', //port utilisé par Postgresql. Si vous ne l'avez pas modifié, laisser par défaut.
 
-        'port' => '',
+        'database' => 'ecclesia_db',
 
-        'database' => '',
+        'login' => 'ecclesia_user',
 
-        'login' => '',
+        'password' => 'unMotDePasse',
 
-        'password' => '',
-
-        'schema' => ''
+        'schema' => 'ecclesia_schema'
     );
 
     static public function getLogin(): string
