@@ -895,7 +895,7 @@ input[type=checkbox]:checked::before {
 }
 @media screen and (max-width: 1000px) {
   #roles_input #votants_input,
-#roles_input #redacteurs_input {
+  #roles_input #redacteurs_input {
     width: 100%;
   }
 }
