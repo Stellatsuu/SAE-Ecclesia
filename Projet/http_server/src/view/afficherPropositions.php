@@ -10,12 +10,6 @@ $descriptionQuestion = Markdown::toHtml($dataQuestion['descriptionQuestion']);
 $nomUsuelOrganisateur = htmlspecialchars($dataQuestion['nomUsuelOrganisateur']);
 $interfaceVote = $dataQuestion['interfaceVote'];
 
-//$dataProposition
-$idProposition = rawurlencode($dataProposition['idProposition']);
-$titreProposition = htmlspecialchars($dataProposition['titreProposition']);
-$nomUsuelResponsable = htmlspecialchars($dataProposition['nomUsuelResponsable']);
-$paragraphes = $dataProposition['paragraphes'];
-
 //$index
 //$nbPropositions
 
@@ -25,6 +19,7 @@ $paragraphes = $dataProposition['paragraphes'];
 //$peutGererCoAuteurs
 //$peutDemanderCoAuteur
 
+$modalHtml = "";
 if ($nbPropositions == 0) {
 
     $bodyContent = <<<HTML
@@ -38,6 +33,11 @@ if ($nbPropositions == 0) {
 
     $formulaireVoteHTML = "";
 } else {
+    //$dataProposition
+    $idProposition = rawurlencode($dataProposition['idProposition']);
+    $titreProposition = htmlspecialchars($dataProposition['titreProposition']);
+    $nomUsuelResponsable = htmlspecialchars($dataProposition['nomUsuelResponsable']);
+    $paragraphes = $dataProposition['paragraphes'];
 
     $indexPrevious = $index == 0 ? $nbPropositions - 1 : $index - 1;
     $indexNext = ($index + 1) % $nbPropositions;
