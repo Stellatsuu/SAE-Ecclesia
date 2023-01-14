@@ -94,10 +94,10 @@ class MainController
             $phase = $question->getPhase();
             $status = match ($phase) {
                 PhaseQuestion::NonRemplie => "Question validée",
-                PhaseQuestion::Attente => "Question configurée",
+                PhaseQuestion::Attente => "En attente",
                 PhaseQuestion::Redaction => "Nouvelle question",
                 PhaseQuestion::Lecture => "Réponses publiées",
-                PhaseQuestion::Vote => "En cours de vote",
+                PhaseQuestion::Vote => "Votes ouverts",
                 PhaseQuestion::Resultat => "Question terminée"
             };
 
