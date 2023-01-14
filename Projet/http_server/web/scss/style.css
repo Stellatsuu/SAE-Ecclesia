@@ -2053,16 +2053,22 @@ input[type=checkbox]:checked::before {
 #accueil #rightSide .panel .question-compact:first-child {
   margin-top: 0;
 }
-#accueil #rightSide .panel .question-compact .question-compact__top > h2 {
+#accueil #rightSide .panel .question-compact .top {
+  display: flex;
+  justify-content: space-between;
+}
+#accueil #rightSide .panel .question-compact .top > h2 {
   color: #E1603C;
   text-align: end;
+  margin: 0;
 }
 @media screen and (max-width: 900px) {
   #accueil #rightSide {
     margin-left: 10px;
   }
-  #accueil #rightSide .panel .question-compact .question-compact__top > h2 {
-    display: none;
+  #accueil #rightSide .panel .top {
+    flex-direction: column;
+    align-items: center;
   }
 }
 

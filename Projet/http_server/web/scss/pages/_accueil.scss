@@ -43,9 +43,15 @@ $leftSideWidth: 300px;
         &:first-child{
           margin-top: 0;
         }
-        .question-compact__top > h2{
-          color: $couleurPrincipale;
-          text-align: end;
+        .top{
+          display:flex;
+          justify-content: space-between;
+
+          > h2{
+            color: $couleurPrincipale;
+            text-align: end;
+            margin: 0;
+          }
         }
       }
     }
@@ -53,8 +59,9 @@ $leftSideWidth: 300px;
     @media screen and (max-width: 900px){
       margin-left: 10px;
 
-      .panel .question-compact .question-compact__top > h2{
-        display:none;
+      .panel .top{
+        flex-direction: column;
+        align-items: center;
       }
     }
   }

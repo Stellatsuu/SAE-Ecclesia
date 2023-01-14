@@ -38,8 +38,8 @@ use App\SAE\Lib\PhotoProfil;
 
                         echo <<<HTML
                         <div class="question-compact">
+                        <div class="top">
                             <div class="question-compact__top">
-                
                                 <div class="question-compact__top__pfp user-tooltip">
                                     $pfp
                                     <div class="user-tooltip__text">
@@ -50,9 +50,11 @@ use App\SAE\Lib\PhotoProfil;
                                 <a href="frontController.php?controller=question&action=afficherQuestion&idQuestion=$idQuestion">
                                     $titre
                                 </a>
-                                
-                                <h2 class="statusQuestion">$status</h2>
                             </div>
+                        
+                            <h2 class="statusQuestion">$status</h2>
+                        </div>
+                            
                 
                             <div class="question-compact__description markdown">
                                 $description
