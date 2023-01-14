@@ -1,18 +1,7 @@
 <?php
 
-use App\SAE\Model\HTTP\Session;
 use App\SAE\Lib\Markdown;
 use App\SAE\Lib\PhotoProfil;
-
-    $session = Session::getInstance();
-    if($session->contient("username")) {
-        $username = htmlspecialchars($session->lire("username"));
-        $message = "Vous êtes actuellement connecté en tant que " . $username;
-    } else {
-        $message = "Vous n'êtes pas connecté";
-    }
-
-
 ?>
 
 <div id="accueil">
