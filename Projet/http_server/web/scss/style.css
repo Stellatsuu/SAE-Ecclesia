@@ -895,7 +895,7 @@ input[type=checkbox]:checked::before {
 }
 @media screen and (max-width: 1000px) {
   #roles_input #votants_input,
-  #roles_input #redacteurs_input {
+#roles_input #redacteurs_input {
     width: 100%;
   }
 }
@@ -2009,6 +2009,10 @@ input[type=checkbox]:checked::before {
   align-items: center;
   justify-content: space-around;
   width: 50%;
+}
+
+#accueil {
+  display: flex;
 }
 
 h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset, body {
