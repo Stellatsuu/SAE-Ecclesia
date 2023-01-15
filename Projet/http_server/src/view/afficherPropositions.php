@@ -19,7 +19,8 @@ $interfaceVote = $dataQuestion['interfaceVote'];
 //$peutGererCoAuteurs
 //$peutDemanderCoAuteur
 
-$modalHtml = "";
+$modalHtmlVote = "";
+$modalHtmlProp = "";
 if ($nbPropositions == 0) {
 
     $bodyContent = <<<HTML
