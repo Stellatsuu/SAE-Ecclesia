@@ -55,7 +55,7 @@ $heureFermetureVotes = $dataQuestion['heureFermetureVotes'];
                         <input required type="time" name="heureDebutRedaction" value="<?= $heureDebutRedaction ?>">
                     </span>
                 </div>
-                <p>Les rédacteur rédigent des propositions de réponses à la question.</p>
+                <p>Les rédacteurs rédigent des propositions de réponses à la question.</p>
             </div>
 
             <div class="calendrierCercleBarre">
