@@ -1,7 +1,18 @@
 const tags_list = document.querySelector('.tags-list');
 const input = document.querySelector("#newtag_id")
 const button = document.getElementById('add_tag');
+const formattedInput = document.getElementById('formatted_tags');
 var tags = [];
+
+const startingTags = formattedInput.value.replace(/[\{\}]/g, '').split(',');
+startingTags.forEach(function (tag){
+    if(tag === "")
+        return;
+    tags.push(tag);
+    creerTag(tag);
+    ajoutTags();
+    updateTags();
+});
 
 function creerTag(label) {
     const div = document.createElement('div');
@@ -47,7 +58,12 @@ button.addEventListener("click", function(){
         tags.push(input.value);
         ajoutTags();
         input.value = '';
+        updateTags();
     }
 });
+
+function updateTags(){
+    formattedInput.value = "{" + tags.join(',') + "}";
+}
 
 
