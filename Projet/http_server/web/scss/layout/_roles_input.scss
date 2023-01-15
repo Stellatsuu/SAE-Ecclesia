@@ -1,7 +1,8 @@
 #roles_input {
   display: flex;
-  flex-direction: row;
   justify-content: flex-start;
+  margin-left: 10%;
+  margin-bottom: 50px;
   gap: 10%;
 
   #votants_input,
@@ -21,7 +22,7 @@
 
     select {
       /*max-width: 200px;*/
-      width: calc(100% - 60px);
+      width: calc(80% - 60px);
     }
 
     button {
@@ -34,6 +35,11 @@
 
     @media screen and (max-width: 1000px) {
       width: 100%;
+      margin-left: 0;
+
+      select{
+        width: calc(100% - 60px);
+      }
     }
   }
 
