@@ -78,6 +78,7 @@ header{
 
   #mobileMenu{
     display:none;
+    z-index: 1;
   }
 
   @media screen and (max-width: $pointDeRupture){
