@@ -12,16 +12,17 @@ echo '</pre>';
 
 ?>
 
-<form method="post" action="frontController.php?controller=question&action=afficherFormulairePoserQuestion&page=plan" class="panel">
+<form method="post" action="frontController.php?controller=question&action=afficherFormulairePoserQuestion&page=plan" class="panel" id="poserQuestion">
     <h1>Posez votre question :</h1>
 
     <div id="poser-question__top">
         <div id="progress-bar">
-            <span class="progress-bar__step filling"></span>
-            <span class="progress-bar__step"></span>
-            <span class="progress-bar__step"></span>
-            <span class="progress-bar__step"></span>
-            <span class="progress-bar__step"></span>
+            <div class="progress-bar__step filling"></div>
+            <div class="progress-bar__step"></div>
+            <div class="progress-bar__step"></div>
+            <div class="progress-bar__step"></div>
+            <div class="progress-bar__step"></div>
+            <div class="progress-bar__step"></div>
         </div>
 
         <h2>Informations sur la question</h2>
@@ -49,7 +50,7 @@ echo '</pre>';
             <input type="text" name="newtag" id="newtag_id" pattern="^[a-zA-Z0-9]+$">
             <button type="button" id="add_tag">+</button>
 
-            <div id="tags_list">
+            <div id="tags_list" class="tags-list">
 
             </div>
 
@@ -65,3 +66,5 @@ echo '</pre>';
         </button>
     </div>
 </form>
+
+<script src="js/formulairePoserQuestions_tags.js"></script>
