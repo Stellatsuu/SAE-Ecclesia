@@ -284,6 +284,7 @@ select {
 }
 .tooltip {
   position: relative;
+  top: 5px;
   display: flex;
   align-items: center;
   width: max-content;
@@ -305,8 +306,7 @@ select {
   border-radius: 6px;
   position: absolute;
   z-index: 1;
-  top: 0;
-  left: 110%;
+  top: 20px;
   transition: opacity 0.3s;
 }
 
