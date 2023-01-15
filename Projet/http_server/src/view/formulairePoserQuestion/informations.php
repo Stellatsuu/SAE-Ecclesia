@@ -45,11 +45,11 @@ $tags = $dataQuestion['tags'];
             <input type="text" name="newtag" id="newtag_id" pattern="^[a-zA-Z0-9]+$">
             <button type="button" id="add_tag">+</button>
             <span id="erreur"></span>
-            <input type="hidden" name="tags" value="{}">
+            <input type="hidden" name="tags" value="<?= $tags ?>" id="formatted_tags">
         </div>
 
         <div id="tags_list" class="tags-list">
-
+            
         </div>
     </div>
 

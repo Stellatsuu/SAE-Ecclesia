@@ -324,6 +324,7 @@ class QuestionController extends MainController
         static::verifierDataQuestion($dataQuestion);
 
         $question->setDescription($dataQuestion['description']);
+        $question->setTags($dataQuestion['tags']);
         $question->setSystemeVote(SystemeVoteFactory::createSystemeVote($dataQuestion['systemeVote'], $question));
         $question->setDateDebutRedaction(DateTime::createFromFormat('Y-m-d H:i', $dataQuestion['dateDebutRedaction'] . ' ' . $dataQuestion['heureDebutRedaction']));
         $question->setDateFinRedaction(DateTime::createFromFormat('Y-m-d H:i', $dataQuestion['dateFinRedaction'] . ' ' . $dataQuestion['heureFinRedaction']));
@@ -560,6 +561,7 @@ class QuestionController extends MainController
             "idQuestion" => $question->getIdQuestion(),
             "titre" => $question->getTitre(),
             "description" => $question->getDescription(),
+            "tags" => explode(",", preg_replace("/[\{\}]/", "", $question->getTags())),
             "nomUsuelOrga" => $question->getOrganisateur()->getNomUsuel(),
             "phase" => $question->getPhase(),
             "nomSystemeVote" => $question->getSystemeVote()->getNomComplet(),
