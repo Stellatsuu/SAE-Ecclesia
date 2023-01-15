@@ -50,7 +50,7 @@ echo '</pre>';
             <input type="text" name="newtag" id="newtag_id" pattern="^[a-zA-Z0-9]+$">
             <button type="button" id="add_tag">+</button>
 
-            <div id="tags_list">
+            <div id="tags_list" class="tags-list">
 
             </div>
 
@@ -66,3 +66,5 @@ echo '</pre>';
         </button>
     </div>
 </form>
+
+<script src="js/formulairePoserQuestions_tags.js"></script>
