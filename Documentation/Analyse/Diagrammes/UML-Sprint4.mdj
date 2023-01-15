@@ -81455,7 +81455,7 @@
 											"top": 757,
 											"width": 665.513671875,
 											"height": 13,
-											"text": "+countAllListerQuestions(motsCles: array, tags: array, filtres: array): int",
+											"text": "+countAllListerQuestions(motsCles: array, tags: array, filtres: array, noms: array): int",
 											"horizontalAlignment": 0
 										},
 										{
@@ -81472,7 +81472,7 @@
 											"top": 772,
 											"width": 665.513671875,
 											"height": 13,
-											"text": "-genererConditionsEtValuesListerQuestions(motsCles: array, tags: array, filtres: array)",
+											"text": "-genererConditionsEtValuesListerQuestions(motsCles: array, tags: array, filtres: array, noms: array)",
 											"horizontalAlignment": 0
 										}
 									],
@@ -99671,6 +99671,15 @@
 													},
 													"type": "int",
 													"direction": "return"
+												},
+												{
+													"_type": "UMLParameter",
+													"_id": "AAAAAAGFtPtkjCfbBQc=",
+													"_parent": {
+														"$ref": "AAAAAAGFknhMsrDrr5U="
+													},
+													"name": "noms",
+													"type": "array"
 												}
 											]
 										},
@@ -99708,6 +99717,15 @@
 														"$ref": "AAAAAAGFknsTu8WmoDQ="
 													},
 													"name": "filtres",
+													"type": "array"
+												},
+												{
+													"_type": "UMLParameter",
+													"_id": "AAAAAAGFtPuRgCja57E=",
+													"_parent": {
+														"$ref": "AAAAAAGFknsTu8WmoDQ="
+													},
+													"name": "noms",
 													"type": "array"
 												}
 											]
