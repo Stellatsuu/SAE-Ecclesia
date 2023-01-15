@@ -8,6 +8,7 @@ use App\SAE\Lib\PhotoProfil;
 $idQuestion = rawurlencode($dataQuestion['idQuestion']);
 $titre = htmlspecialchars($dataQuestion['titre']);
 $description = Markdown::toHtml($dataQuestion['description']);
+$tags = $dataQuestion['tags'];
 $nomUsuelOrga = htmlspecialchars($dataQuestion['nomUsuelOrga']);
 $nomSystemeVote = htmlspecialchars($dataQuestion['nomSystemeVote']);
 $phase = $dataQuestion['phase'];
@@ -99,12 +100,34 @@ if ($peutVoter) {
         <div id="description" class="markdown"><?= $description ?></div>
     </div>
 
+    <div id="afficher-question__tags" class="panel2">
+        <h2>Tags :</h2>
+
+        <div id="tags_list">
+            <?php
+            if ($tags == [])
+                echo "Aucun tag n'a encore été ajouté.";
+            else
+                foreach ($tags as $tag) {
+                    $tag = htmlspecialchars($tag);
+                    echo <<<HTML
+                        <div class="tag">
+                            <span>
+                                $tag
+                            </span>
+                        </div>
+                    HTML;
+                }
+            ?>
+        </div>
+    </div>
+
 
     <div id="afficher-question__sections" class="panel2">
         <h2>Sections :</h2>
 
-        <?php 
-        if ($sectionHTMLs == []) 
+        <?php
+        if ($sectionHTMLs == [])
             echo "Aucune section n'a encore été écrite.";
         echo implode('', $sectionHTMLs);
         ?>
@@ -131,7 +154,7 @@ if ($peutVoter) {
         <div id="afficher-question__propositions">
 
             <?php
-            if ($propositionHTMLs == []) 
+            if ($propositionHTMLs == [])
                 echo "Aucune proposition n'a encore été écrite.";
             echo implode('', $propositionHTMLs);
             ?>
@@ -143,7 +166,7 @@ if ($peutVoter) {
             <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireEcrireProposition&idQuestion=$idQuestion">Ecrire une proposition</a>
         HTML;
 
-        if ($peutEcrireProposition) 
+        if ($peutEcrireProposition)
             echo $boutonEcrireProposition;
         ?>
     </div>

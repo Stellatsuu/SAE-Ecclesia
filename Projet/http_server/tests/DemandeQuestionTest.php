@@ -155,8 +155,6 @@ class DemandeQuestionTest extends TestCase
         $this->assertEquals(0, $existeDemandeQuestionStmt->rowCount());
     }
 
-    // TODO: test user est admin
-
     /* Refuser une demande de question */
 
     public function testRefuserDemandeQuestionValide(){
@@ -210,8 +208,6 @@ class DemandeQuestionTest extends TestCase
         $this->assertEquals(0, $existeDemandeQuestionStmt->rowCount());
     }
 
-    // TODO: test user est admin
-
     /* Afficher le formulaire demande question */
 
     public function testAfficherFormulaireDemandeQuestionValide(){
@@ -235,6 +231,4 @@ class DemandeQuestionTest extends TestCase
 
         DemandeQuestionController::listerDemandesQuestion();
     }
-
-    // TODO: test user est admin
 }

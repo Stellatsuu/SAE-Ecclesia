@@ -462,6 +462,7 @@ class DebugController extends MainController
 
     public static function resetDatabase(): void
     {
+        //frontController.php?controller=resetDatabase&randomFakeUsers=20&randomFakeQuestions=20
         set_time_limit(0);
         $randomFakeUsers = isset($_GET["randomFakeUsers"]) ? $_GET["randomFakeUsers"] : 0;
         $randomFakeQuestions = isset($_GET["randomFakeQuestions"]) ? $_GET["randomFakeQuestions"] : 0;

@@ -33,7 +33,7 @@ $heureFermetureVotes = $dataQuestion['heureFermetureVotes'];
 
         <h2>Calendrier</h2>
         <p>
-            Choisissez les dates clé du calendrier de la question
+            Choisissez les dates clés du calendrier de la question
         </p>
     </div>
 
