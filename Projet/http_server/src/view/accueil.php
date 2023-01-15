@@ -35,7 +35,6 @@ use App\SAE\Lib\PhotoProfil;
                                         $nomUsuelOrganisateur
                                     </div>
                                 </div>
-                
                                 <a href="frontController.php?controller=question&action=afficherQuestion&idQuestion=$idQuestion">
                                     $titre
                                 </a>
@@ -44,11 +43,10 @@ use App\SAE\Lib\PhotoProfil;
                             <h2 class="statusQuestion">$status</h2>
                         </div>
                             
-                
                             <div class="question-compact__description markdown">
                                 $description
                             </div>
-                
+
                             <span class="question-compact__bottom">
                                 <span>
                                 $datePublication
