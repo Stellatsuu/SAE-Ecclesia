@@ -6,10 +6,6 @@ $titre = htmlspecialchars($dataQuestion['titre']);
 $description = htmlspecialchars($dataQuestion['description']);
 $tags = $dataQuestion['tags'];
 
-echo '<pre>';
-print_r($dataQuestion);
-echo '</pre>';
-
 ?>
 
 <form method="post" action="frontController.php?controller=question&action=afficherFormulairePoserQuestion&page=plan" class="panel" id="poserQuestion">

@@ -6,11 +6,7 @@ $titre = htmlspecialchars($dataQuestion['titre']);
 $description = htmlspecialchars($dataQuestion['description']);
 $tags = $dataQuestion['tags'];
 $sections = $dataQuestion['sections'];
-
-echo '<pre>';
-print_r($dataQuestion);
-echo '</pre>';
-
+$systemeVote = $dataQuestion['systemeVote'];
 ?>
 
 <form method="post" action="frontController.php?controller=question&action=afficherFormulairePoserQuestion&page=calendrier" class="panel" id="poserQuestion">
