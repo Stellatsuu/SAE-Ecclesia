@@ -98,7 +98,7 @@ if ($nbPropositions == 0) {
     HTML;
 
     $btnSupprimerVoteHTML = <<<HTML
-        <a class="button modal-open"  href="#modalSupprimerVote">Supprimer mon vote</a>
+        <a class="button supprimerBtn vote"  href="#modalSupprimerVote">Supprimer mon vote</a>
     HTML;
 
     $btnSupprimerPropHTML = <<<HTML
