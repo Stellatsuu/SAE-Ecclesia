@@ -102,7 +102,7 @@ if ($nbPropositions == 0) {
     HTML;
 
     $btnSupprimerPropHTML = <<<HTML
-        <a class="button modal-open"  href="#modalSupprimerProp">Supprimer ma proposition</a>
+        <a class="button supprimerBtn modal-open"  href="#modalSupprimerProp">Supprimer ma proposition</a>
     HTML;
 
     $btnModifierHTML = <<<HTML
@@ -138,16 +138,18 @@ if ($nbPropositions == 0) {
             <div id="afficher-propositions__boutons">
                 $btnDemanderCoAuteurHTML
                 $btnModifierHTML
-                $btnSupprimerPropHTML
                 $btnGererCoAuteursHTML
+                $btnSupprimerPropHTML
             </div>
         </div>
     HTML;
 
     $formulaireVoteHTML = <<<HTML
         <form id="afficher-propositions__formulaire-vote" action="frontController.php?controller=vote&action=voter" method="post">
-            <h2>Vote</h2>
-            $btnSupprimerVoteHTML
+            <div id="afficher-propositions__formulaire-vote-div">
+                <h2>Vote</h2>
+                $btnSupprimerVoteHTML
+            </div>
             <input type="hidden" name="idQuestion" value="$idQuestion">
             $interfaceVote
         </form>
