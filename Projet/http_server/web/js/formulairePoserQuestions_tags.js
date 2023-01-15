@@ -8,11 +8,9 @@ function creerTag(label) {
     div.setAttribute('class', 'tag');
     const span = document.createElement('span');
     span.innerHTML = label;
-    const closeBtn = document.createElement('img');
-    closeBtn.setAttribute('src', 'assets/images/close-icon.svg');
-    closeBtn.setAttribute('alt', 'closeIcon');
+    const closeBtn = document.createElement('strong');
     closeBtn.setAttribute('data-item', label);
-    closeBtn.innerHTML = 'close';
+    closeBtn.innerHTML = 'x';
 
     closeBtn.addEventListener("click", function(){
         const value = closeBtn.getAttribute('data-item');
@@ -40,9 +38,16 @@ function ajoutTags(){
 }
 
 button.addEventListener("click", function(){
-    tags.push(input.value);
-    ajoutTags();
-    input.value = '';
+    if(tags.includes(input.value)){
+        document.getElementById("erreur").innerHTML = "Le tag existe déjà.";
+    } else if(input.value === ""){
+        document.getElementById("erreur").innerHTML = "Le tag est vide.";
+    } else{
+        document.getElementById("erreur").innerHTML = "";
+        tags.push(input.value);
+        ajoutTags();
+        input.value = '';
+    }
 });
 
 

@@ -49,12 +49,12 @@ echo '</pre>';
         <div id="tags_input">
             <input type="text" name="newtag" id="newtag_id" pattern="^[a-zA-Z0-9]+$">
             <button type="button" id="add_tag">+</button>
-
-            <div id="tags_list" class="tags-list">
-
-            </div>
-
+            <span id="erreur"></span>
             <input type="hidden" name="tags" value="{check}">
+        </div>
+
+        <div id="tags_list" class="tags-list">
+
         </div>
     </div>
 

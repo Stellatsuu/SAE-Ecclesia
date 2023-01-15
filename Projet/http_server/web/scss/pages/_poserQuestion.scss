@@ -41,5 +41,34 @@
       }
     }
   }
+  #tags_input{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
 
+    input[type=text]{
+      width: 100px;
+    }
+  }
+
+  #tags_list{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap;
+    max-width: 80%;
+    
+
+    .tag{
+      background-color: #5B5958;
+      border: solid #5B5958 5px;
+      border-radius: 10px;
+      display: flex;
+      align-items: baseline;
+      width: fit-content;
+      cursor: default;
+      gap: 5px;
+    }
+  }
 }

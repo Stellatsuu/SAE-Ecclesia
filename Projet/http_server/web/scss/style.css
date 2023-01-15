@@ -895,7 +895,7 @@ input[type=checkbox]:checked::before {
 }
 @media screen and (max-width: 1000px) {
   #roles_input #votants_input,
-#roles_input #redacteurs_input {
+  #roles_input #redacteurs_input {
     width: 100%;
   }
 }
@@ -2104,6 +2104,32 @@ input[type=checkbox]:checked::before {
 }
 #poserQuestion #progress-bar .progress-bar__step.filling {
   background-color: #E1603C;
+}
+#poserQuestion #tags_input {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+#poserQuestion #tags_input input[type=text] {
+  width: 100px;
+}
+#poserQuestion #tags_list {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  flex-wrap: wrap;
+  max-width: 80%;
+}
+#poserQuestion #tags_list .tag {
+  background-color: #5B5958;
+  border: solid #5B5958 5px;
+  border-radius: 10px;
+  display: flex;
+  align-items: baseline;
+  width: fit-content;
+  cursor: default;
+  gap: 5px;
 }
 
 h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset, body {
