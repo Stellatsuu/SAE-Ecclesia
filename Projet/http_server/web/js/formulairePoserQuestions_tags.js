@@ -53,6 +53,10 @@ button.addEventListener("click", function(){
         document.getElementById("erreur").innerHTML = "Le tag existe déjà.";
     } else if(input.value === ""){
         document.getElementById("erreur").innerHTML = "Le tag est vide.";
+    } else if(input.value.length > 20){
+        document.getElementById("erreur").innerHTML = "Le tag est trop long.";
+    } else if(String.prototype.match.call(input.value, /[^a-zA-Z0-9]/g)){
+        document.getElementById("erreur").innerHTML = "Le tag contient des caractères spéciaux.";
     } else{
         document.getElementById("erreur").innerHTML = "";
         tags.push(input.value);
