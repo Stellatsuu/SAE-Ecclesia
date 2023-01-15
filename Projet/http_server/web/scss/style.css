@@ -88,7 +88,9 @@ input[type=button].vote,
 input[type=submit].vote,
 button.vote,
 .button.vote {
+  width: intrinsic;
   width: -moz-max-content;
+  width: -webkit-max-content;
 }
 
 .conteneurDateHeure {
