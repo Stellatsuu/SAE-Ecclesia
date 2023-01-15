@@ -3,6 +3,7 @@
 namespace App\SAE\Controller;
 
 use App\SAE\Lib\ConnexionUtilisateur;
+use App\SAE\Lib\MessageFlash;
 use App\SAE\Model\Repository\QuestionRepository as QuestionRepository;
 use App\SAE\Model\DataObject\Question as Question;
 use App\SAE\Model\DataObject\Section;
@@ -25,195 +26,100 @@ class QuestionController extends MainController
         $username = ConnexionUtilisateur::getUsernameSiConnecte();
 
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
-
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
-
         if ($question->getUsernameOrganisateur() != $username) {
-            static::error(LQ_URL, "Vous n'êtes pas l'organisateur de cette question. Vous ne pouvez pas la modifier.");
+            static::error(LQ_URL, "Vous n'êtes pas l'organisateur de cette question");
+        }
+        $page = $_GET['page'] ?? 'informations';
+        if (!in_array($page, ['informations', 'plan', 'systeme_vote', 'calendrier', 'roles', 'confirmation'])) {
+            static::error(ACCUEIL_URL, "Erreur de navigation");
         }
 
-        $utilisateurs = (new UtilisateurRepository)->selectAll();
-
-        $phase = $question->getPhase();
-        switch ($phase) {
-            case Phase::Redaction:
-                static::error(LQ_URL, "La question est en phase de rédaction. Vous ne pouvez plus la modifier.");
-            case Phase::Lecture:
-                static::error(LQ_URL, "La question est en phase de lecture. Vous ne pouvez plus la modifier.");
-            case Phase::Vote:
-                static::error(LQ_URL, "La question est en phase de vote. Vous ne pouvez plus la modifier.");
-            case Phase::Resultat:
-                static::error(LQ_URL, "La question est terminée. Vous ne pouvez plus la modifier.");
-            case Phase::NonRemplie:
-                $question->setDateDebutRedaction((new DateTime())->add(new DateInterval('P1D'))->setTime(16, 0, 0));
-                $question->setDateFinRedaction((new DateTime())->add(new DateInterval('P8D'))->setTime(16, 0, 0));
-                $question->setDateOuvertureVotes((new DateTime())->add(new DateInterval('P8D'))->setTime(16, 0, 0));
-                $question->setDateFermetureVotes((new DateTime())->add(new DateInterval('P15D'))->setTime(16, 0, 0));
-                break;
+        if ($page == 'roles') {
+            $utilisateurs = (new UtilisateurRepository)->selectAll();
+        } else {
+            $utilisateurs = [];
         }
 
-        $datesFormatees = array(
-            "dateDebutRedaction" => $question->getDateDebutRedaction()->format("Y-m-d"),
-            "dateFinRedaction" => $question->getDateFinRedaction()->format("Y-m-d"),
-            "dateOuvertureVotes" => $question->getDateOuvertureVotes()->format("Y-m-d"),
-            "dateFermetureVotes" => $question->getDateFermetureVotes()->format("Y-m-d")
-        );
+        $dataQuestion = [
+            //INFORMATIONS
+            'idQuestion' => $question->getIdQuestion(),
+            'titre' => $question->getTitre(),
+            'description' => $_POST['description'] ?? $question->getDescription(),
+            'tags' => $_POST['tags'] ?? $question->getTags(),
+            //PLAN
+            'sections' => $_POST['sections'] ?? array_map(
+                function ($section) {
+                    return [
+                        'titre' => $section->getNomSection(),
+                        'description' => $section->getDescriptionSection(),
+                    ];
+                },
+                $question->getSections()
+            ),
+            //SYSTEME VOTE
+            'systemeVote' => $_POST['systemeVote'] ?? $question->getSystemeVote()->getNom(),
+            //CALENDRIER
+            'dateDebutRedaction' => $_POST['dateDebutRedaction'] ??
+                $question->getDateDebutRedaction()?->format('Y-m-d') ??
+                (new DateTime("now"))->add(new DateInterval('P1D'))->format('Y-m-d'),
 
-        $heuresFormatees = array(
-            "heureDebutRedaction" => $question->getDateDebutRedaction()->format("H:i"),
-            "heureFinRedaction" => $question->getDateFinRedaction()->format("H:i"),
-            "heureOuvertureVotes" => $question->getDateOuvertureVotes()->format("H:i"),
-            "heureFermetureVotes" => $question->getDateFermetureVotes()->format("H:i")
-        );
+            'heureDebutRedaction' => $_POST['heureDebutRedaction'] ??
+                $question->getDateDebutRedaction()?->format('H:i') ??
+                "08:00",
+
+            'dateFinRedaction' => $_POST['dateFinRedaction'] ??
+                $question->getDateFinRedaction()?->format('Y-m-d') ??
+                (new DateTime("now"))->add(new DateInterval('P8D'))->format('Y-m-d'),
+
+            'heureFinRedaction' => $_POST['heureFinRedaction'] ??
+                $question->getDateFinRedaction()?->format('H:i') ??
+                "08:00",
+
+            'dateOuvertureVotes' => $_POST['dateOuvertureVotes'] ??
+                $question->getDateOuvertureVotes()?->format('Y-m-d') ??
+                (new DateTime("now"))->add(new DateInterval('P8D'))->format('Y-m-d'),
+
+            'heureOuvertureVotes' => $_POST['heureOuvertureVotes'] ??
+                $question->getDateOuvertureVotes()?->format('H:i') ??
+                "08:00",
+
+            'dateFermetureVotes' => $_POST['dateFermetureVotes'] ??
+                $question->getDateFermetureVotes()?->format('Y-m-d') ??
+                (new DateTime("now"))->add(new DateInterval('P15D'))->format('Y-m-d'),
+
+            'heureFermetureVotes' => $_POST['heureFermetureVotes'] ??
+                $question->getDateFermetureVotes()?->format('H:i') ??
+                "08:00",
+
+            //ROLES
+            'redacteurs' => $_POST['redacteurs'] ??
+                array_map(
+                    function ($redacteur) {
+                        return $redacteur->getUsername();
+                    },
+                    $question->getRedacteurs()
+                ),
+
+            'votants' => $_POST['votants'] ??
+                array_map(
+                    function ($votant) {
+                        return $votant->getUsername();
+                    },
+                    $question->getVotants()
+                ),
+        ];
 
         static::afficherVue("view.php", [
             "titrePage" => "Poser une question",
-            "contenuPage" => "formulairePoserQuestion.php",
-            "question" => $question,
+            "contenuPage" => "formulairePoserQuestion/$page.php",
+            "dataQuestion" => $dataQuestion,
             "utilisateurs" => $utilisateurs,
-            "datesFormatees" => $datesFormatees,
-            "heuresFormatees" => $heuresFormatees
         ]);
     }
 
-    public static function poserQuestion(): void
+    public static function poserQuestion()
     {
-        $username = ConnexionUtilisateur::getUsernameSiConnecte();
-
-        $idQuestion = static::getIfSetAndNumeric("idQuestion");
-        $description = static::getIfSetAndNotEmpty("description");
-
-        /**
-         * @var string URL du formulaire "Poser une Question"
-         */
-        $AFPQ_URL = "frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion";
-
-        $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
-
-        if ($question->getUsernameOrganisateur() != $username) {
-            static::error(LQ_URL, "Vous n'êtes pas l'organisateur de cette question. Vous ne pouvez pas la modifier.");
-        }
-
-        $phase = $question->getPhase();
-        switch ($phase) {
-            case Phase::Redaction:
-                static::error(LQ_URL, "La question est en phase de rédaction. Vous ne pouvez plus la modifier.");
-                return;
-                break;
-            case Phase::Lecture:
-                static::error(LQ_URL, "La question est en phase de lecture. Vous ne pouvez plus la modifier.");
-                return;
-                break;
-            case Phase::Vote:
-                static::error(LQ_URL, "La question est en phase de vote. Vous ne pouvez plus la modifier.");
-                return;
-                break;
-            case Phase::Resultat:
-                static::error(LQ_URL, "La question est terminée. Vous ne pouvez plus la modifier.");
-                return;
-                break;
-        }
-
-        $nbSections = 1;
-        $sections = [];
-        while (isset($_POST['nomSection' . $nbSections]) && isset($_POST['descriptionSection' . $nbSections])) {
-            $nomSection = static::getIfSetAndNotEmpty("nomSection" . $nbSections, $AFPQ_URL, "Une section doit avoir un nom.");
-            $descriptionSection = static::getIfSetAndNotEmpty("descriptionSection" . $nbSections, $AFPQ_URL, "Une section doit avoir une description.");
-
-            if (strlen($nomSection) > 50) {
-                static::error($AFPQ_URL, "Le nom de la section ne doit pas dépasser 50 caractères");
-                return;
-            } else if (strlen($descriptionSection) > 2000) {
-                static::error($AFPQ_URL, "La description de la section ne doit pas dépasser 2000 caractères");
-                return;
-            }
-
-            $section = new Section(-1, -1, $nomSection, $descriptionSection);
-            $sections[] = $section;
-            $nbSections++;
-        }
-
-        $redacteurs = [];
-        $votants = [];
-        foreach ($_POST as $key => $value) {
-            if (substr($key, 0, 9) == "redacteur") {
-                $usernameRedacteur = $value;
-                $redacteur = Utilisateur::castIfNotNull((new UtilisateurRepository)->select($usernameRedacteur));
-                if ($redacteur && !in_array($redacteur, $redacteurs)) {
-                    $redacteurs[] = $redacteur;
-                }
-            } else if (substr($key, 0, 6) == "votant") {
-                $usernameVotant = $value;
-                $votant = Utilisateur::castIfNotNull((new UtilisateurRepository)->select($usernameVotant));
-                if ($votant && !in_array($votant, $votants)) {
-                    $votants[] = $votant;
-                }
-            }
-        }
-
-        foreach (['dateDebutRedaction', 'dateFinRedaction', 'dateOuvertureVotes', 'dateFermetureVotes'] as $date) {
-            if (!isset($_POST[$date]) || !preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/", $_POST[$date])) {
-                static::error($AFPQ_URL, "Veuillez entrer des dates valides");
-                return;
-            }
-        }
-
-        foreach (['heureDebutRedaction', 'heureFinRedaction', 'heureOuvertureVotes', 'heureFermetureVotes'] as $heure) {
-            if (!isset($_POST[$heure]) || !preg_match("/^[0-9]{2}:[0-9]{2}$/", $_POST[$heure])) {
-                static::error($AFPQ_URL, "Veuillez entrer des heures valides");
-                return;
-            }
-        }
-
-        $dateDebutRedaction = DateTime::createFromFormat("Y-m-d H:i", $_POST['dateDebutRedaction'] . " " . $_POST['heureDebutRedaction']);
-        $dateFinRedaction = DateTime::createFromFormat("Y-m-d H:i", $_POST['dateFinRedaction'] . " " . $_POST['heureFinRedaction']);
-        $dateOuvertureVotes = DateTime::createFromFormat("Y-m-d H:i", $_POST['dateOuvertureVotes'] . " " . $_POST['heureOuvertureVotes']);
-        $dateFermetureVotes = DateTime::createFromFormat("Y-m-d H:i", $_POST['dateFermetureVotes'] . " " . $_POST['heureFermetureVotes']);
-
-        $dateCoherentes =
-            $dateDebutRedaction < $dateFinRedaction
-            && $dateFinRedaction <= $dateOuvertureVotes
-            && $dateOuvertureVotes < $dateFermetureVotes
-            && $dateDebutRedaction > (new DateTime("now"));
-
-        if (!$dateCoherentes) {
-            static::error($AFPQ_URL, "Les dates ne sont pas cohérentes");
-        } elseif (strlen($description) > 4000) {
-            static::error($AFPQ_URL, "La description de la question ne doit pas dépasser 4000 caractères");
-        } elseif (count($sections) == 0) {
-            static::error($AFPQ_URL, "Au moins une section est requise");
-        } elseif (count($redacteurs) == 0) {
-            static::error($AFPQ_URL, "Veuillez sélectionner au moins un rédacteur");
-        } elseif (count($votants) == 0) {
-            static::error($AFPQ_URL, "Veuillez sélectionner au moins un votant");
-        }
-
-        $systemeVote = $_POST["systeme_vote"];
-
-        $tags = "{}";
-        if (isset($_POST["tags"])) {
-            $tags = preg_replace('/[^a-zA-Z0-9-\s]/', "", $_POST["tags"]); // → retire toutes les expressions non voulues (/,; etc.)
-            $tags = preg_replace('/[ ]+/', ",", $tags); // → remplace les espaces par des virgules
-            $tags = strtolower($tags); // → met le string en minuscule
-            $tags = explode(',', $tags); // → transforme le string en tableau en coupant avec les virgules
-            $tags = array_unique($tags); // → trie le tableau pour enlever les doublons
-            $tags = implode(',', $tags); // → reforme le string en rassemblant avec des virgules
-            $tags = "{" . $tags . "}"; // → array pour postgre
-        }
-
-        $question->setDescription($description);
-        $question->setSections($sections);
-        $question->setRedacteurs($redacteurs);
-        $question->setVotants($votants);
-        $question->setDateDebutRedaction($dateDebutRedaction);
-        $question->setDateFinRedaction($dateFinRedaction);
-        $question->setDateOuvertureVotes($dateOuvertureVotes);
-        $question->setDateFermetureVotes($dateFermetureVotes);
-        $question->setSystemeVote(SystemeVoteFactory::createSystemeVote($systemeVote, $question));
-        $question->setTags($tags);
-
-        (new QuestionRepository)->update($question);
-        static::message(LMQ_URL, "La question a été posée");
     }
 
     public static function passagePhaseRedaction()
@@ -408,7 +314,7 @@ class QuestionController extends MainController
 
         $peutEditer = $estOrganisateur && ($phase == Phase::NonRemplie || $phase == Phase::Attente);
         $peutChangerPhase = $estOrganisateur && $phase != Phase::Resultat && $phase != Phase::NonRemplie;
-        $peutEcrireProposition = $estRedacteur && (new PropositionRepository)->selectByQuestionEtResponsable($idQuestion, $username) == null;
+        $peutEcrireProposition = $phase == Phase::Redaction && $estRedacteur && (new PropositionRepository)->selectByQuestionEtResponsable($idQuestion, $username) == null;
         $peutVoter = $estVotant && $phase == Phase::Vote;
 
         $dataQuestion = [
@@ -425,7 +331,7 @@ class QuestionController extends MainController
                     "description" => $section->getDescriptionSection()
                 ];
             }, $question->getSections()),
-            
+
             "propositions" => array_map(function ($proposition) use ($username) {
                 return [
                     "idProposition" => $proposition->getIdProposition(),

@@ -54,7 +54,7 @@ export class SmartSelect {
     element.classList.add(`conteneur_${this.elementName}`);
 
     const select = document.createElement("select");
-    select.name = `${this.elementName}${number}`;
+    select.name = `${this.elementName}[]`;
     select.id = `${this.elementName}${number}_select`;
     select.required = true;
     select.innerHTML = this.allOptions;
@@ -77,7 +77,7 @@ export class SmartSelect {
   updateNumbers() {
     this.allElements.forEach((element, index) => {
       element.children[0].id = `${this.elementName}${index + 1}_select`;
-      element.children[0].name = `${this.elementName}${index + 1}`;
+      element.children[0].name = `${this.elementName}[]`;
       element.children[1].onclick = () => this.removeElement(index + 1);
     });
     this.nbElements = this.allElements.length;
