@@ -331,7 +331,6 @@ class PropositionController extends MainController
         $estResponsable = $proposition->getUsernameResponsable() == $username;
         $estOrganisateur = $question->getUsernameOrganisateur() == $username;
 
-        //TODO : voir si simplification possible ou si toujours fonctionnel
         /**
          * @var string URL de afficherPropositions
          */
