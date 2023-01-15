@@ -35,58 +35,84 @@ $heureFermetureVotes = $dataQuestion['heureFermetureVotes'];
         <p>
             Choisissez les dates clé du calendrier de la question
         </p>
+    </div>
 
-        <label>Phase de rédaction : </label>
-        <div class="conteneurDateHeure">
-            <div>
-                <span>
-                    Du
-                    <input required type="date" name="dateDebutRedaction" value="<?= $dateDebutRedaction ?>">
-                </span>
-                <span>
-                    à
-                    <input required type="time" name="heureDebutRedaction" value="<?= $heureDebutRedaction ?>">
-                </span>
+    <div id="poser-question__body">
+        <div id="calendrier">
+            <div class="calendrierCercleBarre">
+                <div class="cercle"></div>
+                <div class="barre"></div>
             </div>
-            <div>
+            <div class="selecteurDate">
+                <h2>Début de la phase de rédaction</h2>
+                <div>
+                    <span>
+                        Le
+                        <input required type="date" name="dateDebutRedaction" value="<?= $dateDebutRedaction ?>">
+                    </span>
+                    <span>
+                        à
+                        <input required type="time" name="heureDebutRedaction" value="<?= $heureDebutRedaction ?>">
+                    </span>
+                </div>
+                <p>Les rédacteurs rédigent des propositions de réponses à la question.</p>
+            </div>
+
+            <div class="calendrierCercleBarre">
+                <div class="cercle"></div>
+                <div class="barre"></div>
+            </div>
+            <div class="selecteurDate">
+                <h2>Fin de la phase de rédaction</h2>
                 <span>
-                    au
+                    Le
                     <input required type="date" name="dateFinRedaction" value="<?= $dateFinRedaction ?>">
                 </span>
                 <span>
                     à
                     <input required type="time" name="heureFinRedaction" value="<?= $heureFinRedaction ?>">
                 </span>
+                <p>Les votants peuvent lire les propositions.</p>
             </div>
-        </div>
 
-        <label>Phase de votes : </label>
-        <div class="conteneurDateHeure">
-            <div>
-                <span>
-                    Du
-                    <input required type="date" name="dateOuvertureVotes" value="<?= $dateOuvertureVotes ?>">
-                </span>
-                <span>
-                    à
-                    <input required type="time" name="heureOuvertureVotes" value="<?= $heureOuvertureVotes ?>">
-                </span>
+            <div class="calendrierCercleBarre">
+                <div class="cercle"></div>
+                <div class="barre"></div>
             </div>
-            <div>
+            <div class="selecteurDate">
+                <h2>Début de la phase de vote</h2>
+                <div>
+                    <span>
+                        Le
+                        <input required type="date" name="dateOuvertureVotes" value="<?= $dateOuvertureVotes ?>">
+                    </span>
+                    <span>
+                        à
+                        <input required type="time" name="heureOuvertureVotes" value="<?= $heureOuvertureVotes ?>">
+                    </span>
+                </div>
+                <p>Les votants votent pour la ou les propositions de leur choix.</p>
+            </div>
+
+            <div class="calendrierCercleBarre">
+                <div class="cercle"></div>
+                <div class="barre"></div>
+            </div>
+            <div class="selecteurDate">
+                <h2>Fin de la phase de vote</h2>
                 <span>
-                    au
+                    Le
                     <input required type="date" name="dateFermetureVotes" value="<?= $dateFermetureVotes ?>">
                 </span>
                 <span>
                     à
                     <input required type="time" name="heureFermetureVotes" value="<?= $heureFermetureVotes ?>">
                 </span>
+                <p>Le résultat du vote est rendu public.</p>
             </div>
-        </div>
-    </div>
 
-    <div id="poser-question__body">
-        
+            <img src="assets/images/triangle.svg" alt="" id="fleche"></img>
+        </div>
     </div>
 
     <input type="hidden" name="idQuestion" value="<?= $idQuestion ?>">

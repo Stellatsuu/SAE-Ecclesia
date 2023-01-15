@@ -36,7 +36,7 @@ $votants = $dataQuestion['votants'];
 
         <h2>Choix des participants</h2>
         <p>
-            Choisissez les utilisateurs qui pourront rédiger des propositions et les utilisateurs qui pourront voter
+            Choisissez les utilisateurs qui pourront rédiger des propositions et les utilisateurs qui pourront voter.
         </p>
     </div>
 
