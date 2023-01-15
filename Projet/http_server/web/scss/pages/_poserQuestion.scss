@@ -124,39 +124,4 @@
       transform: scale(1);
     }
   }
-
-  $couleurCalendrier: #D9D9D9;
-  #calendrier{
-    display: grid;
-    grid-template-columns: 50px 1fr;
-
-    .calendrierCercleBarre{
-      display:flex;
-      flex-direction: column;
-      align-items: center;
-
-      .barre{
-        width: 2px;
-        height: calc(100% - 30px);
-        background-color: $couleurCalendrier;
-      }
-      .cercle{
-        width: 28px;
-        height: 28px;
-        border: solid $couleurCalendrier 2px;
-        border-radius: 100%;
-      }
-    }
-    h2{
-      margin: 0;
-      color: $couleurPrincipale;
-      align-self: center;
-    }
-    #fleche{
-      justify-self: center;
-    }
-    .selecteurDate p{
-      margin: 30px 0 30px 20px;
-    }
-  }
 }

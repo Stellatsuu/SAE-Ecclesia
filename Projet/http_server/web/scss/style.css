@@ -906,12 +906,12 @@ input[type=checkbox]:checked::before {
 }
 @media screen and (max-width: 1000px) {
   #roles_input #votants_input,
-#roles_input #redacteurs_input {
+  #roles_input #redacteurs_input {
     width: 100%;
     margin-left: 0;
   }
   #roles_input #votants_input select,
-#roles_input #redacteurs_input select {
+  #roles_input #redacteurs_input select {
     width: calc(100% - 60px);
   }
 }
@@ -1042,6 +1042,38 @@ input[type=checkbox]:checked::before {
 .markdown a {
   color: #08D1EC;
   text-decoration-color: #08D1EC;
+}
+
+#calendrier {
+  display: grid;
+  grid-template-columns: 50px 1fr;
+}
+#calendrier .calendrierCercleBarre {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#calendrier .calendrierCercleBarre .barre {
+  width: 2px;
+  height: calc(100% - 30px);
+  background-color: #D9D9D9;
+}
+#calendrier .calendrierCercleBarre .cercle {
+  width: 28px;
+  height: 28px;
+  border: solid #D9D9D9 2px;
+  border-radius: 100%;
+}
+#calendrier h2 {
+  margin: 0;
+  color: #E1603C;
+  align-self: center;
+}
+#calendrier #fleche {
+  justify-self: center;
+}
+#calendrier .selecteurDate p {
+  margin: 30px 0 30px 20px;
 }
 
 #messagesFlash {
@@ -2229,37 +2261,6 @@ input[type=checkbox]:checked::before {
 #poserQuestion #systemesDeVote input:checked + label {
   border-color: #E1603C;
   transform: scale(1);
-}
-#poserQuestion #calendrier {
-  display: grid;
-  grid-template-columns: 50px 1fr;
-}
-#poserQuestion #calendrier .calendrierCercleBarre {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-#poserQuestion #calendrier .calendrierCercleBarre .barre {
-  width: 2px;
-  height: calc(100% - 30px);
-  background-color: #D9D9D9;
-}
-#poserQuestion #calendrier .calendrierCercleBarre .cercle {
-  width: 28px;
-  height: 28px;
-  border: solid #D9D9D9 2px;
-  border-radius: 100%;
-}
-#poserQuestion #calendrier h2 {
-  margin: 0;
-  color: #E1603C;
-  align-self: center;
-}
-#poserQuestion #calendrier #fleche {
-  justify-self: center;
-}
-#poserQuestion #calendrier .selecteurDate p {
-  margin: 30px 0 30px 20px;
 }
 
 h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset, body {
