@@ -190,7 +190,7 @@ class QuestionController extends MainController
                 static::error($url, "Les tags de la question ne sont pas au bon format");
             }
 
-            $tagsArray = explode(',', str_replace(['{', '}'], '', $dataQuestion['tags']));
+            $tagsArray = array_filter(explode(',', str_replace(['{', '}'], '', $dataQuestion['tags'])));
             foreach($tagsArray as $tag) {
                 if (grapheme_strlen($tag) > 20) {
                     static::error($url, "Les tags de la question ne peuvent pas dépasser 20 caractères");
