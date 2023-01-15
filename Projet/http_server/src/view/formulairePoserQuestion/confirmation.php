@@ -26,16 +26,17 @@ echo '</pre>';
 
 ?>
 
-<form method="post" action="frontController.php?controller=question&action=poserQuestion" class="panel">
+<form method="post" action="frontController.php?controller=question&action=poserQuestion" class="panel" id="poserQuestion">
     <h1>Posez votre question :</h1>
 
     <div id="poser-question__top">
         <div id="progress-bar">
-            <span class="progress-bar__step filling"></span>
-            <span class="progress-bar__step"></span>
-            <span class="progress-bar__step"></span>
-            <span class="progress-bar__step"></span>
-            <span class="progress-bar__step"></span>
+            <div class="progress-bar__step filling"></div>
+            <div class="progress-bar__step filling"></div>
+            <div class="progress-bar__step filling"></div>
+            <div class="progress-bar__step filling"></div>
+            <div class="progress-bar__step filling"></div>
+            <div class="progress-bar__step filling"></div>
         </div>
 
         <h2>Confirmation</h2>

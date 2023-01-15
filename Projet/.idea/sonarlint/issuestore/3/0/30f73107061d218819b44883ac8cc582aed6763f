@@ -1,0 +1,14 @@
+
+T	php:S1131j"@Remove the useless trailing whitespaces at the end of this line.(–Ž–4
+U	php:S1131k"@Remove the useless trailing whitespaces at the end of this line.(žËýó
+[	php:S1131†"@Remove the useless trailing whitespaces at the end of this line.(ç¦íÀüÿÿÿÿ
+[	php:S1131’"@Remove the useless trailing whitespaces at the end of this line.(äÏÇíþÿÿÿÿ
+3php:S113"'Add a new line at the end of this file.
+V	php:S1854%"ARemove this useless assignment to local variable '$nomUsuelResp'.(©ÀƒÑ
+V	php:S1793C"<Replace this "else if" keyword sequence by "elseif" keyword.(ÞŠøÊüÿÿÿÿ
+Iphp:S121T"0Add curly braces around the nested statement(s).(éõéÌøÿÿÿÿ
+Dphp:S121Y"0Add curly braces around the nested statement(s).(Þ¬ü
+Dphp:S121k"0Add curly braces around the nested statement(s).(žËýó
+Dphp:S121}"0Add curly braces around the nested statement(s).(±ŒÌì
+Jphp:S121†"0Add curly braces around the nested statement(s).(ç¦íÀüÿÿÿÿ
+Jphp:S121’"0Add curly braces around the nested statement(s).(äÏÇíþÿÿÿÿ

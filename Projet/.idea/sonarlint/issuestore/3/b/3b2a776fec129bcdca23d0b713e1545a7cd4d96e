@@ -1,0 +1,8 @@
+
+e	php:S1808Y"DPut one space between this "if" keyword and the opening parenthesis.(ÇýÝòùÿÿÿÿ8¥·‰ÜÚ0
+²	php:S2681["•This statement will not be executed conditionally; only the first statement of this 2-statement block will be. The rest will execute unconditionally.(ŠÝ“ê8¥·‰ÜÚ0
+B	php:S2003v"&Replace "require" with "require_once".(ô‘ñ 8¥·‰ÜÚ0
+Pphp:S121G"0Add curly braces around the nested statement(s).(½—»¥þÿÿÿÿ8¦·‰ÜÚ0
+Pphp:S121Y"0Add curly braces around the nested statement(s).(ÇýÝòùÿÿÿÿ8¦·‰ÜÚ0
+h	php:S4833v"LReplace "require" with namespace import mechanism through the "use" keyword.(ô‘ñ 8¦·‰ÜÚ0
+g	php:S5361/"FReplace this "preg_replace()" call by a "str_replace()" function call.(ª’å¶úÿÿÿÿ8¦·‰ÜÚ0
