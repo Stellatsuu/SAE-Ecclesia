@@ -88,6 +88,7 @@ input[type=button].vote,
 input[type=submit].vote,
 button.vote,
 .button.vote {
+  position: relative;
   width: intrinsic;
   width: -moz-max-content;
   width: -webkit-max-content;
@@ -1210,6 +1211,11 @@ input[type=checkbox]:checked::before {
   font-weight: bold;
   color: #838383;
 }
+#afficher-propositions #formulaire-vote-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 #afficher-propositions #afficher-propositions__body {
   display: flex;
   flex-direction: column;
@@ -1436,6 +1442,22 @@ input[type=checkbox]:checked::before {
   #afficher-propositions__formulaire-vote .jugement-majoritaire .mention__small {
     display: block;
   }
+}
+#afficher-propositions__formulaire-vote #modalSupprimerVote .modal-content panel {
+  width: fit-content;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+#afficher-propositions__formulaire-vote #modalSupprimerVote .modal-content panel div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 50%;
 }
 
 #afficher-resultats {

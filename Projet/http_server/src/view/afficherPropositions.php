@@ -146,8 +146,10 @@ if ($nbPropositions == 0) {
 
     $formulaireVoteHTML = <<<HTML
         <form id="afficher-propositions__formulaire-vote" action="frontController.php?controller=vote&action=voter" method="post">
-            <h2>Vote</h2>
-            $btnSupprimerVoteHTML
+            <div id="formulaire-vote-top">
+                <h2>Vote</h2>
+                $btnSupprimerVoteHTML
+            </div>
             <input type="hidden" name="idQuestion" value="$idQuestion">
             $interfaceVote
         </form>
