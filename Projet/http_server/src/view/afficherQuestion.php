@@ -15,6 +15,12 @@ $phase = $dataQuestion['phase'];
 $sections = $dataQuestion['sections'];
 $propositions = $dataQuestion['propositions'];
 
+$calendrier = $dataQuestion['calendrier'];
+$dateDebutRedaction = $calendrier['dateDebutRedaction'];
+$dateFinRedaction = $calendrier['dateFinRedaction'];
+$dateDebutVotes = $calendrier['dateDebutVotes'];
+$dateFinVotes = $calendrier['dateFinVotes'];
+
 //$peutEditer
 //$peutChangerPhase
 //$peutEcrireProposition
@@ -137,7 +143,49 @@ if ($peutVoter) {
     <div id="afficher-question__calendrier" class="panel2">
         <h2>Calendrier :</h2>
 
-        <h1>TODO!</h1>
+        <div id="calendrier">
+            <div class="calendrierCercleBarre">
+                <div class="cercle"></div>
+                <div class="barre"></div>
+            </div>
+            <div class="selecteurDate">
+                <h2>Début de la phase de rédaction</h2>
+                <p><?= $dateDebutRedaction ?></p>
+                <p>Les rédacteurs rédigent des propositions de réponses à la question.</p>
+            </div>
+
+            <div class="calendrierCercleBarre">
+                <div class="cercle"></div>
+                <div class="barre"></div>
+            </div>
+            <div class="selecteurDate">
+                <h2>Fin de la phase de rédaction</h2>
+                <p><?= $dateFinRedaction ?></p>
+                <p>Les votants peuvent lire les propositions.</p>
+            </div>
+
+            <div class="calendrierCercleBarre">
+                <div class="cercle"></div>
+                <div class="barre"></div>
+            </div>
+            <div class="selecteurDate">
+                <h2>Début de la phase de vote</h2>
+                <p><?= $dateDebutVotes ?></p>
+                <p>Les votants votent pour la ou les propositions de leur choix.</p>
+            </div>
+
+            <div class="calendrierCercleBarre">
+                <div class="cercle"></div>
+                <div class="barre"></div>
+            </div>
+            <div class="selecteurDate">
+                <h2>Fin de la phase de vote</h2>
+                <p><?= $dateFinVotes ?></p>
+                <p>Le résultat du vote est rendu public.</p>
+            </div>
+
+            <img src="assets/images/triangle.svg" alt="" id="fleche"></img>
+        </div>
     </div>
 
     <div class="panel2">

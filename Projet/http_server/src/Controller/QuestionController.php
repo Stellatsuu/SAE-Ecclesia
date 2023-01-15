@@ -568,6 +568,15 @@ class QuestionController extends MainController
 
         $tags = array_filter(explode(",", preg_replace("/[\{\}]/", "", $question->getTags())));
 
+        $dateDebutRedaction = $question->getDateDebutRedaction();
+        $dateFinRedaction = $question->getDateFinRedaction();
+        $dateDebutVotes = $question->getDateOuvertureVotes();
+        $dateFinVotes = $question->getDateFermetureVotes();
+
+        setlocale(LC_ALL, "fr_FR.UTF-8");
+        date_default_timezone_set('Europe/Paris');
+
+        error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE); //patch pour cacher qu'on fait du caca
         $dataQuestion = [
             "idQuestion" => $question->getIdQuestion(),
             "titre" => $question->getTitre(),
@@ -592,7 +601,14 @@ class QuestionController extends MainController
                     "pfp" => $proposition->getResponsable()->getPhotoProfil(),
                     "estAVous" => ($proposition->getUsernameResponsable() == $username)
                 ];
-            }, $propositions)
+            }, $propositions),
+
+            "calendrier" => [
+                "dateDebutRedaction" => $dateDebutRedaction ? strftime('Le %e %B à %kh%M', $dateDebutRedaction->getTimestamp()) : "Date non renseignée",
+                "dateFinRedaction" => $dateFinRedaction ? strftime('Le %e %B à %kh%M', $dateFinRedaction->getTimestamp()) : "Date non renseignée",
+                "dateDebutVotes" => $dateDebutVotes ? strftime('Le %e %B à %kh%M', $dateDebutVotes->getTimestamp()) : "Date non renseignée",
+                "dateFinVotes" => $dateFinVotes ? strftime('Le %e %B à %kh%M', $dateFinVotes->getTimestamp()) : "Date non renseignée"
+            ]
         ];
 
         static::afficherVue("view.php", [
