@@ -20,13 +20,9 @@ $heureFermetureVotes = $dataQuestion['heureFermetureVotes'];
 $redacteurs = $dataQuestion['redacteurs'];
 $votants = $dataQuestion['votants'];
 
-echo '<pre>';
-print_r($dataQuestion);
-echo '</pre>';
-
 ?>
 
-<form method="post" action="frontController.php?controller=question&action=afficherFormulairePoserQuestion&page=confirmation" class="panel" id="poserQuestion">
+<form method="post" action="frontController.php?controller=question&action=poserQuestion" class="panel" id="poserQuestion">
     <h1>Posez votre question :</h1>
 
     <div id="poser-question__top">
@@ -36,7 +32,6 @@ echo '</pre>';
             <div class="progress-bar__step filling"></div>
             <div class="progress-bar__step filling"></div>
             <div class="progress-bar__step filling"></div>
-            <div class="progress-bar__step"></div>
         </div>
 
         <h2>Choix des participants</h2>
@@ -87,7 +82,7 @@ echo '</pre>';
 
     <div id="poser-question__bottom">
         <button type="submit">
-            Suivant
+            Poser la question
         </button>
     </div>
 </form>

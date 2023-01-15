@@ -17,10 +17,6 @@ $heureOuvertureVotes = $dataQuestion['heureOuvertureVotes'];
 $dateFermetureVotes = $dataQuestion['dateFermetureVotes'];
 $heureFermetureVotes = $dataQuestion['heureFermetureVotes'];
 
-echo '<pre>';
-print_r($dataQuestion);
-echo '</pre>';
-
 ?>
 
 <form method="post" action="frontController.php?controller=question&action=afficherFormulairePoserQuestion&page=roles" class="panel" id="poserQuestion">
@@ -33,12 +29,11 @@ echo '</pre>';
             <div class="progress-bar__step filling"></div>
             <div class="progress-bar__step filling"></div>
             <div class="progress-bar__step"></div>
-            <div class="progress-bar__step"></div>
         </div>
 
-        <h2>Choix du déroulement de la question</h2>
+        <h2>Calendrier</h2>
         <p>
-            Choisissez les dates auxquelles votre question changera de phase        
+            Choisissez les dates clé du calendrier de la question
         </p>
 
         <label>Phase de rédaction : </label>
@@ -109,12 +104,6 @@ echo '</pre>';
     }
     ?>
     <input type="hidden" name="systemeVote" value="<?= $systemeVote ?>">
-
-
-
-
-
-
 
     <div id="poser-question__bottom">
         <button type="submit">

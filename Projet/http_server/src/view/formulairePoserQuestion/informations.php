@@ -6,10 +6,6 @@ $titre = htmlspecialchars($dataQuestion['titre']);
 $description = htmlspecialchars($dataQuestion['description']);
 $tags = $dataQuestion['tags'];
 
-echo '<pre>';
-print_r($dataQuestion);
-echo '</pre>';
-
 ?>
 
 <form method="post" action="frontController.php?controller=question&action=afficherFormulairePoserQuestion&page=plan" class="panel" id="poserQuestion">
@@ -18,7 +14,6 @@ echo '</pre>';
     <div id="poser-question__top">
         <div id="progress-bar">
             <div class="progress-bar__step filling"></div>
-            <div class="progress-bar__step"></div>
             <div class="progress-bar__step"></div>
             <div class="progress-bar__step"></div>
             <div class="progress-bar__step"></div>

@@ -1,6 +1,0 @@
-
-R	php:S1808t"=Move this open curly brace to the beginning of the next line.(ÐÎÅ‰
-W	php:S1808x"=Move this open curly brace to the beginning of the next line.(ðÒ«Îýÿÿÿÿ
-V	php:S1142x"<This method has 6 returns, which is more than the 3 allowed.(ðÒ«Îýÿÿÿÿ
-a	php:S11923"LDefine a constant instead of duplicating this literal "Y-m-d H:i:s" 4 times.(ò»Òš
-~	php:S1448"dClass "Question" has 24 methods, which is greater than 20 authorized. Split it into smaller classes.(œçœŒÿÿÿÿÿ

@@ -6,10 +6,6 @@ $titre = htmlspecialchars($dataQuestion['titre']);
 $description = htmlspecialchars($dataQuestion['description']);
 $tags = $dataQuestion['tags'];
 
-echo '<pre>';
-print_r($dataQuestion);
-echo '</pre>';
-
 ?>
 
 <form method="post" action="frontController.php?controller=question&action=afficherFormulairePoserQuestion&page=systeme_vote" class="panel" id="poserQuestion">
@@ -19,7 +15,6 @@ echo '</pre>';
         <div id="progress-bar">
             <div class="progress-bar__step filling"></div>
             <div class="progress-bar__step filling"></div>
-            <div class="progress-bar__step"></div>
             <div class="progress-bar__step"></div>
             <div class="progress-bar__step"></div>
             <div class="progress-bar__step"></div>
@@ -52,6 +47,6 @@ echo '</pre>';
 </form>
 
 <script>
-    var sections = <?= json_encode($dataQuestion['sections']) ?>;
+    const sections = <?= json_encode($dataQuestion['sections']) ?>;
 </script>
 <script src="js/formulairePoserQuestion_sections.js"></script>
