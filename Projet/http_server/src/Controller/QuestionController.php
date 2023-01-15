@@ -230,18 +230,25 @@ class QuestionController extends MainController
 
         $nbQuestionsParPage = 12;
         $query = isset($_GET["query"]) ? strtolower($_GET["query"]) : "";
-        $motsClesEtTags = explode(" ", $query) ?: [];
+        $motsClesEtTagsEtUsername = explode(" ", $query) ?: [];
         $motsCles = [];
         $tags = [];
+        $usernames = [];
 
-        foreach ($motsClesEtTags as $mot) {
+        foreach ($motsClesEtTagsEtUsername as $mot) {
             if (substr($mot, 0, 1) == "#") {
                 $tags[] = substr($mot, 1);
+            } else if(substr($mot, 0, 1) == "@"){
+                $usernames[] = substr($mot, 1);
             } else {
                 $motsCles[] = $mot;
             }
         }
         $tags = array_filter($tags, function ($t) {
+            return $t != "";
+        });
+
+        $usernames = array_filter($usernames, function ($t) {
             return $t != "";
         });
 
@@ -259,12 +266,12 @@ class QuestionController extends MainController
         if (isset($_GET["f_mq"])) $filtres[] = "mq";
 
 
-        $nbPages = ceil((new QuestionRepository())->countAllListerQuestion($motsCles, $tags, $filtres) / $nbQuestionsParPage) ?: 1;
+        $nbPages = ceil((new QuestionRepository())->countAllListerQuestion($motsCles, $tags, $filtres, $usernames) / $nbQuestionsParPage) ?: 1;
         $page = isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] > 0 && $_GET["page"] <= $nbPages ? $_GET["page"] : 1;
 
         $offset = ($page - 1) * $nbQuestionsParPage;
 
-        $questions = (new QuestionRepository())->selectAllListerQuestions($nbQuestionsParPage, $offset, $motsCles, $tags, $filtres);
+        $questions = (new QuestionRepository())->selectAllListerQuestions($nbQuestionsParPage, $offset, $motsCles, $tags, $filtres, $usernames);
 
         $dataQuestions = array_map(function ($question) use ($username) {
             $question = Question::castIfNotNull($question);
@@ -279,13 +286,6 @@ class QuestionController extends MainController
                 "estAVous" => $username == $question->getUsernameOrganisateur(),
             ];
         }, $questions);
-
-
-
-
-
-
-
 
         static::afficherVue("view.php", [
             "titrePage" => "Liste des questions",

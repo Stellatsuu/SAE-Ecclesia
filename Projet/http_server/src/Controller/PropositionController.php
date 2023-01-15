@@ -15,6 +15,7 @@ use App\SAE\Lib\PhaseQuestion as Phase;
 use App\SAE\Model\Repository\CoAuteurRepository;
 use App\SAE\Model\Repository\RedacteurRepository;
 use App\SAE\Model\Repository\VotantRepository;
+use App\SAE\Model\Repository\VoteRepository;
 
 class PropositionController extends MainController
 {
@@ -264,6 +265,8 @@ class PropositionController extends MainController
         $peutGererCoAuteurs = $estResponsable && $phase == Phase::Redaction;
         $peutDemanderCoAuteur = !$estCoAuteur && !$estResponsable && $phase == Phase::Redaction;
 
+        $aDejaVote = (new VoteRepository)->existsForQuestion($idQuestion, $username);
+
         $dataQuestion = [
             "idQuestion" => $question->getIdQuestion(),
             "titreQuestion" => $question->getTitre(),
@@ -286,14 +289,6 @@ class PropositionController extends MainController
             }, $propositionAffichee->getParagraphes()),
         ];
 
-
-
-
-
-
-
-        
-
         static::afficherVue("view.php", [
             "titrePage" => "Propositions",
             "contenuPage" => "afficherPropositions.php",
@@ -306,6 +301,7 @@ class PropositionController extends MainController
             "peutVoter" => $peutVoter,
             "peutGererCoAuteurs" => $peutGererCoAuteurs,
             "peutDemanderCoAuteur" => $peutDemanderCoAuteur,
+            "aDejaVote" => $aDejaVote
         ]);
     }
 

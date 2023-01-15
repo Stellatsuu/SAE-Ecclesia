@@ -66,10 +66,10 @@ if ($nbPropositions == 0) {
     }, $paragraphes);
     $paragraphesHTML = implode("", $paragraphesHTML);
 
-    $modalHtml = <<<HTML
-        <div id="modalSupprimer" class="modal">
+    $modalHtmlProp = <<<HTML
+        <div id="modalSupprimerProp" class="modal">
             <div class="modal-content panel">
-                <p>Êtes vous sûr(e) de vouloir supprimer la proposition ?</p>
+                <p>Êtes-vous sûr(e) de vouloir supprimer la proposition ?</p>
                 <div>
                     <a class="button refuserBtn" href="#">Non</a>
                     <a class="button validerBtn" href="frontController.php?controller=proposition&action=supprimerProposition&idProposition=$idProposition">Oui</a>
@@ -81,8 +81,27 @@ if ($nbPropositions == 0) {
          </div>
     HTML;
 
-    $btnSupprimerHTML = <<<HTML
-        <a class="button modal-open"  href="#modalSupprimer">Supprimer</a>
+    $modalHtmlVote = <<<HTML
+        <div id="modalSupprimerVote" class="modal">
+            <div class="modal-content panel">
+                <p>Êtes-vous sûr(e) de vouloir supprimer votre vote ?</p>
+                <div>
+                    <a class="button refuserBtn" href="#">Non</a>
+                    <a class="button validerBtn" href="frontController.php?controller=vote&action=supprimerVote&idQuestion=$idQuestion">Oui</a>
+                </div>
+                <a href="#" class="modal-close">
+                    <img src="assets/images/close-icon.svg" alt="bouton fermer">
+                </a>
+            </div>
+         </div>
+    HTML;
+
+    $btnSupprimerVoteHTML = <<<HTML
+        <a class="button modal-open"  href="#modalSupprimerVote">Supprimer mon vote</a>
+    HTML;
+
+    $btnSupprimerPropHTML = <<<HTML
+        <a class="button modal-open"  href="#modalSupprimerProp">Supprimer ma proposition</a>
     HTML;
 
     $btnModifierHTML = <<<HTML
@@ -97,7 +116,8 @@ if ($nbPropositions == 0) {
         <a class="button" href="frontController.php?controller=coAuteur&action=afficherFormulaireGererCoAuteurs&idProposition=$idProposition">Gérer les co-auteurs</a>
     HTML;
 
-    $btnSupprimerHTML = $peutSupprimer ? $btnSupprimerHTML : "";
+    $btnSupprimerPropHTML = $peutSupprimer ? $btnSupprimerPropHTML : "";
+    $btnSupprimerVoteHTML = $aDejaVote ? $btnSupprimerVoteHTML : "";
     $btnModifierHTML = $peutEditer ? $btnModifierHTML : "";
     $btnDemanderCoAuteurHTML = $peutDemanderCoAuteur ? $btnDemanderCoAuteurHTML : "";
     $btnGererCoAuteursHTML = $peutGererCoAuteurs ? $btnGererCoAuteursHTML : "";
@@ -117,7 +137,7 @@ if ($nbPropositions == 0) {
             <div id="afficher-propositions__boutons">
                 $btnDemanderCoAuteurHTML
                 $btnModifierHTML
-                $btnSupprimerHTML
+                $btnSupprimerPropHTML
                 $btnGererCoAuteursHTML
             </div>
         </div>
@@ -126,6 +146,7 @@ if ($nbPropositions == 0) {
     $formulaireVoteHTML = <<<HTML
         <form id="afficher-propositions__formulaire-vote" action="frontController.php?controller=vote&action=voter" method="post">
             <h2>Vote</h2>
+            $btnSupprimerVoteHTML
             <input type="hidden" name="idQuestion" value="$idQuestion">
             $interfaceVote
         </form>
@@ -160,4 +181,5 @@ if ($nbPropositions == 0) {
 
 </div>
 
-<?= $modalHtml ?>
+<?= $modalHtmlProp ?>
+<?= $modalHtmlVote ?>
