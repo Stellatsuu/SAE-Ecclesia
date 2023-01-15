@@ -17,10 +17,6 @@ $heureOuvertureVotes = $dataQuestion['heureOuvertureVotes'];
 $dateFermetureVotes = $dataQuestion['dateFermetureVotes'];
 $heureFermetureVotes = $dataQuestion['heureFermetureVotes'];
 
-echo '<pre>';
-print_r($dataQuestion);
-echo '</pre>';
-
 ?>
 
 <form method="post" action="frontController.php?controller=question&action=afficherFormulairePoserQuestion&page=roles" class="panel" id="poserQuestion">
@@ -109,12 +105,6 @@ echo '</pre>';
     }
     ?>
     <input type="hidden" name="systemeVote" value="<?= $systemeVote ?>">
-
-
-
-
-
-
 
     <div id="poser-question__bottom">
         <button type="submit">

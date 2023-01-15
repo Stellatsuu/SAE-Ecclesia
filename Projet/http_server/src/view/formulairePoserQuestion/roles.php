@@ -20,10 +20,6 @@ $heureFermetureVotes = $dataQuestion['heureFermetureVotes'];
 $redacteurs = $dataQuestion['redacteurs'];
 $votants = $dataQuestion['votants'];
 
-echo '<pre>';
-print_r($dataQuestion);
-echo '</pre>';
-
 ?>
 
 <form method="post" action="frontController.php?controller=question&action=poserQuestion" class="panel" id="poserQuestion">
