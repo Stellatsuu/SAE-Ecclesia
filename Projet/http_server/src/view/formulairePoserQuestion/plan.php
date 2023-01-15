@@ -22,7 +22,6 @@ echo '</pre>';
             <div class="progress-bar__step"></div>
             <div class="progress-bar__step"></div>
             <div class="progress-bar__step"></div>
-            <div class="progress-bar__step"></div>
         </div>
 
         <h2>Plan de la question</h2>

@@ -33,12 +33,11 @@ echo '</pre>';
             <div class="progress-bar__step filling"></div>
             <div class="progress-bar__step filling"></div>
             <div class="progress-bar__step"></div>
-            <div class="progress-bar__step"></div>
         </div>
 
-        <h2>Choix du déroulement de la question</h2>
+        <h2>Calendrier</h2>
         <p>
-            Choisissez les dates auxquelles votre question changera de phase        
+            Choisissez les dates clé du calendrier de la question
         </p>
 
         <label>Phase de rédaction : </label>

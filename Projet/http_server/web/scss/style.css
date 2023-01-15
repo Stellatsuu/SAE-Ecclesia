@@ -931,7 +931,7 @@ input[type=checkbox]:checked::before {
 
 #sections_input {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-gap: 10px;
 }
 #sections_input #add_section {
@@ -943,14 +943,19 @@ input[type=checkbox]:checked::before {
   justify-self: center;
   text-align: center;
 }
-@media screen and (max-width: 1200px) and (min-width: 751px) {
+@media screen and (max-width: 1200px) and (min-width: 801px) {
+  #sections_input {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media screen and (max-width: 800px) and (min-width: 581px) {
   #sections_input {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 580px) {
   #sections_input {
-    grid-template-columns: 1fr;
+    grid-template-columns: 2fr;
   }
 }
 
@@ -2085,7 +2090,7 @@ input[type=checkbox]:checked::before {
 }
 #poserQuestion #progress-bar {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(5, 1fr);
   height: 15px;
   border-radius: 50px;
   background-color: #787878;
@@ -2099,11 +2104,35 @@ input[type=checkbox]:checked::before {
   border-bottom-right-radius: 50px;
 }
 #poserQuestion #progress-bar .progress-bar__step:not(:last-child) {
-  border-right: solid black 2px;
+  border-right: solid #1B1B1B 2px;
   width: calc(100% - 2px);
 }
 #poserQuestion #progress-bar .progress-bar__step.filling {
   background-color: #E1603C;
+}
+#poserQuestion #poser-question__body label {
+  display: inline-block;
+  margin: 15px 0 5px 0;
+}
+#poserQuestion #systemesDeVote {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#poserQuestion #systemesDeVote input {
+  display: none;
+}
+#poserQuestion #systemesDeVote label {
+  border: solid #D9D9D9 2px;
+  background-color: #353535;
+  transform: scale(0.85);
+  transition: transform 125ms ease-in-out;
+  padding: 20px;
+  width: 80%;
+}
+#poserQuestion #systemesDeVote input:checked + label {
+  border-color: #E1603C;
+  transform: scale(1);
 }
 
 h1, h2, h3, h4, h5, h6, p, label, input, textarea, fieldset, body {

@@ -23,7 +23,6 @@ echo '</pre>';
             <div class="progress-bar__step filling"></div>
             <div class="progress-bar__step"></div>
             <div class="progress-bar__step"></div>
-            <div class="progress-bar__step"></div>
         </div>
 
         <h2>Choix du système de vote</h2>
@@ -33,17 +32,31 @@ echo '</pre>';
     </div>
 
     <div id="poser-question__body">
-        <label for="systeme_vote_majoritaire_a_un_tour">Majoritaire à un tour</label>
-        <input type="radio" name="systemeVote" value="majoritaire_a_un_tour" id="systeme_vote_majoritaire_a_un_tour" required>
+        <div id="systemesDeVote">
+            <input type="radio" name="systemeVote" value="majoritaire_a_un_tour" id="systeme_vote_majoritaire_a_un_tour" required>
+            <label for="systeme_vote_majoritaire_a_un_tour">
+                <span class="systemesDeVote__titre">Majoritaire à un tour</span>
+                <span class="systemesDeVote__descritpion">Le vote se déroule en 1 tour et en choisissant une unique proposition.</span>
+            </label>
 
-        <label for="systeme_vote_approbation">Vote par approbation</label>
-        <input type="radio" name="systemeVote" value="approbation" id="systeme_vote_approbation" required>
+            <input type="radio" name="systemeVote" value="approbation" id="systeme_vote_approbation" required>
+            <label for="systeme_vote_approbation">
+                <span class="systemesDeVote__titre">Vote par approbation</span>
+                <span class="systemesDeVote__descritpion">Le vote se déroule en 1 tour et en choisissant une ou plusieurs propositions.</span>
+            </label>
 
-        <label for="systeme_vote_alternatif">Vote alternatif</label>
-        <input type="radio" name="systemeVote" value="alternatif" id="systeme_vote_alternatif" required>
+            <input type="radio" name="systemeVote" value="alternatif" id="systeme_vote_alternatif" required>
+            <label for="systeme_vote_alternatif">
+                <span class="systemesDeVote__titre">Vote alternatif</span>
+                <span class="systemesDeVote__descritpion">Le vote se déroule en plusieurs tours instantanés. Les votants votent une seule fois en classant les propositions par ordre de préférence.</span>
+            </label>
 
-        <label for="jugement_majoritaire">Jugement majoritaire</label>
-        <input type="radio" name="systemeVote" value="jugement_majoritaire" id="jugement_majoritaire" required>
+            <input type="radio" name="systemeVote" value="jugement_majoritaire" id="jugement_majoritaire" required>
+            <label for="jugement_majoritaire">
+                <span class="systemesDeVote__titre">Jugement majoritaire</span>
+                <span class="systemesDeVote__descritpion">Le vote se déroule en 1 tour et en attribuant une note a chacune des propositions.</span>
+            </label>
+        </div>
     </div>
 
     <input type="hidden" name="idQuestion" value="<?= $idQuestion ?>">

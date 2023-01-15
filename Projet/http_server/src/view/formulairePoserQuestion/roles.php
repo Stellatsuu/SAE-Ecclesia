@@ -36,7 +36,6 @@ echo '</pre>';
             <div class="progress-bar__step filling"></div>
             <div class="progress-bar__step filling"></div>
             <div class="progress-bar__step filling"></div>
-            <div class="progress-bar__step"></div>
         </div>
 
         <h2>Choix des participants</h2>
