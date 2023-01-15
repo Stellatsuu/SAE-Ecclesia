@@ -2,18 +2,16 @@ var nbSections = 0;
 const sections_input = document.getElementById("sections_input");
 const add_section_button = document.getElementById("add_section");
 
-const sectionsQuestion = sections;
-
-sectionsQuestion.forEach((element) => {
-  const nomSection = element.nom_section;
-  const descriptionSection = element.description_section;
+sections.forEach((element) => {
+  const nomSection = element.titre;
+  const descriptionSection = element.description;
   addSection();
   const section = document.getElementById("section" + nbSections + "_id");
   section.querySelector("input").value = nomSection;
   section.querySelector("textarea").value = descriptionSection;
 });
 
-if (sectionsQuestion.length == 0) {
+if (sections.length == 0) {
   addSection();
 }
 

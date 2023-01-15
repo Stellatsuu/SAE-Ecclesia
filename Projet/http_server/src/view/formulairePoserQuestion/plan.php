@@ -51,6 +51,6 @@ echo '</pre>';
 </form>
 
 <script>
-    var sections = <?= json_encode($dataQuestion['sections']) ?>;
+    const sections = <?= json_encode($dataQuestion['sections']) ?>;
 </script>
 <script src="js/formulairePoserQuestion_sections.js"></script>

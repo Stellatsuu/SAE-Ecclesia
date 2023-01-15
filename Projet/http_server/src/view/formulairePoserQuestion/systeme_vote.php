@@ -33,16 +33,16 @@ echo '</pre>';
 
     <div id="poser-question__body">
         <label for="systeme_vote_majoritaire_a_un_tour">Majoritaire à un tour</label>
-        <input type="radio" name="systemeVote" value="majoritaire_a_un_tour" id="systeme_vote_majoritaire_a_un_tour">
+        <input type="radio" name="systemeVote" value="majoritaire_a_un_tour" id="systeme_vote_majoritaire_a_un_tour" required>
 
         <label for="systeme_vote_approbation">Vote par approbation</label>
-        <input type="radio" name="systemeVote" value="approbation" id="systeme_vote_approbation">
+        <input type="radio" name="systemeVote" value="approbation" id="systeme_vote_approbation" required>
 
         <label for="systeme_vote_alternatif">Vote alternatif</label>
-        <input type="radio" name="systemeVote" value="alternatif" id="systeme_vote_alternatif">
+        <input type="radio" name="systemeVote" value="alternatif" id="systeme_vote_alternatif" required>
 
         <label for="jugement_majoritaire">Jugement majoritaire</label>
-        <input type="radio" name="systemeVote" value="jugement_majoritaire" id="jugement_majoritaire">
+        <input type="radio" name="systemeVote" value="jugement_majoritaire" id="jugement_majoritaire" required>
     </div>
 
     <input type="hidden" name="idQuestion" value="<?= $idQuestion ?>">

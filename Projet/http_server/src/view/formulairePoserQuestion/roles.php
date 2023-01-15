@@ -26,7 +26,7 @@ echo '</pre>';
 
 ?>
 
-<form method="post" action="frontController.php?controller=question&action=afficherFormulairePoserQuestion&page=confirmation" class="panel">
+<form method="post" action="frontController.php?controller=question&action=poserQuestion" class="panel">
     <h1>Posez votre question :</h1>
 
     <div id="poser-question__top">
@@ -86,7 +86,7 @@ echo '</pre>';
 
     <div id="poser-question__bottom">
         <button type="submit">
-            Suivant
+            Poser la question
         </button>
     </div>
 </form>

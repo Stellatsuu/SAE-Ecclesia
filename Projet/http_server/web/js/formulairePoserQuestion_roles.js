@@ -1,6 +1,6 @@
 import { SmartSelect } from "./SmartSelect.js";
 
-const idRedacteurs = redacteurs.map((redacteur) => redacteur.username) || [];
+const idRedacteurs = redacteurs || [];
 const redacteurs_smart_select = new SmartSelect(
   "redacteurs_input",
   "add_redacteur",
@@ -9,7 +9,7 @@ const redacteurs_smart_select = new SmartSelect(
   idRedacteurs
 );
 
-const idVotants = votants.map((votant) => votant.username) || [];
+const idVotants = votants || [];
 const votants_smart_select = new SmartSelect(
   "votants_input",
   "add_votant",
