@@ -314,23 +314,25 @@
       }
     }
   }
-  #modalSupprimerVote {
-    .modal-content panel{
-      width: fit-content;
-      padding: 30px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      align-items: center;
-      justify-content: center;
+}
 
-      div {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-around;
-        width: 50%;
-      }
+#modalSupprimerVote,
+#modalSupprimerProp {
+  .modal-content{
+    width: fit-content;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+
+    div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+      width: 50%;
     }
   }
 }
