@@ -576,6 +576,9 @@ class QuestionController extends MainController
         setlocale(LC_ALL, "fr_FR.UTF-8");
         date_default_timezone_set('Europe/Paris');
 
+        $english_months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+        $french_months = array('janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre');
+
         error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE); //patch pour cacher qu'on fait du caca
         $dataQuestion = [
             "idQuestion" => $question->getIdQuestion(),
@@ -604,10 +607,10 @@ class QuestionController extends MainController
             }, $propositions),
 
             "calendrier" => [
-                "dateDebutRedaction" => $dateDebutRedaction ? strftime('Le %e %B à %kh%M', $dateDebutRedaction->getTimestamp()) : "Date non renseignée",
-                "dateFinRedaction" => $dateFinRedaction ? strftime('Le %e %B à %kh%M', $dateFinRedaction->getTimestamp()) : "Date non renseignée",
-                "dateDebutVotes" => $dateDebutVotes ? strftime('Le %e %B à %kh%M', $dateDebutVotes->getTimestamp()) : "Date non renseignée",
-                "dateFinVotes" => $dateFinVotes ? strftime('Le %e %B à %kh%M', $dateFinVotes->getTimestamp()) : "Date non renseignée"
+                "dateDebutRedaction" => $dateDebutRedaction ? str_replace($english_months, $french_months, strftime('Le %e %B à %kh%M', $dateDebutRedaction->getTimestamp())) : "Date non renseignée",
+                "dateFinRedaction" => $dateFinRedaction ? str_replace($english_months, $french_months, strftime('Le %e %B à %kh%M', $dateFinRedaction->getTimestamp())) : "Date non renseignée",
+                "dateDebutVotes" => $dateDebutVotes ? str_replace($english_months, $french_months, strftime('Le %e %B à %kh%M', $dateDebutVotes->getTimestamp())) : "Date non renseignée",
+                "dateFinVotes" => $dateFinVotes ? str_replace($english_months, $french_months, strftime('Le %e %B à %kh%M', $dateFinVotes->getTimestamp())) : "Date non renseignée"
             ]
         ];
 
