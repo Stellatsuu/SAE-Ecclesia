@@ -1,0 +1,50 @@
+
+Z	php:S1131s"@Remove the useless trailing whitespaces at the end of this line.(Ùú³êúÿÿÿÿ
+Z	php:S1131u"@Remove the useless trailing whitespaces at the end of this line.(ä¤¨şÿÿÿÿ
+U	php:S1131{"@Remove the useless trailing whitespaces at the end of this line.(… ÛÏ
+X	php:S1808‰"=Move this open curly brace to the beginning of the next line.(Õ…´¥ûÿÿÿÿ
+S	php:S1808ù"=Move this open curly brace to the beginning of the next line.(’¦ü
+d	php:S18085"JPut one space between the closing parenthesis and the opening curly brace.(¢ä¶‚øÿÿÿÿ
+d	php:S18086"JPut one space between the closing parenthesis and the opening curly brace.(´¨¤éúÿÿÿÿ
+d	php:S18087"JPut one space between the closing parenthesis and the opening curly brace.(£’ëÇıÿÿÿÿ
+d	php:S1808F"JPut one space between the closing parenthesis and the opening curly brace.(öÀ¢àûÿÿÿÿ
+_	php:S1808Y"JPut one space between the closing parenthesis and the opening curly brace.(ÿ¥¾ş
+_	php:S1808`"JPut one space between the closing parenthesis and the opening curly brace.(ÛµÒ
+`	php:S1808˜"JPut one space between the closing parenthesis and the opening curly brace.(İ¶Ë
+e	php:S1808"JPut one space between the closing parenthesis and the opening curly brace.(¤ôö¾ûÿÿÿÿ
+e	php:S1808¦"JPut one space between the closing parenthesis and the opening curly brace.(øšº¥üÿÿÿÿ
+`	php:S1808©"JPut one space between the closing parenthesis and the opening curly brace.(—ÌÑ§
+`	php:S1808­"JPut one space between the closing parenthesis and the opening curly brace.(€ğ©Î
+`	php:S1808®"JPut one space between the closing parenthesis and the opening curly brace.(“¶§•
+`	php:S1808±"JPut one space between the closing parenthesis and the opening curly brace.(ñò’
+`	php:S1808µ"JPut one space between the closing parenthesis and the opening curly brace.(›È
+e	php:S1808À"JPut one space between the closing parenthesis and the opening curly brace.(šëâ’ıÿÿÿÿ
+`	php:S1808÷"JPut one space between the closing parenthesis and the opening curly brace.(’úÒò
+^	php:S18085"DPut one space between this "if" keyword and the opening parenthesis.(¢ä¶‚øÿÿÿÿ
+c	php:S18086"IPut one space between this "foreach" keyword and the opening parenthesis.(´¨¤éúÿÿÿÿ
+^	php:S18087"DPut one space between this "if" keyword and the opening parenthesis.(£’ëÇıÿÿÿÿ
+^	php:S1808F"DPut one space between this "if" keyword and the opening parenthesis.(öÀ¢àûÿÿÿÿ
+[	php:S1808M"FPut one space between this "else" keyword and the opening curly brace.(å¥‡
+Y	php:S1808Y"DPut one space between this "if" keyword and the opening parenthesis.(ÿ¥¾ş
+Y	php:S1808`"DPut one space between this "if" keyword and the opening parenthesis.(ÛµÒ
+[	php:S1808˜"EPut one space between this "for" keyword and the opening parenthesis.(İ¶Ë
+`	php:S1808"EPut one space between this "for" keyword and the opening parenthesis.(¤ôö¾ûÿÿÿÿ
+d	php:S1808¦"IPut one space between this "foreach" keyword and the opening parenthesis.(øšº¥üÿÿÿÿ
+_	php:S1808©"IPut one space between this "foreach" keyword and the opening parenthesis.(—ÌÑ§
+Z	php:S1808­"DPut one space between this "if" keyword and the opening parenthesis.(€ğ©Î
+Z	php:S1808®"DPut one space between this "if" keyword and the opening parenthesis.(“¶§•
+Z	php:S1808±"DPut one space between this "if" keyword and the opening parenthesis.(ñò’
+Z	php:S1808µ"DPut one space between this "if" keyword and the opening parenthesis.(›È
+_	php:S1808À"DPut one space between this "if" keyword and the opening parenthesis.(šëâ’ıÿÿÿÿ
+\	php:S1808Â"FPut one space between this "else" keyword and the opening curly brace.(å¥‡
+_	php:S1808÷"IPut one space between this "foreach" keyword and the opening parenthesis.(’úÒò
+W	php:S1142¥"<This method has 4 returns, which is more than the 3 allowed.(Ä×ÇÈşÿÿÿÿ
+nphp:S117ª"YRename this local variable "$AP_URL" to match the regular expression ^[a-z][a-zA-Z0-9]*$.(Š¶í
+n	php:S3776""TRefactor this function to reduce its Cognitive Complexity from 20 to the 15 allowed.(áÁ«ëşÿÿÿÿ
+o	php:S3776‰"TRefactor this function to reduce its Cognitive Complexity from 30 to the 15 allowed.(Õ…´¥ûÿÿÿÿ
+j	php:S3776á"TRefactor this function to reduce its Cognitive Complexity from 26 to the 15 allowed.(òıì¨
+o	php:S3776¥"TRefactor this function to reduce its Cognitive Complexity from 21 to the 15 allowed.(Ä×ÇÈşÿÿÿÿ
+q	php:S1488q"\Immediately return this expression instead of assigning it to the temporary variable "$res".(‰¾²Å
+x	php:S1488Î"]Immediately return this expression instead of assigning it to the temporary variable "$html".(Â²¯¬ÿÿÿÿÿ
+R	php:S1793±"<Replace this "else if" keyword sequence by "elseif" keyword.(ñò’
+Jphp:S121³"0Add curly braces around the nested statement(s).(ë¾š¥ıÿÿÿÿ

@@ -1,0 +1,5 @@
+
+3php:S113"'Add a new line at the end of this file.
+^	php:S1192d"IDefine a constant instead of duplicating this literal "&gt;&gt;" 4 times.(§‚øº
+c	php:S1192`"IDefine a constant instead of duplicating this literal "&lt;&lt;" 4 times.(ÄÒÏıÿÿÿÿ
+C	php:S14817")Remove this unused "$key" local variable.(ÜğÀ—üÿÿÿÿ
