@@ -182,7 +182,7 @@ class QuestionController extends MainController
 
             if (empty($dataQuestion['description'])) {
                 static::error($url, "La description de la question ne peut pas être vide");
-            } elseif (grapheme_strlen($dataQuestion['description']) > 4000) {
+            } elseif (strlen($dataQuestion['description']) > 4000) {
                 static::error($url, "La description de la question ne peut pas dépasser 4000 caractères");
             }
 
@@ -192,7 +192,7 @@ class QuestionController extends MainController
 
             $tagsArray = array_filter(explode(',', str_replace(['{', '}'], '', $dataQuestion['tags'])));
             foreach($tagsArray as $tag) {
-                if (grapheme_strlen($tag) > 20) {
+                if (strlen($tag) > 20) {
                     static::error($url, "Les tags de la question ne peuvent pas dépasser 20 caractères");
                 } elseif(!preg_match('/^[a-zA-Z0-9]+$/', $tag)) {
                     static::error($url, "Les tags de la question ne peuvent contenir que des lettres, des chiffres et des underscores");
@@ -212,13 +212,13 @@ class QuestionController extends MainController
             foreach ($sections as $section) {
                 if (empty($section['titre'])) {
                     static::error($url, "Le titre d'une section ne peut pas être vide");
-                } elseif (grapheme_strlen($section['titre']) > 50) {
+                } elseif (strlen($section['titre']) > 50) {
                     static::error($url, "Le titre d'une section ne peut pas dépasser 50 caractères");
                 }
 
                 if (empty($section['description'])) {
                     static::error($url, "La description d'une section ne peut pas être vide");
-                } elseif (grapheme_strlen($section['description']) > 2000) {
+                } elseif (strlen($section['description']) > 2000) {
                     static::error($url, "La description d'une section ne peut pas dépasser 2000 caractères");
                 }
             }
