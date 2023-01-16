@@ -94,9 +94,11 @@ namespace App\SAE\Model\SystemeVote{
                     HTML;
                 }
                 if(!isset($colonneDestination[$i])){
+                    $displayedRanking = $i +1;
+
                     $colonneDestination[$i] = <<<HTML
                         <div class="box" id="dest$i">
-                            <span>$i</span>
+                            <span>$displayedRanking</span>
                         </div>
                     HTML;
                 }

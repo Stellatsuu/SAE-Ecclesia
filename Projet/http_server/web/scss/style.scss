@@ -24,6 +24,7 @@
 @import "layout/sections_input";
 @import "layout/comptes";
 @import "layout/markdown";
+@import "layout/calendrier";
 
 @import "pages/listeDemandesQuestion";
 @import "pages/message";
@@ -36,6 +37,8 @@
 @import "pages/afficherProfil";
 @import "pages/listeQuestions";
 @import "pages/afficherQuestion";
+@import "pages/accueil";
+@import "pages/poserQuestion";
 
 @import "utils/textes";
 @import "utils/unselectable";

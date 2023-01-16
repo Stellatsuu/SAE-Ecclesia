@@ -38,7 +38,7 @@ $pfp = PhotoProfil::getBaliseImg($pfpb64, "photo de profil");
         </div>
 
     </div>
-    <p class="button supprimerBtn"><a href="#modalSupprimerCompte">Supprimer Compte</a></p>
+    <p class="button supprimerBtn"><a href="#modalSupprimerCompte">Supprimer mon compte</a></p>
 
 </div>
 

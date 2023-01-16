@@ -42,6 +42,7 @@ class ParagrapheRepository extends AbstractRepository
         SELECT *
             FROM paragraphe
             WHERE id_proposition = :idProposition
+            ORDER BY id_section
         SQL;
 
         $pdo = DatabaseConnection::getPdo()->prepare($sql);

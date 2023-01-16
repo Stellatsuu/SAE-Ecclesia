@@ -2,11 +2,10 @@
 
 namespace App\SAE\Controller;
 
+use App\SAE\Lib\ConnexionUtilisateur;
 use App\SAE\Lib\MessageFlash;
-use App\SAE\Lib\PhotoProfil;
-use App\SAE\Model\HTTP\Session;
-use App\SAE\Model\Repository\DatabaseConnection;
-use App\SAE\Model\Repository\UtilisateurRepository;
+use App\SAE\Lib\PhaseQuestion;
+use App\SAE\Model\Repository\QuestionRepository;
 
 /**
  * @var string URL de l'accueil
@@ -86,9 +85,40 @@ class MainController
 
     public static function afficherAccueil(): void
     {
+        $questions = (new QuestionRepository())->selectAllListerQuestions(3, 0, [], [], []);
+        $username = ConnexionUtilisateur::getUsername() ?: "";
+
+        $donneesQuestions = [];
+
+        foreach ($questions as $question) {
+            $phase = $question->getPhase();
+            $status = match ($phase) {
+                PhaseQuestion::NonRemplie => "Question validée",
+                PhaseQuestion::Attente => "En attente",
+                PhaseQuestion::Redaction => "Nouvelle question",
+                PhaseQuestion::Lecture => "Réponses publiées",
+                PhaseQuestion::Vote => "Votes ouverts",
+                PhaseQuestion::Resultat => "Question terminée"
+            };
+
+            $donneesQuestions[] = [
+                "idQuestion" => $question->getIdQuestion(),
+                "titre" => $question->getTitre(),
+                "description" => $question->getDescription(),
+                "datePublication" => $question->getDateDebutRedaction() ? $question->getDateDebutRedaction()->format("d/m/Y") : "Non Publiée",
+                "phase" => $phase->toString(),
+                "nomUsuelOrganisateur" => $question->getOrganisateur()->getNomUsuel(),
+                "pfp" => $question->getOrganisateur()->getPhotoProfil(),
+                "estAVous" => $username == $question->getUsernameOrganisateur(),
+                "statusQuestion" =>  $status
+            ];
+
+        }
+
         static::afficherVue("view.php", [
             "titrePage" => "Accueil",
-            "contenuPage" => "accueil.php"
+            "contenuPage" => "accueil.php",
+            "questions" => $donneesQuestions
         ]);
     }
 

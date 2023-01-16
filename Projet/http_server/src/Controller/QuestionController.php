@@ -3,6 +3,7 @@
 namespace App\SAE\Controller;
 
 use App\SAE\Lib\ConnexionUtilisateur;
+use App\SAE\Lib\MessageFlash;
 use App\SAE\Model\Repository\QuestionRepository as QuestionRepository;
 use App\SAE\Model\DataObject\Question as Question;
 use App\SAE\Model\DataObject\Section;
@@ -10,6 +11,7 @@ use App\SAE\Model\DataObject\Utilisateur;
 use App\SAE\Model\Repository\UtilisateurRepository as UtilisateurRepository;
 use App\SAE\Lib\PhaseQuestion as Phase;
 use App\SAE\Model\DataObject\Proposition;
+use App\SAE\Model\HTTP\Session;
 use App\SAE\Model\Repository\PropositionRepository as PropositionRepository;
 use App\SAE\Model\Repository\RedacteurRepository;
 use App\SAE\Model\Repository\VotantRepository;
@@ -22,198 +24,351 @@ class QuestionController extends MainController
 
     public static function afficherFormulairePoserQuestion(): void
     {
+        $session = Session::getInstance();
         $username = ConnexionUtilisateur::getUsernameSiConnecte();
 
         $idQuestion = static::getIfSetAndNumeric("idQuestion");
-
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
-
         if ($question->getUsernameOrganisateur() != $username) {
-            static::error(LQ_URL, "Vous n'êtes pas l'organisateur de cette question. Vous ne pouvez pas la modifier.");
+            static::error(LQ_URL, "Vous n'êtes pas l'organisateur de cette question");
+        }
+        $page = $_GET['page'] ?? 'informations';
+        if (!in_array($page, ['informations', 'plan', 'systeme_vote', 'calendrier', 'roles', 'confirmation'])) {
+            static::error(ACCUEIL_URL, "Erreur de navigation");
         }
 
-        $utilisateurs = (new UtilisateurRepository)->selectAll();
-
-        $phase = $question->getPhase();
-        switch ($phase) {
-            case Phase::Redaction:
-                static::error(LQ_URL, "La question est en phase de rédaction. Vous ne pouvez plus la modifier.");
-            case Phase::Lecture:
-                static::error(LQ_URL, "La question est en phase de lecture. Vous ne pouvez plus la modifier.");
-            case Phase::Vote:
-                static::error(LQ_URL, "La question est en phase de vote. Vous ne pouvez plus la modifier.");
-            case Phase::Resultat:
-                static::error(LQ_URL, "La question est terminée. Vous ne pouvez plus la modifier.");
-            case Phase::NonRemplie:
-                $question->setDateDebutRedaction((new DateTime())->add(new DateInterval('P1D'))->setTime(16, 0, 0));
-                $question->setDateFinRedaction((new DateTime())->add(new DateInterval('P8D'))->setTime(16, 0, 0));
-                $question->setDateOuvertureVotes((new DateTime())->add(new DateInterval('P8D'))->setTime(16, 0, 0));
-                $question->setDateFermetureVotes((new DateTime())->add(new DateInterval('P15D'))->setTime(16, 0, 0));
-                break;
+        if ($page == 'roles') {
+            $utilisateurs = (new UtilisateurRepository)->selectAll();
+        } else {
+            $utilisateurs = [];
         }
 
-        $datesFormatees = array(
-            "dateDebutRedaction" => $question->getDateDebutRedaction()->format("Y-m-d"),
-            "dateFinRedaction" => $question->getDateFinRedaction()->format("Y-m-d"),
-            "dateOuvertureVotes" => $question->getDateOuvertureVotes()->format("Y-m-d"),
-            "dateFermetureVotes" => $question->getDateFermetureVotes()->format("Y-m-d")
-        );
+        $savedData = $session->contient('savedData') ? $session->lire('savedData') : [];
+        $session->supprimer('savedData');
 
-        $heuresFormatees = array(
-            "heureDebutRedaction" => $question->getDateDebutRedaction()->format("H:i"),
-            "heureFinRedaction" => $question->getDateFinRedaction()->format("H:i"),
-            "heureOuvertureVotes" => $question->getDateOuvertureVotes()->format("H:i"),
-            "heureFermetureVotes" => $question->getDateFermetureVotes()->format("H:i")
-        );
+        $dataQuestion = [
+            //INFORMATIONS
+            'idQuestion' => $question->getIdQuestion(),
+            'titre' => $question->getTitre(),
+
+            'description' => 
+                $_POST['description'] ??
+                $savedData['description'] ??
+                $question->getDescription(),
+
+            'tags' => 
+                $_POST['tags'] ??
+                $savedData['tags'] ??
+                $question->getTags(),
+
+            //PLAN
+            'sections' => $savedData['sections'] ??
+                $_POST['sections'] ??
+                array_map(
+                    function ($section) {
+                        return [
+                            'titre' => $section->getNomSection(),
+                            'description' => $section->getDescriptionSection(),
+                        ];
+                    },
+                    $question->getSections()
+                ),
+
+            //SYSTEME VOTE
+            'systemeVote' => $_POST['systemeVote'] ??
+                $savedData['systemeVote'] ??
+                $question->getSystemeVote()->getNom(),
+
+            //CALENDRIER
+            'dateDebutRedaction' => 
+                $_POST['dateDebutRedaction'] ??
+                $savedData['dateDebutRedaction'] ??
+                $question->getDateDebutRedaction()?->format('Y-m-d') ??
+                (new DateTime("now"))->add(new DateInterval('P1D'))->format('Y-m-d'),
+
+            'heureDebutRedaction' => 
+                $_POST['heureDebutRedaction'] ??
+                $savedData['heureDebutRedaction'] ??
+                $question->getDateDebutRedaction()?->format('H:i') ??
+                "08:00",
+
+            'dateFinRedaction' => 
+                $_POST['dateFinRedaction'] ??
+                $savedData['dateFinRedaction'] ??
+                $question->getDateFinRedaction()?->format('Y-m-d') ??
+                (new DateTime("now"))->add(new DateInterval('P8D'))->format('Y-m-d'),
+
+            'heureFinRedaction' => 
+                $_POST['heureFinRedaction'] ??
+                $savedData['heureFinRedaction'] ??
+                $question->getDateFinRedaction()?->format('H:i') ??
+                "08:00",
+
+            'dateOuvertureVotes' => 
+                $_POST['dateOuvertureVotes'] ??
+                $savedData['dateOuvertureVotes'] ??
+                $question->getDateOuvertureVotes()?->format('Y-m-d') ??
+                (new DateTime("now"))->add(new DateInterval('P8D'))->format('Y-m-d'),
+
+            'heureOuvertureVotes' => 
+                $_POST['heureOuvertureVotes'] ??
+                $savedData['heureOuvertureVotes'] ??
+                $question->getDateOuvertureVotes()?->format('H:i') ??
+                "08:00",
+
+            'dateFermetureVotes' => 
+                $_POST['dateFermetureVotes'] ??
+                $savedData['dateFermetureVotes'] ??
+                $question->getDateFermetureVotes()?->format('Y-m-d') ??
+                (new DateTime("now"))->add(new DateInterval('P15D'))->format('Y-m-d'),
+
+            'heureFermetureVotes' => 
+                $_POST['heureFermetureVotes'] ??
+                $savedData['heureFermetureVotes'] ??
+                $question->getDateFermetureVotes()?->format('H:i') ??
+                "08:00",
+
+            //ROLES
+            'redacteurs' => 
+                $_POST['redacteurs'] ??
+                $savedData['redacteurs'] ??
+                array_map(
+                    function ($redacteur) {
+                        return $redacteur->getUsername();
+                    },
+                    $question->getRedacteurs()
+                ),
+
+            'votants' => 
+                $_POST['votants'] ??
+                $savedData['votants'] ??
+                array_map(
+                    function ($votant) {
+                        return $votant->getUsername();
+                    },
+                    $question->getVotants()
+                ),
+        ];
+
+        static::verifierDataQuestion($dataQuestion, $page);
 
         static::afficherVue("view.php", [
             "titrePage" => "Poser une question",
-            "contenuPage" => "formulairePoserQuestion.php",
-            "question" => $question,
+            "contenuPage" => "formulairePoserQuestion/$page.php",
+            "dataQuestion" => $dataQuestion,
             "utilisateurs" => $utilisateurs,
-            "datesFormatees" => $datesFormatees,
-            "heuresFormatees" => $heuresFormatees
         ]);
     }
 
-    public static function poserQuestion(): void
+    private static function verifierDataQuestion(array $dataQuestion, string $page = null)
+    {
+        $session = Session::getInstance();
+        $session->enregistrer('savedData', $dataQuestion);
+
+        $idQuestion = $dataQuestion['idQuestion'];
+
+        $baseURL = "frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion";
+        $url = match ($page) {
+            'plan' => "$baseURL&page=informations",
+            'systeme_vote' => "$baseURL&page=plan",
+            'calendrier' => "$baseURL&page=systeme_vote",
+            'roles' => "$baseURL&page=calendrier",
+            'confirmation' => "$baseURL&page=roles",
+            default => $baseURL,
+        };
+
+        //INFORMATIONS
+        if ($page == 'plan' || $page == null) {
+
+            if (empty($dataQuestion['description'])) {
+                static::error($url, "La description de la question ne peut pas être vide");
+            } elseif (grapheme_strlen($dataQuestion['description']) > 4000) {
+                static::error($url, "La description de la question ne peut pas dépasser 4000 caractères");
+            }
+
+            if (!preg_match('/^(\{[a-zA-Z0-9]*\})|(\{[a-zA-Z0-9]+(,[a-zA-Z0-9]+)+\})$/', $dataQuestion['tags'])) {
+                static::error($url, "Les tags de la question ne sont pas au bon format");
+            }
+
+            $tagsArray = array_filter(explode(',', str_replace(['{', '}'], '', $dataQuestion['tags'])));
+            foreach($tagsArray as $tag) {
+                if (grapheme_strlen($tag) > 20) {
+                    static::error($url, "Les tags de la question ne peuvent pas dépasser 20 caractères");
+                } elseif(!preg_match('/^[a-zA-Z0-9]+$/', $tag)) {
+                    static::error($url, "Les tags de la question ne peuvent contenir que des lettres, des chiffres et des underscores");
+                }
+            }
+        }
+
+        //PLAN
+        if ($page == 'systeme_vote' || $page == null) {
+
+            $sections = $dataQuestion['sections'] ?? [];
+
+            if (count($dataQuestion['sections']) == 0) {
+                static::error($url, "La question doit avoir au moins une section");
+            }
+
+            foreach ($sections as $section) {
+                if (empty($section['titre'])) {
+                    static::error($url, "Le titre d'une section ne peut pas être vide");
+                } elseif (grapheme_strlen($section['titre']) > 50) {
+                    static::error($url, "Le titre d'une section ne peut pas dépasser 50 caractères");
+                }
+
+                if (empty($section['description'])) {
+                    static::error($url, "La description d'une section ne peut pas être vide");
+                } elseif (grapheme_strlen($section['description']) > 2000) {
+                    static::error($url, "La description d'une section ne peut pas dépasser 2000 caractères");
+                }
+            }
+        }
+
+        //SYSTEME VOTE
+        if($page == 'calendrier' || $page == null) {
+
+            $valeursPossibles = [
+                'majoritaire_a_un_tour',
+                'approbation',
+                'alternatif',
+                'jugement_majoritaire',
+            ];
+
+            if (!in_array($dataQuestion['systemeVote'], $valeursPossibles)) {
+                static::error($url, "Le système de vote n'est pas valide");
+            }
+        }
+
+        //CALENDRIER
+        if($page == 'roles' || $page == null) {
+
+            $dateDebutRedaction = DateTime::createFromFormat('Y-m-d H:i', $dataQuestion['dateDebutRedaction'] . ' ' . $dataQuestion['heureDebutRedaction']);
+            $dateFinRedaction = DateTime::createFromFormat('Y-m-d H:i', $dataQuestion['dateFinRedaction'] . ' ' . $dataQuestion['heureFinRedaction']);
+            $dateOuvertureVotes = DateTime::createFromFormat('Y-m-d H:i', $dataQuestion['dateOuvertureVotes'] . ' ' . $dataQuestion['heureOuvertureVotes']);
+            $dateFermetureVotes = DateTime::createFromFormat('Y-m-d H:i', $dataQuestion['dateFermetureVotes'] . ' ' . $dataQuestion['heureFermetureVotes']);
+            
+            //Vérification des dates
+            //les dates doivent être dans l'ordre et ne pas être dans le passé
+            $datesCohérentes = 
+                $dateDebutRedaction < $dateFinRedaction &&
+                $dateFinRedaction <= $dateOuvertureVotes &&
+                $dateOuvertureVotes < $dateFermetureVotes &&
+                $dateDebutRedaction > new DateTime();
+
+            if (!$datesCohérentes) {
+                static::error($url, "Les dates ne sont pas cohérentes");
+            }
+        }
+
+        //ROLES
+        if($page == 'confirmation' || $page == null) {
+
+            $redacteurs = $dataQuestion['redacteurs'] ?? [];
+            $votants = $dataQuestion['votants'] ?? [];
+            
+            $utilisateurs = (new UtilisateurRepository)->selectAll();
+            $usernames = array_map(fn(Utilisateur $u) => $u->getUsername(), $utilisateurs);
+
+            foreach ($redacteurs as $redacteur) {
+                if (!in_array($redacteur, $usernames)) {
+                    $redacteur = htmlspecialchars($redacteur);
+                    static::error($url, "Le redacteur $redacteur n'existe pas");
+                }
+            }
+
+            foreach ($votants as $votant) {
+                if (!in_array($votant, $usernames)) {
+                    $votant = htmlspecialchars($votant);
+                    static::error($url, "Le votant $votant n'existe pas");
+                }
+            }
+
+            if (count($redacteurs) == 0) {
+                static::error($url, "La question doit avoir au moins un rédacteur");
+            }
+
+            if (count($votants) == 0) {
+                static::error($url, "La question doit avoir au moins un votant");
+            }
+            
+        }
+
+        $session->supprimer('savedData');
+    }
+
+
+    public static function poserQuestion()
     {
         $username = ConnexionUtilisateur::getUsernameSiConnecte();
-
-        $idQuestion = static::getIfSetAndNumeric("idQuestion");
-        $description = static::getIfSetAndNotEmpty("description");
-
-        /**
-         * @var string URL du formulaire "Poser une Question"
-         */
-        $AFPQ_URL = "frontController.php?controller=question&action=afficherFormulairePoserQuestion&idQuestion=$idQuestion";
-
+        $idQuestion = static::getIfSetAndNumeric('idQuestion', LMQ_URL);
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
 
         if ($question->getUsernameOrganisateur() != $username) {
-            static::error(LQ_URL, "Vous n'êtes pas l'organisateur de cette question. Vous ne pouvez pas la modifier.");
+            static::error(LMQ_URL, "Vous n'êtes pas l'organisateur de cette question");
         }
 
         $phase = $question->getPhase();
-        switch ($phase) {
-            case Phase::Redaction:
-                static::error(LQ_URL, "La question est en phase de rédaction. Vous ne pouvez plus la modifier.");
-                return;
-                break;
-            case Phase::Lecture:
-                static::error(LQ_URL, "La question est en phase de lecture. Vous ne pouvez plus la modifier.");
-                return;
-                break;
-            case Phase::Vote:
-                static::error(LQ_URL, "La question est en phase de vote. Vous ne pouvez plus la modifier.");
-                return;
-                break;
-            case Phase::Resultat:
-                static::error(LQ_URL, "La question est terminée. Vous ne pouvez plus la modifier.");
-                return;
-                break;
+        if ($phase != Phase::Attente && $phase != Phase::NonRemplie) {
+            static::error(LMQ_URL, "Vous ne pouvez pas poser la question depuis cette phase");
         }
 
-        $nbSections = 1;
-        $sections = [];
-        while (isset($_POST['nomSection' . $nbSections]) && isset($_POST['descriptionSection' . $nbSections])) {
-            $nomSection = static::getIfSetAndNotEmpty("nomSection" . $nbSections, $AFPQ_URL, "Une section doit avoir un nom.");
-            $descriptionSection = static::getIfSetAndNotEmpty("descriptionSection" . $nbSections, $AFPQ_URL, "Une section doit avoir une description.");
+        $dataQuestion = [
+            'idQuestion' => $idQuestion,
+            'description' => $_POST['description'],
+            'tags' => $_POST['tags'],
+            'sections' => $_POST['sections'],
+            'systemeVote' => $_POST['systemeVote'],
+            'dateDebutRedaction' => $_POST['dateDebutRedaction'],
+            'heureDebutRedaction' => $_POST['heureDebutRedaction'],
+            'dateFinRedaction' => $_POST['dateFinRedaction'],
+            'heureFinRedaction' => $_POST['heureFinRedaction'],
+            'dateOuvertureVotes' => $_POST['dateOuvertureVotes'],
+            'heureOuvertureVotes' => $_POST['heureOuvertureVotes'],
+            'dateFermetureVotes' => $_POST['dateFermetureVotes'],
+            'heureFermetureVotes' => $_POST['heureFermetureVotes'],
+            'redacteurs' => $_POST['redacteurs'],
+            'votants' => $_POST['votants'],
+        ];
 
-            if (strlen($nomSection) > 50) {
-                static::error($AFPQ_URL, "Le nom de la section ne doit pas dépasser 50 caractères");
-                return;
-            } else if (strlen($descriptionSection) > 2000) {
-                static::error($AFPQ_URL, "La description de la section ne doit pas dépasser 2000 caractères");
-                return;
-            }
+        static::verifierDataQuestion($dataQuestion);
 
-            $section = new Section(-1, -1, $nomSection, $descriptionSection);
-            $sections[] = $section;
-            $nbSections++;
-        }
+        $question->setDescription($dataQuestion['description']);
+        $question->setTags($dataQuestion['tags']);
+        $question->setSystemeVote(SystemeVoteFactory::createSystemeVote($dataQuestion['systemeVote'], $question));
+        $question->setDateDebutRedaction(DateTime::createFromFormat('Y-m-d H:i', $dataQuestion['dateDebutRedaction'] . ' ' . $dataQuestion['heureDebutRedaction']));
+        $question->setDateFinRedaction(DateTime::createFromFormat('Y-m-d H:i', $dataQuestion['dateFinRedaction'] . ' ' . $dataQuestion['heureFinRedaction']));
+        $question->setDateOuvertureVotes(DateTime::createFromFormat('Y-m-d H:i', $dataQuestion['dateOuvertureVotes'] . ' ' . $dataQuestion['heureOuvertureVotes']));
+        $question->setDateFermetureVotes(DateTime::createFromFormat('Y-m-d H:i', $dataQuestion['dateFermetureVotes'] . ' ' . $dataQuestion['heureFermetureVotes']));
 
-        $redacteurs = [];
-        $votants = [];
-        foreach ($_POST as $key => $value) {
-            if (substr($key, 0, 9) == "redacteur") {
-                $usernameRedacteur = $value;
-                $redacteur = Utilisateur::castIfNotNull((new UtilisateurRepository)->select($usernameRedacteur));
-                if ($redacteur && !in_array($redacteur, $redacteurs)) {
-                    $redacteurs[] = $redacteur;
-                }
-            } else if (substr($key, 0, 6) == "votant") {
-                $usernameVotant = $value;
-                $votant = Utilisateur::castIfNotNull((new UtilisateurRepository)->select($usernameVotant));
-                if ($votant && !in_array($votant, $votants)) {
-                    $votants[] = $votant;
-                }
-            }
-        }
+        $sections = array_map(
+            function ($section) use ($idQuestion) {
+                return new Section(
+                    -1,
+                    $idQuestion,
+                    $section['titre'],
+                    $section['description'],
+                );
+            }, $dataQuestion['sections']
+        );
 
-        foreach (['dateDebutRedaction', 'dateFinRedaction', 'dateOuvertureVotes', 'dateFermetureVotes'] as $date) {
-            if (!isset($_POST[$date]) || !preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/", $_POST[$date])) {
-                static::error($AFPQ_URL, "Veuillez entrer des dates valides");
-                return;
-            }
-        }
+        $redacteurs = array_map(
+            function ($username) use ($idQuestion) {
+                return (new UtilisateurRepository)->select($username);
+            }, $dataQuestion['redacteurs']
+        );
 
-        foreach (['heureDebutRedaction', 'heureFinRedaction', 'heureOuvertureVotes', 'heureFermetureVotes'] as $heure) {
-            if (!isset($_POST[$heure]) || !preg_match("/^[0-9]{2}:[0-9]{2}$/", $_POST[$heure])) {
-                static::error($AFPQ_URL, "Veuillez entrer des heures valides");
-                return;
-            }
-        }
+        $votants = array_map(
+            function ($username) use ($idQuestion) {
+                return (new UtilisateurRepository)->select($username);
+            }, $dataQuestion['votants']
+        );
 
-        $dateDebutRedaction = DateTime::createFromFormat("Y-m-d H:i", $_POST['dateDebutRedaction'] . " " . $_POST['heureDebutRedaction']);
-        $dateFinRedaction = DateTime::createFromFormat("Y-m-d H:i", $_POST['dateFinRedaction'] . " " . $_POST['heureFinRedaction']);
-        $dateOuvertureVotes = DateTime::createFromFormat("Y-m-d H:i", $_POST['dateOuvertureVotes'] . " " . $_POST['heureOuvertureVotes']);
-        $dateFermetureVotes = DateTime::createFromFormat("Y-m-d H:i", $_POST['dateFermetureVotes'] . " " . $_POST['heureFermetureVotes']);
-
-        $dateCoherentes =
-            $dateDebutRedaction < $dateFinRedaction
-            && $dateFinRedaction <= $dateOuvertureVotes
-            && $dateOuvertureVotes < $dateFermetureVotes
-            && $dateDebutRedaction > (new DateTime("now"));
-
-        if (!$dateCoherentes) {
-            static::error($AFPQ_URL, "Les dates ne sont pas cohérentes");
-        } elseif (strlen($description) > 4000) {
-            static::error($AFPQ_URL, "La description de la question ne doit pas dépasser 4000 caractères");
-        } elseif (count($sections) == 0) {
-            static::error($AFPQ_URL, "Au moins une section est requise");
-        } elseif (count($redacteurs) == 0) {
-            static::error($AFPQ_URL, "Veuillez sélectionner au moins un rédacteur");
-        } elseif (count($votants) == 0) {
-            static::error($AFPQ_URL, "Veuillez sélectionner au moins un votant");
-        }
-
-        $systemeVote = $_POST["systeme_vote"];
-
-        $tags = "{}";
-        if (isset($_POST["tags"])) {
-            $tags = preg_replace('/[^a-zA-Z0-9-\s]/', "", $_POST["tags"]); // → retire toutes les expressions non voulues (/,; etc.)
-            $tags = preg_replace('/[ ]+/', ",", $tags); // → remplace les espaces par des virgules
-            $tags = strtolower($tags); // → met le string en minuscule
-            $tags = explode(',', $tags); // → transforme le string en tableau en coupant avec les virgules
-            $tags = array_unique($tags); // → trie le tableau pour enlever les doublons
-            $tags = implode(',', $tags); // → reforme le string en rassemblant avec des virgules
-            $tags = "{" . $tags . "}"; // → array pour postgre
-        }
-
-        $question->setDescription($description);
         $question->setSections($sections);
         $question->setRedacteurs($redacteurs);
         $question->setVotants($votants);
-        $question->setDateDebutRedaction($dateDebutRedaction);
-        $question->setDateFinRedaction($dateFinRedaction);
-        $question->setDateOuvertureVotes($dateOuvertureVotes);
-        $question->setDateFermetureVotes($dateFermetureVotes);
-        $question->setSystemeVote(SystemeVoteFactory::createSystemeVote($systemeVote, $question));
-        $question->setTags($tags);
 
         (new QuestionRepository)->update($question);
-        static::message(LMQ_URL, "La question a été posée");
+        static::message(LMQ_URL, "La question a été modifiée");
     }
 
     public static function passagePhaseRedaction()
@@ -225,7 +380,7 @@ class QuestionController extends MainController
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
 
         if ($question->getUsernameOrganisateur() != $username) {
-            static::error(LQ_URL, "Vous n'êtes pas l'organisateur de cette question");
+            static::error(LMQ_URL, "Vous n'êtes pas l'organisateur de cette question");
             return;
         }
 
@@ -249,7 +404,7 @@ class QuestionController extends MainController
         $question = Question::castIfNotNull((new QuestionRepository)->select($idQuestion));
 
         if ($question->getUsernameOrganisateur() != $username) {
-            static::error(LQ_URL, "Vous n'êtes pas l'organisateur de cette question");
+            static::error(LMQ_URL, "Vous n'êtes pas l'organisateur de cette question");
             return;
         }
 
@@ -324,18 +479,25 @@ class QuestionController extends MainController
 
         $nbQuestionsParPage = 12;
         $query = isset($_GET["query"]) ? strtolower($_GET["query"]) : "";
-        $motsClesEtTags = explode(" ", $query) ?: [];
+        $motsClesEtTagsEtUsername = explode(" ", $query) ?: [];
         $motsCles = [];
         $tags = [];
+        $usernames = [];
 
-        foreach ($motsClesEtTags as $mot) {
+        foreach ($motsClesEtTagsEtUsername as $mot) {
             if (substr($mot, 0, 1) == "#") {
                 $tags[] = substr($mot, 1);
+            } else if (substr($mot, 0, 1) == "@") {
+                $usernames[] = substr($mot, 1);
             } else {
                 $motsCles[] = $mot;
             }
         }
         $tags = array_filter($tags, function ($t) {
+            return $t != "";
+        });
+
+        $usernames = array_filter($usernames, function ($t) {
             return $t != "";
         });
 
@@ -353,12 +515,12 @@ class QuestionController extends MainController
         if (isset($_GET["f_mq"])) $filtres[] = "mq";
 
 
-        $nbPages = ceil((new QuestionRepository())->countAllListerQuestion($motsCles, $tags, $filtres) / $nbQuestionsParPage) ?: 1;
+        $nbPages = ceil((new QuestionRepository())->countAllListerQuestion($motsCles, $tags, $filtres, $usernames) / $nbQuestionsParPage) ?: 1;
         $page = isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] > 0 && $_GET["page"] <= $nbPages ? $_GET["page"] : 1;
 
         $offset = ($page - 1) * $nbQuestionsParPage;
 
-        $questions = (new QuestionRepository())->selectAllListerQuestions($nbQuestionsParPage, $offset, $motsCles, $tags, $filtres);
+        $questions = (new QuestionRepository())->selectAllListerQuestions($nbQuestionsParPage, $offset, $motsCles, $tags, $filtres, $usernames);
 
         $dataQuestions = array_map(function ($question) use ($username) {
             $question = Question::castIfNotNull($question);
@@ -373,13 +535,6 @@ class QuestionController extends MainController
                 "estAVous" => $username == $question->getUsernameOrganisateur(),
             ];
         }, $questions);
-
-
-
-
-
-
-
 
         static::afficherVue("view.php", [
             "titrePage" => "Liste des questions",
@@ -408,13 +563,25 @@ class QuestionController extends MainController
 
         $peutEditer = $estOrganisateur && ($phase == Phase::NonRemplie || $phase == Phase::Attente);
         $peutChangerPhase = $estOrganisateur && $phase != Phase::Resultat && $phase != Phase::NonRemplie;
-        $peutEcrireProposition = $estRedacteur && (new PropositionRepository)->selectByQuestionEtResponsable($idQuestion, $username) == null;
+        $peutEcrireProposition = $phase == Phase::Redaction && $estRedacteur && (new PropositionRepository)->selectByQuestionEtResponsable($idQuestion, $username) == null;
         $peutVoter = $estVotant && $phase == Phase::Vote;
 
+        $tags = array_filter(explode(",", preg_replace("/[\{\}]/", "", $question->getTags())));
+
+        $dateDebutRedaction = $question->getDateDebutRedaction();
+        $dateFinRedaction = $question->getDateFinRedaction();
+        $dateDebutVotes = $question->getDateOuvertureVotes();
+        $dateFinVotes = $question->getDateFermetureVotes();
+
+        setlocale(LC_ALL, "fr_FR.UTF-8");
+        date_default_timezone_set('Europe/Paris');
+
+        error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE); //patch pour cacher qu'on fait du caca
         $dataQuestion = [
             "idQuestion" => $question->getIdQuestion(),
             "titre" => $question->getTitre(),
             "description" => $question->getDescription(),
+            "tags" => $tags,
             "nomUsuelOrga" => $question->getOrganisateur()->getNomUsuel(),
             "phase" => $question->getPhase(),
             "nomSystemeVote" => $question->getSystemeVote()->getNomComplet(),
@@ -425,7 +592,7 @@ class QuestionController extends MainController
                     "description" => $section->getDescriptionSection()
                 ];
             }, $question->getSections()),
-            
+
             "propositions" => array_map(function ($proposition) use ($username) {
                 return [
                     "idProposition" => $proposition->getIdProposition(),
@@ -434,7 +601,14 @@ class QuestionController extends MainController
                     "pfp" => $proposition->getResponsable()->getPhotoProfil(),
                     "estAVous" => ($proposition->getUsernameResponsable() == $username)
                 ];
-            }, $propositions)
+            }, $propositions),
+
+            "calendrier" => [
+                "dateDebutRedaction" => $dateDebutRedaction ? strftime('Le %e %B à %kh%M', $dateDebutRedaction->getTimestamp()) : "Date non renseignée",
+                "dateFinRedaction" => $dateFinRedaction ? strftime('Le %e %B à %kh%M', $dateFinRedaction->getTimestamp()) : "Date non renseignée",
+                "dateDebutVotes" => $dateDebutVotes ? strftime('Le %e %B à %kh%M', $dateDebutVotes->getTimestamp()) : "Date non renseignée",
+                "dateFinVotes" => $dateFinVotes ? strftime('Le %e %B à %kh%M', $dateFinVotes->getTimestamp()) : "Date non renseignée"
+            ]
         ];
 
         static::afficherVue("view.php", [

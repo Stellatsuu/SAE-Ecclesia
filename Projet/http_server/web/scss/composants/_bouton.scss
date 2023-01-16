@@ -46,8 +46,15 @@ button,
     border-width: 3px;
     border-color :$couleurBordureSupprimer;
     background-color: $couleurBoutonSupprimer;
+
     &:hover{
       background-color: $couleurBoutonSupprimerSurvol;
     }
+  }
+  &.vote{
+    position: relative;
+    width: intrinsic;
+    width: -moz-max-content;
+    width: -webkit-max-content;
   }
 }

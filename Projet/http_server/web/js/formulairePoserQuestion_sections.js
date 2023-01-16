@@ -2,18 +2,16 @@ var nbSections = 0;
 const sections_input = document.getElementById("sections_input");
 const add_section_button = document.getElementById("add_section");
 
-const sectionsQuestion = question.sections || [];
-
-sectionsQuestion.forEach((element) => {
-  const nomSection = element.nom_section;
-  const descriptionSection = element.description_section;
+sections.forEach((element) => {
+  const nomSection = element.titre;
+  const descriptionSection = element.description;
   addSection();
   const section = document.getElementById("section" + nbSections + "_id");
   section.querySelector("input").value = nomSection;
   section.querySelector("textarea").value = descriptionSection;
 });
 
-if (sectionsQuestion.length == 0) {
+if (sections.length == 0) {
   addSection();
 }
 
@@ -35,13 +33,13 @@ function addSection() {
         <label for="nomSection${nbSections}_id">Nom:</label>
 
         <div class="text_input_div">   
-            <input type="text" name="nomSection${nbSections}" id="nomSection${nbSections}_id" placeholder="Nom de la section" maxlength="50" required>
+            <input type="text" name="sections[${nbSections}][titre]" id="nomSection${nbSections}_id" placeholder="Nom de la section" maxlength="50" required>
             <span class="indicateur_max_chars">50 max</span>
         </div>
 
         <label for="descriptionSection${nbSections}_id">Description:</label>
         <div class="text_input_div">
-            <textarea rows="5" id="descriptionSection${nbSections}_id" name="descriptionSection${nbSections}" maxlength="2000" placeholder="Description de la section" required></textarea>
+            <textarea rows="5" id="descriptionSection${nbSections}_id" name="sections[${nbSections}][description]" maxlength="2000" placeholder="Description de la section" required></textarea>
             <span class="indicateur_max_chars">2000 max</span>
         </div>`;
 
@@ -84,14 +82,14 @@ function updateSectionsNumbers() {
 
     let text_input_div1 = conteneurs_sections[i].children[2];
     text_input_div1.children[0].id = `nomSection${i + 1}_id`;
-    text_input_div1.children[0].name = `nomSection${i + 1}`;
+    text_input_div1.children[0].name = `sections[${i + 1}][titre]`;
 
     conteneurs_sections[i].children[3] = `
     <label for="descriptionSection${i + 1}_id">Description:</label>`;
 
     let text_input_div2 = conteneurs_sections[i].children[4];
     text_input_div2.children[0].id = `descriptionSection${i + 1}_id`;
-    text_input_div2.children[0].name = `descriptionSection${i + 1}`;
+    text_input_div2.children[0].name = `sections[${i + 1}][description]`;
 
     conteneurs_sections[i].id = `section${i + 1}_id`;
   }

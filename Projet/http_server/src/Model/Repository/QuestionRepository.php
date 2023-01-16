@@ -126,9 +126,9 @@ class QuestionRepository extends AbstractRepository
         return $resultat;
     }
 
-    public function selectAllListerQuestions(int $limit, int $offset, array $motsCles = [], array $tags = [], array $filtres = []): array
+    public function selectAllListerQuestions(int $limit, int $offset, array $motsCles = [], array $tags = [], array $filtres = [], array $usernames = []): array
     {
-        $conditionsEtValues = $this->genererConditionsEtValuesListerQuestions($motsCles, $tags, $filtres);
+        $conditionsEtValues = $this->genererConditionsEtValuesListerQuestions($motsCles, $tags, $filtres, $usernames);
         $conditions = $conditionsEtValues['conditions'];
         $values = $conditionsEtValues['values'];
 
@@ -155,9 +155,9 @@ class QuestionRepository extends AbstractRepository
         return $resultat;
     }
 
-    public function countAllListerQuestion(array $motsCles = [], array $tags = [], array $filtres = []): int
+    public function countAllListerQuestion(array $motsCles = [], array $tags = [], array $filtres = [], array $usernames = []): int
     {
-        $conditionsEtValues = $this->genererConditionsEtValuesListerQuestions($motsCles, $tags, $filtres);
+        $conditionsEtValues = $this->genererConditionsEtValuesListerQuestions($motsCles, $tags, $filtres, $usernames);
         $conditions = $conditionsEtValues['conditions'];
         $values = $conditionsEtValues['values'];
 
@@ -173,7 +173,7 @@ class QuestionRepository extends AbstractRepository
         return $stmt->fetchColumn();
     }
 
-    private function genererConditionsEtValuesListerQuestions(array $motsCles = [], array $tags = [], array $filtres = [])
+    private function genererConditionsEtValuesListerQuestions(array $motsCles = [], array $tags = [], array $filtres = [], array $usernames = [])
     {
 
         $modeMesQuestions = in_array("mq", $filtres);
@@ -189,6 +189,16 @@ class QuestionRepository extends AbstractRepository
             $values['username'] = ConnexionUtilisateur::getUsername();
         } else {
             $conditions[] = "(date_debut_redaction IS NOT NULL AND date_debut_redaction <= CURRENT_TIMESTAMP)";
+
+            //USERNAMES
+            $conditionsUsernames = [];
+            for ($i = 0; $i < count($usernames); $i++) {
+                $conditionsUsernames[] = "(username_organisateur = :username_$i)";
+                $values["username_$i"] = "$usernames[$i]";
+            }
+
+            $conditionsUsernames = implode(" OR ", $conditionsUsernames);
+            if($conditionsUsernames != "") $conditions[] = "($conditionsUsernames)";
         }
 
 
@@ -246,9 +256,7 @@ class QuestionRepository extends AbstractRepository
             $values["mot_cle_$i"] = "%$motsCles[$i]%";
         }
 
-        
         $conditions = implode(" AND ", $conditions);
-
 
         return ["conditions" => $conditions, "values" => $values];
     }

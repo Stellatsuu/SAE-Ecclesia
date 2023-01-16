@@ -47,7 +47,11 @@
       color: $couleurTexte2;
     }
   }
-
+  #formulaire-vote-top{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
   #afficher-propositions__body {
     display: flex;
     flex-direction: column;
@@ -309,5 +313,26 @@
         display: block;
       }
     }
-  }  
+  }
+}
+
+#modalSupprimerVote,
+#modalSupprimerProp {
+  .modal-content{
+    width: fit-content;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+
+    div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+      width: 50%;
+    }
+  }
 }

@@ -8,11 +8,18 @@ use App\SAE\Lib\PhotoProfil;
 $idQuestion = rawurlencode($dataQuestion['idQuestion']);
 $titre = htmlspecialchars($dataQuestion['titre']);
 $description = Markdown::toHtml($dataQuestion['description']);
+$tags = $dataQuestion['tags'];
 $nomUsuelOrga = htmlspecialchars($dataQuestion['nomUsuelOrga']);
 $nomSystemeVote = htmlspecialchars($dataQuestion['nomSystemeVote']);
 $phase = $dataQuestion['phase'];
 $sections = $dataQuestion['sections'];
 $propositions = $dataQuestion['propositions'];
+
+$calendrier = $dataQuestion['calendrier'];
+$dateDebutRedaction = $calendrier['dateDebutRedaction'];
+$dateFinRedaction = $calendrier['dateFinRedaction'];
+$dateDebutVotes = $calendrier['dateDebutVotes'];
+$dateFinVotes = $calendrier['dateFinVotes'];
 
 //$peutEditer
 //$peutChangerPhase
@@ -99,12 +106,34 @@ if ($peutVoter) {
         <div id="description" class="markdown"><?= $description ?></div>
     </div>
 
+    <div id="afficher-question__tags" class="panel2">
+        <h2>Tags :</h2>
+
+        <div id="tags_list">
+            <?php
+            if ($tags == [])
+                echo "Aucun tag n'a encore été ajouté.";
+            else
+                foreach ($tags as $tag) {
+                    $tag = htmlspecialchars($tag);
+                    echo <<<HTML
+                        <div class="tag">
+                            <span>
+                                $tag
+                            </span>
+                        </div>
+                    HTML;
+                }
+            ?>
+        </div>
+    </div>
+
 
     <div id="afficher-question__sections" class="panel2">
         <h2>Sections :</h2>
 
-        <?php 
-        if ($sectionHTMLs == []) 
+        <?php
+        if ($sectionHTMLs == [])
             echo "Aucune section n'a encore été écrite.";
         echo implode('', $sectionHTMLs);
         ?>
@@ -114,7 +143,49 @@ if ($peutVoter) {
     <div id="afficher-question__calendrier" class="panel2">
         <h2>Calendrier :</h2>
 
-        <h1>TODO!</h1>
+        <div id="calendrier">
+            <div class="calendrierCercleBarre">
+                <div class="cercle"></div>
+                <div class="barre"></div>
+            </div>
+            <div class="selecteurDate">
+                <h2>Début de la phase de rédaction</h2>
+                <p><?= $dateDebutRedaction ?></p>
+                <p>Les rédacteurs rédigent des propositions de réponses à la question.</p>
+            </div>
+
+            <div class="calendrierCercleBarre">
+                <div class="cercle"></div>
+                <div class="barre"></div>
+            </div>
+            <div class="selecteurDate">
+                <h2>Fin de la phase de rédaction</h2>
+                <p><?= $dateFinRedaction ?></p>
+                <p>Les votants peuvent lire les propositions.</p>
+            </div>
+
+            <div class="calendrierCercleBarre">
+                <div class="cercle"></div>
+                <div class="barre"></div>
+            </div>
+            <div class="selecteurDate">
+                <h2>Début de la phase de vote</h2>
+                <p><?= $dateDebutVotes ?></p>
+                <p>Les votants votent pour la ou les propositions de leur choix.</p>
+            </div>
+
+            <div class="calendrierCercleBarre">
+                <div class="cercle"></div>
+                <div class="barre"></div>
+            </div>
+            <div class="selecteurDate">
+                <h2>Fin de la phase de vote</h2>
+                <p><?= $dateFinVotes ?></p>
+                <p>Le résultat du vote est rendu public.</p>
+            </div>
+
+            <img src="assets/images/triangle.svg" alt="" id="fleche"></img>
+        </div>
     </div>
 
     <div class="panel2">
@@ -131,7 +202,7 @@ if ($peutVoter) {
         <div id="afficher-question__propositions">
 
             <?php
-            if ($propositionHTMLs == []) 
+            if ($propositionHTMLs == [])
                 echo "Aucune proposition n'a encore été écrite.";
             echo implode('', $propositionHTMLs);
             ?>
@@ -143,7 +214,7 @@ if ($peutVoter) {
             <a class="button" href="frontController.php?controller=proposition&action=afficherFormulaireEcrireProposition&idQuestion=$idQuestion">Ecrire une proposition</a>
         HTML;
 
-        if ($peutEcrireProposition) 
+        if ($peutEcrireProposition)
             echo $boutonEcrireProposition;
         ?>
     </div>
