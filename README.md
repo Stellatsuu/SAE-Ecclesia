@@ -10,7 +10,7 @@ Les différentes actions que peuvent faire les utilisateurs autour des questions
 en plusieurs phases (phase de configuration, phase de rédaction, phase de vote, ...).
 
 Voici une démo du site : [https://ecclesia.onirisme.net](https://ecclesia.onirisme.net)
-![Ressources/imageDePresentation.png](Ressources/imageDePresentation.png)
+![Documentation/imageDePresentation.png](Documentation/imageDePresentation.png)
 ### Qu'est-ce qu'une SAÉ ?
 Une SAÉ est un projet de groupe dans le cadre du BUT (ici le BUT Informatique).
 
